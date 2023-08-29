@@ -1,0 +1,7 @@
+{
+  "name": "route-me",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
