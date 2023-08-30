@@ -10,6 +10,10 @@ import { LoginPage } from './login.page';
 import {InputTextComponent} from "../shared/components/input-text/input-text.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
+import {FilledButtonComponent} from "../shared/components/filled-button/filled-button.component";
+import {CheckboxComponent} from "../shared/components/checkbox/checkbox.component";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {RadioButtonComponent} from "../shared/components/radio-button/radio-button.component";
 
 @NgModule({
   imports: [
@@ -19,8 +23,9 @@ import {MatIconModule} from "@angular/material/icon";
     LoginPageRoutingModule,
     MatInputModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
-  declarations: [LoginPage, InputTextComponent]
+  declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent]
 })
 export class LoginPageModule {}
