@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { OutlinedSelectComponent } from './outlined-select.component';
+import { InputAreaComponent } from 'src/app/shared/components/input-area/input-area.component';
 
-describe('OutlinedSelectComponent', () => {
-  let component: OutlinedSelectComponent;
-  let fixture: ComponentFixture<OutlinedSelectComponent>;
+describe('InputAreaComponent', () => {
+  let component: InputAreaComponent;
+  let fixture: ComponentFixture<InputAreaComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutlinedSelectComponent ],
+      declarations: [ InputAreaComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(OutlinedSelectComponent);
+    fixture = TestBed.createComponent(InputAreaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
