@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DateSelectorComponent } from './date-selector.component';
+import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component';
 
 describe('DateSelectorComponent', () => {
   let component: DateSelectorComponent;

@@ -1,28 +1,24 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { InputTextComponent } from './input-text.component';
+import { OutlinedSelectComponent } from 'src/app/shared/components/outlined-select/outlined-select.component';
 
-describe('InputTextComponent', () => {
-  let component: InputTextComponent;
-  let fixture: ComponentFixture<InputTextComponent>;
+describe('OutlinedSelectComponent', () => {
+  let component: OutlinedSelectComponent;
+  let fixture: ComponentFixture<OutlinedSelectComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ InputTextComponent ],
+      declarations: [ OutlinedSelectComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InputTextComponent);
+    fixture = TestBed.createComponent(OutlinedSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should verify email input', () => {
     expect(component).toBeTruthy();
   });
 });
