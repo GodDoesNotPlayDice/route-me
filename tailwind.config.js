@@ -1,9 +1,21 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require( 'tailwindcss/defaultTheme' )
 module.exports= {
   content: [
-    "./src/**/*.{html,ts}",
+    "./src/**/*.{html,js}",
+    "./node_modules/tw-elements/dist/js/**/*.js"
   ],
+  plugins: [require("tw-elements/dist/plugin.cjs")],
+  darkMode: "class",
   theme: {
+    fontFamily: {
+      'gotham': ['GothamRoundedBold'],
+    },
+    screens: {
+      xxs: "320px",
+      xs: "480px",
+      ...defaultTheme.screens,
+    },
     extend: {
             colors: {
               theme: {
@@ -65,5 +77,4 @@ module.exports= {
             },
           },
   },
-  plugins: [],
 }
