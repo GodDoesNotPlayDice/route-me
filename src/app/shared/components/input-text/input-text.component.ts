@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { FormControl, Validators} from '@angular/forms';
+import {z} from "zod";
 
 type InputTextType = 'email' | 'password' | 'text'
 
@@ -16,18 +17,26 @@ export class InputTextComponent  implements OnInit {
     control.addValidators(Validators.required)
     switch (this.type) {
       case "email":
-        control.addValidators(Validators.email)
+        // control.addValidators(Validators.email)
+        try{
+          z.string().email().parse(control.value)
+        }
+        catch (e) {
+          return { "email" : true}
+        }
         break;
       case "password":
-        control.addValidators(Validators.min(8))
+        control.addValidators(Validators.minLength(8))
         break;
       case "text":
+        control.addValidators(Validators.minLength(4))
         break;
     }
     return null
   })
 
   @Input() type: InputTextType = 'text'
+  @Input() placeholder: string = ""
 
   ngOnInit() {
   }

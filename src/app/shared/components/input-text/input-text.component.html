@@ -1,39 +1,35 @@
 <div>
   <div class="relative z-0 my-4">
-  <!-- focus success/error -->
     <input [formControl]="textControl" [type]="type" class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
            [ngClass]="{
-           'text-red-900': textControl.invalid,
-           'text-gray-900' : !textControl.invalid,
-           'border-red-300': textControl.invalid,
-           'border-gray-300' : !textControl.invalid,
-           'focus:border-red-300': textControl.invalid,
-           'focus:border-indigoBlack-300' : !textControl.invalid
-           }"
-           placeholder=" " required/>
-  <!-- peer-focus success/error -->
+           'text-threateningRed-900': textControl.invalid && (textControl.dirty || textControl.touched),
+           'text-gray-900' : textControl.valid || !textControl.touched,
+           'border-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
+           'border-gray-300' : textControl.valid || !textControl.touched,
+           'focus:border-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
+           'focus:border-indigoBlack-300' : textControl.valid || !textControl.touched
+           }" placeholder="" required/>
     <label class="absolute text-lg duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
            [ngClass]="{
-           'peer-focus:text-red-300': textControl.invalid,
-           'peer-focus:text-indigoBlack-300' : !textControl.invalid,
-           'text-red-500': textControl.invalid,
-           'text-gray-500' : !textControl.invalid
+           'peer-focus:text-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
+           'peer-focus:text-indigoBlack-300' : textControl.valid || !textControl.touched,
+           'text-threateningRed-500': textControl.invalid && (textControl.dirty || textControl.touched),
+           'text-gray-500' : textControl.valid || !textControl.touched
            }">
-      Email
+      {{placeholder}}
     </label>
   </div>
-  <!-- si pasa deberia agregarse estado success/error -->
-  <div id="standard_error_help" class="mt-2 text-xs text-threateningRed-500">
+  <div class="mt-2 text-xs text-threateningRed-500 h-8">
     <div *ngIf="textControl.invalid && (textControl.dirty || textControl.touched)">
+      <div *ngIf="textControl.errors?.['email']">
+        El email no es correcto
+      </div>
       <div *ngIf="textControl.errors?.['required']">
-        Name is required.
+        Nombre es requerido
       </div>
       <div *ngIf="textControl.errors?.['minlength']">
-        Name must be at least 4 characters long.
+        Debe contener almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
       </div>
     </div>
   </div>
 </div>
-<button class="bg-red-600" (click)="print()">
-  button
-</button>
