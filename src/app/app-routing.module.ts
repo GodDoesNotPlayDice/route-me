@@ -8,17 +8,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
-  },
-  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
-  {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
-  },
+  // {
+  //   path: '',
+  //   loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
+  // },
 ];
 
 @NgModule({
