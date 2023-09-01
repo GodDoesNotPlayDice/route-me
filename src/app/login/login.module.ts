@@ -18,16 +18,20 @@ import {LogoComponent} from "../shared/components/logo/logo.component";
 import {OutlinedButtonComponent} from "../shared/components/outlined-button/outlined-button.component";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    LoginPageRoutingModule,
-    MatInputModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatCheckboxModule
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        LoginPageRoutingModule,
+        MatInputModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatCheckboxModule
+    ],
+  exports: [
+    InputTextComponent,
+    FilledButtonComponent
   ],
-  declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent, OutlinedButtonComponent]
+    declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent, OutlinedButtonComponent]
 })
 export class LoginPageModule {}
