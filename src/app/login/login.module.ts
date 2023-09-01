@@ -15,6 +15,7 @@ import {CheckboxComponent} from "../shared/components/checkbox/checkbox.componen
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {RadioButtonComponent} from "../shared/components/radio-button/radio-button.component";
 import {LogoComponent} from "../shared/components/logo/logo.component";
+import {OutlinedButtonComponent} from "../shared/components/outlined-button/outlined-button.component";
 
 @NgModule({
   imports: [
@@ -27,6 +28,6 @@ import {LogoComponent} from "../shared/components/logo/logo.component";
     ReactiveFormsModule,
     MatCheckboxModule
   ],
-    declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent]
+  declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent, OutlinedButtonComponent]
 })
 export class LoginPageModule {}

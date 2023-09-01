@@ -1,29 +1,33 @@
-<!--<ion-header [translucent]="true">-->
-<!--  <ion-toolbar>-->
-<!--    <ion-title>login</ion-title>-->
-<!--  </ion-toolbar>-->
-<!--</ion-header>-->
-
 <ion-content>
-<!--  <ion-header collapse="condense">-->
-<!--    <ion-toolbar>-->
-<!--      <ion-title size="large">login</ion-title>-->
-<!--    </ion-toolbar>-->
-<!--  </ion-header>-->
-  <div class="p-2.5 w-full max-w-xs mx-auto">
-    <div class="mt-11">
-    <app-logo></app-logo>
-    </div>
-    <div class="mt-16">
-    <div class="text-2xl font-bold font-gotham text-indigoBlack-500">Iniciar Sesion</div>
-      <form action="">
+  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col justify-around">
+      <app-logo></app-logo>
+      <div class="text-2xl font-bold font-gotham text-indigoBlack-500">Iniciar
+        Sesion
+      </div>
+      <form action="" class="flex flex-col justify-between basis-5/12">
         <app-input-text type="email" placeholder="Email"></app-input-text>
         <app-input-text type="password" placeholder="Password"></app-input-text>
-        <app-checkbox></app-checkbox>
-        <app-radio-button></app-radio-button>
-        <app-filled-button></app-filled-button>
+        <div class="basis-2/12">
+        <app-checkbox class="text-lg" contentText="Mantener sesion activa"></app-checkbox>
+        </div>
+        <app-filled-button contentText="Continuar"></app-filled-button>
       </form>
-    </div>
+      <div class="flex flex-col gap-5">
+        <div class="flex justify-center items-center gap-2">
+          <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+          <div class="text-sm font-gotham text-indigoBlack-500">o ingresa con</div>
+          <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+        </div>
+        <app-outlined-button contentText="Facebook">
+          <ion-icon name="logo-facebook" class="mr-2"></ion-icon>
+        </app-outlined-button>
+        <app-outlined-button contentText="Google">
+          <ion-icon name="logo-google" class="mr-2"></ion-icon>
+        </app-outlined-button>
+      </div>
+      <div class="flex flex-col gap-5 items-center justify-center">
+        <a href="#" class="text-base font-normal text-indigoBlack-500"><span class=" text-gray-600">¿No tienes cuenta?</span> <span class="font-gotham"> Registrate aqui!</span></a>
+        <a href="#" class="text-base font-normal text-indigoBlack-500"><span class=" text-gray-600">¿Perdiste tu cuenta?</span> <span class="font-gotham"> Ingresa Aqui!</span></a>
+      </div>
   </div>
-
 </ion-content>
