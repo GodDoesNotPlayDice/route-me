@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Step1Page } from './step1.page';
+import { Step1Page } from 'src/app/register/step1/step1.page';
 
 describe('Step1Page', () => {
   let component: Step1Page;
   let fixture: ComponentFixture<Step1Page>;
 
-  beforeEach(async(() => {
+  beforeEach(async() => {
     fixture = TestBed.createComponent(Step1Page);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Step3Page } from './step3.page';
+import { Step3Page } from 'src/app/register/step3/step3.page';
 
 describe('Step3Page', () => {
   let component: Step3Page;

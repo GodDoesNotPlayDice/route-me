@@ -40,12 +40,4 @@ export class InputTextComponent  implements OnInit {
 
   ngOnInit() {
   }
-
-  print(){
-    console.log(this.textControl)
-    console.log(this.textControl.errors)
-    console.log(this.textControl.status)
-    console.log(this.textControl.statusChanges)
-    console.log(this.textControl.value)
-  }
 }

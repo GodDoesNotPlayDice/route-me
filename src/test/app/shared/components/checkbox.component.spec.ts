@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { InputAreaComponent } from './input-area.component';
+import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component';
 
-describe('InputAreaComponent', () => {
-  let component: InputAreaComponent;
-  let fixture: ComponentFixture<InputAreaComponent>;
+describe('CheckboxComponent', () => {
+  let component: CheckboxComponent;
+  let fixture: ComponentFixture<CheckboxComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ InputAreaComponent ],
+      declarations: [ CheckboxComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InputAreaComponent);
+    fixture = TestBed.createComponent(CheckboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

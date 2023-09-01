@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RadioButtonComponent } from './radio-button.component';
+import { RadioButtonComponent } from 'src/app/shared/components/radio-button/radio-button.component';
 
 describe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;

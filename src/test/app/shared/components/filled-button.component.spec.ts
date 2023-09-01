@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { OutlinedButtonComponent } from './outlined-button.component';
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component';
 
-describe('OutlinedButtonComponent', () => {
-  let component: OutlinedButtonComponent;
-  let fixture: ComponentFixture<OutlinedButtonComponent>;
+describe('FilledButtonComponent', () => {
+  let component: FilledButtonComponent;
+  let fixture: ComponentFixture<FilledButtonComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutlinedButtonComponent ],
+      declarations: [ FilledButtonComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(OutlinedButtonComponent);
+    fixture = TestBed.createComponent(FilledButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
