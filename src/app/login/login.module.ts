@@ -30,7 +30,10 @@ import {OutlinedButtonComponent} from "../shared/components/outlined-button/outl
     ],
   exports: [
     InputTextComponent,
-    FilledButtonComponent
+    FilledButtonComponent,
+    OutlinedButtonComponent,
+    CheckboxComponent,
+    RadioButtonComponent
   ],
     declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent, OutlinedButtonComponent]
 })
