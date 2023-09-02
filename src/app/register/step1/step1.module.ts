@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { Step1PageRoutingModule } from './step1-routing.module';
 
 import { Step1Page } from './step1.page';
+import {LoginPageModule} from "../../login/login.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    Step1PageRoutingModule
+    Step1PageRoutingModule,
+    LoginPageModule
   ],
   declarations: [Step1Page]
 })

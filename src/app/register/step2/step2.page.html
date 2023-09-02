@@ -1,13 +1,35 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>step2</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registrarse</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">step2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
+    <div class="flex flex-col gap-5">
+      <app-input-text placeholder="Usuario" [type]="'text'"></app-input-text>
+      <app-input-text placeholder="Apellido"
+                      [type]="'password'"></app-input-text>
+      <app-date-selector></app-date-selector>
+      <div class="flex justify-center items-center gap-2">
+        <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+        <div class="text-sm font-gotham text-indigoBlack-500">Genero</div>
+        <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+      </div>
+      <div class="flex justify-between">
+        <div class="flex items-center flex-col gap-3">
+          <ion-icon class="w-16 h-16" name="male-outline"></ion-icon>
+          <app-radio-button contentText="Hombre"></app-radio-button>
+        </div>
+        <div class="flex items-center flex-col gap-3">
+          <ion-icon class="w-16 h-16" name="female-outline"></ion-icon>
+          <app-radio-button contentText="Mujer"></app-radio-button>
+        </div>
+      </div>
+        <app-filled-button contentText="Registrarse"></app-filled-button>
+    </div>
+  </div>
 </ion-content>
