@@ -15,18 +15,30 @@ import {CheckboxComponent} from "../shared/components/checkbox/checkbox.componen
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {RadioButtonComponent} from "../shared/components/radio-button/radio-button.component";
 import {LogoComponent} from "../shared/components/logo/logo.component";
+import {OutlinedButtonComponent} from "../shared/components/outlined-button/outlined-button.component";
+import {
+  AvatarHomeComponent
+} from "../shared/components/Avatars/avatar-home/avatar-home.component";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    LoginPageRoutingModule,
-    MatInputModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatCheckboxModule
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        LoginPageRoutingModule,
+        MatInputModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatCheckboxModule
+    ],
+  exports: [
+    InputTextComponent,
+    FilledButtonComponent,
+    OutlinedButtonComponent,
+    CheckboxComponent,
+    RadioButtonComponent,
+    AvatarHomeComponent
   ],
-    declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent]
+  declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent, OutlinedButtonComponent, AvatarHomeComponent]
 })
 export class LoginPageModule {}

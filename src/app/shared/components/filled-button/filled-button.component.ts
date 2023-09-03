@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-filled-button',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./filled-button.component.scss'],
 })
 export class FilledButtonComponent  implements OnInit {
-
+  @Input() contentText: string = '';
   constructor() { }
 
   ngOnInit() {}

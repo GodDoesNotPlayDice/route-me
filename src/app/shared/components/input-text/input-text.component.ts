@@ -17,7 +17,6 @@ export class InputTextComponent  implements OnInit {
     control.addValidators(Validators.required)
     switch (this.type) {
       case "email":
-        // control.addValidators(Validators.email)
         try{
           z.string().email().parse(control.value)
         }
@@ -28,8 +27,8 @@ export class InputTextComponent  implements OnInit {
       case "password":
         control.addValidators(Validators.minLength(8))
         break;
-      case "text":
-        control.addValidators(Validators.minLength(4))
+       case "text":
+        control.addValidators(Validators.minLength(3))
         break;
     }
     return null
