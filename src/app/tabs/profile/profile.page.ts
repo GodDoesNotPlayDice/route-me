@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {AuthService} from "../../services/auth/auth.service";
+import {User} from "../../../package/user/domain/entities/User";
+import {
+  defaultUsers
+} from "../../../package/user/infrastructure/AuthDataMemory";
+import {Some} from "oxide.ts";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage {
 
-  constructor() { }
+  constructor(private authService : AuthService) {
 
-  ngOnInit() {
+    if (authService.currentUser.isNone()){
+      authService.currentUser = Some(defaultUsers[0])
+    }
+
+    this.user = authService.currentUser.unwrap()
+    this.edad = new Date().getFullYear() - this.user.birthDay.value.getFullYear()
   }
 
+  edad : number
+  user : User
 }
