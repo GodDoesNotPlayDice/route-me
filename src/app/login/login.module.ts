@@ -16,6 +16,9 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {RadioButtonComponent} from "../shared/components/radio-button/radio-button.component";
 import {LogoComponent} from "../shared/components/logo/logo.component";
 import {OutlinedButtonComponent} from "../shared/components/outlined-button/outlined-button.component";
+import {
+  AvatarHomeComponent
+} from "../shared/components/Avatars/avatar-home/avatar-home.component";
 
 @NgModule({
     imports: [
@@ -33,8 +36,9 @@ import {OutlinedButtonComponent} from "../shared/components/outlined-button/outl
     FilledButtonComponent,
     OutlinedButtonComponent,
     CheckboxComponent,
-    RadioButtonComponent
+    RadioButtonComponent,
+    AvatarHomeComponent
   ],
-    declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent, OutlinedButtonComponent]
+  declarations: [LoginPage, InputTextComponent, FilledButtonComponent, CheckboxComponent, RadioButtonComponent, LogoComponent, OutlinedButtonComponent, AvatarHomeComponent]
 })
 export class LoginPageModule {}
