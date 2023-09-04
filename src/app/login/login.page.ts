@@ -5,28 +5,57 @@ import {
 } from "../shared/components/input-text/input-text.component";
 import {match} from "oxide.ts";
 import {Router} from "@angular/router";
+import {AlertController, ViewDidEnter} from "@ionic/angular";
+import {
+  CheckboxComponent
+} from "../shared/components/checkbox/checkbox.component";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements ViewDidEnter{
 
-  constructor(private authService : AuthService, private router : Router) { }
+  constructor(
+  private authService : AuthService,
+  private router : Router,
+  private alertController: AlertController
+  ) { }
 
   @ViewChild('user') userInput!: InputTextComponent
   @ViewChild('password') passwordInput!: InputTextComponent
+  @ViewChild( 'check') checkbox!: CheckboxComponent
 
-  ngOnInit() {
+  formGroup! : FormGroup
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      subHeader: 'Credenciales no existen',
+      message: '',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  ionViewDidEnter() {
+    this.formGroup = new FormGroup([
+        this.userInput.textControl,
+        this.passwordInput.textControl,
+        this.checkbox.checkboxControl
+    ])
   }
 
   async submit($event: SubmitEvent) {
     $event.preventDefault()
     console.log("submit")
+    this.formGroup.markAllAsTouched()
     if(
-      typeof this.userInput.textControl.value === null &&
-      typeof this.passwordInput.textControl.value === null
+      !this.userInput.textControl.valid &&
+      !this.passwordInput.textControl.valid
     ) return
 
     const result = await this.authService.login(
@@ -40,6 +69,7 @@ export class LoginPage implements OnInit {
         return "exito"
       },
       Err: (error:string) => {
+        this.presentAlert()
         return "error msg"
       }
     })

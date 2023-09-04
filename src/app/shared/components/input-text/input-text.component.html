@@ -25,7 +25,7 @@
         El email no es correcto
       </div>
       <div *ngIf="textControl.errors?.['required']">
-        Nombre es requerido
+        {{placeholder}} es requerido
       </div>
       <div *ngIf="textControl.errors?.['minlength']">
         Debe contener almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
