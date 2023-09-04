@@ -21,15 +21,15 @@ export class InputTextComponent  implements OnInit {
           z.string().email().parse(control.value)
         }
         catch (e) {
-          return { "email" : true}
+          return { email : true}
         }
         break;
       case "password":
         control.addValidators(Validators.minLength(8))
-        break;
+        break
        case "text":
         control.addValidators(Validators.minLength(3))
-        break;
+        break
     }
     return null
   })
