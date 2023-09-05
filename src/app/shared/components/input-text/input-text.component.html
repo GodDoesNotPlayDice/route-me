@@ -1,6 +1,7 @@
 <div>
   <div class="relative z-0 my-4">
     <input [formControl]="textControl" [type]="type" class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
+      (input)="input($event)"
            [ngClass]="{
            'text-threateningRed-900': textControl.invalid && (textControl.dirty || textControl.touched),
            'text-gray-900' : textControl.valid || !textControl.touched,
