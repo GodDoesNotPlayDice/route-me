@@ -1,8 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from "../services/auth/auth.service";
 import {
-  InputTextComponent
-} from "../shared/components/input-text/input-text.component";
+  Component,
+  ViewChild
+} from '@angular/core'
+import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
+import {AuthService} from "../services/auth/auth.service";
 import {match} from "oxide.ts";
 import {Router} from "@angular/router";
 import {AlertController, ViewDidEnter} from "@ionic/angular";
@@ -44,19 +45,22 @@ export class LoginPage implements ViewDidEnter{
   ionViewDidEnter() {
     this.formGroup = new FormGroup([
         this.userInput.textControl,
-        this.passwordInput.textControl,
-        this.checkbox.checkboxControl
+        this.passwordInput.textControl
     ])
   }
 
   async submit($event: SubmitEvent) {
     $event.preventDefault()
-    console.log("submit")
+
+    this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
+
     if(
-      !this.userInput.textControl.valid &&
-      !this.passwordInput.textControl.valid
+      !this.formGroup.valid
     ) return
+
+    // si el checkbox esta marcado
+    // this.checkbox.checkboxControl.value
 
     const result = await this.authService.login(
       this.userInput.textControl.value!,
@@ -73,7 +77,5 @@ export class LoginPage implements ViewDidEnter{
         return "error msg"
       }
     })
-
-    console.log(response)
   }
 }
