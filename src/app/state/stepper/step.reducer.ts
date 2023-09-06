@@ -18,10 +18,13 @@ export const stepReducer = createReducer(
   on(addStep, (state) => {
     return {
       ...state,
-      currentStep: state.currentStep + 1
+      maxStep: state.maxStep + 1,
     }
   }),
   on(notifyStep, (state) => {
-    return state
+    return {
+      ...state,
+      currentStep: state.currentStep + 1,
+    }
   })
 )
