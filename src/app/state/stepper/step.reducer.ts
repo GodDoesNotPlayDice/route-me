@@ -2,18 +2,18 @@ import {
   createReducer,
   on
 } from '@ngrx/store'
-import { Register } from 'src/app/shared/models/Register'
+import { StepState } from 'src/app/state/stepper/step.state'
 import {
   addStep,
   notifyStep,
-} from 'src/app/state/register-process/register.actions'
+} from 'src/app/state/stepper/step.actions'
 
-const initialState : Register = {
+const initialState : StepState = {
   currentStep : 0,
   maxStep : 0,
 }
 
-export const  registerReducer = createReducer(
+export const stepReducer = createReducer(
   initialState,
   on(addStep, (state) => {
     return {

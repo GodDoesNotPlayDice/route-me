@@ -10,5 +10,6 @@ import { AppState } from 'src/app/state/app.state'
 export class Step1Page  {
 
   constructor(private store : Store<AppState>) {
+
   }
 }

@@ -1,13 +1,13 @@
 import { ActionReducerMap } from '@ngrx/store'
-import { Register } from 'src/app/shared/models/Register'
+import { StepState } from 'src/app/state/stepper/step.state'
 import {
-  registerReducer,
-} from 'src/app/state/register-process/register.reducer'
+  stepReducer,
+} from 'src/app/state/stepper/step.reducer'
 
 export interface AppState {
-  readonly register : Register
+  readonly stepRegister : StepState
 }
 
 export const ROOT_REDUCERS : ActionReducerMap<AppState> = {
-  register: registerReducer
+  stepRegister: stepReducer
 }
