@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { StoreModule } from '@ngrx/store'
+import { ROOT_REDUCERS } from 'src/app/state/app.state'
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,7 +17,13 @@ import {AuthService} from "./services/auth/auth.service";
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    StoreModule.forRoot(ROOT_REDUCERS)
+  ],
   providers: [
     {
       provide: RouteReuseStrategy,
