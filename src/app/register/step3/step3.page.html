@@ -8,5 +8,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
+  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
+    <form (ngSubmit)="submit($event)" class="flex flex-col gap-5">
+      <app-filled-button
+        [blocked]="!canFinish"
+        contentText="Finalizar"></app-filled-button>
+    </form>
+  </div>
 </ion-content>

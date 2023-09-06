@@ -29,7 +29,7 @@
         <div class="text-sm font-gotham text-indigoBlack-500">O tambien </div>
         <div class="w-1/4 h-px bg-indigoBlack-500"></div>
       </div>
-      <form action="" class="flex flex-col gap-4">
+      <form (ngSubmit)="submit($event)" class="flex flex-col gap-4">
         <app-input-text placeholder="Email" [type]="'email'" ></app-input-text>
         <app-input-text placeholder="Password" [type]="'password'" ></app-input-text>
         <app-input-text placeholder="Confirmar Password" [type]="'password'" ></app-input-text>

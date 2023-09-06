@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { LoginPageModule } from 'src/app/login/login.module'
 
 import { Step3PageRoutingModule } from './step3-routing.module';
 
@@ -13,7 +14,8 @@ import { Step3Page } from './step3.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    Step3PageRoutingModule
+    Step3PageRoutingModule,
+    LoginPageModule
   ],
   declarations: [Step3Page]
 })
