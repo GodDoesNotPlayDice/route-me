@@ -1,7 +1,6 @@
 import {
   Component,
   Input,
-  OnInit
 } from '@angular/core'
 import {
   FormControl,
@@ -16,9 +15,7 @@ type InputTextType = 'email' | 'password' | 'text'
   templateUrl: './input-text.component.html',
   styleUrls: [ './input-text.component.scss' ]
 } )
-export class InputTextComponent implements OnInit {
-
-  constructor() { }
+export class InputTextComponent{
 
   readonly textControl = new FormControl( '', control => {
     control.addValidators( Validators.required )
@@ -45,9 +42,6 @@ export class InputTextComponent implements OnInit {
 
   @Input() type: InputTextType = 'text'
   @Input() placeholder: string = ''
-
-  ngOnInit() {
-  }
 
   public input( $event: Event ): void {
     this.textControl.updateValueAndValidity()

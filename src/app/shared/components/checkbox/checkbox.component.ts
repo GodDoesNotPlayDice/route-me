@@ -1,11 +1,8 @@
 import {
   Component,
-  ContentChild,
-  ElementRef,
   EventEmitter,
   Input,
   Output,
-  ViewChild
 } from '@angular/core'
 import {
   FormControl,
