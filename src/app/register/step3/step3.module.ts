@@ -9,16 +9,19 @@ import { Step1PageModule } from 'src/app/register/step1/step1.module'
 import { Step3PageRoutingModule } from './step3-routing.module';
 
 import { Step3Page } from './step3.page';
+import {
+  InputAreaComponent
+} from "../../shared/components/input-area/input-area.component";
 
 @NgModule({
-	imports: [
-		CommonModule,
-		FormsModule,
-		IonicModule,
-		Step3PageRoutingModule,
-		LoginPageModule,
-		Step1PageModule
-	],
-  declarations: [Step3Page]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    LoginPageModule,
+    Step1PageModule,
+    Step3PageRoutingModule
+  ],
+  declarations: [Step3Page, InputAreaComponent]
 })
 export class Step3PageModule {}
