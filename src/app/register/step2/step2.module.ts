@@ -5,6 +5,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatInputModule } from '@angular/material/input'
 
 import { IonicModule } from '@ionic/angular';
+import { Step1PageModule } from 'src/app/register/step1/step1.module'
 
 import { Step2PageRoutingModule } from './step2-routing.module';
 
@@ -24,7 +25,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     LoginPageModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    Step1PageModule
   ],
   declarations: [Step2Page, DateSelectorComponent]
 })

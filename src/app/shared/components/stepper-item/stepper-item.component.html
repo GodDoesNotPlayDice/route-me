@@ -1,0 +1,7 @@
+<a (click)="link($event)" class="font-gotham w-8 h-8 flex justify-center items-center border-2 border-indigoBlack-400 rounded-lg"
+[ngClass]="{
+  'bg-indigoBlack-400': currentPage === step,
+  'text-white': currentPage === step
+}">
+  {{ step }}
+</a>

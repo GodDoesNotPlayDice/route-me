@@ -2,6 +2,9 @@ import {Component, ViewChild} from '@angular/core'
 import { Store } from '@ngrx/store'
 import { AppState } from 'src/app/state/app.state'
 import {
+  notifyStep
+} from 'src/app/state/stepper/step.actions'
+import {
   RadioButtonComponent,
   RadioButtonData
 } from "../../shared/components/radio-button/radio-button.component";
@@ -23,7 +26,7 @@ export class Step2Page implements ViewDidEnter{
 
   constructor(private store : Store<AppState>) {
   }
-
+  
   @ViewChild('user') userInput !: InputTextComponent
   @ViewChild('lastName') lastNameInput !: InputTextComponent
   @ViewChild('date') dateSelectorInput !: DateSelectorComponent
