@@ -10,7 +10,12 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-input labelPlacement="stacked" label="Enter your name" [(ngModel)]="name" placeholder="Your name"></ion-input>
-  </ion-item>
+  <ul *ngFor="let pref of preferencesList.values(); index as i" class="w-96">
+    <app-user-preferences-selector-item (onSelected)="onSelectItem($event)"
+      (onDeselected)="onDeselectItem($event)"
+      [item]="pref"></app-user-preferences-selector-item>
+    <ng-container *ngIf="preferencesList.size - 1 !== i">
+      <app-divider></app-divider>
+    </ng-container>
+  </ul>
 </ion-content>

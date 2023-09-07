@@ -15,14 +15,17 @@ import {
   DividerComponent
 } from "../../shared/components/divider/divider.component";
 
-@NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        ProfilePageRoutingModule,
-        LoginPageModule
-    ],
-  declarations: [ProfilePage, LabeledIconComponent, DividerComponent]
+@NgModule( {
+	imports     : [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		ProfilePageRoutingModule,
+		LoginPageModule
+	],
+	exports     : [
+		DividerComponent
+	],
+	declarations: [ ProfilePage, LabeledIconComponent, DividerComponent ]
 })
 export class ProfilePageModule {}

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { UserPreferencesSelectorItemComponent } from 'src/app/shared/components/user-preferences-selector-item/user-preferences-selector-item.component'
+import { ProfilePageModule } from 'src/app/tabs/profile/profile.module'
 
 import { Step4PageRoutingModule } from './step4-routing.module';
 
@@ -27,8 +29,12 @@ import {
     Step4PageRoutingModule,
     LoginPageModule,
     Step1PageModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProfilePageModule
   ],
-  declarations: [Step4Page, InputAreaComponent, UserPreferencesSelectorComponent, UserPreferencesSelectorBarComponent, UserPreferencesSelectorBarComponent]
+	declarations: [ Step4Page, InputAreaComponent,
+		UserPreferencesSelectorComponent, UserPreferencesSelectorBarComponent,
+		UserPreferencesSelectorBarComponent,
+		UserPreferencesSelectorItemComponent ]
 })
 export class Step4PageModule {}
