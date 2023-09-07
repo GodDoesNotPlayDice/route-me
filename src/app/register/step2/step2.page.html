@@ -20,17 +20,8 @@
         <div class="text-sm font-gotham text-indigoBlack-500">Genero</div>
         <div class="w-1/4 h-px bg-indigoBlack-500"></div>
       </div>
-      <div class="flex justify-between">
-        <div class="flex items-center flex-col gap-3">
-          <ion-icon class="w-16 h-16" name="male-outline"></ion-icon>
-          <app-radio-button contentText="Hombre"></app-radio-button>
-        </div>
-        <div class="flex items-center flex-col gap-3">
-          <ion-icon class="w-16 h-16" name="female-outline"></ion-icon>
-          <app-radio-button contentText="Mujer"></app-radio-button>
-        </div>
-      </div>
-        <app-filled-button contentText="Continuar"></app-filled-button>
+          <app-radio-button #radio name="genero" [radioButtons]="buttons"></app-radio-button>
+        <app-filled-button contentText="Registrarse"></app-filled-button>
     </form>
   </div>
 </ion-content>
