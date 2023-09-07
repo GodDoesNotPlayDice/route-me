@@ -9,9 +9,6 @@ import { Step1PageModule } from 'src/app/register/step1/step1.module'
 import { Step3PageRoutingModule } from './step3-routing.module';
 
 import { Step3Page } from './step3.page';
-import {
-  InputAreaComponent
-} from "../../shared/components/input-area/input-area.component";
 
 @NgModule({
   imports: [
@@ -22,6 +19,6 @@ import {
     Step1PageModule,
     Step3PageRoutingModule
   ],
-  declarations: [Step3Page, InputAreaComponent]
+  declarations: [Step3Page]
 })
 export class Step3PageModule {}
