@@ -37,7 +37,6 @@ export class Step3Page implements OnInit {
 
   public ngOnInit(): void {
     this.registerStep$.subscribe( ( step ) => {
-      console.log( step)
       if ( step.maxStep - 1 === step.currentStep ) {
         this.canFinish = true
       }
