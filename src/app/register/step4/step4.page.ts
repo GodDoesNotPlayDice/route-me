@@ -4,6 +4,7 @@ import {
 } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
+import { PreferenceItem } from 'src/app/shared/components/user-preferences-selector/user-preferences-selector.component'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
 import {
@@ -12,10 +13,8 @@ import {
   selectStepRegister
 } from 'src/app/state/stepper/step.selectors'
 import { StepState } from 'src/app/state/stepper/step.state'
-import {ModalController} from "@ionic/angular";
-import {
-  UserPreferencesSelectorComponent
-} from "../../shared/components/user-preferences-selector/user-preferences-selector.component";
+import { selectUserPreferencesRegister } from 'src/app/state/user-register/user-register.selectors'
+import { UserRegisterState } from 'src/app/state/user-register/user-register.state'
 
 @Component( {
   selector   : 'app-step4',

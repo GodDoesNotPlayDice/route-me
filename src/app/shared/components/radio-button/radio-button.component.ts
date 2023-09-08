@@ -23,8 +23,6 @@ export class RadioButtonComponent{
     this.isCheckedChange.emit(this.isChecked);
     this.radioControl.patchValue(this.isChecked);
     this.radioControl.updateValueAndValidity();
-    console.log(this.radioControl.valid)
-    console.log(this.radioControl.errors)
   }
 }
 
