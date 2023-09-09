@@ -1,4 +1,8 @@
 import {Component, ViewChild} from '@angular/core'
+import { Store } from '@ngrx/store'
+import { PhoneSelectorComponent } from 'src/app/shared/components/phone-selector/phone-selector.component'
+import { AppState } from 'src/app/state/app.state'
+import { notifyStep } from 'src/app/state/stepper/step.actions'
 import {
   RadioButtonComponent,
   RadioButtonData
@@ -19,8 +23,11 @@ import {
 })
 export class Step2Page implements ViewDidEnter{
 
+  constructor(private store : Store<AppState>) {}
+
   @ViewChild('user') userInput !: InputTextComponent
   @ViewChild('lastName') lastNameInput !: InputTextComponent
+  @ViewChild('phone') phoneInput !: PhoneSelectorComponent
   @ViewChild('date') dateSelectorInput !: DateSelectorComponent
   @ViewChild('radio') radioButtonInput !: RadioButtonComponent
 
@@ -53,6 +60,9 @@ export class Step2Page implements ViewDidEnter{
     if(
       !this.formGroup.valid
     ) return
+
+    console.log("step 2 check")
+    this.store.dispatch(notifyStep())
   }
 }
 

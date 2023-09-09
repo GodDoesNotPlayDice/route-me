@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input'
 
 import { IonicModule } from '@ionic/angular';
 import { Step1PageModule } from 'src/app/register/step1/step1.module'
+import { PhoneSelectorComponent } from 'src/app/shared/components/phone-selector/phone-selector.component'
 
 import { Step2PageRoutingModule } from './step2-routing.module';
 
@@ -28,6 +29,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule,
     Step1PageModule
   ],
-  declarations: [Step2Page, DateSelectorComponent]
+	declarations: [ Step2Page, DateSelectorComponent, PhoneSelectorComponent ]
 })
 export class Step2PageModule {}
