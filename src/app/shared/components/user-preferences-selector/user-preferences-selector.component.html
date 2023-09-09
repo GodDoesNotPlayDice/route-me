@@ -1,16 +1,21 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Vaciar</ion-button>
+      <ion-button color="medium"
+        (click)="cancel()">Vaciar
+      </ion-button>
     </ion-buttons>
     <ion-title>Welcome</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Continuar</ion-button>
+      <ion-button (click)="confirm()"
+        [strong]="true">Continuar
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ul *ngFor="let pref of databasePreferencesList.values(); index as i" class="w-96">
+  <ul *ngFor="let pref of databasePreferencesList.values(); index as i"
+    class="w-full">
     <app-user-preferences-selector-item
       [selected]="pref.selected"
       (onSelected)="onSelectItem($event)"

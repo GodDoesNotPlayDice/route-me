@@ -34,7 +34,6 @@ export class UserPreferencesSelectorBarComponent {
     const { data, role } = await modal.onWillDismiss()
 
     if ( role === 'confirm' ) {
-      // TODO: colocar cancel como reset
     }
   }
 }
