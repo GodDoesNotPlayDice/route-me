@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select'
 
 import { IonicModule } from '@ionic/angular';
 import { UserPreferencesSelectorItemComponent } from 'src/app/shared/components/user-preferences-selector-item/user-preferences-selector-item.component'
@@ -30,7 +32,9 @@ import {
     LoginPageModule,
     Step1PageModule,
     ReactiveFormsModule,
-    ProfilePageModule
+    ProfilePageModule,
+    MatInputModule,
+    MatSelectModule
   ],
 	declarations: [ Step4Page, InputAreaComponent,
 		UserPreferencesSelectorComponent, UserPreferencesSelectorBarComponent,
