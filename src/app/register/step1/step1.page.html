@@ -27,13 +27,15 @@
     </div>
     <form (ngSubmit)="submit($event)"
       class="flex flex-col gap-4">
-      <app-input-text placeholder="Email"
+      <app-input-text #user placeholder="Email"
         [type]="'email'"></app-input-text>
-      <app-input-text placeholder="Password"
+      <app-input-text #password placeholder="Password"
         [type]="'password'"></app-input-text>
-      <app-input-text placeholder="Confirmar Password"
+      <app-input-text #confirmpassword placeholder="Confirmar Password"
         [type]="'password'"></app-input-text>
-      <app-checkbox class=""
+      <app-checkbox #check
+        errorText="Debes aceptar los terminos y condiciones"
+        [activeError]="true"
         contentText="Aceptar terminos y condiciones"></app-checkbox>
       <app-filled-button contentText="Continuar"></app-filled-button>
     </form>
