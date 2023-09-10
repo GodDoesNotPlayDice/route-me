@@ -2,7 +2,8 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output,
+  OnInit,
+  Output
 } from '@angular/core'
 import {
   FormControl,
@@ -14,7 +15,7 @@ import {
   templateUrl: './checkbox.component.html',
   styleUrls  : [ './checkbox.component.scss' ]
 } )
-export class CheckboxComponent {
+export class CheckboxComponent implements OnInit{
 
   @Input() activeError: boolean = false
 
@@ -38,6 +39,10 @@ export class CheckboxComponent {
     this.isChecked = !this.isChecked
     this.isCheckedChange.emit( this.isChecked )
     this.checkboxControl.patchValue( this.isChecked )
+    this.checkboxControl.updateValueAndValidity()
+  }
+
+  public ngOnInit(): void {
     this.checkboxControl.updateValueAndValidity()
   }
 }
