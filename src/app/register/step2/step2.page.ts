@@ -47,6 +47,7 @@ export class Step2Page implements ViewDidEnter{
     this.formGroup = new FormGroup([
       this.userInput.textControl,
       this.lastNameInput.textControl,
+      this.dateSelectorInput.dateControl,
       this.radioButtonInput.radioControl
     ])
   }
