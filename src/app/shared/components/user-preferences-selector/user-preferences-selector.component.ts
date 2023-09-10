@@ -49,7 +49,10 @@ export class UserPreferencesSelectorComponent {
   selectedPreferencesList = new Map<string, PreferenceItem>()
 
   cancel() {
-    this.store.dispatch( clearUserRegister() )
+    this.store.dispatch( updateUserRegister( {
+      preferences: []
+    }))
+
     return this.modalCtrl.dismiss( false, 'cancel' )
   }
 
