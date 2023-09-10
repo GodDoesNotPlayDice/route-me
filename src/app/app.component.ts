@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core'
+import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
 import {
   Input,
   initTE,
@@ -10,6 +11,10 @@ import {
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit{
+
+  constructor(private countryPhoneCode : CountryPhoneCodeService) {
+  }
+
   ngOnInit() {
     initTE({ Input });
   }
