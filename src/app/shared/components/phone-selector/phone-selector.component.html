@@ -1,3 +1,54 @@
-<p>
-  phone-selector works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium"
+        (click)="cancel()">Volver
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Rellenar</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()"
+        [strong]="true">Continuar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="flex flex-col w-full">
+    <div class="flex w-full h-12 align-baseline justify-around items-center">
+      <ng-container *ngIf="!selectedCountry">
+        <div>None</div>
+      </ng-container>
+      <ng-container *ngIf="selectedCountry">
+        <div class="flex gap-2 justify-center items-center">
+          <img class="w-8 h-8 aspect-square object-contain"
+            [src]="selectedCountry.flags.png"
+            [alt]="selectedCountry.flags.alt"/>
+          <div>{{selectedCountry.cca2 }}</div>
+        </div>
+      </ng-container>
+      <input type="text"/>
+      <ion-icon class="w-8 h-8"
+        name="close-outline"></ion-icon>
+    </div>
+    <ng-container
+      *ngFor="let p of countriesList; index as i">
+      <div (click)="selectCountry(p)"
+        class="flex justify-evenly items-center gap-4">
+        <div class="basis-3/12 flex items-end justify-end">
+          <img class="w-8 h-8 aspect-square object-contain"
+            [src]="p.flags.png"
+            [alt]="p.flags.alt"/>
+        </div>
+        <div class="basis-9/12 flex items-center">
+          {{ p.name.common }}
+        </div>
+      </div>
+      <ng-container *ngIf="countriesList.length - 1 !== i">
+        <app-divider></app-divider>
+      </ng-container>
+      <div class="h-4"
+        *ngIf="countriesList.length - 1 === i"></div>
+    </ng-container>
+  </div>
+</ion-content>

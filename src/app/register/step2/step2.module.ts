@@ -3,10 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select'
 
 import { IonicModule } from '@ionic/angular';
 import { Step1PageModule } from 'src/app/register/step1/step1.module'
+import { PhoneSelectorBarComponent } from 'src/app/shared/components/phone-selector-bar/phone-selector-bar.component'
 import { PhoneSelectorComponent } from 'src/app/shared/components/phone-selector/phone-selector.component'
+import { ProfilePageModule } from 'src/app/tabs/profile/profile.module'
 
 import { Step2PageRoutingModule } from './step2-routing.module';
 
@@ -27,8 +30,11 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    Step1PageModule
+    Step1PageModule,
+    MatSelectModule,
+    ProfilePageModule
   ],
-	declarations: [ Step2Page, DateSelectorComponent, PhoneSelectorComponent ]
+  declarations: [ Step2Page, DateSelectorComponent, PhoneSelectorComponent,
+    PhoneSelectorBarComponent ]
 })
 export class Step2PageModule {}
