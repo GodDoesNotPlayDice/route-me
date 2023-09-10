@@ -1,0 +1,17 @@
+<div class="flex flex-col">
+  <mat-form-field (click)="openModal()">
+    <mat-label>Ingresar telefono</mat-label>
+    <mat-select>
+    </mat-select>
+  </mat-form-field>
+  <div class="mt-2 text-xs text-threateningRed-500 font-gotham">
+    <div *ngIf="phoneControl.invalid && (phoneControl.dirty || phoneControl.touched)">
+      <div *ngIf="phoneControl.errors?.['required']">
+        Debes ingresar un numero de telefono
+      </div>
+      <div *ngIf="phoneControl.errors?.['invalid']">
+        El numero de telefono no es valido
+      </div>
+    </div>
+  </div>
+</div>
