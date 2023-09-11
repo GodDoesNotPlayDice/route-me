@@ -7,8 +7,8 @@ import { MatSelectModule } from '@angular/material/select'
 
 import { IonicModule } from '@ionic/angular';
 import { Step1PageModule } from 'src/app/register/step1/step1.module'
-import { PhoneSelectorBarComponent } from 'src/app/shared/components/phone-selector-bar/phone-selector-bar.component'
-import { PhoneSelectorComponent } from 'src/app/shared/components/phone-selector/phone-selector.component'
+import { CountrySelectorBarComponent } from 'src/app/shared/components/country-selector-bar/country-selector-bar.component'
+import { CountrySelectorComponent } from 'src/app/shared/components/country-selector/country-selector.component'
 import { ProfilePageModule } from 'src/app/tabs/profile/profile.module'
 
 import { Step2PageRoutingModule } from './step2-routing.module';
@@ -34,7 +34,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSelectModule,
     ProfilePageModule
   ],
-  declarations: [ Step2Page, DateSelectorComponent, PhoneSelectorComponent,
-    PhoneSelectorBarComponent ]
+  declarations: [ Step2Page, DateSelectorComponent, CountrySelectorComponent,
+    CountrySelectorBarComponent ]
 })
 export class Step2PageModule {}

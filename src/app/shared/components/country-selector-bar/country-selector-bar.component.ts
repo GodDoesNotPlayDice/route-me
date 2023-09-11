@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms'
 import { ModalController } from '@ionic/angular'
-import { PhoneSelectorComponent } from 'src/app/shared/components/phone-selector/phone-selector.component'
+import { CountrySelectorComponent } from 'src/app/shared/components/country-selector/country-selector.component'
 
 @Component({
   selector: 'app-phone-selector-bar',
-  templateUrl: './phone-selector-bar.component.html',
-  styleUrls: ['./phone-selector-bar.component.scss'],
+  templateUrl: './country-selector-bar.component.html',
+  styleUrls: ['./country-selector-bar.component.scss'],
 })
-export class PhoneSelectorBarComponent  implements OnInit {
+export class CountrySelectorBarComponent implements OnInit {
 
   constructor(private modalCtrl: ModalController) { }
 
@@ -21,7 +21,7 @@ export class PhoneSelectorBarComponent  implements OnInit {
 
   async openModal(){
     const modal = await this.modalCtrl.create( {
-      component: PhoneSelectorComponent
+      component: CountrySelectorComponent
     } )
     await modal.present()
 

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { PhoneSelectorComponent } from './phone-selector.component';
+import { CountrySelectorBarComponent } from 'src/app/shared/components/country-selector-bar/country-selector-bar.component';
 
-describe('PhoneSelectorComponent', () => {
-  let component: PhoneSelectorComponent;
-  let fixture: ComponentFixture<PhoneSelectorComponent>;
+describe('CountrySelectorBarComponent', () => {
+  let component: CountrySelectorBarComponent;
+  let fixture: ComponentFixture<CountrySelectorBarComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PhoneSelectorComponent ],
+      declarations: [ CountrySelectorBarComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PhoneSelectorComponent);
+    fixture = TestBed.createComponent(CountrySelectorBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -7,10 +7,10 @@ import { AppState } from 'src/app/state/app.state'
 
 @Component( {
   selector   : 'app-phone-selector',
-  templateUrl: './phone-selector.component.html',
-  styleUrls  : [ './phone-selector.component.scss' ]
+  templateUrl: './country-selector.component.html',
+  styleUrls  : [ './country-selector.component.scss' ]
 } )
-export class PhoneSelectorComponent {
+export class CountrySelectorComponent {
 
   constructor( private modalCtrl: ModalController,
     private store: Store<AppState>,
