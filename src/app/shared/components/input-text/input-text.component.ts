@@ -8,7 +8,7 @@ import {
 } from '@angular/forms'
 import { z } from 'zod'
 
-type InputTextType = 'email' | 'password' | 'text' | 'phone'
+type InputTextType = 'email' | 'password' | 'text' | 'phone' | 'number'
 
 @Component( {
   selector: 'app-input-text',
@@ -39,6 +39,15 @@ export class InputTextComponent{
       case "phone":
         control.addValidators(Validators.minLength(8))
         control.addValidators(Validators.maxLength(9))
+        try {
+          const numberParsed = Number.parseInt(control.value)
+          z.number().parse(numberParsed)
+        }
+        catch (e) {
+          return { number : true}
+        }
+        break;
+      case 'number':
         try {
           const numberParsed = Number.parseInt(control.value)
           z.number().parse(numberParsed)

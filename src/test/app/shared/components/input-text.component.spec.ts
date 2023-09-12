@@ -142,4 +142,33 @@ describe( 'InputTextComponent', () => {
       expect( component.textControl.hasError( 'number' ) ).toBeTruthy()
     } )
   } )
+  describe( 'Verify Type Number', () => {
+    it( 'should pass with correct number input', () => {
+      component.type = 'number'
+
+      component.textControl.patchValue( '4' )
+      component.textControl.updateValueAndValidity()
+
+      expect( component.textControl.valid )
+        .toBeTruthy()
+    } )
+
+    it( 'should error with empty invalid number input', () => {
+      component.type = 'number'
+
+      component.textControl.patchValue( '' )
+      component.textControl.updateValueAndValidity()
+
+      expect( component.textControl.hasError( 'number' ) ).toBeTruthy()
+    } )
+
+    it( 'should error with caracter invalid number input', () => {
+      component.type = 'number'
+
+      component.textControl.patchValue( 'ab' )
+      component.textControl.updateValueAndValidity()
+
+      expect( component.textControl.hasError( 'number' ) ).toBeTruthy()
+    } )
+  } )
 } )
