@@ -1,5 +1,5 @@
 <div>
-  <div class="relative z-0 my-4">
+  <div class="relative z-0">
     <input [formControl]="textControl" [type]="type" class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
       (input)="input($event)"
            [ngClass]="{
@@ -30,6 +30,12 @@
       </div>
       <div *ngIf="textControl.errors?.['minlength']">
         Debe contener almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
+      </div>
+      <div *ngIf="textControl.errors?.['maxlength']">
+        Debe tener como maximo {{textControl.errors?.['maxlength']?.['requiredLength']}} letras
+      </div>
+      <div *ngIf="textControl.errors?.['number']">
+        Debe contener unicamente numeros
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ export class AvatarHomeComponent  implements OnInit {
 
   constructor() { }
 
-  @Input() url! : string
+  @Input({required: true}) url! : string
   ngOnInit() {}
 
 }

@@ -1,9 +1,11 @@
+import { HttpClientModule } from '@angular/common/http'
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { StoreModule } from '@ngrx/store'
+import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
 import { ROOT_REDUCERS } from 'src/app/state/app.state'
 
 import { AppComponent } from './app.component';
@@ -19,6 +21,7 @@ import {AuthService} from "./services/auth/auth.service";
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
