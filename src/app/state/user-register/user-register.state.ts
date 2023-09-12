@@ -5,6 +5,7 @@ export interface UserRegisterState {
   password :string,
   description :string,
   phone :string,
+  country :string,
   birthDay :Date,
   preferences : UserPreference[]
 }

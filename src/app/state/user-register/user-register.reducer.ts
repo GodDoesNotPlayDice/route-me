@@ -15,6 +15,7 @@ const initialState: UserRegisterState = {
   email   : '',
   password: '',
   phone   : '',
+  country   : '',
   description: '',
   birthDay: new Date(),
   preferences: []
