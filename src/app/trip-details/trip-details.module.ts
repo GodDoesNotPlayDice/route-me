@@ -8,14 +8,16 @@ import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-
 import { TripDetailsPageRoutingModule } from './trip-details-routing.module';
 
 import { TripDetailsPage } from './trip-details.page';
+import {LoginPageModule} from "../login/login.module";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TripDetailsPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        TripDetailsPageRoutingModule,
+        LoginPageModule
+    ],
 	declarations: [ TripDetailsPage, AdaptativeButtonComponent ]
 })
 export class TripDetailsPageModule {}
