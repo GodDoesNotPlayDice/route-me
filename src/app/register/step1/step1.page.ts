@@ -26,10 +26,13 @@ export class Step1Page implements ViewDidEnter{
   @ViewChild( 'check') checkbox!: CheckboxComponent
 
   formGroup! : FormGroup
+  checkerGroup : FormGroup | undefined
 
   public submit( $event: SubmitEvent ): void {
     $event.preventDefault()
 
+    this.checkerGroup?.updateValueAndValidity()
+    this.checkerGroup?.markAllAsTouched()
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
@@ -37,18 +40,24 @@ export class Step1Page implements ViewDidEnter{
       !this.formGroup.valid
     ) return
 
-    console.log('this.formGroup.value');
-    console.log(this.formGroup.value);
-
     console.log("step 1 check")
     this.store.dispatch(notifyStep())
   }
 
   ionViewDidEnter() {
+    this.checkerGroup = new FormGroup({
+      pw1: this.passwordInput.textControl,
+      pw2: this.passwordConfirmInput.textControl,
+  }, control => {
+      if (control.value.pw1 !== control.value.pw2) {
+        return { password: true }
+      }
+      return null
+    })
+
     this.formGroup = new FormGroup([
       this.userInput.textControl,
-      this.passwordInput.textControl,
-      this.passwordConfirmInput.textControl,
+      this.checkerGroup,
       this.checkbox.checkboxControl
     ])
   }
