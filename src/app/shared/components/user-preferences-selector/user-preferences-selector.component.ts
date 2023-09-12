@@ -1,18 +1,10 @@
 import {
-  Component
+  Component, Input, OnInit
 } from '@angular/core'
 import {
-  ModalController,
-  ViewDidEnter
+  ModalController
 } from '@ionic/angular'
-import { Store } from '@ngrx/store'
-import { take } from 'rxjs'
-import { AppState } from 'src/app/state/app.state'
-import {
-  clearUserRegister,
-  updateUserRegister
-} from 'src/app/state/user-register/user-register.actions'
-import { selectUserPreferencesRegister } from 'src/app/state/user-register/user-register.selectors'
+import {PreferenceItem} from "../../models/PreferenceItem";
 
 
 @Component( {
@@ -22,89 +14,59 @@ import { selectUserPreferencesRegister } from 'src/app/state/user-register/user-
 } )
 export class UserPreferencesSelectorComponent {
 
-  constructor( private modalCtrl: ModalController,
-    private store: Store<AppState> )
-  {
-    this.store.select( selectUserPreferencesRegister )
-        .pipe(take(1))
-        .subscribe(
-          ( preferences ) => {
-            if ( preferences.length === 0 ) {
-              return
-            }
-            preferences.map( ( item ) => {
-              const pref = this.databasePreferencesList.get( item.name )
-              if ( pref !== undefined ) {
-                pref.selected = true
-                this.selectedPreferencesList.set( item.name, pref )
-              }
-            })
-          }
-        )
+  constructor( private modalCtrl: ModalController){}
+
+  @Input() preferencesData = new Map<string, PreferenceItem>()
+  @Input() selectedPreferences = new Map<string, PreferenceItem>()
+
+  getPreferences() : PreferenceItem[] {
+    return Array.from(this.preferencesData.values()).map((data)=>{
+      const isSelected = this.selectedPreferences.get(data.name)
+      if(isSelected !== undefined){
+        return {
+          name: isSelected.name,
+          icon: isSelected.icon,
+          selected: true
+        }
+      }
+      else {
+        return {
+          name: data.name,
+          icon: data.icon,
+          selected: false
+        }
+      }
+    })
   }
 
-
-  databasePreferencesList: Map<string, PreferenceItem> = defaultPreferenceMap()
-
-  selectedPreferencesList = new Map<string, PreferenceItem>()
-
   cancel() {
-    this.store.dispatch( updateUserRegister( {
-      preferences: []
-    }))
-
-    return this.modalCtrl.dismiss( false, 'cancel' )
+    return this.modalCtrl.dismiss( [], 'cancel' )
   }
 
   confirm() {
-    this.store.dispatch( updateUserRegister( {
-      preferences: Array.from(
-        this.selectedPreferencesList.values())
-      .map( ( item ) => { return { name: item.name, icon: item.icon} })
-    }))
-    return this.modalCtrl.dismiss( true, 'confirm' )
+    return this.modalCtrl.dismiss( Array.from(
+        this.selectedPreferences.values()).map(
+          ( item ) => { return { name: item.name, icon: item.icon} }
+    ),
+      'confirm'
+    )
   }
 
   public onSelectItem( $event: string ): void {
 
-    const pref = this.databasePreferencesList.get( $event )
+    const pref = this.preferencesData.get( $event )
 
     if ( pref !== undefined ) {
-      this.selectedPreferencesList.set( $event, {
-        ...pref,
-        selected: true
-      } )
+      this.selectedPreferences.set( $event, pref)
     }
   }
 
   public onDeselectItem( $event: string ): void {
-    const pref = this.databasePreferencesList.get( $event )
+    const pref = this.preferencesData.get( $event )
 
     if ( pref !== undefined ) {
-      this.selectedPreferencesList.delete( $event )
+      this.selectedPreferences.delete( $event )
     }
   }
 }
 
-function defaultPreferenceMap(): Map<string, PreferenceItem> {
-  const list: PreferenceItem[] = [
-    {
-      icon    : 'musical-notes-outline',
-      name    : 'Con Musica',
-      selected: false
-    },
-    {
-      icon    : 'logo-no-smoking',
-      name    : 'Sin Fumar',
-      selected: false
-    }
-  ]
-  return new Map<string, PreferenceItem>(
-    list.map( ( item ) => [ item.name, item ] ) )
-}
-
-export interface PreferenceItem {
-  icon: string,
-  name: string,
-  selected: boolean
-}

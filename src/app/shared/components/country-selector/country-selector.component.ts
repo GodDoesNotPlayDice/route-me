@@ -1,38 +1,79 @@
-import { Component } from '@angular/core'
+import {Component, Input, OnInit} from '@angular/core'
 import { ModalController } from '@ionic/angular'
-import { Store } from '@ngrx/store'
 import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
-import { Country } from 'src/app/shared/models/Country'
-import { AppState } from 'src/app/state/app.state'
 
 @Component( {
   selector   : 'app-phone-selector',
   templateUrl: './country-selector.component.html',
   styleUrls  : [ './country-selector.component.scss' ]
 } )
-export class CountrySelectorComponent {
+export class CountrySelectorComponent implements OnInit{
 
   constructor( private modalCtrl: ModalController,
-    private store: Store<AppState>,
-    private countryPhoneCode: CountryPhoneCodeService )
-  {
-    this.countriesList = this.countryPhoneCode.countriesList
+    private countryPhoneCode: CountryPhoneCodeService ) {}
+
+  @Input() lastSelected : CountryItem | undefined
+  countriesList = new Map<string, CountryItem>()
+
+  ngOnInit() {
+    const list : CountryItem[] = this.countryPhoneCode.countriesList.map((data)=>
+    {
+        const notSelected ={
+          image: data.flags.png,
+          name: data.name.common,
+          cca: data.cca2,
+          selected: false
+        }
+
+        if(this.lastSelected === undefined){
+          return notSelected
+        }
+
+        if (this.lastSelected.name !== data.name.common){
+          return notSelected
+        }
+        else {
+          return {
+            image: data.flags.png,
+            cca: data.cca2,
+            name: data.name.common,
+            selected: true
+          }
+        }
+    })
+
+    this.countriesList = new Map<string, CountryItem>(
+      list.map( ( item ) => [ item.name, item ] ) )
   }
 
-  countriesList : Country[] = []
-
-  selectedCountry : Country | undefined
-
   cancel() {
-    // this.store.dispatch( updateUserRegister( {}))
-    return this.modalCtrl.dismiss( false, 'cancel' )
+    return this.modalCtrl.dismiss( undefined, 'cancel' )
   }
 
   confirm() {
-    return this.modalCtrl.dismiss( true, 'confirm' )
+    return this.modalCtrl.dismiss( this.lastSelected, 'confirm' )
   }
 
-  public selectCountry( country: Country ): void {
-    this.selectedCountry = country
+  public selectCountry( name: string ): void {
+    if (this.lastSelected !== undefined){
+      const countryEntry = this.countriesList.get(this.lastSelected.name)
+      if (countryEntry !== undefined){
+        countryEntry.selected = false
+      }
+    }
+
+    const countrySelected = this.countriesList.get(name)
+    if (countrySelected !== undefined){
+
+      countrySelected.selected = true
+      this.lastSelected = countrySelected
+    }
   }
+}
+
+export interface CountryItem {
+  image : string,
+  name: string,
+  cca: string
+  selected : boolean
 }

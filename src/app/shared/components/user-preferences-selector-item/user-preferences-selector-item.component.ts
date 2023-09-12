@@ -4,7 +4,7 @@ import {
   Input,
   Output
 } from '@angular/core'
-import { PreferenceItem } from 'src/app/shared/components/user-preferences-selector/user-preferences-selector.component'
+import {PreferenceItem} from "../../models/PreferenceItem";
 
 @Component({
   selector: 'app-user-preferences-selector-item',

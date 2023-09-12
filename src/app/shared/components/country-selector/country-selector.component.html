@@ -5,7 +5,7 @@
         (click)="cancel()">Volver
       </ion-button>
     </ion-buttons>
-    <ion-title>Rellenar</ion-title>
+    <ion-title>Seleccion Unica</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="confirm()"
         [strong]="true">Continuar
@@ -13,42 +13,30 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <div class="flex flex-col w-full">
-    <div class="flex w-full h-12 align-baseline justify-around items-center">
-      <ng-container *ngIf="!selectedCountry">
-        <div>None</div>
-      </ng-container>
-      <ng-container *ngIf="selectedCountry">
-        <div class="flex gap-2 justify-center items-center">
-          <img class="w-8 h-8 aspect-square object-contain"
-            [src]="selectedCountry.flags.png"
-            [alt]="selectedCountry.flags.alt"/>
-          <div>{{selectedCountry.cca2 }}</div>
-        </div>
-      </ng-container>
-      <input type="text"/>
-      <ion-icon class="w-8 h-8"
-        name="close-outline"></ion-icon>
-    </div>
-    <ng-container
-      *ngFor="let p of countriesList; index as i">
-      <div (click)="selectCountry(p)"
-        class="flex justify-evenly items-center gap-4">
+<ion-content class="ion-padding">
+  <ul
+    class="flex flex-col items-center w-full">
+    <li
+      *ngFor="let p of countriesList.values(); index as i">
+      <div (click)="selectCountry(p.name)"
+        class="flex justify-evenly items-center gap-4 w-80"
+      [ngClass]="{
+      'rounded-lg': p.selected,
+      'bg-primary-50': p.selected,
+      'text-primary-600': p.selected,
+      }">
         <div class="basis-3/12 flex items-end justify-end">
           <img class="w-8 h-8 aspect-square object-contain"
-            [src]="p.flags.png"
-            [alt]="p.flags.alt"/>
+            [src]="p.image"
+            [alt]="p.name"/>
         </div>
         <div class="basis-9/12 flex items-center">
-          {{ p.name.common }}
+          {{ p.name }}
         </div>
       </div>
-      <ng-container *ngIf="countriesList.length - 1 !== i">
-        <app-divider></app-divider>
-      </ng-container>
+      <app-divider></app-divider>
       <div class="h-4"
-        *ngIf="countriesList.length - 1 === i"></div>
-    </ng-container>
-  </div>
+        *ngIf="countriesList.size - 1 === i"></div>
+    </li>
+  </ul>
 </ion-content>

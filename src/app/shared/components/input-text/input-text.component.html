@@ -31,6 +31,12 @@
       <div *ngIf="textControl.errors?.['minlength']">
         Debe contener almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
       </div>
+      <div *ngIf="textControl.errors?.['maxlength']">
+        Debe tener como maximo {{textControl.errors?.['maxlength']?.['requiredLength']}} letras
+      </div>
+      <div *ngIf="textControl.errors?.['number']">
+        Debe contener unicamente numeros
+      </div>
     </div>
   </div>
 </div>

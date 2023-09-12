@@ -1,34 +1,58 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms'
+import {Component, Input} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms'
 import { ModalController } from '@ionic/angular'
-import { CountrySelectorComponent } from 'src/app/shared/components/country-selector/country-selector.component'
+import {
+  CountryItem,
+  CountrySelectorComponent
+} from 'src/app/shared/components/country-selector/country-selector.component'
+import {Store} from "@ngrx/store";
+import {AppState} from "../../../state/app.state";
+import {
+  updateUserRegister
+} from "../../../state/user-register/user-register.actions";
+import {z} from "zod";
 
 @Component({
-  selector: 'app-phone-selector-bar',
+  selector: 'app-country-selector-bar',
   templateUrl: './country-selector-bar.component.html',
   styleUrls: ['./country-selector-bar.component.scss'],
 })
-export class CountrySelectorBarComponent implements OnInit {
+export class CountrySelectorBarComponent {
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController, private store: Store<AppState>) {}
 
-  readonly phoneControl = new FormControl( false, control => {
+  lastSelected : CountryItem | undefined
+  label : string = "Ingresar Pais"
+
+  readonly countryControl = new FormControl( '', control => {
+    if (control.value === ''){
+      return {required: true}
+    }
     return null
-  } )
-
-
-  ngOnInit() {}
+  })
 
   async openModal(){
     const modal = await this.modalCtrl.create( {
-      component: CountrySelectorComponent
+      component: CountrySelectorComponent,
+      componentProps:{
+        lastSelected: this.lastSelected
+      }
     } )
     await modal.present()
 
     const { data, role } = await modal.onWillDismiss()
 
-    if ( role === 'confirm' ) {
+    this.lastSelected = data
+
+    if (this.lastSelected !== undefined){
+      this.label = this.lastSelected.name
+
+      this.store.dispatch( updateUserRegister( {
+        country: this.lastSelected.cca
+      }))
+
+      this.countryControl.patchValue(this.lastSelected.cca);
+      this.countryControl.updateValueAndValidity();
     }
   }
-
 }

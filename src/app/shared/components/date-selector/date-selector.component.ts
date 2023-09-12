@@ -21,7 +21,7 @@ export class DateSelectorComponent {
   date18YearsAgo: Date = new Date( new Date().setFullYear( new Date().getFullYear() - 18 ) )
 
   dateNow: Date        = new Date()
-  readonly dateControl = new FormControl( false, control => {
+  readonly dateControl = new FormControl<Date | null>( null, control => {
     if ( this.dateSelected === null ) {
       control.addValidators( Validators.requiredTrue )
       return { required: true }
@@ -36,10 +36,8 @@ export class DateSelectorComponent {
 
   onDate( event: MatDatepickerInputEvent<Date> ) {
     this.dateSelected = event.value
-    this.dateControl.patchValue( this.dateSelected !== null )
+    this.dateControl.patchValue( this.dateSelected )
     this.dateControl.markAllAsTouched()
     this.dateControl.updateValueAndValidity()
   }
-
-  protected readonly ErrorStateMatcher = ErrorStateMatcher
 }
