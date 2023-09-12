@@ -18,6 +18,9 @@ import {
   selectStepRegister
 } from 'src/app/state/stepper/step.selectors'
 import { StepState } from 'src/app/state/stepper/step.state'
+import {
+  UserPreferencesSelectorBarComponent
+} from "../../shared/components/user-preferences-selector-bar/user-preferences-selector-bar.component";
 
 @Component( {
   selector   : 'app-step4',
@@ -32,8 +35,8 @@ export class Step4Page implements OnInit, ViewDidEnter {
     this.maxStep$      = this.store.select( selectMaxStep )
   }
 
-  //@ViewChild('area') areaInput !: InputAreaComponent
-  //@ViewChild('preference') preferenceInput !: UserPreferencesSelectorComponent
+  @ViewChild('area') areaInput !: InputAreaComponent
+  @ViewChild('preference') preferenceInput !: UserPreferencesSelectorBarComponent
 
   registerStep$: Observable<StepState>
   currentStep$: Observable<number>
@@ -43,6 +46,8 @@ export class Step4Page implements OnInit, ViewDidEnter {
 
   ionViewDidEnter() {
     this.formGroup = new FormGroup([
+      this.areaInput.textControl,
+      this.preferenceInput.preferencesControl
     ])
   }
 
@@ -55,6 +60,9 @@ export class Step4Page implements OnInit, ViewDidEnter {
     if(
       !this.formGroup.valid
     ) return
+
+    console.log('this.formGroup.value')
+    console.log(this.formGroup.value)
 
     console.log("step 3 check")
     this.store.dispatch(notifyStep())

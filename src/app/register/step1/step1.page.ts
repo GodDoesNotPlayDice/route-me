@@ -37,6 +37,9 @@ export class Step1Page implements ViewDidEnter{
       !this.formGroup.valid
     ) return
 
+    console.log('this.formGroup.value');
+    console.log(this.formGroup.value);
+
     console.log("step 1 check")
     this.store.dispatch(notifyStep())
   }

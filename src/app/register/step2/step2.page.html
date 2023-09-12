@@ -13,8 +13,9 @@
         <form (ngSubmit)="submit($event)" class="flex flex-col gap-5">
           <app-input-text #user placeholder="Usuario" [type]="'text'"></app-input-text>
           <app-input-text #lastName placeholder="Apellido"
-            [type]="'password'"></app-input-text>
-          <app-phone-selector-bar></app-phone-selector-bar>
+            [type]="'text'"></app-input-text>
+          <app-input-text #phone placeholder="Telefono" [type]="'phone'"></app-input-text>
+          <app-country-selector-bar #country></app-country-selector-bar>
           <app-date-selector #date></app-date-selector>
           <div class="flex justify-center items-center gap-2">
             <div class="w-1/4 h-px bg-indigoBlack-500"></div>
