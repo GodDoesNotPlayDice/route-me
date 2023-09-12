@@ -24,12 +24,14 @@ export const stepReducer = createReducer(
     }
   } ),
   on( notifyStep, ( state ) => {
+    const next = state.currentPage + 1 > state.maxStep ? state.currentPage : state.currentPage + 1
     return {
       ...state,
-      currentStep: state.currentStep + 1
+      currentStep: next,
+      currentPage: next
     }
   } ),
-  on( setPageStep, ( state, {page} ) => {
+  on( setPageStep, ( state, { page } ) => {
     return {
       ...state,
       currentPage: page

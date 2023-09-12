@@ -1,16 +1,13 @@
-import {Component, Input} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms'
+import { Component } from '@angular/core'
+import { FormControl } from '@angular/forms'
 import { ModalController } from '@ionic/angular'
+import { Store } from '@ngrx/store'
 import {
   CountryItem,
   CountrySelectorComponent
 } from 'src/app/shared/components/country-selector/country-selector.component'
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../state/app.state";
-import {
-  updateUserRegister
-} from "../../../state/user-register/user-register.actions";
-import {z} from "zod";
+import { AppState } from 'src/app/state/app.state'
+import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
 
 @Component({
   selector: 'app-country-selector-bar',

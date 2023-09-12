@@ -1,4 +1,9 @@
-import {Component, Input } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
 
 @Component({
   selector: 'app-filled-button',
@@ -8,4 +13,8 @@ import {Component, Input } from '@angular/core';
 export class FilledButtonComponent {
   @Input() contentText: string = '';
   @Input() blocked: boolean = false;
+  @Output() onClick = new EventEmitter<void>()
+  public clicked( $event: MouseEvent ): void {
+    this.onClick.emit()
+  }
 }
