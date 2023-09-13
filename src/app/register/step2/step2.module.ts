@@ -21,20 +21,23 @@ import {
 import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    Step2PageRoutingModule,
-    LoginPageModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    Step1PageModule,
-    MatSelectModule,
-    ProfilePageModule
-  ],
-  declarations: [ Step2Page, DateSelectorComponent, CountrySelectorComponent,
-    CountrySelectorBarComponent ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        Step2PageRoutingModule,
+        LoginPageModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        Step1PageModule,
+        MatSelectModule,
+        ProfilePageModule
+    ],
+    exports: [
+        DateSelectorComponent
+    ],
+    declarations: [Step2Page, DateSelectorComponent, CountrySelectorComponent,
+        CountrySelectorBarComponent]
 })
 export class Step2PageModule {}

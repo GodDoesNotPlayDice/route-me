@@ -11,13 +11,16 @@ import { TripDetailsPage } from './trip-details.page';
 import {LoginPageModule} from "../login/login.module";
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        TripDetailsPageRoutingModule,
-        LoginPageModule
-    ],
-	declarations: [ TripDetailsPage, AdaptativeButtonComponent ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    TripDetailsPageRoutingModule,
+    LoginPageModule
+  ],
+  exports: [
+    AdaptativeButtonComponent
+  ],
+  declarations: [TripDetailsPage, AdaptativeButtonComponent]
 })
 export class TripDetailsPageModule {}
