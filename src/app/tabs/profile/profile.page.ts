@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {AuthService} from "../../services/auth/auth.service";
-import {User} from "../../../package/user/domain/entities/User";
+import {User} from 'src/package/user/domain/entities/User';
 import {
   defaultUsers
-} from "../../../package/user/infrastructure/AuthDataMemory";
+} from 'src/package/user/infrastructure/AuthDataMemory';
 import {Some} from "oxide.ts";
 
 @Component({
@@ -14,7 +14,6 @@ import {Some} from "oxide.ts";
 export class ProfilePage {
 
   constructor(private authService : AuthService) {
-
     if (authService.currentUser.isNone()){
       authService.currentUser = Some(defaultUsers[0])
     }
