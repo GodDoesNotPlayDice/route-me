@@ -10,8 +10,8 @@ import {
 } from 'src/app/state/stepper/step.actions'
 
 const initialState: StepState = {
-  currentStep: 0,
   maxStep    : 0,
+  currentStep: 1,
   currentPage: 1
 }
 
