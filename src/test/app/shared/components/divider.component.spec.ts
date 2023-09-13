@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { StepperItemComponent } from './stepper-item.component';
+import { DividerComponent } from 'src/app/shared/components/divider/divider.component';
 
-describe('StepperItemComponent', () => {
-  let component: StepperItemComponent;
-  let fixture: ComponentFixture<StepperItemComponent>;
+describe('DividerComponent', () => {
+  let component: DividerComponent;
+  let fixture: ComponentFixture<DividerComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ StepperItemComponent ],
+      declarations: [ DividerComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(StepperItemComponent);
+    fixture = TestBed.createComponent(DividerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

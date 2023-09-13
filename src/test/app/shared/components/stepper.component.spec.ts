@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { StepperComponent } from './stepper.component';
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component';
 
 describe('StepperComponent', () => {
   let component: StepperComponent;

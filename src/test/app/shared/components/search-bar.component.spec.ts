@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { LabeledIconComponent } from './labeled-icon.component';
+import { SearchBarComponent } from 'src/app/shared/components/search-bar/search-bar.component';
 
-describe('LabeledIconComponent', () => {
-  let component: LabeledIconComponent;
-  let fixture: ComponentFixture<LabeledIconComponent>;
+describe('SearchBarComponent', () => {
+  let component: SearchBarComponent;
+  let fixture: ComponentFixture<SearchBarComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LabeledIconComponent ],
+      declarations: [ SearchBarComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LabeledIconComponent);
+    fixture = TestBed.createComponent(SearchBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

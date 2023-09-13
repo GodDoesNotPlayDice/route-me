@@ -18,14 +18,18 @@ import {
   FilterButtonComponent
 } from "../../shared/components/filter-button/filter-button.component";
 
-@NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    HomePageRoutingModule,
-    LoginPageModule,
-  ],
-  declarations: [HomePage, SearchBarComponent, DriveCardComponent, FilterButtonComponent]
+@NgModule( {
+	imports     : [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		HomePageRoutingModule,
+		LoginPageModule
+	],
+	exports     : [
+		DriveCardComponent
+	],
+	declarations: [ HomePage, SearchBarComponent, DriveCardComponent,
+		FilterButtonComponent ]
 })
 export class HomePageModule {}

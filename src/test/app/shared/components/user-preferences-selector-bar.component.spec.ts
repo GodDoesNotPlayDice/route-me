@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { UserPreferencesSelectorBarComponent } from './user-preferences-selector-bar.component';
+import { UserPreferencesSelectorBarComponent } from 'src/app/shared/components/user-preferences-selector-bar/user-preferences-selector-bar.component';
 
 describe('UserPreferencesSelectorBarComponent', () => {
   let component: UserPreferencesSelectorBarComponent;

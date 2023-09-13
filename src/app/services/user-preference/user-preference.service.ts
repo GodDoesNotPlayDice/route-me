@@ -4,7 +4,7 @@ import {UserPreference} from "../../state/user-register/user-register.state";
 @Injectable({
   providedIn: 'root'
 })
-export class UserPreferenceServiceService {
+export class UserPreferenceService {
 
   context: Map<string, UserPreference> = defaultPreferenceMap()
 

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SearchInputComponent } from './search-input.component';
+import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component';
 
-describe('SearchInputComponent', () => {
-  let component: SearchInputComponent;
-  let fixture: ComponentFixture<SearchInputComponent>;
+describe('AdaptativeButtonComponent', () => {
+  let component: AdaptativeButtonComponent;
+  let fixture: ComponentFixture<AdaptativeButtonComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchInputComponent ],
+      declarations: [ AdaptativeButtonComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SearchInputComponent);
+    fixture = TestBed.createComponent(AdaptativeButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

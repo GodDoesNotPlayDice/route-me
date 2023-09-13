@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular'
 import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
 
 @Component( {
-  selector   : 'app-phone-selector',
+  selector   : 'app-country-selector',
   templateUrl: './country-selector.component.html',
   styleUrls  : [ './country-selector.component.scss' ]
 } )

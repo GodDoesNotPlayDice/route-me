@@ -16,6 +16,7 @@ const initialState: UserRegisterState = {
   password: '',
   phone   : '',
   country   : '',
+  genre   : '',
   description: '',
   birthDay: new Date(),
   preferences: []
@@ -35,6 +36,7 @@ export const userRegisterReducer = createReducer(
     }
   } ),
   on( clearUserRegister, ( state ) => {
+    console.log("cleared")
     return {
       ...initialState
     }

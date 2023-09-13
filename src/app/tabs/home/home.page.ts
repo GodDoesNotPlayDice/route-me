@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {
-  DriverCardInfo
-} from "../../shared/components/drive-card/drive-card.component";
+import { DriversService } from 'src/app/services/drivers/drivers.service'
+import { DriverCardInfo } from 'src/app/shared/models/DriverCardInfo'
+import { FilterButtonData } from 'src/app/shared/models/FilterButtonData'
 
 @Component({
   selector: 'app-home',
@@ -10,21 +10,22 @@ import {
 })
 export class HomePage {
 
-  constructor() {
+  constructor(private driversService : DriversService) {
+    this.driversService.getDrivers().forEach((driver) => {
+      if ( driver.state === 'open' ){
+        this.info.push(driver)
+      }
+    })
+
     if (this.info.length === 0){
       this.error = true
     }
   }
 
-  info : DriverCardInfo[] = driveInfoList
+  info : DriverCardInfo[] = []
 
   error : boolean = false
   protected readonly filterButtonList = filterButtonList;
-}
-
-export interface FilterButtonData {
-  name: string,
-  imagen : string
 }
 
 const filterButtonList : FilterButtonData[] = [{
@@ -39,75 +40,3 @@ const filterButtonList : FilterButtonData[] = [{
   name: "Viajes",
   imagen: "https://cdn.discordapp.com/attachments/982116594543099924/1148051316388679740/travel-bag.png"
 }]
-
-
-const driveInfoList: DriverCardInfo[] = [
-  {
-    driverAvatar: {
-      name: "Juan",
-      url: "https://cdn.discordapp.com/attachments/982116594543099924/1148055951946027070/640px-LinuxCon_Europe_Linus_Torvalds_03_28cropped29.png"
-    },
-    passengerAvatars: [
-      {
-        name: "noseve1",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      },
-      {
-        name: "noseve1",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      },
-      {
-        name: "noseve1",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      },
-      {
-        name: "noseve2",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      }
-    ],
-    startLocation: "viña",
-    endLocation: "stgo",
-    date: new Date(),
-    cost: 50
-  },
-  {
-    driverAvatar: {
-      name: "Fernando",
-      url: "https://cdn.discordapp.com/attachments/982116594543099924/1148056114244636783/AOPolaRSwFJEGgQu8V26chPkzDVgwaq7cTXKyglLcp-oAgs900-c-k-c0x00ffffff-no-rj.png"
-    },
-    passengerAvatars: [
-      {
-        name: "noseve1",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      },
-      {
-        name: "noseve2",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      }
-    ],
-    startLocation: "viña",
-    endLocation: "stgo",
-    date: new Date(),
-    cost: 50
-  },
-  {
-    driverAvatar: {
-      name: "Nicolas",
-      url: "https://cdn.discordapp.com/attachments/982116594543099924/1148057504740298782/influencer_9989_2rdz5slp_400x400_oqd2hpij12.png"
-    },
-    passengerAvatars: [
-      {
-        name: "noseve1",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      },
-      {
-        name: "noseve2",
-        url: "https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png",
-      }
-    ],
-    startLocation: "viña",
-    endLocation: "stgo",
-    date: new Date(),
-    cost: 50
-  }
-]
