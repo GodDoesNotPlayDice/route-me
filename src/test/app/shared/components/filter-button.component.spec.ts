@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DriveCardComponent } from './drive-card.component';
+import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component';
 
-describe('DriveCardComponent', () => {
-  let component: DriveCardComponent;
-  let fixture: ComponentFixture<DriveCardComponent>;
+describe('FilterButtonComponent', () => {
+  let component: FilterButtonComponent;
+  let fixture: ComponentFixture<FilterButtonComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DriveCardComponent ],
+      declarations: [ FilterButtonComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DriveCardComponent);
+    fixture = TestBed.createComponent(FilterButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

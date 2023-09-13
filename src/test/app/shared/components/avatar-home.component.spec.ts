@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AdaptativeButtonComponent } from './adaptative-button.component';
+import { AvatarHomeComponent } from 'src/app/shared/components/Avatars/avatar-home/avatar-home.component';
 
-describe('AdaptativeButtonComponent', () => {
-  let component: AdaptativeButtonComponent;
-  let fixture: ComponentFixture<AdaptativeButtonComponent>;
+describe('AvatarHomeComponent', () => {
+  let component: AvatarHomeComponent;
+  let fixture: ComponentFixture<AvatarHomeComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdaptativeButtonComponent ],
+      declarations: [ AvatarHomeComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AdaptativeButtonComponent);
+    fixture = TestBed.createComponent(AvatarHomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

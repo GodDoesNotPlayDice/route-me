@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AvatarHomeComponent } from './avatar-home.component';
+import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component';
 
-describe('AvatarHomeComponent', () => {
-  let component: AvatarHomeComponent;
-  let fixture: ComponentFixture<AvatarHomeComponent>;
+describe('LabeledIconComponent', () => {
+  let component: LabeledIconComponent;
+  let fixture: ComponentFixture<LabeledIconComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AvatarHomeComponent ],
+      declarations: [ LabeledIconComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AvatarHomeComponent);
+    fixture = TestBed.createComponent(LabeledIconComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

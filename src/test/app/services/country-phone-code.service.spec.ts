@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CountryPhoneCodeService } from './country-phone-code.service';
+import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service';
 
 describe('CountryPhoneCodeService', () => {
   let service: CountryPhoneCodeService;
