@@ -1,4 +1,6 @@
 import {Component, Input} from '@angular/core';
+import { Router } from '@angular/router'
+import { DriverCardInfo } from 'src/app/shared/models/DriverCardInfo'
 
 @Component({
   selector: 'app-drive-card',
@@ -7,21 +9,14 @@ import {Component, Input} from '@angular/core';
 })
 export class DriveCardComponent {
 
-  constructor() { }
+  constructor(private router : Router) { }
 
   @Input() info! : DriverCardInfo
+
+  async buttonClick( $event: MouseEvent ){
+    $event.preventDefault()
+    await this.router.navigate([`/trip-details/`], { state: { ...this.info } })
+  }
 }
 
-export interface Avatar {
-  name: string,
-  url: string
-}
 
-export interface DriverCardInfo {
-  driverAvatar : Avatar,
-  cost : number,
-  date : Date,
-  startLocation : string,
-  endLocation : string,
-  passengerAvatars : Avatar[]
-}

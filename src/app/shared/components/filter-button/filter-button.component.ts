@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FilterButtonData} from "../../../tabs/home/home.page";
+import { FilterButtonData } from 'src/app/shared/models/FilterButtonData'
 
 @Component({
   selector: 'app-filter-button',

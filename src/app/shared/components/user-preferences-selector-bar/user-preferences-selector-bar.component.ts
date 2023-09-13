@@ -1,4 +1,7 @@
-import { Component } from '@angular/core'
+import {
+  Component,
+  Input
+} from '@angular/core'
 import { Store } from '@ngrx/store'
 import {Observable} from 'rxjs'
 import { AppState } from 'src/app/state/app.state'
@@ -12,8 +15,8 @@ import {
   updateUserRegister
 } from "../../../state/user-register/user-register.actions";
 import {
-  UserPreferenceServiceService
-} from "../../../services/user-preference-service/user-preference-service.service";
+  UserPreferenceService
+} from "src/app/services/user-preference/user-preference.service";
 import {FormControl, Validators} from "@angular/forms";
 
 @Component( {
@@ -26,7 +29,7 @@ export class UserPreferencesSelectorBarComponent {
   constructor(
     private modalCtrl: ModalController,
     private store: Store<AppState>,
-    private userPreferenceService : UserPreferenceServiceService
+    private userPreferenceService : UserPreferenceService
   ) {
     this.preferencesUser$ = this.store.select( selectUserPreferencesRegister )
     this.databasePreferences = this.userPreferenceService.getUserPreferences()
@@ -43,8 +46,10 @@ export class UserPreferencesSelectorBarComponent {
       )
   }
 
+  @Input() required = false
+
   readonly preferencesControl = new FormControl<UserPreference[]>( [], control => {
-    if (control.value.length === 0){
+    if (this.required && control.value.length === 0){
       control.addValidators( Validators.required )
       return { required: true }
     }
