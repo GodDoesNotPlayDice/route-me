@@ -1,10 +1,15 @@
 import {Component, ViewChild} from '@angular/core'
+import { Router } from '@angular/router'
 import { Store } from '@ngrx/store'
+import { RadioButtonData } from 'src/app/shared/models/RadioButtonData'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
 import {
+  clearUserRegister,
+  updateUserRegister
+} from 'src/app/state/user-register/user-register.actions'
+import {
   RadioButtonComponent,
-  RadioButtonData
 } from "../../shared/components/radio-button/radio-button.component";
 import {FormGroup} from "@angular/forms";
 import {ViewDidEnter} from "@ionic/angular";
@@ -25,7 +30,8 @@ import {
 })
 export class Step2Page implements ViewDidEnter{
 
-  constructor(private store : Store<AppState>) {}
+  constructor(private store : Store<AppState>,
+    private router : Router) {}
 
   @ViewChild('user') userInput !: InputTextComponent
   @ViewChild('lastName') lastNameInput !: InputTextComponent
@@ -46,6 +52,7 @@ export class Step2Page implements ViewDidEnter{
   ]
 
   formGroup! : FormGroup
+
   ionViewDidEnter() {
     this.formGroup = new FormGroup([
       this.userInput.textControl,
@@ -57,21 +64,26 @@ export class Step2Page implements ViewDidEnter{
     ])
   }
 
-  submit($event: SubmitEvent) {
+  async submit($event: SubmitEvent) {
     $event.preventDefault()
 
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
-    console.log('this.formGroup.value');
-    console.log(this.formGroup.value);
-
     if(
       !this.formGroup.valid
     ) return
 
-    console.log("step 2 check")
+    this.store.dispatch(updateUserRegister({
+      name: this.userInput.textControl.value!,
+      lastName: this.lastNameInput.textControl.value!,
+      phone: this.phoneInput.textControl.value!,
+      country: this.countryInput.countryControl.value!,
+      birthDay: this.dateSelectorInput.dateControl.value!,
+      genre: this.radioButtonInput.radioControl.value!
+    }))
     this.store.dispatch(notifyStep())
+    await this.router.navigate(['/register/step4'])
   }
 }
 

@@ -11,7 +11,7 @@
       <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
         <app-stepper></app-stepper>
         <form (ngSubmit)="submit($event)" class="flex flex-col gap-5">
-          <app-input-text #user placeholder="Usuario" [type]="'text'"></app-input-text>
+          <app-input-text #user placeholder="Nombre" [type]="'text'"></app-input-text>
           <app-input-text #lastName placeholder="Apellido"
             [type]="'text'"></app-input-text>
           <app-input-text #phone placeholder="Telefono" [type]="'phone'"></app-input-text>

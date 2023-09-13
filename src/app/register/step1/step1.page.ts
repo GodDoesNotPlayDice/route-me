@@ -4,13 +4,19 @@ import {
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
-import { ViewDidEnter } from '@ionic/angular'
+import {
+  IonBackButton,
+  ViewDidEnter
+} from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
-import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
+import {
+  clearUserRegister,
+  updateUserRegister
+} from 'src/app/state/user-register/user-register.actions'
 
 @Component({
   selector: 'app-step1',
@@ -20,7 +26,7 @@ import { updateUserRegister } from 'src/app/state/user-register/user-register.ac
 export class Step1Page implements ViewDidEnter{
 
   constructor(private store : Store<AppState>,
-    private router : Router, ) {}
+    private router : Router) {}
 
   @ViewChild('user') userInput!: InputTextComponent
   @ViewChild('password') passwordInput!: InputTextComponent
@@ -32,7 +38,6 @@ export class Step1Page implements ViewDidEnter{
 
   async submit( $event: SubmitEvent ): Promise<void> {
     $event.preventDefault()
-
     this.checkerGroup?.updateValueAndValidity()
     this.checkerGroup?.markAllAsTouched()
     this.formGroup.updateValueAndValidity()
@@ -48,7 +53,6 @@ export class Step1Page implements ViewDidEnter{
     }))
     this.store.dispatch(notifyStep())
     await this.router.navigate(['/register/step2'])
-
   }
 
   ionViewDidEnter() {
