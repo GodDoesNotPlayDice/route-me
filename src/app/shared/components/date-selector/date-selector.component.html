@@ -1,8 +1,9 @@
 <div>
 <mat-form-field class="w-full">
-  <mat-label>Fecha de nacimiento</mat-label>
+  <mat-label>{{label}}</mat-label>
   <input
-    [max]="dateNow"
+    [max]="dateNowDesc"
+    [min]="dateNowAsc"
     placeholder="MM/DD/YYYY" (dateInput)="onDate($event)" matInput [matDatepicker]="picker">
 <!--  <mat-hint>MM/DD/YYYY</mat-hint>-->
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

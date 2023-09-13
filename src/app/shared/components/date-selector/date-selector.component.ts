@@ -1,12 +1,9 @@
 import {
-  Component,
-  Input
+  Component, Input, OnInit
 } from '@angular/core'
 import {
   FormControl,
-  Validators
 } from '@angular/forms'
-import { ErrorStateMatcher } from '@angular/material/core'
 import { MatDatepickerInputEvent } from '@angular/material/datepicker'
 
 @Component( {
@@ -14,25 +11,32 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker'
   templateUrl: './date-selector.component.html',
   styleUrls  : [ './date-selector.component.scss' ]
 } )
-export class DateSelectorComponent {
+export class DateSelectorComponent implements OnInit{
 
   dateSelected: Date | null = null
+  @Input() label : string = "Fecha de nacimiento"
+  @Input() desc : boolean = true
 
   date18YearsAgo: Date = new Date( new Date().setFullYear( new Date().getFullYear() - 18 ) )
 
-  dateNow: Date        = new Date()
+  dateNowDesc: Date | null = null
+  dateNowAsc: Date | null = null
   readonly dateControl = new FormControl<Date | null>( null, control => {
     if ( this.dateSelected === null ) {
-      control.addValidators( Validators.requiredTrue )
       return { required: true }
     }
 
-    if ( this.dateSelected > this.date18YearsAgo ) {
+    if (this.desc && this.dateSelected > this.date18YearsAgo ) {
       return { invalid: true }
       }
 
     return null
   } )
+
+  ngOnInit() {
+    this.dateNowDesc = this.desc ? new Date() : null
+    this.dateNowAsc = this.desc ? null : new Date()
+  }
 
   onDate( event: MatDatepickerInputEvent<Date> ) {
     this.dateSelected = event.value
