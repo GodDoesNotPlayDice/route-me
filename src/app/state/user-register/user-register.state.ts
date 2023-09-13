@@ -1,12 +1,13 @@
 export interface UserRegisterState {
   email :string,
+  password :string,
   name :string,
   lastName :string,
-  password :string,
-  description :string,
   phone :string,
   country :string,
+  genre :string,
   birthDay :Date,
+  description :string,
   preferences : UserPreference[]
 }
 
