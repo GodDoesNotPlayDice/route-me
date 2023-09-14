@@ -25,11 +25,9 @@ export class DateSelectorComponent implements OnInit{
     if ( this.dateSelected === null ) {
       return { required: true }
     }
-
     if (this.desc && this.dateSelected > this.date18YearsAgo ) {
       return { invalid: true }
-      }
-
+    }
     return null
   } )
 
