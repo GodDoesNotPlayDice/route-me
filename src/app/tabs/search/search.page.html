@@ -1,16 +1,11 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>search</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <div class="flex flex-col gap-4">
     <div class="p-2 w-full gap-3 mt-6 mx-auto flex flex-col">
       <app-search-input #search></app-search-input>
+      <div>
+        inputs
+      </div>
+      <app-google-map></app-google-map>
     </div>
   </div>
 </ion-content>

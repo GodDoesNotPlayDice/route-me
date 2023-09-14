@@ -21,7 +21,6 @@ export class TripDetailsPage implements OnInit{
 		this.urlService.previousUrl$.subscribe( ( url ) => {
 			this.prevHref = url
 		})
-
 		console.log(this.router.getCurrentNavigation()?.extras.state)
 	}
 }

@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="prevHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>N Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="flex flex-col h-full">
+    <div class="basis-11/12">
+      <app-bubble-chat
+        [owner]="true"
+        message="hola"
+        urlImage="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"
+        userName="name"
+      ></app-bubble-chat>
+      <app-bubble-chat
+        [owner]="false"
+        message="hola"
+        urlImage="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"
+        userName="name"
+      ></app-bubble-chat>
+    </div>
+    <div class="flex-col basis-1/12">
+      <app-chat-input></app-chat-input>
+    </div>
+  </div>
+</ion-content>

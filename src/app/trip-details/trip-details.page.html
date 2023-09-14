@@ -10,23 +10,32 @@
 <ion-content [fullscreen]="true">
   <div class="flex flex-col gap-4">
     <div class="bg-gray-300 h-96 bg-[url('https://s2.ppllstatics.com/laverdad/www/multimedia/202209/05/media/cortadas/mapa-murcia-kQgE-U170116261306200E-1248x770@La%20Verdad.jpg')]"></div>
-    <div class="flex justify-center gap-6">
-      <app-adaptative-button text_color="text-white" color="bg-stone-800"
-                             color_hover="bg-stone-800" text="Solicitar"
-                             size="py-2.5 px-3"
-                             font_size="text-sm"></app-adaptative-button>
-      <app-adaptative-button text_color="text-white" color="bg-stone-800"
-                             color_hover="bg-stone-800" text="Ver perfil"
-                             size="py-2.5 px-3"
-                             font_size="text-sm"></app-adaptative-button>
-      <app-adaptative-button text_color="text-white" color="bg-stone-800"
-                             color_hover="bg-stone-800" text="Chat"
-                             size="py-2.5 px-3"
-                             font_size="text-sm"></app-adaptative-button>
-      <app-adaptative-button text_color="text-white" color="bg-stone-800"
-                             color_hover="bg-stone-700" text="Compartir"
-                             size="py-2.5 px-3"
-                             font_size="text-sm"></app-adaptative-button>
+    <div class="flex justify-center gap-4">
+      <app-adaptative-button text_color="text-white"
+        color="bg-stone-800"
+        color_hover="bg-stone-800"
+        text="Reportar"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
+      <app-adaptative-button text_color="text-white"
+        color="bg-stone-800"
+        color_hover="bg-stone-700"
+        text="Compartir"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
+      <app-adaptative-button text_color="text-white"
+        [routerLink]="['/chat']"
+        color="bg-stone-800"
+        color_hover="bg-stone-800"
+        text="Chat"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
+      <app-adaptative-button text_color="text-white"
+        color="bg-stone-800"
+        color_hover="bg-stone-800"
+        text="Solicitar"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
     </div>
     <div class="flex flex-col gap-6 px-5 ">
       <div class="flex">
@@ -49,14 +58,11 @@
         <div class="basis-1/2">Direccion Fin</div>
         <div class="basis-1/2">Direccion Destino</div>
       </div>
-      <div class="flex">
-        <div class="basis-1/2">Pasajeros</div>
-        <div class="basis-1/2 flex">
-          <app-avatar-home url="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"></app-avatar-home>
-          <app-avatar-home url="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"></app-avatar-home>
-          <app-avatar-home url="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"></app-avatar-home>
-          <app-avatar-home url="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"></app-avatar-home>
-        </div>
+      <div class="flex flex-col">
+        <div>Pasajeros</div>
+        <app-divider></app-divider>
+        <app-passenger-item></app-passenger-item>
+        <div class="h-4"></div>
       </div>
     </div>
   </div>
