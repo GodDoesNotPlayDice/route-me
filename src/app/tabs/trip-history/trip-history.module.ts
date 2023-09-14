@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { HomePageModule } from 'src/app/tabs/home/home.module'
 
 import { TripHistoryPageRoutingModule } from './trip-history-routing.module';

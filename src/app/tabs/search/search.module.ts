@@ -1,23 +1,24 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular'
+import { GoogleMapComponent } from 'src/app/shared/components/google-map/google-map.component'
+import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
+import { SearchPage } from 'src/app/tabs/search/search.page'
 
-import { SearchPageRoutingModule } from './search-routing.module';
+import { SearchPageRoutingModule } from './search-routing.module'
 
-import { SearchPage } from './search.page';
-import {
-  SearchInputComponent
-} from "../../shared/components/search-input/search-input.component";
-
-@NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        SearchPageRoutingModule,
-    ],
-  declarations: [SearchPage, SearchInputComponent]
-})
+@NgModule( {
+  imports     : [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    SearchPageRoutingModule
+  ],
+  exports     : [
+    SearchInputComponent
+  ],
+  declarations: [ GoogleMapComponent, SearchPage, SearchInputComponent ]
+} )
 export class SearchPageModule {}
