@@ -34,8 +34,8 @@
       <app-input-text #confirmpassword placeholder="Confirmar Password"
         [type]="'password'"></app-input-text>
       <div *ngIf="checkerGroup" class="text-xs text-threateningRed-500 h-4 font-gotham">
-        <div *ngIf="checkerGroup.invalid && (checkerGroup.dirty || checkerGroup.touched)">
-          <div *ngIf="checkerGroup.errors?.['password']">
+        <div *ngIf="checkerGroup?.invalid && (checkerGroup?.dirty || checkerGroup?.touched)">
+          <div *ngIf="checkerGroup?.errors?.['password']">
             Las contraseñas no coinciden
           </div>
         </div>

@@ -1,11 +1,22 @@
+import { CommonModule } from '@angular/common'
 import {Component, Input, OnInit} from '@angular/core'
-import { ModalController } from '@ionic/angular'
+import {
+  IonicModule,
+  ModalController
+} from '@ionic/angular'
 import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
+import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 
 @Component( {
+  standalone: true,
   selector   : 'app-country-selector',
   templateUrl: './country-selector.component.html',
-  styleUrls  : [ './country-selector.component.scss' ]
+  styleUrls  : [ './country-selector.component.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    DividerComponent
+  ]
 } )
 export class CountrySelectorComponent implements OnInit{
 

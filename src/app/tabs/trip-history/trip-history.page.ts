@@ -1,11 +1,20 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { IonicModule } from '@ionic/angular'
 import { DriversService } from 'src/app/services/drivers/drivers.service'
+import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { DriverCardInfo } from 'src/app/shared/models/DriverCardInfo'
 
-@Component({
-  selector: 'app-trip-history',
+@Component( {
+  standalone : true,
+  selector   : 'app-trip-history',
   templateUrl: './trip-history.page.html',
-  styleUrls: ['./trip-history.page.scss'],
+  styleUrls  : [ './trip-history.page.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    DriveCardComponent
+  ]
 })
 export class TripHistoryPage {
 

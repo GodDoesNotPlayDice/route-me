@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   Input,
@@ -5,12 +6,18 @@ import {
 import {
   FormControl
 } from '@angular/forms'
+import { IonicModule } from '@ionic/angular'
 import { RadioButtonData } from 'src/app/shared/models/RadioButtonData'
 
 @Component( {
+  standalone: true,
   selector: 'app-radio-button',
   templateUrl: './radio-button.component.html',
-  styleUrls: [ './radio-button.component.scss' ]
+  styleUrls: [ './radio-button.component.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule
+  ]
 } )
 export class RadioButtonComponent {
   @Input({required:true}) radioButtons: RadioButtonData[] = []

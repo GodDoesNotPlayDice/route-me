@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   EventEmitter,
@@ -9,11 +10,17 @@ import {
   FormControl,
   Validators
 } from '@angular/forms'
+import { IonicModule } from '@ionic/angular'
 
 @Component( {
+  standalone: true,
   selector   : 'app-checkbox',
   templateUrl: './checkbox.component.html',
-  styleUrls  : [ './checkbox.component.scss' ]
+  styleUrls  : [ './checkbox.component.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule
+  ]
 } )
 export class CheckboxComponent implements OnInit{
 

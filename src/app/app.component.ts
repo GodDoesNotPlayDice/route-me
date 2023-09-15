@@ -1,11 +1,15 @@
+import { CommonModule } from '@angular/common'
 import {
-	Component,
-	OnInit
+  Component,
+  EnvironmentInjector,
+  inject,
+  OnInit
 } from '@angular/core'
 import {
 	NavigationEnd,
 	Router
 } from '@angular/router'
+import { IonicModule } from '@ionic/angular'
 import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
 import { UrlService } from 'src/app/services/url/url.service'
 import {
@@ -14,11 +18,17 @@ import {
 } from 'tw-elements'
 
 @Component( {
-	selector   : 'app-root',
-	templateUrl: 'app.component.html',
-	styleUrls  : [ 'app.component.scss' ]
+  standalone : true,
+  selector   : 'app-root',
+  templateUrl: 'app.component.html',
+  imports    : [
+    IonicModule,
+    CommonModule
+  ],
+  styleUrls  : [ 'app.component.scss' ]
 } )
 export class AppComponent implements OnInit {
+  public environmentInjector = inject(EnvironmentInjector);
 
 	constructor( private router: Router,
 		private countryPhoneCode: CountryPhoneCodeService,

@@ -1,10 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { UrlService } from 'src/app/services/url/url.service'
 
-@Component({
-  selector: 'app-chat',
+import { CommonModule } from '@angular/common'
+import { Component, OnInit } from '@angular/core';
+import { IonicModule } from '@ionic/angular'
+import { UrlService } from 'src/app/services/url/url.service'
+import { BubbleChatComponent } from 'src/app/shared/components/bubble-chat/bubble-chat.component'
+import { ChatInputComponent } from 'src/app/shared/components/chat-input/chat-input.component'
+
+@Component( {
+  standalone : true,
+  selector   : 'app-chat',
   templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss'],
+  styleUrls  : [ './chat.page.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    BubbleChatComponent,
+    ChatInputComponent
+  ]
 })
 export class ChatPage implements OnInit {
 

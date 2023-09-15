@@ -1,15 +1,26 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   ViewChild
 } from '@angular/core'
-import { FormGroup } from '@angular/forms'
-import { ViewDidEnter } from '@ionic/angular'
+import {
+  IonicModule,
+  ViewDidEnter
+} from '@ionic/angular'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 
-@Component({
-  selector: 'app-reset-password',
+@Component( {
+  standalone : true,
+  selector   : 'app-reset-password',
   templateUrl: './reset-password.page.html',
-  styleUrls: ['./reset-password.page.scss'],
+  styleUrls  : [ './reset-password.page.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    InputTextComponent,
+    FilledButtonComponent
+  ]
 })
 export class ResetPasswordPage implements ViewDidEnter{
 

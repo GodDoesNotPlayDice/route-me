@@ -1,12 +1,25 @@
+import { CommonModule } from '@angular/common';
 import {Component} from '@angular/core';
+import { IonicModule } from '@ionic/angular'
 import { DriversService } from 'src/app/services/drivers/drivers.service'
+import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
+import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
+import { SearchBarComponent } from 'src/app/shared/components/search-bar/search-bar.component'
 import { DriverCardInfo } from 'src/app/shared/models/DriverCardInfo'
 import { FilterButtonData } from 'src/app/shared/models/FilterButtonData'
 
-@Component({
-  selector: 'app-home',
+@Component( {
+  standalone : true,
+  selector   : 'app-home',
   templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  styleUrls  : [ './home.page.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    SearchBarComponent,
+    FilterButtonComponent,
+    DriveCardComponent
+  ]
 })
 export class HomePage {
 

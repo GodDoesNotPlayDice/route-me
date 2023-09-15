@@ -1,19 +1,28 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   Input,
 } from '@angular/core'
 import {
   FormControl,
+  ReactiveFormsModule,
   Validators
 } from '@angular/forms'
+import { IonicModule } from '@ionic/angular'
 import { z } from 'zod'
 
 type InputTextType = 'email' | 'password' | 'text' | 'phone' | 'number'
 
 @Component( {
+  standalone: true,
   selector: 'app-input-text',
   templateUrl: './input-text.component.html',
-  styleUrls: [ './input-text.component.scss' ]
+  styleUrls: [ './input-text.component.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    ReactiveFormsModule
+  ]
 } )
 export class InputTextComponent{
 

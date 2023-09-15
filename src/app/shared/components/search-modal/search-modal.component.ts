@@ -1,10 +1,21 @@
+import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular'
+import {
+  IonicModule,
+  ModalController
+} from '@ionic/angular'
+import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
 
 @Component({
+  standalone: true,
   selector: 'app-search-modal',
   templateUrl: './search-modal.component.html',
   styleUrls: ['./search-modal.component.scss'],
+  imports: [
+    IonicModule,
+    CommonModule,
+    SearchInputComponent
+  ]
 })
 export class SearchModalComponent {
 

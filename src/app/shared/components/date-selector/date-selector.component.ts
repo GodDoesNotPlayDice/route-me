@@ -1,15 +1,30 @@
+import { CommonModule } from '@angular/common'
 import {
   Component, Input, OnInit
 } from '@angular/core'
 import {
   FormControl,
 } from '@angular/forms'
-import { MatDatepickerInputEvent } from '@angular/material/datepicker'
+import { MatNativeDateModule } from '@angular/material/core'
+import {
+  MatDatepickerInputEvent,
+  MatDatepickerModule
+} from '@angular/material/datepicker'
+import { MatInputModule } from '@angular/material/input'
+import { IonicModule } from '@ionic/angular'
 
 @Component( {
+  standalone: true,
   selector   : 'app-date-selector',
   templateUrl: './date-selector.component.html',
-  styleUrls  : [ './date-selector.component.scss' ]
+  styleUrls  : [ './date-selector.component.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ]
 } )
 export class DateSelectorComponent implements OnInit{
 
