@@ -20,6 +20,7 @@ import { AvatarHomeComponent } from 'src/app/shared/components/Avatars/avatar-ho
   ]
 })
 export class PassengerItemComponent {
+  @Input() text : string = ''
   @Input() userName : string = 'Juanito'
   @Input() userUrlImage : string = 'https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445'
 }
