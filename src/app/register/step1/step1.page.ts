@@ -1,27 +1,42 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   ViewChild
 } from '@angular/core'
-import { FormGroup } from '@angular/forms'
+import {
+  FormGroup,
+  FormsModule
+} from '@angular/forms'
 import { Router } from '@angular/router'
 import {
-  IonBackButton,
+  IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
+import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
-import {
-  clearUserRegister,
-  updateUserRegister
-} from 'src/app/state/user-register/user-register.actions'
+import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
 
-@Component({
-  selector: 'app-step1',
+@Component( {
+  standalone : true,
+  selector   : 'app-step1',
   templateUrl: './step1.page.html',
-  styleUrls: ['./step1.page.scss'],
+  styleUrls  : [ './step1.page.scss' ],
+  imports: [
+    IonicModule,
+    StepperComponent,
+    OutlinedButtonComponent,
+    InputTextComponent,
+    CheckboxComponent,
+    FilledButtonComponent,
+    FormsModule,
+    CommonModule
+  ]
 })
 export class Step1Page implements ViewDidEnter{
 

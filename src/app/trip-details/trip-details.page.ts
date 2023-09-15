@@ -1,14 +1,31 @@
+import { CommonModule } from '@angular/common'
 import {
 	Component,
 	OnInit
 } from '@angular/core'
-import { Router } from '@angular/router'
+import {
+  Router,
+  RouterLink
+} from '@angular/router'
+import { IonicModule } from '@ionic/angular'
 import { UrlService } from 'src/app/services/url/url.service'
+import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
+import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
+import { PassengerItemComponent } from 'src/app/shared/components/passenger-item/passenger-item.component'
 
 @Component( {
-	selector   : 'app-trip-details',
-	templateUrl: './trip-details.page.html',
-	styleUrls  : [ './trip-details.page.scss' ]
+  standalone : true,
+  selector   : 'app-trip-details',
+  templateUrl: './trip-details.page.html',
+  imports: [
+    IonicModule,
+    CommonModule,
+    AdaptativeButtonComponent,
+    DividerComponent,
+    PassengerItemComponent,
+    RouterLink
+  ],
+  styleUrls  : [ './trip-details.page.scss' ]
 } )
 export class TripDetailsPage implements OnInit{
 

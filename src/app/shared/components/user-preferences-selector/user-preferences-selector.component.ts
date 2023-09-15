@@ -1,16 +1,27 @@
+import { CommonModule } from '@angular/common'
 import {
-  Component, Input, OnInit
+  Component, Input
 } from '@angular/core'
 import {
+  IonicModule,
   ModalController
 } from '@ionic/angular'
+import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
+import { UserPreferencesSelectorItemComponent } from 'src/app/shared/components/user-preferences-selector-item/user-preferences-selector-item.component'
 import {PreferenceItem} from "../../models/PreferenceItem";
 
 
 @Component( {
+  standalone: true,
   selector   : 'app-user-preferences-selector',
   templateUrl: './user-preferences-selector.component.html',
-  styleUrls  : [ './user-preferences-selector.component.scss' ]
+  styleUrls  : [ './user-preferences-selector.component.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    UserPreferencesSelectorItemComponent,
+    DividerComponent
+  ]
 } )
 export class UserPreferencesSelectorComponent {
 

@@ -3,29 +3,50 @@ import {
 	ViewChild
 } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { UrlService } from 'src/app/services/url/url.service'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
+import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
+import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AppState } from 'src/app/state/app.state'
 import { clearUserRegister } from 'src/app/state/user-register/user-register.actions'
 import { AuthService } from '../services/auth/auth.service'
 import { match } from 'oxide.ts'
 import {
-	NavigationEnd,
-	Router
+  Router,
+  RouterLink
 } from '@angular/router'
 import {
-	AlertController,
-	ViewDidEnter
+  AlertController,
+  IonicModule,
+  ViewDidEnter
 } from '@ionic/angular'
 import {
 	CheckboxComponent
 } from '../shared/components/checkbox/checkbox.component'
-import { FormGroup } from '@angular/forms'
+import {
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms'
+import { CommonModule } from '@angular/common'
 
 @Component( {
-	selector   : 'app-login',
-	templateUrl: './login.page.html',
-	styleUrls  : [ './login.page.scss' ]
+  standalone : true,
+  selector   : 'app-login',
+  templateUrl: './login.page.html',
+  imports: [
+    LogoComponent,
+    InputTextComponent,
+    RouterLink,
+    CheckboxComponent,
+    FilledButtonComponent,
+    OutlinedButtonComponent,
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  styleUrls  : [ './login.page.scss' ]
 } )
 export class LoginPage implements ViewDidEnter {
 

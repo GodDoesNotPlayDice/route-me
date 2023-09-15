@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Err, None, Ok, Option, Result, Some} from "oxide.ts";
-import {LoginUser} from "../../../package/user/application/LoginUser";
-import {RegisterUser} from "../../../package/user/application/RegisterUser";
-import {User} from "../../../package/user/domain/entities/User";
+import {LoginUser} from 'src/package/user/application/LoginUser';
+import {RegisterUser} from 'src/package/user/application/RegisterUser';
+import {User} from 'src/package/user/domain/entities/User';
 
 @Injectable({
   providedIn: 'root'

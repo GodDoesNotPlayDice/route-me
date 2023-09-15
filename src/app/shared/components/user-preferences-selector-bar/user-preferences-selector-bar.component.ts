@@ -1,28 +1,38 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   Input
 } from '@angular/core'
+import {
+  FormControl,
+  Validators
+} from '@angular/forms'
+import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select'
+import {
+  IonicModule,
+  ModalController
+} from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import {Observable} from 'rxjs'
+import { Observable } from 'rxjs'
+import { UserPreferenceService } from 'src/app/services/user-preference/user-preference.service'
 import { AppState } from 'src/app/state/app.state'
 import { selectUserPreferencesRegister } from 'src/app/state/user-register/user-register.selectors'
 import { UserPreference } from 'src/app/state/user-register/user-register.state'
-import {
-  UserPreferencesSelectorComponent
-} from '../user-preferences-selector/user-preferences-selector.component'
-import { ModalController } from '@ionic/angular'
-import {
-  updateUserRegister
-} from "../../../state/user-register/user-register.actions";
-import {
-  UserPreferenceService
-} from "src/app/services/user-preference/user-preference.service";
-import {FormControl, Validators} from "@angular/forms";
+import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
+import { UserPreferencesSelectorComponent } from '../user-preferences-selector/user-preferences-selector.component'
 
 @Component( {
+  standalone: true,
   selector   : 'app-user-preferences-selector-bar',
   templateUrl: './user-preferences-selector-bar.component.html',
-  styleUrls  : [ './user-preferences-selector-bar.component.scss' ]
+  styleUrls  : [ './user-preferences-selector-bar.component.scss' ],
+  imports: [
+    IonicModule,
+    CommonModule,
+    MatInputModule,
+    MatSelectModule
+  ]
 } )
 export class UserPreferencesSelectorBarComponent {
 

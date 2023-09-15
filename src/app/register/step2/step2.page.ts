@@ -1,32 +1,45 @@
-import {Component, ViewChild} from '@angular/core'
+import {
+  Component,
+  ViewChild
+} from '@angular/core'
+import {
+  FormGroup,
+  FormsModule
+} from '@angular/forms'
 import { Router } from '@angular/router'
+import {
+  IonicModule,
+  ViewDidEnter
+} from '@ionic/angular'
 import { Store } from '@ngrx/store'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { RadioButtonData } from 'src/app/shared/models/RadioButtonData'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
-import {
-  clearUserRegister,
-  updateUserRegister
-} from 'src/app/state/user-register/user-register.actions'
-import {
-  RadioButtonComponent,
-} from "../../shared/components/radio-button/radio-button.component";
-import {FormGroup} from "@angular/forms";
-import {ViewDidEnter} from "@ionic/angular";
-import {
-  InputTextComponent
-} from "../../shared/components/input-text/input-text.component";
-import {
-  DateSelectorComponent
-} from "../../shared/components/date-selector/date-selector.component";
-import {
-  CountrySelectorBarComponent
-} from "../../shared/components/country-selector-bar/country-selector-bar.component";
+import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
+import { CountrySelectorBarComponent } from '../../shared/components/country-selector-bar/country-selector-bar.component'
+import { DateSelectorComponent } from '../../shared/components/date-selector/date-selector.component'
+import { InputTextComponent } from '../../shared/components/input-text/input-text.component'
+import { RadioButtonComponent } from '../../shared/components/radio-button/radio-button.component'
+import { CommonModule } from '@angular/common'
 
-@Component({
-  selector: 'app-step2',
+@Component( {
+  standalone : true,
+  selector   : 'app-step2',
   templateUrl: './step2.page.html',
-  styleUrls: ['./step2.page.scss'],
+  styleUrls  : [ './step2.page.scss' ],
+  imports: [
+    IonicModule,
+    StepperComponent,
+    InputTextComponent,
+    CountrySelectorBarComponent,
+    DateSelectorComponent,
+    RadioButtonComponent,
+    FilledButtonComponent,
+    FormsModule,
+    CommonModule
+  ]
 })
 export class Step2Page implements ViewDidEnter{
 

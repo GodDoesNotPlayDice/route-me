@@ -1,39 +1,52 @@
 import {
-	Component,
-	OnInit,
-	ViewChild
+  Component,
+  OnInit,
+  ViewChild
 } from '@angular/core'
-import { FormGroup } from '@angular/forms'
-import { Router } from '@angular/router'
-import { ViewDidEnter } from '@ionic/angular'
-import { Store } from '@ngrx/store'
 import {
-	Observable,
-	take,
-	takeLast
-} from 'rxjs'
+  FormGroup,
+  FormsModule
+} from '@angular/forms'
+import { Router } from '@angular/router'
+import {
+  IonicModule,
+  ViewDidEnter
+} from '@ionic/angular'
+import { Store } from '@ngrx/store'
+import { Observable } from 'rxjs'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputAreaComponent } from 'src/app/shared/components/input-area/input-area.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
 import {
-	selectCurrentStep,
-	selectMaxStep,
-	selectStepRegister
+  selectCurrentStep,
+  selectMaxStep,
+  selectStepRegister
 } from 'src/app/state/stepper/step.selectors'
 import { StepState } from 'src/app/state/stepper/step.state'
 import {
-	clearUserRegister,
-	updateUserRegister
+  clearUserRegister,
+  updateUserRegister
 } from 'src/app/state/user-register/user-register.actions'
 import { selectUserRegister } from 'src/app/state/user-register/user-register.selectors'
-import {
-	UserPreferencesSelectorBarComponent
-} from '../../shared/components/user-preferences-selector-bar/user-preferences-selector-bar.component'
+import { UserPreferencesSelectorBarComponent } from '../../shared/components/user-preferences-selector-bar/user-preferences-selector-bar.component'
+import { CommonModule } from '@angular/common'
 
 @Component( {
-	selector   : 'app-step4',
-	templateUrl: './step4.page.html',
-	styleUrls  : [ './step4.page.scss' ]
+  standalone : true,
+  selector   : 'app-step4',
+  templateUrl: './step4.page.html',
+  imports: [
+    IonicModule,
+    CommonModule,
+    StepperComponent,
+    InputAreaComponent,
+    UserPreferencesSelectorBarComponent,
+    FilledButtonComponent,
+    FormsModule
+  ],
+  styleUrls  : [ './step4.page.scss' ]
 } )
 export class Step4Page implements OnInit, ViewDidEnter {
 

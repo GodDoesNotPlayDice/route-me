@@ -1,10 +1,22 @@
+import { CommonModule } from '@angular/common'
 import {Component, Input} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
+import {
+  FormControl,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms'
+import { IonicModule } from '@ionic/angular'
 
 @Component({
+  standalone: true,
   selector: 'app-input-area',
   templateUrl: './input-area.component.html',
   styleUrls: ['./input-area.component.scss'],
+  imports: [
+    IonicModule,
+    CommonModule,
+    ReactiveFormsModule
+  ]
 })
 export class InputAreaComponent {
   @Input() title: string = "Sobre Mi";

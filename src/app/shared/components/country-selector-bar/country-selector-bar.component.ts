@@ -1,6 +1,12 @@
+import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { ModalController } from '@ionic/angular'
+import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select'
+import {
+  IonicModule,
+  ModalController
+} from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import {
   CountryItem,
@@ -10,9 +16,16 @@ import { AppState } from 'src/app/state/app.state'
 import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
 
 @Component({
+  standalone: true,
   selector: 'app-country-selector-bar',
   templateUrl: './country-selector-bar.component.html',
   styleUrls: ['./country-selector-bar.component.scss'],
+  imports: [
+    IonicModule,
+    CommonModule,
+    MatInputModule,
+    MatSelectModule
+  ]
 })
 export class CountrySelectorBarComponent {
 
