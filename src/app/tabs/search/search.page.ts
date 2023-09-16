@@ -3,11 +3,16 @@ import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
-import { GoogleMapComponent } from 'src/app/shared/components/google-map/google-map.component'
 import {
   SearchInputComponent
 } from "../../shared/components/search-input/search-input.component";
 import { CommonModule } from '@angular/common';
+import {
+  MapBoxComponent
+} from "../../shared/components/map-box/map-box.component";
+import {
+  InputTextComponent
+} from "../../shared/components/input-text/input-text.component";
 
 @Component( {
   standalone : true,
@@ -18,7 +23,8 @@ import { CommonModule } from '@angular/common';
     IonicModule,
     CommonModule,
     SearchInputComponent,
-    GoogleMapComponent
+    MapBoxComponent,
+    InputTextComponent,
   ]
 })
 export class SearchPage implements ViewDidEnter {
@@ -26,8 +32,10 @@ export class SearchPage implements ViewDidEnter {
   constructor() { }
 
   @ViewChild('search') searchInput! : SearchInputComponent
+  @ViewChild(MapBoxComponent) mapBox! : MapBoxComponent
 
   ionViewDidEnter(): void {
-    this.searchInput.inputSearch.nativeElement.focus()
+    // this.searchInput.inputSearch.nativeElement.focus()
+    this.mapBox.ionViewDidEnter()
   }
 }

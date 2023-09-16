@@ -14,6 +14,8 @@ import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/cou
 import { UrlService } from 'src/app/services/url/url.service'
 import {
 	Input,
+  Dropdown,
+  Ripple,
 	initTE
 } from 'tw-elements'
 
@@ -42,6 +44,6 @@ export class AppComponent implements OnInit {
 			}
 		})
 
-		initTE( { Input } )
+		initTE( { Input, Dropdown, Ripple } )
 	}
 }
