@@ -6,7 +6,6 @@
     <ion-title>Trip Details</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content [fullscreen]="true">
   <div class="flex flex-col gap-4">
     <div class="bg-gray-300 h-96 bg-[url('https://s2.ppllstatics.com/laverdad/www/multimedia/202209/05/media/cortadas/mapa-murcia-kQgE-U170116261306200E-1248x770@La%20Verdad.jpg')]"></div>
@@ -61,9 +60,9 @@
       <div class="flex flex-col">
         <div>Pasajeros</div>
         <app-divider></app-divider>
-        <ion-list>
-        <app-passenger-item text="👍️"></app-passenger-item>
-        </ion-list>
+        <div class="flex flex-col gap-4">
+        <app-passenger-item></app-passenger-item>
+        </div>
         <div class="h-4"></div>
       </div>
     </div>

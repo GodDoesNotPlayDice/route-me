@@ -1,11 +1,32 @@
-<ion-item-sliding>
-  <ion-item>
-    <ion-label>Sliding</ion-label>
+<div class="flex items-center justify-between">
+  <div class="flex items-center gap-2">
     <app-avatar-home [url]="userUrlImage"></app-avatar-home>
     <div>{{ userName }}</div>
-  </ion-item>
-  <ion-item-options>
-    <ion-item-option>Favorite</ion-item-option>
-    <ion-item-option color="danger">Delete</ion-item-option>
-  </ion-item-options>
-</ion-item-sliding>
+  </div>
+  <div>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon class="">warning</mat-icon>
+        <span class="text-red-600">Reportar</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>star</mat-icon>
+        <span>Valorar</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>
+
+
+<!--<div class="flex items-center justify-between">-->
+<!--  <div class="flex">-->
+<!--    <div class="bg-green-600 w-5 h-5"></div>-->
+<!--    <div class="bg-yellow-600 w-5 h-5"></div>-->
+<!--  </div>-->
+<!--  <div>-->
+<!--    <div class="bg-blue-600 w-5 h-5"></div>-->
+<!--  </div>-->
+<!--</div>-->
