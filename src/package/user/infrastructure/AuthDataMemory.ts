@@ -1,15 +1,23 @@
-import {AuthRepository} from "../domain/repository/AuthRepository";
-import {UserEmail} from "../domain/value-objects/UserEmail";
-import {UserPassword} from "../domain/value-objects/UserPassword";
-import {Err, Ok, Result} from "oxide.ts";
-import {User} from "../domain/entities/User";
-import {UserID} from "../domain/value-objects/UserID";
-import {UserName} from "../domain/value-objects/UserName";
-import {UserLastName} from "../domain/value-objects/UserLastName";
-import {UserPhone} from "../domain/value-objects/UserPhone";
-import {UserBirthDay} from "../domain/value-objects/UserBirthDay";
-import {UserMapper} from "../application/UserMapper";
-import {UserDescription} from "../domain/value-objects/UserDescription";
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import {
+  AuthRepository,
+  User,
+  UserBirthDay,
+  UserCountry,
+  UserDescription,
+  UserEmail,
+  UserID,
+  UserLastName,
+  UserName,
+  UserPassword,
+  UserPhone
+} from 'src/package/user/domain'
+import { UserMapper } from '../application/UserMapper'
+import { Gender } from 'src/package/shared'
 
 export class AuthDataMemory implements AuthRepository{
   constructor() {
@@ -20,16 +28,20 @@ export class AuthDataMemory implements AuthRepository{
   async login(email: UserEmail, password: UserPassword): Promise<Result<User, string>> {
     for (const user of this.context) {
       if (user.email.value === email.value && user.password.value === password.value){
-        const response = UserMapper.convert(
-          user.id.value,
-          user.email.value,
-          user.name.value,
-          user.lastName.value,
-          user.password.value,
-          user.description.value,
-          user.phone.value,
-          user.birthDay.value,
-        )
+        const data : Record<string, any> = {
+          id: user.id.value,
+          email: user.email.value,
+          name: user.name.value,
+          lastName: user.lastName.value,
+          password: user.password.value,
+          description: user.description.value,
+          phone: user.phone.value,
+          birthDay: user.birthDay.value,
+          country: user.country.value,
+          gender: user.gender.value,
+          preferences: user.preferences
+        }
+        const response = UserMapper.fromJson(data)
 
         if (response.isNone()){
           return Promise.resolve(Err("map error"));
@@ -61,6 +73,9 @@ export const defaultUsers : User[] = [
     new UserPassword("12345678"),
     new UserDescription("Soy un estudiante de ingeniería civil en informática, me gusta la programación y el desarrollo de software.",),
     new UserPhone("(+56)1234-1234"),
-    new UserBirthDay(new Date("1990-03-25"))
+    new UserBirthDay(new Date("1990-03-25")),
+    new UserCountry("CL"),
+    new Gender("Hombre"),
+  []
 )
 ]

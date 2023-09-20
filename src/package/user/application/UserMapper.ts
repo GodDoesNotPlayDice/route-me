@@ -1,36 +1,46 @@
-import {UserID} from "../domain/value-objects/UserID";
-import {UserEmail} from "../domain/value-objects/UserEmail";
-import {UserName} from "../domain/value-objects/UserName";
-import {UserLastName} from "../domain/value-objects/UserLastName";
-import {UserPassword} from "../domain/value-objects/UserPassword";
-import {UserPhone} from "../domain/value-objects/UserPhone";
-import {UserBirthDay} from "../domain/value-objects/UserBirthDay";
-import {None, Option, Some} from "oxide.ts";
-import {User} from "../domain/entities/User";
-import {UserDescription} from "../domain/value-objects/UserDescription";
+import {
+  None,
+  Option,
+  Some
+} from 'oxide.ts'
+import { Gender } from 'src/package/shared'
+import {
+  User,
+  UserBirthDay,
+  UserCountry,
+  UserDescription,
+  UserEmail,
+  UserID,
+  UserLastName,
+  UserName,
+  UserPassword,
+  UserPhone
+} from 'src/package/user/domain'
 
 export class UserMapper {
-  static convert(
-    id :string,
-    email :string,
-    name :string,
-    lastName :string,
-    password :string,
-    description:string,
-    phone :string,
-    birthDay :Date,
+  // fromJSON
+  static fromJson(
+    json : Record<string, any>
   ): Option<User>{
     try {
+      //TODO: corroborar data
+      const preferences = json['preferences'].map((preference : any) => {
+        return preference.id
+      })
+
       return Some(
         User.from(
-          new UserID(id),
-          new UserEmail(email),
-          new UserName(name),
-          new UserLastName(lastName),
-          new UserDescription(description),
-          new UserPassword(password),
-          new UserPhone(phone),
-          new UserBirthDay(birthDay)
+          new UserID(json['id']),
+          new UserEmail(json['email']),
+          new UserName(json['name']),
+          new UserLastName(json['lastName']),
+          new UserDescription(json['description']),
+          new UserPassword(json['password']),
+          new UserPhone(json['phone']),
+          new UserBirthDay(json['birthDay']),
+          new UserCountry(json['country']),
+          new Gender(json['gender']),
+          preferences
         )
       )
     }

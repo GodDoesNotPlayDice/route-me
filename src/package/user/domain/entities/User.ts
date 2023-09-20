@@ -1,11 +1,10 @@
-import {UserID} from "../value-objects/UserID";
-import {UserEmail} from "../value-objects/UserEmail";
-import {UserName} from "../value-objects/UserName";
-import {UserLastName} from "../value-objects/UserLastName";
-import {UserPassword} from "../value-objects/UserPassword";
-import {UserPhone} from "../value-objects/UserPhone";
-import {UserBirthDay} from "../value-objects/UserBirthDay";
-import {UserDescription} from "../value-objects/UserDescription";
+import { PreferenceID } from 'src/package/preference'
+import { Gender } from 'src/package/shared'
+import {
+  UserBirthDay,
+  UserCountry,
+  UserDescription, UserEmail, UserID,
+  UserLastName, UserName, UserPassword, UserPhone } from '../value-objects'
 
 export class User {
   private constructor(
@@ -17,30 +16,10 @@ export class User {
     readonly description :UserDescription,
     readonly phone :UserPhone,
     readonly birthDay :UserBirthDay,
-  ) {
-  }
-
-  static created(
-    id :UserID,
-    email :UserEmail,
-    name :UserName,
-    lastName :UserLastName,
-    password :UserPassword,
-    description :UserDescription,
-    phone :UserPhone,
-    birthDay :UserBirthDay
-  ) : User{
-    return new User(
-      id ,
-      email ,
-      name ,
-      lastName ,
-      password ,
-      description,
-      phone ,
-      birthDay ,
-    )
-  }
+    readonly country :UserCountry,
+    readonly gender : Gender,
+    readonly preferences: PreferenceID[]
+  ) {}
 
   static from(
     id :UserID,
@@ -50,7 +29,10 @@ export class User {
     password :UserPassword,
     description :UserDescription,
     phone :UserPhone,
-    birthDay :UserBirthDay
+    birthDay :UserBirthDay,
+    country :UserCountry,
+    gender : Gender,
+    preferences: PreferenceID[]
   ) : User{
     return new User(
       id ,
@@ -61,6 +43,9 @@ export class User {
       description,
       phone ,
       birthDay ,
+      country,
+      gender,
+      preferences
     )
   }
 }
