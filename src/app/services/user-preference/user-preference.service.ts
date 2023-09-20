@@ -15,14 +15,14 @@ export class UserPreferenceService {
 
 function defaultPreferenceMap(): Map<string, UserPreference> {
   const list: UserPreference[] = [
-    {
+    UserPreference.parse({
       icon    : 'musical-notes-outline',
       name    : 'Con Musica'
-    },
-    {
+    }),
+    UserPreference.parse({
       icon    : 'logo-no-smoking',
       name    : 'Sin Fumar'
-    }
+    })
   ]
   return new Map<string, UserPreference>(
     list.map( ( item ) => [ item.name, item ] ) )

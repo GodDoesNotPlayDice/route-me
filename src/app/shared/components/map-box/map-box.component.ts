@@ -21,9 +21,10 @@ export class MapBoxComponent implements ViewDidEnter{
   constructor() {
     this.mapbox.accessToken = environment.mapBoxApiKey;
   }
-  async ionViewDidEnter() {
-    Geolocation.requestPermissions()
 
+  async ionViewDidEnter() {
+
+    Geolocation.requestPermissions()
     Geolocation.watchPosition( {}, ( position, err ) => {
       console.log( 'new position', position )
       console.log( 'error', err )

@@ -34,18 +34,18 @@ export class UserPreferencesSelectorComponent {
     return Array.from(this.preferencesData.values()).map((data)=>{
       const isSelected = this.selectedPreferences.get(data.name)
       if(isSelected !== undefined){
-        return {
+        return PreferenceItem.parse({
           name: isSelected.name,
           icon: isSelected.icon,
           selected: true
-        }
+        })
       }
       else {
-        return {
+        return PreferenceItem.parse({
           name: data.name,
           icon: data.icon,
           selected: false
-        }
+        })
       }
     })
   }

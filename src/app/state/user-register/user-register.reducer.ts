@@ -9,7 +9,7 @@ import {
 } from 'src/app/state/user-register/user-register.actions'
 import { UserRegisterState } from 'src/app/state/user-register/user-register.state'
 
-const initialState: UserRegisterState = {
+const initialState: UserRegisterState = UserRegisterState.parse({
   name    : '',
   lastName: '',
   email   : '',
@@ -20,7 +20,7 @@ const initialState: UserRegisterState = {
   description: '',
   birthDay: new Date(),
   preferences: []
-}
+})
 
 export const userRegisterReducer = createReducer(
   initialState,
