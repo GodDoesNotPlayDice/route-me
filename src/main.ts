@@ -3,6 +3,16 @@ import {
   enableProdMode,
   importProvidersFrom
 } from '@angular/core'
+import { AngularFireModule } from '@angular/fire/compat'
+import {
+  AngularFireDatabase,
+  AngularFireDatabaseModule
+} from '@angular/fire/compat/database'
+import {
+  AngularFirestore,
+  AngularFirestoreModule
+} from '@angular/fire/compat/firestore'
+import { AngularFireStorageModule } from '@angular/fire/compat/storage'
 import {
   FormsModule,
   ReactiveFormsModule
@@ -22,6 +32,10 @@ import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { AuthService } from 'src/app/services/auth/auth.service'
 import { ROOT_REDUCERS } from 'src/app/state/app.state'
+import {
+  AuthDataFirebase,
+  GetAllUsers
+} from 'src/package/user'
 import { LoginUser } from 'src/package/user/application/LoginUser'
 import { RegisterUser } from 'src/package/user/application/RegisterUser'
 import { AuthRepository } from 'src/package/user/domain/repository/AuthRepository'
@@ -37,10 +51,18 @@ bootstrapApplication( AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide   : AuthRepository,
-      useFactory: () => {
-        return new AuthDataMemory()
+      useFactory: (firebase : AngularFireDatabase) => {
+        // return new AuthDataMemory()
+        return new AuthDataFirebase(firebase)
       },
-      deps      : []
+      deps      : [AngularFireDatabase]
+    },
+    {
+      provide   : GetAllUsers,
+      useFactory: ( authRepository: AuthRepository ) => {
+        return new GetAllUsers( authRepository )
+      },
+      deps      : [ AuthRepository ]
     },
     {
       provide   : LoginUser,
@@ -75,7 +97,11 @@ bootstrapApplication( AppComponent, {
         ReactiveFormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        StoreModule.forRoot( ROOT_REDUCERS )
+        StoreModule.forRoot( ROOT_REDUCERS ),
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireDatabaseModule,
+        AngularFirestoreModule,
+        AngularFireStorageModule
       ]
     ),
     provideRouter( routes )

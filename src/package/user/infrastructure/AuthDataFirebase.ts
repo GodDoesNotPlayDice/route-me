@@ -4,16 +4,45 @@ import {
   Result
 } from 'oxide.ts'
 import {
+  BehaviorSubject,
+  Observable
+} from 'rxjs'
+import {
   AuthRepository,
   User,
   UserEmail,
   UserPassword
 } from 'src/package/user/domain'
 import { UserMapper } from '../application/UserMapper'
+import { AngularFireDatabase } from '@angular/fire/compat/database'
 
 export class AuthDataFirebase implements AuthRepository {
-  constructor() {
+  constructor(private firebase : AngularFireDatabase ) {
   }
+
+  protected users: BehaviorSubject<User[]>
+
+  getAll(): Promise<Result<User[], string>> {
+
+    console.log("init")
+    console.log(this.firebase.database.ref('users'))
+    this.firebase.database.ref('users').get().then((snapshot) => {
+      for ( const snapshotElement of Object.values(snapshot.val()) ) {
+       const s = UserMapper.fromJson(snapshotElement as Record<string, any>)
+        if ( s.isNone() ){
+          console.log('none')
+          continue
+        }
+        console.log(s.unwrap())
+      }
+    })
+    console.log("end")
+
+    return Promise.resolve( Ok([]) )
+
+    // return Promise.resolve( Err("err") )
+  }
+
 
   login( email: UserEmail,
     password: UserPassword ): Promise<Result<User, string>> {

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
+  OnInit,
   ViewChild
 } from '@angular/core'
 import {
@@ -25,8 +26,10 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AppState } from 'src/app/state/app.state'
 import { clearUserRegister } from 'src/app/state/user-register/user-register.actions'
+import { GetAllUsers } from 'src/package/user'
 import { AuthService } from '../services/auth/auth.service'
 import { CheckboxComponent } from '../shared/components/checkbox/checkbox.component'
+
 
 @Component( {
   standalone : true,
@@ -46,15 +49,21 @@ import { CheckboxComponent } from '../shared/components/checkbox/checkbox.compon
   ],
   styleUrls  : [ './login.page.scss' ]
 } )
-export class LoginPage implements ViewDidEnter {
+export class LoginPage implements ViewDidEnter, OnInit {
 
   constructor(
     private store: Store<AppState>,
     private authService: AuthService,
     private router: Router,
-    private alertController: AlertController
-  )
+    private alertController: AlertController,
+    private get : GetAllUsers
+ )
   {}
+
+  async ngOnInit(){
+      await this.get.execute()
+
+  }
 
   @ViewChild( 'user' ) userInput!: InputTextComponent
   @ViewChild( 'password' ) passwordInput!: InputTextComponent

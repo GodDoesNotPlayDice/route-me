@@ -3,6 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { Observable } from 'rxjs'
 import { Gender } from 'src/package/shared'
 import {
   AuthRepository,
@@ -21,6 +22,11 @@ import { UserMapper } from '../application/UserMapper'
 
 export class AuthDataMemory implements AuthRepository {
   constructor() {
+  }
+
+  getAll(): Promise<Result<User[], string>> {
+
+    return Promise.resolve( Err("err") )
   }
 
   private context: User[] = defaultUsers

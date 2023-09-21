@@ -8,4 +8,7 @@ export abstract class AuthRepository {
     password: UserPassword ): Promise<Result<User, string>>
 
   abstract register( user: User ): Promise<Result<boolean, string>>
+
+  abstract getAll(): Promise<Result<User[], string>>
+
 }
