@@ -13,16 +13,16 @@ import {
 import { IonicModule } from '@ionic/angular'
 
 @Component( {
-  standalone: true,
+  standalone : true,
   selector   : 'app-checkbox',
   templateUrl: './checkbox.component.html',
   styleUrls  : [ './checkbox.component.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule
   ]
 } )
-export class CheckboxComponent implements OnInit{
+export class CheckboxComponent implements OnInit {
 
   @Input() activeError: boolean = false
 

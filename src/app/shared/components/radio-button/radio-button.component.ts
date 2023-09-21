@@ -1,30 +1,28 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  Input,
+  Input
 } from '@angular/core'
-import {
-  FormControl
-} from '@angular/forms'
+import { FormControl } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
-import { RadioButtonData } from 'src/app/shared/models/RadioButtonData'
+import { RadioButtonData } from 'src/app/shared/models'
 
 @Component( {
-  standalone: true,
-  selector: 'app-radio-button',
+  standalone : true,
+  selector   : 'app-radio-button',
   templateUrl: './radio-button.component.html',
-  styleUrls: [ './radio-button.component.scss' ],
-  imports: [
+  styleUrls  : [ './radio-button.component.scss' ],
+  imports    : [
     IonicModule,
     CommonModule
   ]
 } )
 export class RadioButtonComponent {
-  @Input({required:true}) radioButtons: RadioButtonData[] = []
-  @Input({required:true}) name!: string
+  @Input( { required: true } ) radioButtons: RadioButtonData[] = []
+  @Input( { required: true } ) name!: string
 
   readonly radioControl = new FormControl( '', control => {
-      if ( control.value === '' ){
+      if ( control.value === '' ) {
         return { required: true }
       }
       return null
@@ -33,10 +31,10 @@ export class RadioButtonComponent {
 
   onRadioChange( $event: Event ) {
     if ( $event.target instanceof HTMLInputElement ) {
-      this.radioControl.patchValue( $event.target.value)
+      this.radioControl.patchValue( $event.target.value )
     }
     else {
-      this.radioControl.patchValue( '')
+      this.radioControl.patchValue( '' )
     }
     this.radioControl.updateValueAndValidity()
   }

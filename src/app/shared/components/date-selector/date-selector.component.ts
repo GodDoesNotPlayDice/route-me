@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component, Input, OnInit
+  Component,
+  Input,
+  OnInit
 } from '@angular/core'
-import {
-  FormControl,
-} from '@angular/forms'
+import { FormControl } from '@angular/forms'
 import { MatNativeDateModule } from '@angular/material/core'
 import {
   MatDatepickerInputEvent,
@@ -14,11 +14,11 @@ import { MatInputModule } from '@angular/material/input'
 import { IonicModule } from '@ionic/angular'
 
 @Component( {
-  standalone: true,
+  standalone : true,
   selector   : 'app-date-selector',
   templateUrl: './date-selector.component.html',
   styleUrls  : [ './date-selector.component.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     MatInputModule,
@@ -26,21 +26,22 @@ import { IonicModule } from '@ionic/angular'
     MatNativeDateModule
   ]
 } )
-export class DateSelectorComponent implements OnInit{
+export class DateSelectorComponent implements OnInit {
 
   dateSelected: Date | null = null
-  @Input() label : string = "Fecha de nacimiento"
-  @Input() desc : boolean = true
+  @Input() label: string    = 'Fecha de nacimiento'
+  @Input() desc: boolean    = true
 
-  date18YearsAgo: Date = new Date( new Date().setFullYear( new Date().getFullYear() - 18 ) )
+  date18YearsAgo: Date = new Date(
+    new Date().setFullYear( new Date().getFullYear() - 18 ) )
 
   dateNowDesc: Date | null = null
-  dateNowAsc: Date | null = null
-  readonly dateControl = new FormControl<Date | null>( null, control => {
+  dateNowAsc: Date | null  = null
+  readonly dateControl     = new FormControl<Date | null>( null, control => {
     if ( this.dateSelected === null ) {
       return { required: true }
     }
-    if (this.desc && this.dateSelected > this.date18YearsAgo ) {
+    if ( this.desc && this.dateSelected > this.date18YearsAgo ) {
       return { invalid: true }
     }
     return null
@@ -48,7 +49,7 @@ export class DateSelectorComponent implements OnInit{
 
   ngOnInit() {
     this.dateNowDesc = this.desc ? new Date() : null
-    this.dateNowAsc = this.desc ? null : new Date()
+    this.dateNowAsc  = this.desc ? null : new Date()
   }
 
   onDate( event: MatDatepickerInputEvent<Date> ) {

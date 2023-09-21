@@ -1,22 +1,29 @@
-import {AuthRepository} from "../domain/repository/AuthRepository";
-import {UserEmail} from "../domain/value-objects/UserEmail";
-import {UserPassword} from "../domain/value-objects/UserPassword";
-import {Err, Ok, Result} from "oxide.ts";
-import {User} from "../domain/entities/User";
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import {
+  AuthRepository,
+  User,
+  UserEmail,
+  UserPassword
+} from 'src/package/user/domain'
 
 export class LoginUser {
-  constructor(private repository : AuthRepository) {
+  constructor( private repository: AuthRepository ) {
   }
 
-  async execute(email : string, password: string): Promise<Result<User, string>>{
+  async execute( email: UserEmail,
+    password: UserPassword ): Promise<Result<User, string>> {
 
     const result = await this.repository.login(
-      new UserEmail(email),
-      new UserPassword(password)
+      email,
+      password
     )
-    if (result.isErr()){
-      return Promise.resolve(Err(result.unwrapErr()));
+    if ( result.isErr() ) {
+      return Promise.resolve( Err( result.unwrapErr() ) )
     }
-    return Promise.resolve(Ok(result.unwrap()));
+    return Promise.resolve( Ok( result.unwrap() ) )
   }
 }

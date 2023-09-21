@@ -18,13 +18,13 @@ import { addStep } from 'src/app/state/stepper/step.actions'
     IonicModule,
     CommonModule
   ]
-})
+} )
 export class RegisterPage {
-  public environmentInjector = inject(EnvironmentInjector);
+  public environmentInjector = inject( EnvironmentInjector )
 
-  constructor(private store : Store<AppState>) {
-    this.store.dispatch(addStep())
-    this.store.dispatch(addStep())
-    this.store.dispatch(addStep())
+  constructor( private store: Store<AppState> ) {
+    this.store.dispatch( addStep() )
+    this.store.dispatch( addStep() )
+    this.store.dispatch( addStep() )
   }
 }

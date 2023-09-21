@@ -1,7 +1,9 @@
-import {z} from "zod";
+import { z } from 'zod'
 
 export class UserEmail {
-  constructor(readonly value :string) {
-    z.string().email().parse(value)
+  constructor( readonly value: string ) {
+    z.string()
+     .email()
+     .parse( value )
   }
 }

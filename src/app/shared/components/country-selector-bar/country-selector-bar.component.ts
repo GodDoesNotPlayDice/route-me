@@ -15,36 +15,38 @@ import {
 import { AppState } from 'src/app/state/app.state'
 import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
 
-@Component({
-  standalone: true,
-  selector: 'app-country-selector-bar',
+@Component( {
+  standalone : true,
+  selector   : 'app-country-selector-bar',
   templateUrl: './country-selector-bar.component.html',
-  styleUrls: ['./country-selector-bar.component.scss'],
-  imports: [
+  styleUrls  : [ './country-selector-bar.component.scss' ],
+  imports    : [
     IonicModule,
     CommonModule,
     MatInputModule,
     MatSelectModule
   ]
-})
+} )
 export class CountrySelectorBarComponent {
 
-  constructor(private modalCtrl: ModalController, private store: Store<AppState>) {}
+  constructor( private modalCtrl: ModalController,
+    private store: Store<AppState> )
+  {}
 
-  lastSelected : CountryItem | undefined
-  label : string = "Ingresar Pais"
+  lastSelected: CountryItem | undefined
+  label: string = 'Ingresar Pais'
 
   readonly countryControl = new FormControl( '', control => {
-    if (control.value === ''){
-      return {required: true}
+    if ( control.value === '' ) {
+      return { required: true }
     }
     return null
-  })
+  } )
 
-  async openModal(){
+  async openModal() {
     const modal = await this.modalCtrl.create( {
-      component: CountrySelectorComponent,
-      componentProps:{
+      component     : CountrySelectorComponent,
+      componentProps: {
         lastSelected: this.lastSelected
       }
     } )
@@ -54,15 +56,15 @@ export class CountrySelectorBarComponent {
 
     this.lastSelected = data
 
-    if (this.lastSelected !== undefined){
+    if ( this.lastSelected !== undefined ) {
       this.label = this.lastSelected.name
 
       this.store.dispatch( updateUserRegister( {
         country: this.lastSelected.cca
-      }))
+      } ) )
 
-      this.countryControl.patchValue(this.lastSelected.cca);
-      this.countryControl.updateValueAndValidity();
+      this.countryControl.patchValue( this.lastSelected.cca )
+      this.countryControl.updateValueAndValidity()
     }
   }
 }

@@ -1,5 +1,5 @@
 export interface StepState {
-  currentPage : number,
-  currentStep : number,
-  maxStep : number,
+  currentPage: number,
+  currentStep: number,
+  maxStep: number,
 }

@@ -1,24 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import {
+  ComponentFixture,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { RadioButtonComponent } from 'src/app/shared/components/radio-button/radio-button.component';
+import { RadioButtonComponent } from 'src/app/shared/components/radio-button/radio-button.component'
 
-describe('RadioButtonComponent', () => {
-  let component: RadioButtonComponent;
-  let fixture: ComponentFixture<RadioButtonComponent>;
+describe( 'RadioButtonComponent', () => {
+  let component: RadioButtonComponent
+  let fixture: ComponentFixture<RadioButtonComponent>
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach( waitForAsync( () => {
+    TestBed.configureTestingModule( {
       declarations: [ RadioButtonComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+      imports     : [ IonicModule.forRoot() ]
+    } )
+           .compileComponents()
 
-    fixture = TestBed.createComponent(RadioButtonComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+    fixture   = TestBed.createComponent( RadioButtonComponent )
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  } ) )
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  it( 'should create', () => {
+    expect( component )
+      .toBeTruthy()
+  } )
+} )

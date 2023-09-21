@@ -15,5 +15,5 @@ export const updateUserRegister = createAction(
 )
 
 export const clearUserRegister = createAction(
-  '[USER-REGISTER] Clear USER-REGISTER',
+  '[USER-REGISTER] Clear USER-REGISTER'
 )

@@ -2,12 +2,12 @@ import {
   createReducer,
   on
 } from '@ngrx/store'
-import { StepState } from 'src/app/state/stepper/step.state'
 import {
   addStep,
   notifyStep,
   setPageStep
 } from 'src/app/state/stepper/step.actions'
+import { StepState } from 'src/app/state/stepper/step.state'
 
 const initialState: StepState = {
   maxStep    : 0,
@@ -24,7 +24,9 @@ export const stepReducer = createReducer(
     }
   } ),
   on( notifyStep, ( state ) => {
-    const next = state.currentPage + 1 > state.maxStep ? state.currentPage : state.currentPage + 1
+    const next = state.currentPage + 1 > state.maxStep
+      ? state.currentPage
+      : state.currentPage + 1
     return {
       ...state,
       currentStep: next,

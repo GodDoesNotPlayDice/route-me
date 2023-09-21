@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   ViewChild
@@ -14,7 +15,10 @@ import {
 import { Store } from '@ngrx/store'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
-import { RadioButtonData } from 'src/app/shared/models/RadioButtonData'
+import {
+  RadioButtonData,
+  RadioButtonDataSchema
+} from 'src/app/shared/models'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
 import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
@@ -22,14 +26,13 @@ import { CountrySelectorBarComponent } from '../../shared/components/country-sel
 import { DateSelectorComponent } from '../../shared/components/date-selector/date-selector.component'
 import { InputTextComponent } from '../../shared/components/input-text/input-text.component'
 import { RadioButtonComponent } from '../../shared/components/radio-button/radio-button.component'
-import { CommonModule } from '@angular/common'
 
 @Component( {
   standalone : true,
   selector   : 'app-step2',
   templateUrl: './step2.page.html',
   styleUrls  : [ './step2.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     StepperComponent,
     InputTextComponent,
@@ -40,64 +43,77 @@ import { CommonModule } from '@angular/common'
     FormsModule,
     CommonModule
   ]
-})
-export class Step2Page implements ViewDidEnter{
+} )
+export class Step2Page implements ViewDidEnter {
 
-  constructor(private store : Store<AppState>,
-    private router : Router) {}
+  constructor( private store: Store<AppState>,
+    private router: Router )
+  {}
 
-  @ViewChild('user') userInput !: InputTextComponent
-  @ViewChild('lastName') lastNameInput !: InputTextComponent
-  @ViewChild('phone') phoneInput !: InputTextComponent
-  @ViewChild('country') countryInput !: CountrySelectorBarComponent
-  @ViewChild('date') dateSelectorInput !: DateSelectorComponent
-  @ViewChild('radio') radioButtonInput !: RadioButtonComponent
+  @ViewChild( 'user' ) userInput !: InputTextComponent
+  @ViewChild( 'lastName' ) lastNameInput !: InputTextComponent
+  @ViewChild( 'phone' ) phoneInput !: InputTextComponent
+  @ViewChild( 'country' ) countryInput !: CountrySelectorBarComponent
+  @ViewChild( 'date' ) dateSelectorInput !: DateSelectorComponent
+  @ViewChild( 'radio' ) radioButtonInput !: RadioButtonComponent
 
-  buttons : RadioButtonData[] = [
-    {
-      name: "Hombre",
-      icon: "male-outline"
-    },
-    {
-      name: "Mujer",
-      icon: "female-outline"
-    },
+
+  buttons: RadioButtonData[] = [
+    RadioButtonDataSchema.parse( {
+      name: 'Hombre',
+      icon: 'male-outline'
+    } ),
+    RadioButtonDataSchema.parse( {
+      name: 'Mujer',
+      icon: 'female-outline'
+    } )
   ]
+  // buttons : RadioButtonData[] = [
+  //   {
+  //     name: "Hombre",
+  //     icon: "male-outline"
+  //   },
+  //   {
+  //     name: "Mujer",
+  //     icon: "female-outline"
+  //   },
+  // ]
 
-  formGroup! : FormGroup
+  formGroup!: FormGroup
 
   ionViewDidEnter() {
-    this.formGroup = new FormGroup([
+    this.formGroup = new FormGroup( [
       this.userInput.textControl,
       this.lastNameInput.textControl,
       this.phoneInput.textControl,
       this.countryInput.countryControl,
       this.dateSelectorInput.dateControl,
       this.radioButtonInput.radioControl
-    ])
+    ] )
   }
 
-  async submit($event: SubmitEvent) {
+  async submit( $event: SubmitEvent ) {
     $event.preventDefault()
 
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
-    if(
+    if (
       !this.formGroup.valid
-    ) return
+    )
+    {
+      return
+    }
 
-    this.store.dispatch(updateUserRegister({
-      name: this.userInput.textControl.value!,
+    this.store.dispatch( updateUserRegister( {
+      name    : this.userInput.textControl.value!,
       lastName: this.lastNameInput.textControl.value!,
-      phone: this.phoneInput.textControl.value!,
-      country: this.countryInput.countryControl.value!,
+      phone   : this.phoneInput.textControl.value!,
+      country : this.countryInput.countryControl.value!,
       birthDay: this.dateSelectorInput.dateControl.value!,
-      genre: this.radioButtonInput.radioControl.value!
-    }))
-    this.store.dispatch(notifyStep())
-    await this.router.navigate(['/register/step4'])
+      genre   : this.radioButtonInput.radioControl.value!
+    } ) )
+    this.store.dispatch( notifyStep() )
+    await this.router.navigate( [ '/register/step4' ] )
   }
 }
-
-

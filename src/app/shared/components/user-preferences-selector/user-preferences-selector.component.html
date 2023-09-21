@@ -16,14 +16,14 @@
 <ion-content class="ion-padding">
   <ul class="w-full">
     <li *ngFor="let pref of getPreferences(); index as i">
-    <app-user-preferences-selector-item
-      [selected]="pref.selected"
-      (onSelected)="onSelectItem($event)"
-      (onDeselected)="onDeselectItem($event)"
-      [item]="pref"></app-user-preferences-selector-item>
-    <ng-container *ngIf="preferencesData.size - 1 !== i">
-      <app-divider></app-divider>
-    </ng-container>
+      <app-user-preferences-selector-item
+        [selected]="pref.selected"
+        (onSelected)="onSelectItem($event)"
+        (onDeselected)="onDeselectItem($event)"
+        [item]="pref"></app-user-preferences-selector-item>
+      <ng-container *ngIf="preferencesData.size - 1 !== i">
+        <app-divider></app-divider>
+      </ng-container>
     </li>
   </ul>
 </ion-content>

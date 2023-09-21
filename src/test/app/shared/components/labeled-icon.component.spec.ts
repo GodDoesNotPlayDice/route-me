@@ -1,24 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import {
+  ComponentFixture,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component';
+import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
 
-describe('LabeledIconComponent', () => {
-  let component: LabeledIconComponent;
-  let fixture: ComponentFixture<LabeledIconComponent>;
+describe( 'LabeledIconComponent', () => {
+  let component: LabeledIconComponent
+  let fixture: ComponentFixture<LabeledIconComponent>
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach( waitForAsync( () => {
+    TestBed.configureTestingModule( {
       declarations: [ LabeledIconComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+      imports     : [ IonicModule.forRoot() ]
+    } )
+           .compileComponents()
 
-    fixture = TestBed.createComponent(LabeledIconComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+    fixture   = TestBed.createComponent( LabeledIconComponent )
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  } ) )
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  it( 'should create', () => {
+    expect( component )
+      .toBeTruthy()
+  } )
+} )

@@ -1,24 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import {
+  ComponentFixture,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { CountrySelectorComponent } from 'src/app/shared/components/country-selector/country-selector.component';
+import { CountrySelectorComponent } from 'src/app/shared/components/country-selector/country-selector.component'
 
-describe('CountrySelectorComponent', () => {
-  let component: CountrySelectorComponent;
-  let fixture: ComponentFixture<CountrySelectorComponent>;
+describe( 'CountrySelectorComponent', () => {
+  let component: CountrySelectorComponent
+  let fixture: ComponentFixture<CountrySelectorComponent>
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach( waitForAsync( () => {
+    TestBed.configureTestingModule( {
       declarations: [ CountrySelectorComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+      imports     : [ IonicModule.forRoot() ]
+    } )
+           .compileComponents()
 
-    fixture = TestBed.createComponent(CountrySelectorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+    fixture   = TestBed.createComponent( CountrySelectorComponent )
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  } ) )
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  it( 'should create', () => {
+    expect( component )
+      .toBeTruthy()
+  } )
+} )

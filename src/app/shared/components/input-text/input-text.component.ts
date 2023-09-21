@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  Input,
+  Input
 } from '@angular/core'
 import {
   FormControl,
@@ -14,17 +14,17 @@ import { z } from 'zod'
 type InputTextType = 'email' | 'password' | 'text' | 'phone' | 'number'
 
 @Component( {
-  standalone: true,
-  selector: 'app-input-text',
+  standalone : true,
+  selector   : 'app-input-text',
   templateUrl: './input-text.component.html',
-  styleUrls: [ './input-text.component.scss' ],
-  imports: [
+  styleUrls  : [ './input-text.component.scss' ],
+  imports    : [
     IonicModule,
     CommonModule,
     ReactiveFormsModule
   ]
 } )
-export class InputTextComponent{
+export class InputTextComponent {
 
   readonly textControl = new FormControl( '', control => {
     control.addValidators( Validators.required )
@@ -35,36 +35,38 @@ export class InputTextComponent{
            .email()
            .parse( control.value )
         }
-        catch (e) {
-          return { email : true}
+        catch ( e ) {
+          return { email: true }
         }
-        break;
-      case "password":
-        control.addValidators(Validators.minLength(8))
         break
-       case "text":
-        control.addValidators(Validators.minLength(3))
+      case 'password':
+        control.addValidators( Validators.minLength( 8 ) )
         break
-      case "phone":
-        control.addValidators(Validators.minLength(8))
-        control.addValidators(Validators.maxLength(9))
+      case 'text':
+        control.addValidators( Validators.minLength( 3 ) )
+        break
+      case 'phone':
+        control.addValidators( Validators.minLength( 8 ) )
+        control.addValidators( Validators.maxLength( 9 ) )
         try {
-          const numberParsed = Number.parseInt(control.value)
-          z.number().parse(numberParsed)
+          const numberParsed = Number.parseInt( control.value )
+          z.number()
+           .parse( numberParsed )
         }
-        catch (e) {
-          return { number : true}
+        catch ( e ) {
+          return { number: true }
         }
-        break;
+        break
       case 'number':
         try {
-          const numberParsed = Number.parseInt(control.value)
-          z.number().parse(numberParsed)
+          const numberParsed = Number.parseInt( control.value )
+          z.number()
+           .parse( numberParsed )
         }
-        catch (e) {
-          return { number : true}
+        catch ( e ) {
+          return { number: true }
         }
-        break;
+        break
     }
     return null
   } )

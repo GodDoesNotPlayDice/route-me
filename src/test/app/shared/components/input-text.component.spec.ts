@@ -83,7 +83,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( '1' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'minlength' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'minlength' ) )
+        .toBeTruthy()
     } )
   } )
   describe( 'Verify Type Phone', () => {
@@ -103,7 +104,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( '' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'required' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'required' ) )
+        .toBeTruthy()
     } )
 
     it( 'should error with min length invalid phone input', () => {
@@ -112,7 +114,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( '1' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'minlength' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'minlength' ) )
+        .toBeTruthy()
     } )
 
     it( 'should error with max length invalid phone input', () => {
@@ -121,7 +124,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( '111122223333' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'maxlength' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'maxlength' ) )
+        .toBeTruthy()
     } )
 
     it( 'should error with caracters invalid phone input', () => {
@@ -130,7 +134,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( 'qwertyabc' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'number' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'number' ) )
+        .toBeTruthy()
     } )
 
     it( 'should error with emojis phone input', () => {
@@ -139,7 +144,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( '🎈🎈🎈🎈' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'number' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'number' ) )
+        .toBeTruthy()
     } )
   } )
   describe( 'Verify Type Number', () => {
@@ -159,7 +165,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( '' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'number' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'number' ) )
+        .toBeTruthy()
     } )
 
     it( 'should error with caracter invalid number input', () => {
@@ -168,7 +175,8 @@ describe( 'InputTextComponent', () => {
       component.textControl.patchValue( 'ab' )
       component.textControl.updateValueAndValidity()
 
-      expect( component.textControl.hasError( 'number' ) ).toBeTruthy()
+      expect( component.textControl.hasError( 'number' ) )
+        .toBeTruthy()
     } )
   } )
 } )

@@ -10,15 +10,18 @@
 <ion-content [fullscreen]="true">
   <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
     <app-stepper></app-stepper>
-    <form (ngSubmit)="submit($event)" class="flex flex-col gap-5">
+    <form (ngSubmit)="submit($event)"
+      class="flex flex-col gap-5">
       <div class="flex flex-col items-center">
-        <ion-icon class="w-40 h-40" name="person-circle-outline"></ion-icon>
+        <ion-icon class="w-40 h-40"
+          name="person-circle-outline"></ion-icon>
         <div class="font-gotham text-xl">Cambiar foto</div>
       </div>
       <div class="flex flex-col gap-3">
         <div class="font-gotham text-base">Preferencia al viajar</div>
         <div class="flex flex-wrap w-80">
-          <div class="bg-gray-200 rounded-full p-2 font-gotham">Pet friendly</div>
+          <div class="bg-gray-200 rounded-full p-2 font-gotham">Pet friendly
+          </div>
         </div>
       </div>
       <app-filled-button
