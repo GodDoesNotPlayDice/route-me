@@ -1,24 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import {
+  ComponentFixture,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { UserPreferencesSelectorBarComponent } from 'src/app/shared/components/user-preferences-selector-bar/user-preferences-selector-bar.component';
+import { UserPreferencesSelectorBarComponent } from 'src/app/shared/components/user-preferences-selector-bar/user-preferences-selector-bar.component'
 
-describe('UserPreferencesSelectorBarComponent', () => {
-  let component: UserPreferencesSelectorBarComponent;
-  let fixture: ComponentFixture<UserPreferencesSelectorBarComponent>;
+describe( 'UserPreferencesSelectorBarComponent', () => {
+  let component: UserPreferencesSelectorBarComponent
+  let fixture: ComponentFixture<UserPreferencesSelectorBarComponent>
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach( waitForAsync( () => {
+    TestBed.configureTestingModule( {
       declarations: [ UserPreferencesSelectorBarComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+      imports     : [ IonicModule.forRoot() ]
+    } )
+           .compileComponents()
 
-    fixture = TestBed.createComponent(UserPreferencesSelectorBarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+    fixture   = TestBed.createComponent( UserPreferencesSelectorBarComponent )
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  } ) )
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  it( 'should create', () => {
+    expect( component )
+      .toBeTruthy()
+  } )
+} )
