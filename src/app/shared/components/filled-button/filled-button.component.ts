@@ -7,20 +7,21 @@ import {
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 
-@Component({
-  standalone: true,
-  selector: 'app-filled-button',
+@Component( {
+  standalone : true,
+  selector   : 'app-filled-button',
   templateUrl: './filled-button.component.html',
-  styleUrls: ['./filled-button.component.scss'],
-  imports: [
+  styleUrls  : [ './filled-button.component.scss' ],
+  imports    : [
     IonicModule,
     CommonModule
   ]
-})
+} )
 export class FilledButtonComponent {
-  @Input() contentText: string = '';
-  @Input() blocked: boolean = false;
-  @Output() onClick = new EventEmitter<void>()
+  @Input() contentText: string = ''
+  @Input() blocked: boolean    = false
+  @Output() onClick            = new EventEmitter<void>()
+
   public clicked( $event: MouseEvent ): void {
     this.onClick.emit()
   }

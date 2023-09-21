@@ -22,7 +22,7 @@ import { StepState } from 'src/app/state/stepper/step.state'
   standalone : true,
   selector   : 'app-step3',
   templateUrl: './step3.page.html',
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     StepperComponent,

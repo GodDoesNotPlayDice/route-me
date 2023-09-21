@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common'
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 
-@Component({
-  standalone: true,
-  selector: 'app-divider',
+@Component( {
+  standalone : true,
+  selector   : 'app-divider',
   templateUrl: './divider.component.html',
-  styleUrls: ['./divider.component.scss'],
-  imports: [
+  styleUrls  : [ './divider.component.scss' ],
+  imports    : [
     IonicModule,
     CommonModule
   ]
-})
+} )
 export class DividerComponent {
 }

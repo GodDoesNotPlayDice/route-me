@@ -1,17 +1,21 @@
 <div>
   <div class="relative z-0">
-    <input [formControl]="textControl" [type]="type" class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
+    <input [formControl]="textControl"
+      [type]="type"
+      class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
       (input)="input($event)"
-           [ngClass]="{
+      [ngClass]="{
            'text-threateningRed-900': textControl.invalid && (textControl.dirty || textControl.touched),
            'text-gray-900' : textControl.valid || !textControl.touched,
            'border-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
            'border-gray-300' : textControl.valid || !textControl.touched,
            'focus:border-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
            'focus:border-indigoBlack-300' : textControl.valid || !textControl.touched
-           }" placeholder="" required/>
+           }"
+      placeholder=""
+      required/>
     <label class="absolute font-gotham text-lg duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-           [ngClass]="{
+      [ngClass]="{
            'peer-focus:text-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
            'peer-focus:text-indigoBlack-300' : textControl.valid || !textControl.touched,
            'text-threateningRed-500': textControl.invalid && (textControl.dirty || textControl.touched),
@@ -29,10 +33,12 @@
         {{placeholder}} es requerido
       </div>
       <div *ngIf="textControl.errors?.['minlength']">
-        Debe contener almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
+        Debe contener
+        almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
       </div>
       <div *ngIf="textControl.errors?.['maxlength']">
-        Debe tener como maximo {{textControl.errors?.['maxlength']?.['requiredLength']}} letras
+        Debe tener como
+        maximo {{textControl.errors?.['maxlength']?.['requiredLength']}} letras
       </div>
       <div *ngIf="textControl.errors?.['number']">
         Debe contener unicamente numeros

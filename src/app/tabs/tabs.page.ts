@@ -15,8 +15,8 @@ import { IonicModule } from '@ionic/angular'
     IonicModule,
     CommonModule
   ]
-})
+} )
 export class TabsPage {
-  public environmentInjector = inject(EnvironmentInjector);
+  public environmentInjector = inject( EnvironmentInjector )
 
 }

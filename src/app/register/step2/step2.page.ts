@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common'
 import {
   Component,
   ViewChild
@@ -14,16 +15,17 @@ import {
 import { Store } from '@ngrx/store'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
+import {
+  RadioButtonData,
+  RadioButtonDataSchema
+} from 'src/app/shared/models'
 import { AppState } from 'src/app/state/app.state'
 import { notifyStep } from 'src/app/state/stepper/step.actions'
 import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
-import { z } from 'zod'
 import { CountrySelectorBarComponent } from '../../shared/components/country-selector-bar/country-selector-bar.component'
 import { DateSelectorComponent } from '../../shared/components/date-selector/date-selector.component'
 import { InputTextComponent } from '../../shared/components/input-text/input-text.component'
 import { RadioButtonComponent } from '../../shared/components/radio-button/radio-button.component'
-import { CommonModule } from '@angular/common'
-import { RadioButtonData } from 'src/app/shared/models/RadioButtonData'
 
 @Component( {
   standalone : true,
@@ -57,11 +59,11 @@ export class Step2Page implements ViewDidEnter {
 
 
   buttons: RadioButtonData[] = [
-    RadioButtonData.parse( {
+    RadioButtonDataSchema.parse( {
       name: 'Hombre',
       icon: 'male-outline'
     } ),
-    RadioButtonData.parse( {
+    RadioButtonDataSchema.parse( {
       name: 'Mujer',
       icon: 'female-outline'
     } )

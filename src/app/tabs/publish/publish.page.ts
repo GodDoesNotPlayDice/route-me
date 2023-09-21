@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
@@ -10,13 +10,13 @@ import { InputTextComponent } from 'src/app/shared/components/input-text/input-t
   selector   : 'app-publish',
   templateUrl: './publish.page.html',
   styleUrls  : [ './publish.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     InputTextComponent,
     DateSelectorComponent,
     AdaptativeButtonComponent
   ]
-})
+} )
 export class PublishPage {
 }

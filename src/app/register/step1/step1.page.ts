@@ -27,7 +27,7 @@ import { updateUserRegister } from 'src/app/state/user-register/user-register.ac
   selector   : 'app-step1',
   templateUrl: './step1.page.html',
   styleUrls  : [ './step1.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     StepperComponent,
     OutlinedButtonComponent,
@@ -37,19 +37,20 @@ import { updateUserRegister } from 'src/app/state/user-register/user-register.ac
     FormsModule,
     CommonModule
   ]
-})
-export class Step1Page implements ViewDidEnter{
+} )
+export class Step1Page implements ViewDidEnter {
 
-  constructor(private store : Store<AppState>,
-    private router : Router) {}
+  constructor( private store: Store<AppState>,
+    private router: Router )
+  {}
 
-  @ViewChild('user') userInput!: InputTextComponent
-  @ViewChild('password') passwordInput!: InputTextComponent
-  @ViewChild('confirmpassword') passwordConfirmInput!: InputTextComponent
-  @ViewChild( 'check') checkbox!: CheckboxComponent
+  @ViewChild( 'user' ) userInput!: InputTextComponent
+  @ViewChild( 'password' ) passwordInput!: InputTextComponent
+  @ViewChild( 'confirmpassword' ) passwordConfirmInput!: InputTextComponent
+  @ViewChild( 'check' ) checkbox!: CheckboxComponent
 
-  formGroup! : FormGroup
-  checkerGroup : FormGroup | undefined
+  formGroup!: FormGroup
+  checkerGroup: FormGroup | undefined
 
   async submit( $event: SubmitEvent ): Promise<void> {
     $event.preventDefault()
@@ -58,33 +59,36 @@ export class Step1Page implements ViewDidEnter{
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
-    if(
+    if (
       !this.formGroup.valid
-    ) return
+    )
+    {
+      return
+    }
 
-    this.store.dispatch(updateUserRegister({
-      email: this.userInput.textControl.value!,
+    this.store.dispatch( updateUserRegister( {
+      email   : this.userInput.textControl.value!,
       password: this.passwordInput.textControl.value!
-    }))
-    this.store.dispatch(notifyStep())
-    await this.router.navigate(['/register/step2'])
+    } ) )
+    this.store.dispatch( notifyStep() )
+    await this.router.navigate( [ '/register/step2' ] )
   }
 
   ionViewDidEnter() {
-    this.checkerGroup = new FormGroup({
+    this.checkerGroup = new FormGroup( {
       pw1: this.passwordInput.textControl,
-      pw2: this.passwordConfirmInput.textControl,
-  }, control => {
-      if (control.value.pw1 !== control.value.pw2) {
+      pw2: this.passwordConfirmInput.textControl
+    }, control => {
+      if ( control.value.pw1 !== control.value.pw2 ) {
         return { password: true }
       }
       return null
-    })
+    } )
 
-    this.formGroup = new FormGroup([
+    this.formGroup = new FormGroup( [
       this.userInput.textControl,
       this.checkerGroup,
       this.checkbox.checkboxControl
-    ])
+    ] )
   }
 }

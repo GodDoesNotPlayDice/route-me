@@ -1,38 +1,35 @@
-import {Component, ViewChild} from '@angular/core';
+import { CommonModule } from '@angular/common'
+import {
+  Component,
+  ViewChild
+} from '@angular/core'
 import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
-import {
-  SearchInputComponent
-} from "../../shared/components/search-input/search-input.component";
-import { CommonModule } from '@angular/common';
-import {
-  MapBoxComponent
-} from "../../shared/components/map-box/map-box.component";
-import {
-  InputTextComponent
-} from "../../shared/components/input-text/input-text.component";
+import { InputTextComponent } from '../../shared/components/input-text/input-text.component'
+import { MapBoxComponent } from '../../shared/components/map-box/map-box.component'
+import { SearchInputComponent } from '../../shared/components/search-input/search-input.component'
 
 @Component( {
   standalone : true,
   selector   : 'app-search',
   templateUrl: './search.page.html',
   styleUrls  : [ './search.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     SearchInputComponent,
     MapBoxComponent,
-    InputTextComponent,
+    InputTextComponent
   ]
-})
+} )
 export class SearchPage implements ViewDidEnter {
 
   constructor() { }
 
-  @ViewChild('search') searchInput! : SearchInputComponent
-  @ViewChild(MapBoxComponent) mapBox! : MapBoxComponent
+  @ViewChild( 'search' ) searchInput!: SearchInputComponent
+  @ViewChild( MapBoxComponent ) mapBox!: MapBoxComponent
 
   ionViewDidEnter(): void {
     // this.searchInput.inputSearch.nativeElement.focus()

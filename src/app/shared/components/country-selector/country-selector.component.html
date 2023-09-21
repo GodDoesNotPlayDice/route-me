@@ -20,7 +20,7 @@
       *ngFor="let p of countriesList.values(); index as i">
       <div (click)="selectCountry(p.name)"
         class="flex justify-evenly items-center gap-4 w-80"
-      [ngClass]="{
+        [ngClass]="{
       'rounded-lg': p.selected,
       'bg-primary-50': p.selected,
       'text-primary-600': p.selected,

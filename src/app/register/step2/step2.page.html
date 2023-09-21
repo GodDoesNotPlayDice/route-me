@@ -7,23 +7,31 @@
   </ion-toolbar>
 </ion-header>
 
-    <ion-content [fullscreen]="true">
-      <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
-        <app-stepper></app-stepper>
-        <form (ngSubmit)="submit($event)" class="flex flex-col gap-5">
-          <app-input-text #user placeholder="Nombre" [type]="'text'"></app-input-text>
-          <app-input-text #lastName placeholder="Apellido"
-            [type]="'text'"></app-input-text>
-          <app-input-text #phone placeholder="Telefono" [type]="'phone'"></app-input-text>
-          <app-country-selector-bar #country></app-country-selector-bar>
-          <app-date-selector #date></app-date-selector>
-          <div class="flex justify-center items-center gap-2">
-            <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-            <div class="text-sm font-gotham text-indigoBlack-500">Genero</div>
-            <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-          </div>
-          <app-radio-button #radio name="genero" [radioButtons]="buttons"></app-radio-button>
-          <app-filled-button contentText="Registrarse"></app-filled-button>
-        </form>
+<ion-content [fullscreen]="true">
+  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
+    <app-stepper></app-stepper>
+    <form (ngSubmit)="submit($event)"
+      class="flex flex-col gap-5">
+      <app-input-text #user
+        placeholder="Nombre"
+        [type]="'text'"></app-input-text>
+      <app-input-text #lastName
+        placeholder="Apellido"
+        [type]="'text'"></app-input-text>
+      <app-input-text #phone
+        placeholder="Telefono"
+        [type]="'phone'"></app-input-text>
+      <app-country-selector-bar #country></app-country-selector-bar>
+      <app-date-selector #date></app-date-selector>
+      <div class="flex justify-center items-center gap-2">
+        <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+        <div class="text-sm font-gotham text-indigoBlack-500">Genero</div>
+        <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+      </div>
+      <app-radio-button #radio
+        name="genero"
+        [radioButtons]="buttons"></app-radio-button>
+      <app-filled-button contentText="Registrarse"></app-filled-button>
+    </form>
   </div>
 </ion-content>

@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common'
-import {Component, Input, OnInit} from '@angular/core'
+import {
+  Component,
+  Input,
+  OnInit
+} from '@angular/core'
 import {
   IonicModule,
   ModalController
@@ -8,50 +12,52 @@ import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/cou
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 
 @Component( {
-  standalone: true,
+  standalone : true,
   selector   : 'app-country-selector',
   templateUrl: './country-selector.component.html',
   styleUrls  : [ './country-selector.component.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     DividerComponent
   ]
 } )
-export class CountrySelectorComponent implements OnInit{
+export class CountrySelectorComponent implements OnInit {
 
   constructor( private modalCtrl: ModalController,
-    private countryPhoneCode: CountryPhoneCodeService ) {}
+    private countryPhoneCode: CountryPhoneCodeService )
+  {}
 
-  @Input() lastSelected : CountryItem | undefined
+  @Input() lastSelected: CountryItem | undefined
   countriesList = new Map<string, CountryItem>()
 
   ngOnInit() {
-    const list : CountryItem[] = this.countryPhoneCode.countriesList.map((data)=>
-    {
-        const notSelected ={
-          image: data.flags.png,
-          name: data.name.common,
-          cca: data.cca2,
+    const list: CountryItem[] = this.countryPhoneCode.countriesList.map(
+      ( data ) =>
+      {
+        const notSelected = {
+          image   : data.flags.png,
+          name    : data.name.common,
+          cca     : data.cca2,
           selected: false
         }
 
-        if(this.lastSelected === undefined){
+        if ( this.lastSelected === undefined ) {
           return notSelected
         }
 
-        if (this.lastSelected.name !== data.name.common){
+        if ( this.lastSelected.name !== data.name.common ) {
           return notSelected
         }
         else {
           return {
-            image: data.flags.png,
-            cca: data.cca2,
-            name: data.name.common,
+            image   : data.flags.png,
+            cca     : data.cca2,
+            name    : data.name.common,
             selected: true
           }
         }
-    })
+      } )
 
     this.countriesList = new Map<string, CountryItem>(
       list.map( ( item ) => [ item.name, item ] ) )
@@ -66,25 +72,25 @@ export class CountrySelectorComponent implements OnInit{
   }
 
   public selectCountry( name: string ): void {
-    if (this.lastSelected !== undefined){
-      const countryEntry = this.countriesList.get(this.lastSelected.name)
-      if (countryEntry !== undefined){
+    if ( this.lastSelected !== undefined ) {
+      const countryEntry = this.countriesList.get( this.lastSelected.name )
+      if ( countryEntry !== undefined ) {
         countryEntry.selected = false
       }
     }
 
-    const countrySelected = this.countriesList.get(name)
-    if (countrySelected !== undefined){
+    const countrySelected = this.countriesList.get( name )
+    if ( countrySelected !== undefined ) {
 
       countrySelected.selected = true
-      this.lastSelected = countrySelected
+      this.lastSelected        = countrySelected
     }
   }
 }
 
 export interface CountryItem {
-  image : string,
+  image: string,
   name: string,
   cca: string
-  selected : boolean
+  selected: boolean
 }

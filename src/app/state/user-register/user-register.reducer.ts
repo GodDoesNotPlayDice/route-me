@@ -9,18 +9,18 @@ import {
 } from 'src/app/state/user-register/user-register.actions'
 import { UserRegisterState } from 'src/app/state/user-register/user-register.state'
 
-const initialState: UserRegisterState = UserRegisterState.parse({
-  name    : '',
-  lastName: '',
-  email   : '',
-  password: '',
-  phone   : '',
-  country   : '',
-  genre   : '',
+const initialState: UserRegisterState = UserRegisterState.parse( {
+  name       : '',
+  lastName   : '',
+  email      : '',
+  password   : '',
+  phone      : '',
+  country    : '',
+  genre      : '',
   description: '',
-  birthDay: new Date(),
+  birthDay   : new Date(),
   preferences: []
-})
+} )
 
 export const userRegisterReducer = createReducer(
   initialState,
@@ -36,7 +36,7 @@ export const userRegisterReducer = createReducer(
     }
   } ),
   on( clearUserRegister, ( state ) => {
-    console.log("cleared")
+    console.log( 'cleared' )
     return {
       ...initialState
     }

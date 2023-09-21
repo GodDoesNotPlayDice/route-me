@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
-	Component,
-	OnInit
+  Component,
+  OnInit
 } from '@angular/core'
 import {
   Router,
@@ -17,7 +17,7 @@ import { PassengerItemComponent } from 'src/app/shared/components/passenger-item
   standalone : true,
   selector   : 'app-trip-details',
   templateUrl: './trip-details.page.html',
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     AdaptativeButtonComponent,
@@ -27,17 +27,18 @@ import { PassengerItemComponent } from 'src/app/shared/components/passenger-item
   ],
   styleUrls  : [ './trip-details.page.scss' ]
 } )
-export class TripDetailsPage implements OnInit{
+export class TripDetailsPage implements OnInit {
 
-	constructor( private urlService: UrlService,
-	private router : Router) {}
+  constructor( private urlService: UrlService,
+    private router: Router )
+  {}
 
-	prevHref: string = '/tabs/home'
+  prevHref: string = '/tabs/home'
 
-	public ngOnInit(): void {
-		this.urlService.previousUrl$.subscribe( ( url ) => {
-			this.prevHref = url
-		})
-		console.log(this.router.getCurrentNavigation()?.extras.state)
-	}
+  public ngOnInit(): void {
+    this.urlService.previousUrl$.subscribe( ( url ) => {
+      this.prevHref = url
+    } )
+    console.log( this.router.getCurrentNavigation()?.extras.state )
+  }
 }
