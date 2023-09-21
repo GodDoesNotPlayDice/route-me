@@ -4,16 +4,17 @@ import { PreferenceName } from 'src/package/preference/domain/value-objects/Pref
 
 export class Preference {
   private constructor(
-    readonly id : PreferenceID,
-    readonly name : PreferenceName,
-    readonly icon : PreferenceIcon
-  ) {}
+    readonly id: PreferenceID,
+    readonly name: PreferenceName,
+    readonly icon: PreferenceIcon
+  )
+  {}
 
   static from(
-    id : PreferenceID,
-    name : PreferenceName,
-    icon : PreferenceIcon
-  ) : Preference {
+    id: PreferenceID,
+    name: PreferenceName,
+    icon: PreferenceIcon
+  ): Preference {
     return new Preference(
       id,
       name,

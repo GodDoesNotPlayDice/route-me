@@ -5,14 +5,15 @@ import { UserID } from 'src/package/user/domain'
 export class TripHistory {
   private constructor(
     readonly id: TripHistoryID,
-    readonly userID : UserID,
-    readonly tripID : TripID
-  ) {}
+    readonly userID: UserID,
+    readonly tripID: TripID
+  )
+  {}
 
   static from(
     id: TripHistoryID,
-    userID : UserID,
-    tripID : TripID
+    userID: UserID,
+    tripID: TripID
   ): TripHistory {
     return new TripHistory(
       id,

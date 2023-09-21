@@ -1,1 +1,1 @@
-export * from './Passenger';
+export * from './Passenger'

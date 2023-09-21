@@ -10,8 +10,9 @@ export class Message {
     readonly id: MessageID,
     readonly userID: UserID,
     readonly chatID: ChatID,
-    readonly content: MessageContent,
-  ) {}
+    readonly content: MessageContent
+  )
+  {}
 
   static from(
     id: MessageID,

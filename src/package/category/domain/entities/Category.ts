@@ -7,17 +7,18 @@ import {
 
 export class Category {
   private constructor(
-    readonly id : CategoryID,
-    readonly name : CategoryName,
-    readonly description : CategoryDescription,
-    readonly photo : CategoryPhoto
-  ) {}
+    readonly id: CategoryID,
+    readonly name: CategoryName,
+    readonly description: CategoryDescription,
+    readonly photo: CategoryPhoto
+  )
+  {}
 
   static from(
-    id : CategoryID,
-    name : CategoryName,
-    description : CategoryDescription,
-    photo : CategoryPhoto
+    id: CategoryID,
+    name: CategoryName,
+    description: CategoryDescription,
+    photo: CategoryPhoto
   ): Category {
     return new Category(
       id,

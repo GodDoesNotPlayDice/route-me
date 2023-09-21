@@ -1,3 +1,3 @@
-export * from './PreferenceID';
-export * from './PreferenceIcon';
-export * from './PreferenceName';
+export * from './PreferenceID'
+export * from './PreferenceIcon'
+export * from './PreferenceName'

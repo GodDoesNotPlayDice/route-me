@@ -1,12 +1,12 @@
-import {z} from "zod";
+import { z } from 'zod'
 
-type TripStateType = 'open' | 'progress' | 'finish'
+type TripStateType = 'open' | 'progress' | 'completed'
 
-const TripStateEnum = z.enum(['open', 'progress', 'finish'])
-type TripStateEnum = z.infer<typeof TripStateEnum>
+export const TripStateEnumSchema = z.enum( [ 'open', 'progress', 'completed' ] )
+export type TripStateEnum = z.infer<typeof TripStateEnumSchema>
 
 export class TripState {
-  constructor(readonly value : TripStateType) {
-    TripStateEnum.parse(value)
+  constructor( readonly value: TripStateType ) {
+    TripStateEnumSchema.parse( value )
   }
 }

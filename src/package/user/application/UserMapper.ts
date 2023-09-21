@@ -3,6 +3,7 @@ import {
   Option,
   Some
 } from 'oxide.ts'
+import { PreferenceID } from 'src/package/preference'
 import { Gender } from 'src/package/shared'
 import {
   User,
@@ -18,33 +19,31 @@ import {
 } from 'src/package/user/domain'
 
 export class UserMapper {
-  // fromJSON
   static fromJson(
-    json : Record<string, any>
-  ): Option<User>{
+    json: Record<string, any>
+  ): Option<User> {
     try {
-      //TODO: corroborar data
-      const preferences = json['preferences'].map((preference : any) => {
-        return preference.id
-      })
+      const preferences = json['preferences'].map( ( preference: any ) => {
+        return new PreferenceID( preference.name )
+      } )
 
       return Some(
         User.from(
-          new UserID(json['id']),
-          new UserEmail(json['email']),
-          new UserName(json['name']),
-          new UserLastName(json['lastName']),
-          new UserDescription(json['description']),
-          new UserPassword(json['password']),
-          new UserPhone(json['phone']),
-          new UserBirthDay(json['birthDay']),
-          new UserCountry(json['country']),
-          new Gender(json['gender']),
+          new UserID( json['id'] ),
+          new UserEmail( json['email'] ),
+          new UserName( json['name'] ),
+          new UserLastName( json['lastName'] ),
+          new UserDescription( json['description'] ),
+          new UserPassword( json['password'] ),
+          new UserPhone( json['phone'] ),
+          new UserBirthDay( json['birthDay'] ),
+          new UserCountry( json['country'] ),
+          new Gender( json['gender'] ),
           preferences
         )
       )
     }
-    catch (e){
+    catch ( e ) {
       return None
     }
   }

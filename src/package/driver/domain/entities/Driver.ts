@@ -6,13 +6,14 @@ export class Driver {
   private constructor(
     readonly id: DriverID,
     readonly userID: UserID,
-    readonly documents : DriverDocument[]
-  ) {}
+    readonly documents: DriverDocument[]
+  )
+  {}
 
   static from(
     id: DriverID,
     userID: UserID,
-    documents : DriverDocument[]
+    documents: DriverDocument[]
   ): Driver {
     return new Driver(
       id,

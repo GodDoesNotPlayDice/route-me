@@ -11,33 +11,34 @@ import {
 } from 'src/package/user/domain'
 import { UserMapper } from '../application/UserMapper'
 
-export class AuthDataFirebase implements AuthRepository{
+export class AuthDataFirebase implements AuthRepository {
   constructor() {
   }
 
-  login(email: UserEmail, password: UserPassword): Promise<Result<User, string>> {
-    const data : Record<string, any> = {
-      id: "abc",
-      email: "hola@gmail.com",
-      name: "juan",
-      lastName: "pedro",
-      password: "12345678",
-      description: "Soy un estudiante de ingeniería civil en informática, me gusta la programación y el desarrollo de software.",
-      phone: "(+56)1234-1234",
-      birthDay: new Date("1990-03-25"),
-      country: "CL",
-      gender: "Hombre",
+  login( email: UserEmail,
+    password: UserPassword ): Promise<Result<User, string>> {
+    const data: Record<string, any> = {
+      id         : 'abc',
+      email      : 'hola@gmail.com',
+      name       : 'juan',
+      lastName   : 'pedro',
+      password   : '12345678',
+      description: 'Soy un estudiante de ingeniería civil en informática, me gusta la programación y el desarrollo de software.',
+      phone      : '(+56)1234-1234',
+      birthDay   : new Date( '1990-03-25' ),
+      country    : 'CL',
+      gender     : 'Hombre',
       preferences: []
     }
-    const user = UserMapper.fromJson(data)
+    const user                      = UserMapper.fromJson( data )
 
-    if (user.isNone()){
-      return Promise.resolve(Err("data error"));
+    if ( user.isNone() ) {
+      return Promise.resolve( Err( 'data error' ) )
     }
-    return Promise.resolve(Ok(user.unwrap()));
+    return Promise.resolve( Ok( user.unwrap() ) )
   }
 
-  register(user:User): Promise<Result<boolean, string>> {
-    return Promise.resolve(Ok(true));
+  register( user: User ): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok( true ) )
   }
 }

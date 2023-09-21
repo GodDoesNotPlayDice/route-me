@@ -1,0 +1,7 @@
+export * from './TripID'
+export * from './TripName'
+export * from './TripSeat'
+export * from './TripPrice'
+export * from './TripState'
+export * from './EndTripDate'
+export * from './TripDescription'

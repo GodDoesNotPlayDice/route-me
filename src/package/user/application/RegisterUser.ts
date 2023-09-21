@@ -18,26 +18,27 @@ import {
   UserPassword,
   UserPhone
 } from 'src/package/user/domain'
+import { ulid } from 'ulidx'
 
 export class RegisterUser {
-  constructor(private repository : AuthRepository) {}
+  constructor( private repository: AuthRepository ) {}
 
   async execute(
-    email :UserEmail,
-    name :UserName,
-    lastName :UserLastName,
-    password :UserPassword,
-    description :UserDescription,
-    phone :UserPhone,
-    country :UserCountry,
-    birthDay :UserBirthDay,
-    gender :Gender,
+    email: UserEmail,
+    name: UserName,
+    lastName: UserLastName,
+    password: UserPassword,
+    description: UserDescription,
+    phone: UserPhone,
+    country: UserCountry,
+    birthDay: UserBirthDay,
+    gender: Gender,
     preferences: PreferenceID[]
   ): Promise<Result<boolean, string>> {
     try {
-      const result = await this.repository.register(
+      const result   = await this.repository.register(
         User.from(
-          new UserID(""),
+          new UserID( ulid() ),
           email,
           name,
           lastName,
@@ -51,9 +52,10 @@ export class RegisterUser {
         )
       )
       const response = result.unwrap()
-      return Promise.resolve(Ok(response))
-    } catch (e) {
-      return Promise.resolve(Err("register error"));
+      return Promise.resolve( Ok( response ) )
+    }
+    catch ( e ) {
+      return Promise.resolve( Err( 'register error' ) )
     }
   }
 }

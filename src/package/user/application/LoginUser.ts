@@ -11,18 +11,19 @@ import {
 } from 'src/package/user/domain'
 
 export class LoginUser {
-  constructor(private repository : AuthRepository) {
+  constructor( private repository: AuthRepository ) {
   }
 
-  async execute(email : UserEmail, password: UserPassword): Promise<Result<User, string>>{
+  async execute( email: UserEmail,
+    password: UserPassword ): Promise<Result<User, string>> {
 
     const result = await this.repository.login(
       email,
       password
     )
-    if (result.isErr()){
-      return Promise.resolve(Err(result.unwrapErr()));
+    if ( result.isErr() ) {
+      return Promise.resolve( Err( result.unwrapErr() ) )
     }
-    return Promise.resolve(Ok(result.unwrap()));
+    return Promise.resolve( Ok( result.unwrap() ) )
   }
 }

@@ -10,14 +10,15 @@ export class DriverDocument {
     readonly id: DriverDocumentID,
     readonly driverID: DriverID,
     readonly name: DriverDocumentName,
-    readonly reference : DriverDocumentReference
-  ) {}
+    readonly reference: DriverDocumentReference
+  )
+  {}
 
   static from(
     id: DriverDocumentID,
     driverID: DriverID,
     name: DriverDocumentName,
-    reference : DriverDocumentReference
+    reference: DriverDocumentReference
   ): DriverDocument {
     return new DriverDocument(
       id,

@@ -1,1 +1,1 @@
-export * from './TripHistory';
+export * from './TripHistory'

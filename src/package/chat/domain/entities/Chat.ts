@@ -4,12 +4,13 @@ import { TripID } from 'src/package/trip/domain/value-objects/TripID'
 export class Chat {
   private constructor(
     readonly id: ChatID,
-    readonly tripID : TripID
-  ) {}
+    readonly tripID: TripID
+  )
+  {}
 
   static from(
     id: ChatID,
-    tripID : TripID
+    tripID: TripID
   ): Chat {
     return new Chat(
       id,

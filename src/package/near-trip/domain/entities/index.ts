@@ -1,1 +1,1 @@
-export * from './NearTrip';
+export * from './NearTrip'

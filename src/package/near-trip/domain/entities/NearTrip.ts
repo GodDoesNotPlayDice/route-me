@@ -1,7 +1,7 @@
 export class NearTrip {
   constructor(
     readonly id: string,
-    readonly tripID : string,
+    readonly tripID: string,
     readonly startDate: Date,
     readonly endDate: Date,
     readonly startLocation: string,
@@ -9,5 +9,6 @@ export class NearTrip {
     readonly categoryName: string,
     readonly latitude: number,
     readonly longitude: number
-  ) {}
+  )
+  {}
 }
