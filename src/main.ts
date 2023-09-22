@@ -4,6 +4,7 @@ import {
   importProvidersFrom
 } from '@angular/core'
 import { AngularFireModule } from '@angular/fire/compat'
+import { AngularFireAuthModule } from '@angular/fire/compat/auth'
 import {
   AngularFireDatabase,
   AngularFireDatabaseModule
@@ -42,6 +43,7 @@ import { RegisterUser } from 'src/package/user/application/RegisterUser'
 import { AuthRepository } from 'src/package/user/domain/repository/AuthRepository'
 import { environment } from './environments/environment'
 import { Storage } from '@ionic/storage-angular'
+import { provideAuth, getAuth } from '@angular/fire/auth'
 
 
 if ( environment.production ) {
@@ -114,7 +116,8 @@ bootstrapApplication( AppComponent, {
         AngularFireDatabaseModule,
         AngularFirestoreModule,
         AngularFireStorageModule,
-        IonicStorageModule.forRoot()
+        AngularFireAuthModule,
+        IonicStorageModule.forRoot(),
       ]
     ),
     provideRouter( routes )

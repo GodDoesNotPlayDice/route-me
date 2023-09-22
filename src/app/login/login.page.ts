@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core'
+import { AngularFireAuth } from '@angular/fire/compat/auth'
 import {
   FormGroup,
   FormsModule,
@@ -19,6 +20,7 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
+import * as auth from 'firebase/auth';
 import { match } from 'oxide.ts'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
@@ -26,7 +28,6 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AppState } from 'src/app/state/app.state'
 import { clearUserRegister } from 'src/app/state/user-register/user-register.actions'
-import { GetAllUsers } from 'src/package/user'
 import { AuthService } from '../services/auth/auth.service'
 import { CheckboxComponent } from '../shared/components/checkbox/checkbox.component'
 
@@ -49,14 +50,36 @@ import { CheckboxComponent } from '../shared/components/checkbox/checkbox.compon
   ],
   styleUrls  : [ './login.page.scss' ]
 } )
-export class LoginPage implements ViewDidEnter {
+export class LoginPage implements ViewDidEnter, OnInit {
 
   constructor(
     private store: Store<AppState>,
     private authService: AuthService,
     private router: Router,
-    private alertController: AlertController
-  ) {}
+    private alertController: AlertController,
+    public auth: AngularFireAuth,
+    // public ngZone: NgZone
+  )
+  {}
+
+  async ngOnInit() {
+    console.log("in")
+    console.log("out")
+  }
+
+  GoogleAuth() {
+    return this.AuthLogin(new auth.GoogleAuthProvider());
+  }
+  AuthLogin(provider: any) {
+    return this.auth
+               .signInWithPopup(provider)
+               .then((result) => {
+                 console.log("ok")
+               })
+               .catch((error) => {
+                 console.log("err")
+               });
+  }
 
   @ViewChild( 'user' ) userInput!: InputTextComponent
   @ViewChild( 'password' ) passwordInput!: InputTextComponent
