@@ -8,10 +8,7 @@ import {
   AngularFireDatabase,
   AngularFireDatabaseModule
 } from '@angular/fire/compat/database'
-import {
-  AngularFirestore,
-  AngularFirestoreModule
-} from '@angular/fire/compat/firestore'
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { AngularFireStorageModule } from '@angular/fire/compat/storage'
 import {
   FormsModule,
@@ -27,6 +24,7 @@ import {
   IonicModule,
   IonicRouteStrategy
 } from '@ionic/angular'
+import { IonicStorageModule } from '@ionic/storage-angular'
 import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
@@ -39,7 +37,6 @@ import {
 import { LoginUser } from 'src/package/user/application/LoginUser'
 import { RegisterUser } from 'src/package/user/application/RegisterUser'
 import { AuthRepository } from 'src/package/user/domain/repository/AuthRepository'
-import { AuthDataMemory } from 'src/package/user/infrastructure/AuthDataMemory'
 import { environment } from './environments/environment'
 
 if ( environment.production ) {
@@ -50,12 +47,15 @@ bootstrapApplication( AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
-      provide   : AuthRepository,
-      useFactory: (firebase : AngularFireDatabase) => {
+      provide: AuthRepository,
+      // useFactory: (storage : Storage) => {
+      useFactory: ( firebase: AngularFireDatabase ) => {
         // return new AuthDataMemory()
-        return new AuthDataFirebase(firebase)
+        return new AuthDataFirebase( firebase )
+        // return new AuthDataLocalStorage(storage)
       },
-      deps      : [AngularFireDatabase]
+      deps      : [ AngularFireDatabase ]
+      // deps      : [Storage]
     },
     {
       provide   : GetAllUsers,
@@ -98,10 +98,11 @@ bootstrapApplication( AppComponent, {
         HttpClientModule,
         BrowserAnimationsModule,
         StoreModule.forRoot( ROOT_REDUCERS ),
-        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireModule.initializeApp( environment.firebaseConfig ),
         AngularFireDatabaseModule,
         AngularFirestoreModule,
-        AngularFireStorageModule
+        AngularFireStorageModule,
+        IonicStorageModule.forRoot()
       ]
     ),
     provideRouter( routes )

@@ -56,12 +56,12 @@ export class LoginPage implements ViewDidEnter, OnInit {
     private authService: AuthService,
     private router: Router,
     private alertController: AlertController,
-    private get : GetAllUsers
- )
+    private get: GetAllUsers
+  )
   {}
 
-  async ngOnInit(){
-      await this.get.execute()
+  async ngOnInit() {
+    await this.get.execute()
 
   }
 
