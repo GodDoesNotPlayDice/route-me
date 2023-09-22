@@ -11,9 +11,9 @@ import {
   UserEmail,
   UserPassword
 } from 'src/package/user/domain'
-import { UserMapper } from '../application/UserMapper'
+import { UserMapper } from 'src/package/user/application/UserMapper'
 
-export class AuthDataFirebase implements AuthRepository {
+export class AuthFirebase implements AuthRepository {
   constructor( private firebase: AngularFireDatabase ) {
   }
 

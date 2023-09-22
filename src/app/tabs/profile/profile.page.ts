@@ -5,7 +5,8 @@ import { Some } from 'oxide.ts'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
 import { User } from 'src/package/user/domain/entities/User'
-import { defaultUsers } from 'src/package/user/infrastructure/AuthDataMemory'
+//TODO: no deberia haber datos de infra en la capa de presentacion
+import { defaultUsers } from 'src/package/user/infrastructure/auth/repository/AuthMemory'
 import { AuthService } from '../../services/auth/auth.service'
 
 @Component( {

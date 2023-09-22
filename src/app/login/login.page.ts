@@ -49,21 +49,14 @@ import { CheckboxComponent } from '../shared/components/checkbox/checkbox.compon
   ],
   styleUrls  : [ './login.page.scss' ]
 } )
-export class LoginPage implements ViewDidEnter, OnInit {
+export class LoginPage implements ViewDidEnter {
 
   constructor(
     private store: Store<AppState>,
     private authService: AuthService,
     private router: Router,
-    private alertController: AlertController,
-    private get: GetAllUsers
-  )
-  {}
-
-  async ngOnInit() {
-    await this.get.execute()
-
-  }
+    private alertController: AlertController
+  ) {}
 
   @ViewChild( 'user' ) userInput!: InputTextComponent
   @ViewChild( 'password' ) passwordInput!: InputTextComponent

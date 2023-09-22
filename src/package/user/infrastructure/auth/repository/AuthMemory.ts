@@ -17,17 +17,9 @@ import {
   UserPassword,
   UserPhone
 } from 'src/package/user/domain'
-import { UserMapper } from '../application/UserMapper'
+import { UserMapper } from 'src/package/user/application/UserMapper'
 
-export class AuthDataMemory implements AuthRepository {
-  constructor() {
-  }
-
-  getAll(): Promise<Result<User[], string>> {
-
-    return Promise.resolve( Err( 'err' ) )
-  }
-
+export class AuthMemory implements AuthRepository {
   private context: User[] = defaultUsers
 
   async login( email: UserEmail,
