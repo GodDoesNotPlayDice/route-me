@@ -31,13 +31,18 @@ import { routes } from 'src/app/app.routes'
 import { AuthService } from 'src/app/services/auth/auth.service'
 import { ROOT_REDUCERS } from 'src/app/state/app.state'
 import {
-  AuthDataFirebase,
+  AuthDAO,
+  AuthDaoLocalStorage,
+  AuthFirebase,
+  AuthLocalStorage,
   GetAllUsers
 } from 'src/package/user'
 import { LoginUser } from 'src/package/user/application/LoginUser'
 import { RegisterUser } from 'src/package/user/application/RegisterUser'
 import { AuthRepository } from 'src/package/user/domain/repository/AuthRepository'
 import { environment } from './environments/environment'
+import { Storage } from '@ionic/storage-angular'
+
 
 if ( environment.production ) {
   enableProdMode()
@@ -48,21 +53,28 @@ bootstrapApplication( AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: AuthRepository,
-      // useFactory: (storage : Storage) => {
-      useFactory: ( firebase: AngularFireDatabase ) => {
-        // return new AuthDataMemory()
-        return new AuthDataFirebase( firebase )
-        // return new AuthDataLocalStorage(storage)
+      useFactory: (storage : Storage) => {
+      // useFactory: ( firebase: AngularFireDatabase ) => {
+        // return new AuthMemory()
+        // return new AuthFirebase( firebase )
+        return new AuthLocalStorage(storage)
       },
-      deps      : [ AngularFireDatabase ]
-      // deps      : [Storage]
+      // deps      : [ AngularFireDatabase ]
+      deps      : [Storage]
+    },
+    {
+      provide: AuthDAO,
+      useFactory: (storage : Storage) => {
+        return new AuthDaoLocalStorage(storage)
+      },
+      deps      : [Storage]
     },
     {
       provide   : GetAllUsers,
-      useFactory: ( authRepository: AuthRepository ) => {
-        return new GetAllUsers( authRepository )
+      useFactory: ( authDao: AuthDAO ) => {
+        return new GetAllUsers( authDao )
       },
-      deps      : [ AuthRepository ]
+      deps      : [ AuthDAO ]
     },
     {
       provide   : LoginUser,

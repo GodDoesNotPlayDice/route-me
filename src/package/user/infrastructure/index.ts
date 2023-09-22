@@ -1,2 +1,1 @@
-export * from './AuthDataMemory'
-export * from './AuthDataFirebase'
+export * from './auth';

@@ -19,6 +19,35 @@ import {
 } from 'src/package/user/domain'
 
 export class UserMapper {
+  static toJson(user : User): Option<Record<string, any>> {
+    try {
+      const preferences = user.preferences
+                                .map( ( preference: PreferenceID ) => {
+                                  return preference.value
+                                } )
+
+      const json : Record<string, any> = {
+        id         : user.id.value,
+        email      : user.email.value,
+        name       : user.name.value,
+        lastName   : user.lastName.value,
+        password   : user.password.value,
+        description: user.description.value,
+        phone      : user.phone.value,
+        birthDay   : user.birthDay.value,
+        country    : user.country.value,
+        gender: user.gender.value,
+        preferences
+      }
+      return Some(json)
+    }
+    catch ( e ) {
+      console.log( 'e' )
+      console.log( e )
+      return None
+    }
+  }
+  //TODO: probar con string
   static fromJson(
     json: Record<string, any>
   ): Option<User> {
@@ -34,8 +63,8 @@ export class UserMapper {
           new UserEmail( json['email'] ),
           new UserName( json['name'] ),
           new UserLastName( json['lastName'] ),
-          new UserDescription( json['description'] ),
           new UserPassword( json['password'] ),
+          new UserDescription( json['description'] ),
           new UserPhone( json['phone'] ),
           new UserBirthDay( new Date( json['birthDay'] ) ),
           new UserCountry( json['country'] ),

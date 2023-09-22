@@ -1,14 +1,9 @@
 import { Result } from 'oxide.ts'
-import { User } from '../entities/User'
-import { UserEmail } from '../value-objects/UserEmail'
-import { UserPassword } from '../value-objects/UserPassword'
+import { UserEmail, UserPassword } from 'src/package/user/domain/value-objects'
+import { User } from 'src/package/user/domain/entities';
 
 export abstract class AuthRepository {
   abstract login( email: UserEmail,
     password: UserPassword ): Promise<Result<User, string>>
-
   abstract register( user: User ): Promise<Result<boolean, string>>
-
-  abstract getAll(): Promise<Result<User[], string>>
-
 }
