@@ -23,9 +23,10 @@ export class UserMapper {
     json: Record<string, any>
   ): Option<User> {
     try {
-      const preferences = Object.values(json['preferences']).map( ( preference: any ) => {
-        return new PreferenceID( preference.name )
-      } )
+      const preferences = Object.values( json['preferences'] )
+                                .map( ( preference: any ) => {
+                                  return new PreferenceID( preference.name )
+                                } )
 
       return Some(
         User.from(
@@ -36,7 +37,7 @@ export class UserMapper {
           new UserDescription( json['description'] ),
           new UserPassword( json['password'] ),
           new UserPhone( json['phone'] ),
-          new UserBirthDay( new Date(json['birthDay']) ),
+          new UserBirthDay( new Date( json['birthDay'] ) ),
           new UserCountry( json['country'] ),
           new Gender( json['gender'] ),
           preferences
@@ -44,8 +45,8 @@ export class UserMapper {
       )
     }
     catch ( e ) {
-      console.log('e')
-      console.log(e)
+      console.log( 'e' )
+      console.log( e )
       return None
     }
   }
