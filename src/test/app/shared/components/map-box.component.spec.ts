@@ -5,7 +5,7 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { MapBoxComponent } from './map-box.component'
+import { MapBoxComponent } from 'src/app/shared/components/map-box/map-box.component'
 
 describe( 'MapBoxComponent', () => {
   let component: MapBoxComponent

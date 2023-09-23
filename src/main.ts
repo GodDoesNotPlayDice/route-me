@@ -28,7 +28,7 @@ import { IonicStorageModule } from '@ionic/storage-angular'
 import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
-import { AuthService } from 'src/app/services/auth/auth.service'
+import { AuthService } from 'src/app/services/auth.service'
 import { ROOT_REDUCERS } from 'src/app/state/app.state'
 import {
   AuthDAO,

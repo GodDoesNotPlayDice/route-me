@@ -15,7 +15,7 @@ import {
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import { UserPreferenceService } from 'src/app/services/user-preference/user-preference.service'
+import { UserPreferenceService } from 'src/app/services/user-preference.service'
 import { AppState } from 'src/app/state/app.state'
 import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
 import { selectUserPreferencesRegister } from 'src/app/state/user-register/user-register.selectors'

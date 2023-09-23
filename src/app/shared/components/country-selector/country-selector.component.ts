@@ -8,7 +8,7 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
-import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
+import { CountryPhoneCodeService } from 'src/app/services/country-phone-code.service'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 
 @Component( {

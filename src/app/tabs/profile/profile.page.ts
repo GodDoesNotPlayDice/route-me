@@ -7,7 +7,7 @@ import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/lab
 import { User } from 'src/package/user/domain/entities/User'
 //TODO: no deberia haber datos de infra en la capa de presentacion
 import { defaultUsers } from 'src/package/user/infrastructure/auth/repository/AuthMemory'
-import { AuthService } from '../../services/auth/auth.service'
+import { AuthService } from 'src/app/services/auth.service'
 
 @Component( {
   standalone : true,

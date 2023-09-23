@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { UserPreference } from '../../state/user-register/user-register.state'
+import { UserPreference } from 'src/app/state/user-register/user-register.state'
 
 @Injectable( {
   providedIn: 'root'

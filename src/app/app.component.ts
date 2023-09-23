@@ -10,8 +10,8 @@ import {
   Router
 } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
-import { UrlService } from 'src/app/services/url/url.service'
+import { CountryPhoneCodeService } from 'src/app/services/country-phone-code.service'
+import { UrlService } from 'src/app/services/url.service'
 import {
   Dropdown,
   initTE,

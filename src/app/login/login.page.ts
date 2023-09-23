@@ -27,7 +27,7 @@ import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-butt
 import { AppState } from 'src/app/state/app.state'
 import { clearUserRegister } from 'src/app/state/user-register/user-register.actions'
 import { GetAllUsers } from 'src/package/user'
-import { AuthService } from '../services/auth/auth.service'
+import { AuthService } from 'src/app/services/auth.service'
 import { CheckboxComponent } from '../shared/components/checkbox/checkbox.component'
 
 

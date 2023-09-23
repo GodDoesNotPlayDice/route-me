@@ -21,7 +21,7 @@ export class AuthFirebase implements AuthRepository {
 
   getAll(): Promise<Result<User[], string>> {
 
-    console.log( 'init' )
+    console.log( 'firebaseinit' )
     console.log( this.firebase.database.ref( 'users' ) )
     this.firebase.database.ref( 'users' )
         .get()
@@ -36,7 +36,7 @@ export class AuthFirebase implements AuthRepository {
             console.log( s.unwrap() )
           }
         } )
-    console.log( 'end' )
+    console.log( 'firebaseend' )
 
     return Promise.resolve( Ok( [] ) )
 
