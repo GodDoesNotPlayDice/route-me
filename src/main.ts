@@ -31,6 +31,7 @@ import { routes } from 'src/app/app.routes'
 import { AuthService } from 'src/app/services/auth/auth.service'
 import { ROOT_REDUCERS } from 'src/app/state/app.state'
 import {
+  AuthDataExcel,
   AuthDataFirebase,
   GetAllUsers
 } from 'src/package/user'
@@ -49,12 +50,14 @@ bootstrapApplication( AppComponent, {
     {
       provide: AuthRepository,
       // useFactory: (storage : Storage) => {
-      useFactory: ( firebase: AngularFireDatabase ) => {
+      // useFactory: ( firebase: AngularFireDatabase ) => {
+      useFactory: () => {
         // return new AuthDataMemory()
-        return new AuthDataFirebase( firebase )
+        return new AuthDataExcel()
         // return new AuthDataLocalStorage(storage)
       },
-      deps      : [ AngularFireDatabase ]
+      deps: []
+      // deps      : [ AngularFireDatabase ]
       // deps      : [Storage]
     },
     {
