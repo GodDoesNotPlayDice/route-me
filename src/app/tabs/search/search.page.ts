@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
+  ElementRef,
   ViewChild
 } from '@angular/core'
 import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
+import { MapService } from 'src/app/services'
 import { InputTextComponent } from '../../shared/components/input-text/input-text.component'
-import { MapBoxComponent } from '../../shared/components/map-box/map-box.component'
 import { SearchInputComponent } from '../../shared/components/search-input/search-input.component'
 
 @Component( {
@@ -20,19 +21,17 @@ import { SearchInputComponent } from '../../shared/components/search-input/searc
     IonicModule,
     CommonModule,
     SearchInputComponent,
-    MapBoxComponent,
     InputTextComponent
   ]
 } )
 export class SearchPage implements ViewDidEnter {
 
-  constructor() { }
-
+  constructor( private map: MapService ) {}
   @ViewChild( 'search' ) searchInput!: SearchInputComponent
-  @ViewChild( MapBoxComponent ) mapBox!: MapBoxComponent
+  @ViewChild( 'smap' ) divElementElementRef!: ElementRef<HTMLDivElement>
 
   ionViewDidEnter(): void {
     // this.searchInput.inputSearch.nativeElement.focus()
-    this.mapBox.ionViewDidEnter()
+    	this.map.init('search', this.divElementElementRef.nativeElement)
   }
 }
