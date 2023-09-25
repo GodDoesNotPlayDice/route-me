@@ -35,6 +35,7 @@ import {
   AuthDaoLocalStorage,
   AuthFirebase,
   AuthLocalStorage,
+  AuthMemory,
   GetAllUsers
 } from 'src/package/user'
 import { LoginUser } from 'src/package/user/application/LoginUser'
@@ -53,14 +54,15 @@ bootstrapApplication( AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: AuthRepository,
-      useFactory: (storage : Storage) => {
+      useFactory: () => {
+      // useFactory: (storage : Storage) => {
       // useFactory: ( firebase: AngularFireDatabase ) => {
-        // return new AuthMemory()
+        return new AuthMemory()
         // return new AuthFirebase( firebase )
-        return new AuthLocalStorage(storage)
+        // return new AuthLocalStorage(storage)
       },
       // deps      : [ AngularFireDatabase ]
-      deps      : [Storage]
+      // deps      : [Storage]
     },
     {
       provide: AuthDAO,

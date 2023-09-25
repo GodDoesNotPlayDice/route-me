@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router'
+import { CanLoginGuard } from 'src/app/guard'
 
 export const routes: Routes = [
   {
@@ -12,6 +13,7 @@ export const routes: Routes = [
   },
   {
     path        : 'tabs',
+    canActivate: [ CanLoginGuard ],
     loadChildren: () => import('./tabs/tabs.routes').then( m => m.routes )
   },
   {
@@ -26,11 +28,13 @@ export const routes: Routes = [
   },
   {
     path         : 'trip-details',
+    canActivate: [ CanLoginGuard ],
     loadComponent: () => import('./trip-details/trip-details.page').then(
       m => m.TripDetailsPage )
   },
   {
     path         : 'chat',
+    canActivate: [ CanLoginGuard ],
     loadComponent: () => import('./chat/chat.page').then( m => m.ChatPage )
   }
 ]
