@@ -1,6 +1,5 @@
 import {
-  Option,
-  Some
+  Option
 } from 'oxide.ts'
 import { CategoryID } from 'src/package/category'
 import { ChatID } from 'src/package/chat'
