@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import { take } from 'rxjs'
 import {
   Country,
   CountrySchema
@@ -15,6 +16,7 @@ export class CountryPhoneCodeService {
 
   constructor( private http: HttpClient ) {
     this.http.get( this.url )
+        .pipe(take(1))
         .subscribe( ( res: any ) => {
           this.countriesList = z.array( CountrySchema )
                                 .parse( res )

@@ -10,6 +10,7 @@ export class TripCreator {
   constructor( private repository: TripDAO ) {
   }
 
+  // TODO: aparte de recibir trip data, deberia gestionar que pricing strategy se va a usar
   async execute(): Promise<Result<boolean, string>> {
     // const result = await this.repository.save()
     // return Promise.resolve( Ok( result.unwrap() ) )

@@ -4,8 +4,10 @@ import {
   UserID
 } from 'src/package/user/domain/value-objects'
 
-export abstract class AuthDAO {
+export abstract class AuthDAO { // Data access object
+
   abstract getAll(): Promise<Result<User[], string>>
   abstract delete(id : UserID): Promise<Result<boolean, string>>
   abstract update(user: User): Promise<Result<boolean, string>>
+  abstract create(user: User): Promise<Result<boolean, string>>
 }
