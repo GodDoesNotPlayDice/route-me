@@ -1,3 +1,7 @@
+import {
+  Option,
+  Some
+} from 'oxide.ts'
 import { CategoryID } from 'src/package/category'
 import { ChatID } from 'src/package/chat'
 import { DriverID } from 'src/package/driver'
@@ -14,7 +18,7 @@ import {
   TripPrice,
   TripSeat,
   TripState
-} from 'src/package/trip/domain/value-objects'
+} from '../value-objects'
 
 export class Trip {
   private constructor(
@@ -31,9 +35,9 @@ export class Trip {
     readonly startLocation: Location,
     readonly endLocation: Location,
     readonly startDate: CreatedAt,
-    readonly endDate: EndTripDate
-  )
-  {}
+    //TODO: revisar si al mandar fecha invalida, llega error de zod
+    readonly endDate: Option<EndTripDate>
+  ) {}
 
   static from(
     id: TripID,
@@ -49,7 +53,7 @@ export class Trip {
     startLocation: Location,
     endLocation: Location,
     startDate: CreatedAt,
-    endDate: EndTripDate
+    endDate: Option<EndTripDate>
   ): Trip {
     return new Trip(
       id,

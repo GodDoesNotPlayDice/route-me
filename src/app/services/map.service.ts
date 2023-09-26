@@ -44,7 +44,8 @@ export class MapService implements OnDestroy {
           longitude: this.location.position.coords.longitude
         }
       }
-      : { coords: { latitude: 43.1746, longitude: -2.4125 } }
+      // : { coords: { latitude: 43.1746, longitude: -2.4125 } }
+      : { coords: { latitude: -40.6294, longitude: -133.6242 } }
     this.map.set( key, new mapboxgl.Map( {
       container: divElement.id,
       style    : this.style,

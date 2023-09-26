@@ -83,7 +83,6 @@ export class Step4Page implements OnInit, ViewDidEnter {
       return
     }
 
-    // TODO: revisar mejor forma de desuscribirse
     const userRegister$ = this.store.select( selectUserRegister )
                               .subscribe( ( userRegister ) => {
                                 if ( userRegister.description !== '' ) {
@@ -96,7 +95,7 @@ export class Step4Page implements OnInit, ViewDidEnter {
       preferences: this.preferenceInput.preferencesControl.value!
     } ) )
 
-    // TODO: revisar pipe takeLast(1)
+    // TODO: revisar mejor forma de desuscribirse, revisar pipe takeLast(1)
     userRegister$.unsubscribe()
     this.store.dispatch( notifyStep() )
     this.store.dispatch( clearUserRegister() )
