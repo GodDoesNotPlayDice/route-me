@@ -9,6 +9,10 @@ import {
 } from 'src/package/user/domain'
 
 export class AuthDaoFirebase implements AuthDAO {
+  public create( user: User ): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok(true) )
+  }
+
   public delete( id: UserID ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok(true) )
   }
@@ -20,5 +24,4 @@ export class AuthDaoFirebase implements AuthDAO {
   public update( user: User ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok(true) )
   }
-
 }

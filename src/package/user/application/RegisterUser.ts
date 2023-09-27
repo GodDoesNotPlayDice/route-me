@@ -20,6 +20,12 @@ import {
 } from 'src/package/user/domain'
 import { ulid } from 'ulidx'
 
+// --- Frontend
+// Login Page
+// Auth Service http
+// --- Backend
+// Auth Controller id
+// RegisterUser ( Repository)
 export class RegisterUser {
   constructor( private repository: AuthRepository ) {}
 

@@ -19,6 +19,10 @@ export class AuthDaoLocalStorage implements AuthDAO {
     await this.storage.create()
   }
 
+  public create( user: User ): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok(true) )
+  }
+
   public delete( id: UserID ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok(true) )
   }
@@ -30,5 +34,4 @@ export class AuthDaoLocalStorage implements AuthDAO {
   public update( user: User ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok(true) )
   }
-
 }
