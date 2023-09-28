@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { CanLoginGuard } from 'src/app/guard';
+import { CanLoginGuard } from 'src/app/shared/guard';
 
 
 describe('CanLoginGuard', () => {

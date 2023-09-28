@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 
-import { UserPreferenceService } from 'src/app/services/user-preference.service'
+import { UserPreferenceService } from 'src/app/shared/services/user-preference.service'
 
 describe( 'UserPreferenceService', () => {
   let service: UserPreferenceService

@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { AvatarHomeComponent } from 'src/app/shared/components/Avatars/avatar-home/avatar-home.component'
+import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
 
 describe( 'AvatarHomeComponent', () => {
-  let component: AvatarHomeComponent
-  let fixture: ComponentFixture<AvatarHomeComponent>
+  let component: AvatarComponent
+  let fixture: ComponentFixture<AvatarComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ AvatarHomeComponent ],
+      declarations: [ AvatarComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( AvatarHomeComponent )
+    fixture   = TestBed.createComponent( AvatarComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

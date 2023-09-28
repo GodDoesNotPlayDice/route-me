@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LocationService } from 'src/app/services/location.service';
+import { LocationService } from 'src/app/shared/services/location.service';
 
 describe('LocationService', () => {
   let service: LocationService;
