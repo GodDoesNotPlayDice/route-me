@@ -4,7 +4,7 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
-import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
+import { SearchInputComponent } from '..'
 
 @Component( {
   standalone : true,

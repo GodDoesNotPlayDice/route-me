@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  OnInit,
   ViewChild
 } from '@angular/core'
 import {
@@ -20,16 +19,15 @@ import {
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { match } from 'oxide.ts'
-import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
-import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
-import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
-import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
-import { AppState } from 'src/app/state/app.state'
-import { clearUserRegister } from 'src/app/state/user-register/user-register.actions'
-import { GetAllUsers } from 'src/package/user'
-import { AuthService } from 'src/app/services/auth.service'
-import { CheckboxComponent } from '../shared/components/checkbox/checkbox.component'
-
+import { AppState, clearUserRegister } from 'src/app/shared/state'
+import {
+  CheckboxComponent,
+  FilledButtonComponent,
+  InputTextComponent,
+  LogoComponent,
+  OutlinedButtonComponent
+} from 'src/app/shared/components'
+import { AuthService } from 'src/app/shared/services'
 
 @Component( {
   standalone : true,
@@ -49,6 +47,7 @@ import { CheckboxComponent } from '../shared/components/checkbox/checkbox.compon
   ],
   styleUrls  : [ './login.page.scss' ]
 } )
+// controller
 export class LoginPage implements ViewDidEnter {
 
   constructor(

@@ -5,7 +5,6 @@ import {
 } from '@angular/core'
 import { AngularFireModule } from '@angular/fire/compat'
 import {
-  AngularFireDatabase,
   AngularFireDatabaseModule
 } from '@angular/fire/compat/database'
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
@@ -28,19 +27,21 @@ import { IonicStorageModule } from '@ionic/storage-angular'
 import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
-import { AuthService } from 'src/app/services/auth.service'
-import { ROOT_REDUCERS } from 'src/app/state/app.state'
+import { AuthService } from 'src/app/shared/services/auth.service'
+import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import {
-  AuthDAO,
-  AuthDaoLocalStorage,
-  AuthFirebase,
-  AuthLocalStorage,
   AuthMemory,
-  GetAllUsers
+  AuthRepository,
+  LoginUser,
+  RegisterUser
+} from 'src/package/authentication'
+import {
+  GetAllUsers,
+  newUser,
+  User,
+  UserDao,
+  UserDaoLocalStorage
 } from 'src/package/user'
-import { LoginUser } from 'src/package/user/application/LoginUser'
-import { RegisterUser } from 'src/package/user/application/RegisterUser'
-import { AuthRepository } from 'src/package/user/domain/repository/AuthRepository'
 import { environment } from './environments/environment'
 import { Storage } from '@ionic/storage-angular'
 
@@ -48,6 +49,13 @@ import { Storage } from '@ionic/storage-angular'
 if ( environment.production ) {
   enableProdMode()
 }
+
+export const defaultUsers: User[] = [
+  newUser( {
+    id: 'abc',
+    email: 'hola@gmail.com',
+  })
+]
 
 bootstrapApplication( AppComponent, {
   providers: [
@@ -57,7 +65,7 @@ bootstrapApplication( AppComponent, {
       useFactory: () => {
       // useFactory: (storage : Storage) => {
       // useFactory: ( firebase: AngularFireDatabase ) => {
-        return new AuthMemory()
+        return new AuthMemory(defaultUsers)
         // return new AuthFirebase( firebase )
         // return new AuthLocalStorage(storage)
       },
@@ -65,18 +73,18 @@ bootstrapApplication( AppComponent, {
       // deps      : [Storage]
     },
     {
-      provide: AuthDAO,
+      provide: UserDao,
       useFactory: (storage : Storage) => {
-        return new AuthDaoLocalStorage(storage)
+        return new UserDaoLocalStorage(storage)
       },
       deps      : [Storage]
     },
     {
       provide   : GetAllUsers,
-      useFactory: ( authDao: AuthDAO ) => {
+      useFactory: ( authDao: UserDao ) => {
         return new GetAllUsers( authDao )
       },
-      deps      : [ AuthDAO ]
+      deps      : [ UserDao ]
     },
     {
       provide   : LoginUser,

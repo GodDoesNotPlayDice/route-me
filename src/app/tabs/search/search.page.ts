@@ -8,9 +8,11 @@ import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
-import { MapService } from 'src/app/services'
-import { InputTextComponent } from '../../shared/components/input-text/input-text.component'
-import { SearchInputComponent } from '../../shared/components/search-input/search-input.component'
+import {
+  InputTextComponent,
+  SearchInputComponent
+} from 'src/app/shared/components'
+import { MapService } from 'src/app/shared/services'
 
 @Component( {
   standalone : true,

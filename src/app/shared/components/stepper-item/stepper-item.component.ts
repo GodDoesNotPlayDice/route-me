@@ -5,8 +5,10 @@ import {
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import { AppState } from 'src/app/state/app.state'
-import { setPageStep } from 'src/app/state/stepper/step.actions'
+import {
+  AppState,
+  setPageStep
+} from 'src/app/shared/state'
 
 @Component( {
   standalone : true,

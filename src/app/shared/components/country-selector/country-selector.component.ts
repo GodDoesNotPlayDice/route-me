@@ -8,8 +8,12 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
-import { CountryPhoneCodeService } from 'src/app/services/country-phone-code.service'
-import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
+import {
+  CountryItem,
+  newCountryItem
+} from 'src/app/shared/models'
+import { DividerComponent } from '..'
+import { CountryPhoneCodeService } from '../../services'
 
 @Component( {
   standalone : true,
@@ -35,12 +39,12 @@ export class CountrySelectorComponent implements OnInit {
     const list: CountryItem[] = this.countryPhoneCode.countriesList.map(
       ( data ) =>
       {
-        const notSelected = {
+        const notSelected = newCountryItem({
           image   : data.flags.png,
           name    : data.name.common,
           cca     : data.cca2,
           selected: false
-        }
+        })
 
         if ( this.lastSelected === undefined ) {
           return notSelected
@@ -50,12 +54,12 @@ export class CountrySelectorComponent implements OnInit {
           return notSelected
         }
         else {
-          return {
+          return newCountryItem({
             image   : data.flags.png,
             cca     : data.cca2,
             name    : data.name.common,
             selected: true
-          }
+          })
         }
       } )
 
@@ -88,9 +92,3 @@ export class CountrySelectorComponent implements OnInit {
   }
 }
 
-export interface CountryItem {
-  image: string,
-  name: string,
-  cca: string
-  selected: boolean
-}

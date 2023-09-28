@@ -11,11 +11,11 @@
     </div>
     <div class="flex flex-col gap-2 font-gotham text-center text-xl">
       <div class="flex justify-center gap-2">
-        <div>{{user.name.value | titlecase}}</div>
-        <div>{{user.lastName.value | titlecase}}</div>
+        <div>{{passenger.name.value | titlecase}}</div>
+        <div>{{passenger.lastName.value | titlecase}}</div>
       </div>
       <div>{{edad}} años</div>
-      <div>{{user.phone.value}}</div>
+      <div>{{passenger.phone.value}}</div>
     </div>
   </div>
   <app-divider></app-divider>
@@ -38,7 +38,7 @@
       Sobre Mi
     </div>
     <div class="text-gray-700 text-base font-normal">
-      {{user.description.value}}
+      {{passenger.description.value}}
     </div>
     <div class="font-gotham text-xl">
       Preferencias

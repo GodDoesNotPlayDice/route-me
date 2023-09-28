@@ -11,8 +11,7 @@ import {
   MatMenuTrigger
 } from '@angular/material/menu'
 import { IonicModule } from '@ionic/angular'
-import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
-import { AvatarHomeComponent } from 'src/app/shared/components/Avatars/avatar-home/avatar-home.component'
+import { AdaptativeButtonComponent, AvatarComponent } from '..'
 
 
 @Component( {
@@ -23,7 +22,7 @@ import { AvatarHomeComponent } from 'src/app/shared/components/Avatars/avatar-ho
   imports    : [
     IonicModule,
     CommonModule,
-    AvatarHomeComponent,
+    AvatarComponent,
     AdaptativeButtonComponent,
     MatMenuModule,
     MatButtonModule,

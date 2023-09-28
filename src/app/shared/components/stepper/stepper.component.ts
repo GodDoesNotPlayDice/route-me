@@ -3,9 +3,11 @@ import { Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import { StepperItemComponent } from 'src/app/shared/components/stepper-item/stepper-item.component'
-import { AppState } from 'src/app/state/app.state'
-import { selectPageStep } from 'src/app/state/stepper/step.selectors'
+import {
+  AppState,
+  selectPageStep
+} from 'src/app/shared/state'
+import { StepperItemComponent } from '..'
 
 @Component( {
   standalone : true,

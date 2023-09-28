@@ -13,19 +13,23 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
-import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import {
-  RadioButtonData,
-  RadioButtonDataSchema
+  CountrySelectorBarComponent,
+  DateSelectorComponent,
+  FilledButtonComponent,
+  InputTextComponent,
+  RadioButtonComponent,
+  StepperComponent
+} from 'src/app/shared/components'
+import {
+  newRadioButtonData,
+  RadioButtonData
 } from 'src/app/shared/models'
-import { AppState } from 'src/app/state/app.state'
-import { notifyStep } from 'src/app/state/stepper/step.actions'
-import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
-import { CountrySelectorBarComponent } from '../../shared/components/country-selector-bar/country-selector-bar.component'
-import { DateSelectorComponent } from '../../shared/components/date-selector/date-selector.component'
-import { InputTextComponent } from '../../shared/components/input-text/input-text.component'
-import { RadioButtonComponent } from '../../shared/components/radio-button/radio-button.component'
+import {
+  AppState,
+  notifyStep,
+  updateUserRegister
+} from 'src/app/shared/state'
 
 @Component( {
   standalone : true,
@@ -57,13 +61,12 @@ export class Step2Page implements ViewDidEnter {
   @ViewChild( 'date' ) dateSelectorInput !: DateSelectorComponent
   @ViewChild( 'radio' ) radioButtonInput !: RadioButtonComponent
 
-
   buttons: RadioButtonData[] = [
-    RadioButtonDataSchema.parse( {
+    newRadioButtonData( {
       name: 'Hombre',
       icon: 'male-outline'
     } ),
-    RadioButtonDataSchema.parse( {
+    newRadioButtonData( {
       name: 'Mujer',
       icon: 'female-outline'
     } )

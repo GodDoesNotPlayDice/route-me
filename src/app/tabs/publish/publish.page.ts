@@ -8,10 +8,12 @@ import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
-import { MapService } from 'src/app/services'
-import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
-import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
-import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
+import {
+  AdaptativeButtonComponent,
+  DateSelectorComponent,
+  InputTextComponent
+} from 'src/app/shared/components'
+import { MapService } from 'src/app/shared/services'
 
 @Component( {
   standalone : true,

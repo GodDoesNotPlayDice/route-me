@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router'
-import { CanLoginGuard } from 'src/app/guard'
+import { CanLoginGuard } from 'src/app/shared/guard'
 
 export const routes: Routes = [
   {

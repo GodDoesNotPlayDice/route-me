@@ -7,16 +7,15 @@ import { FormsModule } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
-import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
-import { AppState } from 'src/app/state/app.state'
-import { notifyStep } from 'src/app/state/stepper/step.actions'
+import { FilledButtonComponent, StepperComponent } from 'src/app/shared/components'
 import {
+  AppState,
+  StepState,
   selectCurrentStep,
   selectMaxStep,
-  selectStepRegister
-} from 'src/app/state/stepper/step.selectors'
-import { StepState } from 'src/app/state/stepper/step.state'
+  selectStepRegister,
+  notifyStep
+} from 'src/app/shared/state'
 
 @Component( {
   standalone : true,

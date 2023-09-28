@@ -8,10 +8,12 @@ import {
   RouterLink
 } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { UrlService } from 'src/app/services/url.service'
-import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
-import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
-import { PassengerItemComponent } from 'src/app/shared/components/passenger-item/passenger-item.component'
+import { UrlService } from 'src/app/shared/services'
+import {
+  AdaptativeButtonComponent,
+  DividerComponent,
+  PassengerItemComponent
+} from 'src/app/shared/components'
 
 @Component( {
   standalone : true,

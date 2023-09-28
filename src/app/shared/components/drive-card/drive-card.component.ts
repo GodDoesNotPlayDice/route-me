@@ -5,8 +5,10 @@ import {
 } from '@angular/core'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { AvatarHomeComponent } from 'src/app/shared/components/Avatars/avatar-home/avatar-home.component'
-import { DriverCardInfo } from 'src/app/shared/models'
+import {
+  DriverCardInfo,
+} from 'src/app/shared/models'
+import { AvatarComponent } from '..'
 
 @Component( {
   standalone : true,
@@ -16,7 +18,7 @@ import { DriverCardInfo } from 'src/app/shared/models'
   imports    : [
     IonicModule,
     CommonModule,
-    AvatarHomeComponent
+    AvatarComponent
   ]
 } )
 export class DriveCardComponent {

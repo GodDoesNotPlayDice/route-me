@@ -15,23 +15,16 @@ import {
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
-import { InputAreaComponent } from 'src/app/shared/components/input-area/input-area.component'
-import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
-import { AppState } from 'src/app/state/app.state'
-import { notifyStep } from 'src/app/state/stepper/step.actions'
 import {
-  selectCurrentStep,
-  selectMaxStep,
-  selectStepRegister
-} from 'src/app/state/stepper/step.selectors'
-import { StepState } from 'src/app/state/stepper/step.state'
-import {
-  clearUserRegister,
-  updateUserRegister
-} from 'src/app/state/user-register/user-register.actions'
-import { selectUserRegister } from 'src/app/state/user-register/user-register.selectors'
-import { UserPreferencesSelectorBarComponent } from '../../shared/components/user-preferences-selector-bar/user-preferences-selector-bar.component'
+  FilledButtonComponent,
+  InputAreaComponent,
+  StepperComponent,
+  UserPreferencesSelectorBarComponent
+} from 'src/app/shared/components'
+import { AppState,
+  StepState,clearUserRegister,
+  notifyStep, selectCurrentStep,
+  selectMaxStep, selectStepRegister, selectUserRegister, updateUserRegister } from 'src/app/shared/state'
 
 @Component( {
   standalone : true,

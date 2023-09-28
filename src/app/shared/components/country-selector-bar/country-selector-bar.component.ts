@@ -8,12 +8,12 @@ import {
   ModalController
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
+import { CountryItem } from 'src/app/shared/models'
 import {
-  CountryItem,
-  CountrySelectorComponent
-} from 'src/app/shared/components/country-selector/country-selector.component'
-import { AppState } from 'src/app/state/app.state'
-import { updateUserRegister } from 'src/app/state/user-register/user-register.actions'
+  AppState,
+  updateUserRegister
+} from 'src/app/shared/state'
+import { CountrySelectorComponent } from '..'
 
 @Component( {
   standalone : true,

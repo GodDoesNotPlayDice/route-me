@@ -7,12 +7,11 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
-import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
-import { UserPreferencesSelectorItemComponent } from 'src/app/shared/components/user-preferences-selector-item/user-preferences-selector-item.component'
 import {
-  PreferenceItem,
-  PreferenceItemSchema
+  newPreferenceItem,
+  PreferenceItem
 } from 'src/app/shared/models'
+import { DividerComponent, UserPreferencesSelectorItemComponent } from '..'
 
 
 @Component( {
@@ -39,14 +38,14 @@ export class UserPreferencesSelectorComponent {
                 .map( ( data ) => {
                   const isSelected = this.selectedPreferences.get( data.name )
                   if ( isSelected !== undefined ) {
-                    return PreferenceItemSchema.parse( {
+                    return newPreferenceItem( {
                       name    : isSelected.name,
                       icon    : isSelected.icon,
                       selected: true
                     } )
                   }
                   else {
-                    return PreferenceItemSchema.parse( {
+                    return newPreferenceItem( {
                       name    : data.name,
                       icon    : data.icon,
                       selected: false
