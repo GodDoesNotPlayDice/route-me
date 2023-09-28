@@ -1,4 +1,2 @@
-export * from './LoginUser'
-export * from './UserMapper'
-export * from './RegisterUser'
-export * from './GetAllUsers'
+export * from './user-mapper'
+export * from './get-all-users'

@@ -4,12 +4,12 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  AuthDAO,
-  User
+  User,
+  UserDao
 } from 'src/package/user/domain'
 
 export class GetAllUsers {
-  constructor( private repository: AuthDAO ) {}
+  constructor( private repository: UserDao ) {}
 
   async execute(): Promise<Result<User[], string>> {
     const result = await this.repository.getAll()
