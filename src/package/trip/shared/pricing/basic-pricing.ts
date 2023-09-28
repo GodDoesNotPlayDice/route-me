@@ -1,6 +1,6 @@
 import { Money } from 'src/package/shared'
 import { TripSeat } from 'src/package/trip/domain'
-import { PricingStrategy } from 'src/package/trip/shared/pricing/PricingStrategy'
+import { PricingStrategy } from 'src/package/trip/shared/pricing/pricing-strategy'
 
 export class BasicPricing implements PricingStrategy{
 	constructor(readonly base: Money, readonly perSeat: Money, readonly seat: TripSeat ) {}
