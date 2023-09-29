@@ -6,9 +6,15 @@ export const PreferenceItemSchema = z.object( {
   selected: z.boolean()
 } )
 
-export type PreferenceItem = z.infer<typeof PreferenceItemSchema>
+type PreferenceItemType = z.infer<typeof PreferenceItemSchema>
+export interface PreferenceItem extends PreferenceItemType {}
+export interface PreferenceItemProps {
+  icon    : string,
+  name    : string,
+  selected: boolean
+}
 
-export const newPreferenceItem = ( props: PreferenceItem ): PreferenceItem => {
+export const newPreferenceItem = ( props: PreferenceItemProps ): PreferenceItem => {
   return PreferenceItemSchema.parse( {
     icon    : props.icon,
     name    : props.name,

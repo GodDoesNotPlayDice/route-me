@@ -7,12 +7,7 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
-import { Store } from '@ngrx/store'
 import { CountryItem } from 'src/app/shared/models'
-import {
-  AppState,
-  updatePassengerRegister
-} from 'src/app/shared/state'
 import { CountrySelectorComponent } from '..'
 
 @Component( {
@@ -29,9 +24,7 @@ import { CountrySelectorComponent } from '..'
 } )
 export class CountrySelectorBarComponent {
 
-  constructor( private modalCtrl: ModalController,
-    private store: Store<AppState> )
-  {}
+  constructor( private modalCtrl: ModalController) {}
 
   lastSelected: CountryItem | undefined
   label: string = 'Ingresar Pais'
@@ -58,10 +51,6 @@ export class CountrySelectorBarComponent {
 
     if ( this.lastSelected !== undefined ) {
       this.label = this.lastSelected.name
-
-      this.store.dispatch( updatePassengerRegister( {
-        country: this.lastSelected.cca
-      } ) )
 
       this.countryControl.patchValue( this.lastSelected.cca )
       this.countryControl.updateValueAndValidity()

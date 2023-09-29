@@ -5,9 +5,10 @@ export const AvatarSchema = z.object( {
   name: z.string()
 } )
 
-export type Avatar = z.infer<typeof AvatarSchema>
+type AvatarType = z.infer<typeof AvatarSchema>
+export interface Avatar extends AvatarType {}
 
-interface AvatarProps {
+export interface AvatarProps {
   url : string,
   name: string
 }

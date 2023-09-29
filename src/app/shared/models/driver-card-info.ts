@@ -13,13 +13,20 @@ export const DriverCardInfoSchema = z.object( {
   endLocation     : z.string()
 } )
 
-export interface DriverCardInfo extends z.infer<typeof DriverCardInfoSchema>{
+type DriverCardInfoType = z.infer<typeof DriverCardInfoSchema>
+export interface DriverCardInfo extends DriverCardInfoType{
   driverAvatar    : Avatar,
   state           : TripState,
   passengerAvatars: Avatar[]
 }
 
-export const newDriverCardInfo = ( props: DriverCardInfo ): DriverCardInfo => {
+export interface DriverCardInfoProps {
+  driverAvatar    : Avatar,
+  state           : TripState,
+  passengerAvatars: Avatar[]
+}
+
+export const newDriverCardInfo = ( props: DriverCardInfoProps ): DriverCardInfo => {
   return  {
     driverAvatar    : props.driverAvatar,
     cost            : props.cost,

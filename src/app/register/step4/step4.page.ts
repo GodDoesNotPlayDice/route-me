@@ -18,13 +18,17 @@ import { Observable } from 'rxjs'
 import {
   FilledButtonComponent,
   InputAreaComponent,
-  StepperComponent,
-  PreferencesSelectorBarComponent
+  PreferencesSelectorBarComponent,
+  StepperComponent
 } from 'src/app/shared/components'
-import { AppState,
-  StepState,clearPassengerRegister,
-  notifyStep, selectCurrentStep,
-  selectMaxStep, selectStepRegister, selectPassengerRegister, updatePassengerRegister } from 'src/app/shared/state'
+import {
+  AppState,
+  notifyStep,
+  selectCurrentStep,
+  selectMaxStep,
+  selectStepRegister,
+  StepState
+} from 'src/app/shared/state'
 
 @Component( {
   standalone : true,
@@ -76,22 +80,24 @@ export class Step4Page implements OnInit, ViewDidEnter {
       return
     }
 
-    const userRegister$ = this.store.select( selectPassengerRegister )
-                              .subscribe( ( userRegister ) => {
-                                if ( userRegister.description !== '' ) {
-                                  console.log( userRegister )
-                                }
-                              } )
+    //TODO: breaking. enviar update a authService
 
-    this.store.dispatch( updatePassengerRegister( {
-      description: this.areaInput.textControl.value!,
-      preferences: this.preferenceInput.preferencesControl.value!
-    } ) )
+    // const userRegister$ = this.store.select( selectPassengerRegister )
+    //                           .subscribe( ( userRegister ) => {
+    //                             if ( userRegister.description !== '' ) {
+    //                               console.log( userRegister )
+    //                             }
+    //                           } )
+
+    // this.store.dispatch( updatePassengerRegister( {
+    //   description: this.areaInput.textControl.value!,
+    //   preferences: this.preferenceInput.preferencesControl.value!
+    // } ) )
 
     // TODO: revisar mejor forma de desuscribirse, revisar pipe takeLast(1)
-    userRegister$.unsubscribe()
+    // userRegister$.unsubscribe()
     this.store.dispatch( notifyStep() )
-    this.store.dispatch( clearPassengerRegister() )
+    // this.store.dispatch( clearPassengerRegister() )
     await this.router.navigate( [ '/tabs/home' ] )
   }
 

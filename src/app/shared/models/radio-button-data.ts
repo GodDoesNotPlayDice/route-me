@@ -5,9 +5,14 @@ export const RadioButtonDataSchema = z.object( {
   name: z.string()
 } )
 
-export type RadioButtonData = z.infer<typeof RadioButtonDataSchema>
+type RadioButtonDataType = z.infer<typeof RadioButtonDataSchema>
+export interface RadioButtonData extends RadioButtonDataType {}
+export interface RadioButtonDataProps {
+  icon: string,
+  name: string
+}
 
-export const newRadioButtonData = ( props: RadioButtonData ): RadioButtonData => {
+export const newRadioButtonData = ( props: RadioButtonDataProps ): RadioButtonData => {
   return RadioButtonDataSchema.parse( {
     icon: props.icon,
     name: props.name

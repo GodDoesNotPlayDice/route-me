@@ -1,11 +1,4 @@
-import * as z from 'zod'
-
-export interface CountryProps {
-	flags: Flags;
-	name: Name;
-	cca2: string;
-	idd: Idd;
-}
+import { z } from 'zod'
 
 export interface FlagsProps {
 	png: string;
@@ -120,6 +113,15 @@ export const CountrySchema = z.object( {
 	'idd'  : IddSchema
 } )
 export type Country = z.infer<typeof CountrySchema>;
+
+export interface CountryProps {
+  flags: Flags;
+  name: Name;
+  cca2: string;
+  idd: Idd;
+}
+//TODO: para aislar las keys de la api especifica, seria bueno aqui contener
+// solo los props, y en carpeta aparte la api especifica, que llame en este new
 
 export const newCountry = ( props: CountryProps ): Country => {
 	return CountrySchema.parse( {

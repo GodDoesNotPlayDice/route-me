@@ -5,9 +5,16 @@ export const FilterButtonDataSchema = z.object( {
   name  : z.string()
 } )
 
-export type FilterButtonData = z.infer<typeof FilterButtonDataSchema>
+type FilterButtonDataType = z.infer<typeof FilterButtonDataSchema>
+export interface FilterButtonData extends FilterButtonDataType {}
 
-export const newFilterButtonData = ( props: FilterButtonData ): FilterButtonData => {
+export interface FilterButtonDataProps {
+  image: string,
+  name: string
+}
+
+
+export const newFilterButtonData = ( props: FilterButtonDataProps ): FilterButtonData => {
   return FilterButtonDataSchema.parse( {
     image: props.image,
     name  : props.name

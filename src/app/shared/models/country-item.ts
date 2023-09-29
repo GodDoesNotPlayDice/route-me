@@ -8,7 +8,8 @@ export const CountryItemSchema = z.object( {
 	selected: z.boolean()
 } )
 
-export type CountryItem = z.infer<typeof CountryItemSchema>
+type CountryItemType = z.infer<typeof CountryItemSchema>
+export interface CountryItem extends CountryItemType {}
 
 export interface CountryItemProps {
 	image: string,
