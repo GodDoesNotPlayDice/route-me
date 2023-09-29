@@ -1,13 +1,8 @@
-import { Money } from 'src/package/shared'
+import { Money } from 'src/package/shared/domain'
 import { TripSeat } from 'src/package/trip/domain'
 import { PricingStrategy } from 'src/package/trip/shared/pricing/pricing-strategy'
 
-export class BasicPricing implements PricingStrategy{
-	constructor(readonly base: Money, readonly perSeat: Money, readonly seat: TripSeat ) {}
-
-	public calculate(): number {
-		const seatPrice = this.perSeat.value * this.seat.value
-		return this.base.value + seatPrice
-	}
-
+export const basicPricing = ( perSeat: Money ) : PricingStrategy  => ( base: Money,
+  seat: TripSeat ): number => {
+  return base.value + ( perSeat.value * seat.value )
 }

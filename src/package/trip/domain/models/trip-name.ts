@@ -1,17 +1,19 @@
 import { z } from 'zod'
 
 export const TripNameSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
-export type TripName = z.infer<typeof TripNameSchema>
+type TripNameType = z.infer<typeof TripNameSchema>
+
+export interface TripName extends TripNameType {}
 
 interface TripNameProps {
-  value : string
+  value: string
 }
 
-export const newTripName = (props : TripNameProps): TripName => {
+export const newTripName = ( props: TripNameProps ): TripName => {
   return TripNameSchema.parse( {
-    value : props.value
+    value: props.value
   } )
 }

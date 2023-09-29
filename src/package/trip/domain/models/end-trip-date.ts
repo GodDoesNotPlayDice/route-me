@@ -1,24 +1,22 @@
 import { z } from 'zod'
 
 export const EndTripDateSchema = z.object( {
-  value : z.date(),
-  createdAt : z.date()
+  value : z.date()
 } ).transform( ( val, ctx ) => {
-  const twoWeeks          = new Date( val.createdAt.getTime() + 12096e5 )
+  const twoWeeks          = new Date( val.value.getTime() + 12096e5 )
   val.value = twoWeeks
   return val
 })
 
-export type EndTripDateSchema = z.infer<typeof EndTripDateSchema>
+export type EndTripDateType = z.infer<typeof EndTripDateSchema>
+export interface EndTripDate extends EndTripDateType {}
 
 interface EndTripDateProps {
   value : Date
-  createdAt : Date
 }
 
-export const newEndTripDateSchema = (props : EndTripDateProps): EndTripDateSchema => {
+export const newEndTripDateSchema = (props : EndTripDateProps): EndTripDate => {
   return EndTripDateSchema.parse( {
     value : props.value,
-    createdAt : props.value
   } )
 }
