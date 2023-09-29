@@ -1,5 +1,5 @@
 import {
-  TripStateEnum,
+  TripState,
 } from 'src/package/trip'
 import { z } from 'zod'
 import {
@@ -15,7 +15,7 @@ export const DriverCardInfoSchema = z.object( {
 
 export interface DriverCardInfo extends z.infer<typeof DriverCardInfoSchema>{
   driverAvatar    : Avatar,
-  state           : TripStateEnum,
+  state           : TripState,
   passengerAvatars: Avatar[]
 }
 

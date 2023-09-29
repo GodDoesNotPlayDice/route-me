@@ -1,17 +1,19 @@
 import { z } from 'zod'
 
 export const DriverIDSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
-export type DriverID = z.infer<typeof DriverIDSchema>
+type DriverIDType = z.infer<typeof DriverIDSchema>
+
+export interface DriverID extends DriverIDType {}
 
 interface DriverIDProps {
-  value : string
+  value: string
 }
 
-export const newDriverID = (props : DriverIDProps): DriverID => {
+export const newDriverID = ( props: DriverIDProps ): DriverID => {
   return DriverIDSchema.parse( {
-    value : props.value
+    value: props.value
   } )
 }

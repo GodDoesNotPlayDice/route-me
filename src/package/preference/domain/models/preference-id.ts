@@ -4,9 +4,10 @@ export const PreferenceIDSchema = z.object( {
   value : z.string()
 } )
 
-export type PreferenceID = z.infer<typeof PreferenceIDSchema>
+type PreferenceIDType = z.infer<typeof PreferenceIDSchema>
+export interface PreferenceID extends PreferenceIDType {}
 
-interface PreferenceIDProps {
+export interface PreferenceIDProps {
   value : string
 }
 

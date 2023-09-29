@@ -4,7 +4,8 @@ export const DriverDocumentNameSchema = z.object( {
   value : z.string()
 } )
 
-export type DriverDocumentName = z.infer<typeof DriverDocumentNameSchema>
+type DriverDocumentNameType = z.infer<typeof DriverDocumentNameSchema>
+export interface DriverDocumentName extends DriverDocumentNameType{}
 
 interface DriverDocumentNameProps {
   value : string

@@ -1,33 +1,33 @@
+import { UserID } from 'src/package/user/domain/models'
 import {
-	DriverDocumentID,
-	DriverDocumentIDSchema,
-	DriverIDSchema
-} from 'src/package/driver/domain/models'
-import { UserIDSchema } from 'src/package/user'
-import { z } from 'zod'
+  DriverDocumentID,
+  DriverID,
+  newDriverDocumentID,
+  newDriverID
+} from '.'
 
-export const DriverSchema = z.object( {
-	id     : DriverIDSchema,
-	userID: UserIDSchema,
-	documents: z.array( DriverDocumentIDSchema )
-} )
-
-export type Driver = z.infer<typeof DriverSchema>
+export interface Driver {
+  id: DriverID
+  userID: UserID
+  documents: DriverDocumentID[]
+}
 
 export interface DriverProps {
-	id: string
-	userID: string
-	documents: DriverDocumentID[]
+  id: string
+  userID: UserID
+  documents: string[]
 }
 
 export const newDriver = ( props: DriverProps ): Driver => {
-	return DriverSchema.parse( {
-		id     : DriverIDSchema.parse( {
-			value: props.id
-		} ),
-		userID: UserIDSchema.parse( {
-			value: props.userID
-		} ),
-		documents: props.documents
-	} )
+  return {
+    id: newDriverID({
+      value: props.id
+    }),
+    userID: props.userID,
+    documents: props.documents.map( document => {
+      return newDriverDocumentID({
+        value: document
+      })
+    } )
+  }
 }
