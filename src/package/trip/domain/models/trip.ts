@@ -52,7 +52,7 @@ export interface TripProps {
 	name: string
 	description: string
 	state: string,
-	price: Omit<TripPriceProps, 'seat'>
+	price: TripPriceProps
 	seat: number
 	startLocation: string
 	endLocation: string
@@ -86,8 +86,6 @@ export const newTrip = ( props: TripProps ): Trip => {
 		price        : newTripPrice( {
 			amount  : props.price.amount,
 			currency: props.price.currency,
-			seat    : seat,
-			pricing : props.price.pricing
 		} ),
 		seat         : seat,
 		startLocation: newLocation( {

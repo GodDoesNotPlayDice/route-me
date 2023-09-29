@@ -18,11 +18,11 @@ import {
 export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 	try {
 		const passenger: PassengerID[] = Object.values( json['passengers'] )
-		                                 .map( ( id: any ) => {
-			                                 return newPassengerID( {
-				                                 value: id
-			                                 } )
-		                                 } )
+		                                       .map( ( id: any ) => {
+			                                       return newPassengerID( {
+				                                       value: id
+			                                       } )
+		                                       } )
 
 		return Some(
 			newTrip( {
@@ -30,21 +30,24 @@ export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 				name         : json['name'],
 				description  : json['description'],
 				state        : json['state'],
-				price        : json['price'],
+				price        : {
+					amount  : json['price']['amount'],
+					currency: json['price']['currency']
+				},
 				seat         : json['seat'],
 				startLocation: json['startLocation'],
 				endLocation  : json['endLocation'],
 				startDate    : new Date( json['startDate'] ),
-				driverID     : newDriverID({
+				driverID     : newDriverID( {
 					value: json['driverID']
-				}),
+				} ),
 				passengers   : passenger,
-				category     : newCategoryID({
+				category     : newCategoryID( {
 					value: json['category']
-				}),
-				chat         : newChatID({
+				} ),
+				chat         : newChatID( {
 					value: json['chat']
-				})
+				} )
 			} )
 		)
 	}
