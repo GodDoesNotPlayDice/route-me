@@ -8,7 +8,7 @@ type TripNameType = z.infer<typeof TripNameSchema>
 
 export interface TripName extends TripNameType {}
 
-interface TripNameProps {
+export interface TripNameProps {
   value: string
 }
 

@@ -7,7 +7,7 @@ export const TripIDSchema = z.object( {
 type TripIDType = z.infer<typeof TripIDSchema>
 export interface TripID extends TripIDType{}
 
-interface TripIDProps {
+export interface TripIDProps {
   value : string
 }
 

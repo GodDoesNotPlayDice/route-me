@@ -8,14 +8,14 @@ export const EndTripDateSchema = z.object( {
   return val
 })
 
-export type EndTripDateType = z.infer<typeof EndTripDateSchema>
+type EndTripDateType = z.infer<typeof EndTripDateSchema>
 export interface EndTripDate extends EndTripDateType {}
 
-interface EndTripDateProps {
+export interface EndTripDateProps {
   value : Date
 }
 
-export const newEndTripDateSchema = (props : EndTripDateProps): EndTripDate => {
+export const newEndTripDate = (props : EndTripDateProps): EndTripDate => {
   return EndTripDateSchema.parse( {
     value : props.value,
   } )

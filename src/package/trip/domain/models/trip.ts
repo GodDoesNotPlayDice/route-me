@@ -1,62 +1,42 @@
+import { CategoryID } from 'src/package/category'
+import { ChatID } from 'src/package/chat/domain/models'
+import { DriverID } from 'src/package/driver/domain/models'
+import { PassengerID } from 'src/package/passenger'
 import {
-	CategoryID,
-} from 'src/package/category'
-import {
-	ChatID,
-} from 'src/package/chat/domain/models'
-import {
-	DriverID,
-} from 'src/package/driver/domain/models'
-import {
-	PassengerID,
-} from 'src/package/passenger'
-import {
-  CreatedAt,
-  CreatedAtSchema,
-  LocationSchema
+	CreatedAt,
+	Location,
+	newCreatedAt,
+	newLocation
 } from 'src/package/shared'
 import {
-  EndTripDate,
-  EndTripDateSchema,
-  TripDescription,
-  TripDescriptionSchema,
-  TripID,
-  TripIDSchema,
-  TripName,
-  TripNameSchema,
-  TripPrice,
-  TripPriceSchema,
-  TripSeat,
-  TripSeatSchema,
-  TripState
+	EndTripDate,
+	newEndTripDate,
+	newTripDescription,
+	newTripID,
+	newTripName,
+	newTripPrice,
+	newTripSeat,
+	newTripState,
+	TripDescription,
+	TripID,
+	TripName,
+	TripPrice,
+	TripPriceProps,
+	TripSeat,
+	TripState
 } from 'src/package/trip/domain/models'
-import { z } from 'zod'
 
-// const TripSchema = z.object( {
-// 	id           : TripIDSchema,
-// 	name         : TripNameSchema,
-// 	description  : TripDescriptionSchema,
-// 	state        : TripNameSchema,
-// 	price        : TripPriceSchema,
-// 	seat         : TripSeatSchema,
-// 	startLocation: LocationSchema,
-// 	endLocation  : LocationSchema,
-// 	startDate    : CreatedAtSchema,
-// 	endDate      : EndTripDateSchema
-// } )
-//
-// type TripType = z.infer<typeof TripSchema>
 export interface Trip {
-  id : TripID
-  name : TripName
-  description : TripDescription
-  state : TripState
-  price : TripPrice
-  seat : TripSeat
-  startLocation : Location
-  endLocation : Location
-  startDate : CreatedAt
-  endDate : EndTripDate
+	id: TripID
+	name: TripName
+	description: TripDescription
+	state: TripState
+	price: TripPrice
+	seat: TripSeat
+	startLocation: Location
+	endLocation: Location
+	startDate: CreatedAt
+	endDate: EndTripDate
 	driverID: DriverID
 	passengers: PassengerID[]
 	category: CategoryID
@@ -71,8 +51,8 @@ export interface TripProps {
 	chat: ChatID
 	name: string
 	description: string
-	state: string
-	price: number
+	state: string,
+	price: Omit<TripPriceProps, 'seat'>
 	seat: number
 	startLocation: string
 	endLocation: string
@@ -80,40 +60,45 @@ export interface TripProps {
 }
 
 export const newTrip = ( props: TripProps ): Trip => {
+	const seat      = newTripSeat( {
+		value: props.seat
+	} )
+	const startDate = newCreatedAt( {
+		value: props.startDate
+	} )
 	return {
-		chat         : props.chat,
-		category     : props.category,
-		driverID     : props.driverID,
-		passengers   : props.passengers,
-		id           : TripIDSchema.parse( {
+		id           : newTripID( {
 			value: props.id
 		} ),
-		name         : TripNameSchema.parse( {
+		driverID     : props.driverID,
+		passengers   : props.passengers,
+		category     : props.category,
+		chat         : props.chat,
+		name         : newTripName( {
 			value: props.name
 		} ),
-		description  : TripDescriptionSchema.parse( {
+		description  : newTripDescription( {
 			value: props.description
 		} ),
-		state        : TripNameSchema.parse( {
+		state        : newTripState( {
 			value: props.state
 		} ),
-		price        : TripPriceSchema.parse( {
-			value: props.price
+		price        : newTripPrice( {
+			amount  : props.price.amount,
+			currency: props.price.currency,
+			seat    : seat,
+			pricing : props.price.pricing
 		} ),
-		seat         : TripSeatSchema.parse( {
-			value: props.seat
-		} ),
-		startLocation: LocationSchema.parse( {
+		seat         : seat,
+		startLocation: newLocation( {
 			value: props.startLocation
 		} ),
-		endLocation  : LocationSchema.parse( {
+		endLocation  : newLocation( {
 			value: props.endLocation
 		} ),
-		startDate    : CreatedAtSchema.parse( {
-			value: props.startDate
-		} ),
-		endDate      : EndTripDateSchema.parse( {
-      value: props.startDate,
+		startDate    : startDate,
+		endDate      : newEndTripDate( {
+			value: startDate.value
 		} )
 	}
 }

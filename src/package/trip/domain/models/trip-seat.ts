@@ -7,8 +7,8 @@ export const TripSeatSchema = z.object( {
 type TripSeatType = z.infer<typeof TripSeatSchema>
 export interface TripSeat extends TripSeatType{}
 
-interface TripSeatProps {
-  value : string
+export interface TripSeatProps {
+  value : number
 }
 
 export const newTripSeat = (props : TripSeatProps): TripSeat => {

@@ -18,7 +18,7 @@ export interface TripPrice extends TripPriceType {
   currency: Currency,
 }
 
-interface TripPriceProps {
+export interface TripPriceProps {
   amount: Money,
   currency: Currency,
   seat: TripSeat,

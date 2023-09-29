@@ -9,7 +9,7 @@ export interface TripDescription extends TripDescriptionType{
 
 }
 
-interface TripDescriptionProps {
+export interface TripDescriptionProps {
   value : string
 }
 
