@@ -1,15 +1,14 @@
-import { z } from 'zod'
 import {
-	RatingIDSchema,
-	RatingValueSchema
+	newRatingID,
+	newRatingValue,
+	RatingID,
+	RatingValue
 } from '.'
 
-export const RatingSchema = z.object( {
-	id   : RatingIDSchema,
-	value: RatingValueSchema
-} )
-
-export type Rating = z.infer<typeof RatingSchema>
+export interface Rating {
+	id: RatingID,
+	value: RatingValue
+}
 
 export interface RatingProps {
 	id: string
@@ -17,12 +16,12 @@ export interface RatingProps {
 }
 
 export const newRating = ( props: RatingProps ): Rating => {
-	return RatingSchema.parse( {
-		id   : RatingIDSchema.parse( {
+	return {
+		id   : newRatingID( {
 			value: props.id
 		} ),
-		value: RatingValueSchema.parse( {
+		value: newRatingValue( {
 			value: props.value
 		} )
-	} )
+	}
 }

@@ -4,9 +4,10 @@ export const RatingValueSchema = z.object( {
   value : z.string()
 } )
 
-export type RatingValue = z.infer<typeof RatingValueSchema>
+type RatingValueType = z.infer<typeof RatingValueSchema>
+export interface RatingValue extends RatingValueType {}
 
-interface RatingValueProps {
+export interface RatingValueProps {
   value : string
 }
 
