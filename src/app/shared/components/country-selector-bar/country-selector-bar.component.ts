@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store'
 import { CountryItem } from 'src/app/shared/models'
 import {
   AppState,
-  updateUserRegister
+  updatePassengerRegister
 } from 'src/app/shared/state'
 import { CountrySelectorComponent } from '..'
 
@@ -59,7 +59,7 @@ export class CountrySelectorBarComponent {
     if ( this.lastSelected !== undefined ) {
       this.label = this.lastSelected.name
 
-      this.store.dispatch( updateUserRegister( {
+      this.store.dispatch( updatePassengerRegister( {
         country: this.lastSelected.cca
       } ) )
 

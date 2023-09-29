@@ -13,22 +13,16 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
-import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { UserPreferenceService } from 'src/app/shared/services'
-import {
-  AppState,
-  selectUserPreferencesRegister,
-  updateUserRegister,
-  UserPreference
-} from 'src/app/shared/state'
-import { UserPreferencesSelectorComponent } from '..'
+import { Preference } from 'src/package/preference'
+import { PreferencesSelectorComponent } from '..'
 
 @Component( {
   standalone : true,
   selector   : 'app-user-preferences-selector-bar',
-  templateUrl: './user-preferences-selector-bar.component.html',
-  styleUrls  : [ './user-preferences-selector-bar.component.scss' ],
+  templateUrl: './preferences-selector-bar.component.html',
+  styleUrls  : [ './preferences-selector-bar.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule,
@@ -36,16 +30,15 @@ import { UserPreferencesSelectorComponent } from '..'
     MatSelectModule
   ]
 } )
-export class UserPreferencesSelectorBarComponent {
+export class PreferencesSelectorBarComponent {
 
   constructor(
     private modalCtrl: ModalController,
-    private store: Store<AppState>,
     private userPreferenceService: UserPreferenceService
   )
   {
-    this.preferencesUser$    =
-      this.store.select( selectUserPreferencesRegister )
+    //TODO: tomar desde authService
+    this.preferencesUser$    = this.store.select( selectPassengerPreferencesRegister )
     this.databasePreferences = this.userPreferenceService.getUserPreferences()
     this.preferencesUser$.subscribe(
       ( preferences ) => {
@@ -62,8 +55,10 @@ export class UserPreferencesSelectorBarComponent {
 
   @Input() required = false
 
-  readonly preferencesControl = new FormControl<UserPreference[]>( [],
+  readonly preferencesControl = new FormControl<Preference[]>( [],
     control => {
+      console.log( 'preferencesControl.value')
+      console.log( control.value)
       if ( this.required && control.value.length === 0 ) {
         control.addValidators( Validators.required )
         return { required: true }
@@ -72,13 +67,13 @@ export class UserPreferencesSelectorBarComponent {
     } )
 
 
-  preferencesUser$: Observable<UserPreference[]>
-  selectedPreferences = new Map<string, UserPreference>()
-  databasePreferences = new Map<string, UserPreference>()
+  preferencesUser$: Observable<Preference[]>
+  selectedPreferences = new Map<string, Preference>()
+  databasePreferences = new Map<string, Preference>()
 
   async openModal() {
     const modal = await this.modalCtrl.create( {
-      component     : UserPreferencesSelectorComponent,
+      component     : PreferencesSelectorComponent,
       componentProps: {
         preferencesData    : this.userPreferenceService.getUserPreferences(),
         selectedPreferences: this.selectedPreferences
@@ -89,7 +84,7 @@ export class UserPreferencesSelectorBarComponent {
     const { data, role } = await modal.onWillDismiss()
 
     // if ( role1 === 'confirm' ) {}
-    this.store.dispatch( updateUserRegister( {
+    this.store.dispatch( updatePassengerRegister( {
       preferences: data
     } ) )
 

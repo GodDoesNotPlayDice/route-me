@@ -19,12 +19,12 @@ import {
   FilledButtonComponent,
   InputAreaComponent,
   StepperComponent,
-  UserPreferencesSelectorBarComponent
+  PreferencesSelectorBarComponent
 } from 'src/app/shared/components'
 import { AppState,
-  StepState,clearUserRegister,
+  StepState,clearPassengerRegister,
   notifyStep, selectCurrentStep,
-  selectMaxStep, selectStepRegister, selectUserRegister, updateUserRegister } from 'src/app/shared/state'
+  selectMaxStep, selectStepRegister, selectPassengerRegister, updatePassengerRegister } from 'src/app/shared/state'
 
 @Component( {
   standalone : true,
@@ -35,7 +35,7 @@ import { AppState,
     CommonModule,
     StepperComponent,
     InputAreaComponent,
-    UserPreferencesSelectorBarComponent,
+    PreferencesSelectorBarComponent,
     FilledButtonComponent,
     FormsModule
   ],
@@ -51,7 +51,7 @@ export class Step4Page implements OnInit, ViewDidEnter {
 
   @ViewChild( 'area' ) areaInput !: InputAreaComponent
   @ViewChild(
-    'preference' ) preferenceInput !: UserPreferencesSelectorBarComponent
+    'preference' ) preferenceInput !: PreferencesSelectorBarComponent
 
   registerStep$: Observable<StepState>
   currentStep$: Observable<number>
@@ -76,14 +76,14 @@ export class Step4Page implements OnInit, ViewDidEnter {
       return
     }
 
-    const userRegister$ = this.store.select( selectUserRegister )
+    const userRegister$ = this.store.select( selectPassengerRegister )
                               .subscribe( ( userRegister ) => {
                                 if ( userRegister.description !== '' ) {
                                   console.log( userRegister )
                                 }
                               } )
 
-    this.store.dispatch( updateUserRegister( {
+    this.store.dispatch( updatePassengerRegister( {
       description: this.areaInput.textControl.value!,
       preferences: this.preferenceInput.preferencesControl.value!
     } ) )
@@ -91,7 +91,7 @@ export class Step4Page implements OnInit, ViewDidEnter {
     // TODO: revisar mejor forma de desuscribirse, revisar pipe takeLast(1)
     userRegister$.unsubscribe()
     this.store.dispatch( notifyStep() )
-    this.store.dispatch( clearUserRegister() )
+    this.store.dispatch( clearPassengerRegister() )
     await this.router.navigate( [ '/tabs/home' ] )
   }
 

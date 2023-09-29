@@ -30,7 +30,7 @@ export const passengerToJson   = ( passenger: Passenger ): Record<string, any> =
 		phone      : passenger.phone.value,
 		birthDay   : passenger.birthDay.value,
 		country    : passenger.country.value,
-		gender     : passenger.gender.value,
+		gender     : passenger.gender,
 		preferences
 	}
 }

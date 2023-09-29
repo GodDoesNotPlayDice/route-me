@@ -1,11 +1,10 @@
 import { z } from 'zod'
 
-export const GenderSchema = z.object( {
-  value : z.string()
-} )
+export type GenderType = 'Male' | 'Female' | 'None'
 
-type GenderType = z.infer<typeof GenderSchema>
-export interface Gender extends GenderType{}
+export const GenderSchema = z.enum( [ 'Male', 'Female', 'None' ] )
+
+export type Gender = z.infer<typeof GenderSchema>
 
 interface GenderProps {
   value : string
@@ -16,3 +15,4 @@ export const newGender = (props : GenderProps): Gender => {
     value : props.value
   } )
 }
+

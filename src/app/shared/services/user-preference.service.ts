@@ -1,32 +1,34 @@
 import { Injectable } from '@angular/core'
 import {
-  newUserPreference,
-  UserPreference
-} from 'src/app/shared/state/user-register'
+  newPreference,
+  Preference
+} from 'src/package/preference'
 
 @Injectable( {
   providedIn: 'root'
 } )
 export class UserPreferenceService {
 
-  context: Map<string, UserPreference> = defaultPreferenceMap()
+  context: Map<string, Preference> = defaultPreferenceMap()
 
-  getUserPreferences(): Map<string, UserPreference> {
+  getUserPreferences(): Map<string, Preference> {
     return this.context
   }
 }
 
-function defaultPreferenceMap(): Map<string, UserPreference> {
-  const list: UserPreference[] = [
-    newUserPreference( {
+function defaultPreferenceMap(): Map<string, Preference> {
+  const list: Preference[] = [
+    newPreference( {
+      id  : '1',
       icon: 'musical-notes-outline',
       name: 'Con Musica'
     } ),
-    newUserPreference( {
+    newPreference( {
+      id  : '2',
       icon: 'logo-no-smoking',
       name: 'Sin Fumar'
     } )
   ]
-  return new Map<string, UserPreference>(
-    list.map( ( item ) => [ item.name, item ] ) )
+  return new Map<string, Preference>(
+    list.map( ( item ) => [ item.name.value, item ] ) )
 }

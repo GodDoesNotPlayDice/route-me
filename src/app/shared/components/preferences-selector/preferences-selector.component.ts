@@ -17,8 +17,8 @@ import { DividerComponent, UserPreferencesSelectorItemComponent } from '..'
 @Component( {
   standalone : true,
   selector   : 'app-user-preferences-selector',
-  templateUrl: './user-preferences-selector.component.html',
-  styleUrls  : [ './user-preferences-selector.component.scss' ],
+  templateUrl: './preferences-selector.component.html',
+  styleUrls  : [ './preferences-selector.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule,
@@ -26,7 +26,7 @@ import { DividerComponent, UserPreferencesSelectorItemComponent } from '..'
     DividerComponent
   ]
 } )
-export class UserPreferencesSelectorComponent {
+export class PreferencesSelectorComponent {
 
   constructor( private modalCtrl: ModalController ) {}
 

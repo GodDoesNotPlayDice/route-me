@@ -23,6 +23,6 @@ export * from './outlined-select';
 export * from './country-selector';
 export * from './adaptative-button';
 export * from './country-selector-bar';
-export * from './user-preferences-selector';
-export * from './user-preferences-selector-bar';
+export * from './preferences-selector';
+export * from './preferences-selector-bar';
 export * from './user-preferences-selector-item';

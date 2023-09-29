@@ -16,7 +16,6 @@ import { Store } from '@ngrx/store'
 import {
   AppState,
   notifyStep,
-  updateUserRegister
 } from 'src/app/shared/state'
 import { CheckboxComponent,
   FilledButtonComponent, InputTextComponent,
@@ -66,10 +65,7 @@ export class Step1Page implements ViewDidEnter {
       return
     }
 
-    this.store.dispatch( updateUserRegister( {
-      email   : this.userInput.textControl.value!,
-      password: this.passwordInput.textControl.value!
-    } ) )
+    //TODO: enviar datos al servidor
     this.store.dispatch( notifyStep() )
     await this.router.navigate( [ '/register/step2' ] )
   }

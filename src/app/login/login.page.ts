@@ -19,7 +19,7 @@ import {
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { match } from 'oxide.ts'
-import { AppState, clearUserRegister } from 'src/app/shared/state'
+import { AppState } from 'src/app/shared/state'
 import {
   CheckboxComponent,
   FilledButtonComponent,
@@ -75,7 +75,8 @@ export class LoginPage implements ViewDidEnter {
   }
 
   ionViewDidEnter() {
-    this.store.dispatch( clearUserRegister() )
+    //TODO: ver si colocar div dentro de backButton u manual, responde click
+    // this.store.dispatch( clearUserRegister() )
 
     this.formGroup = new FormGroup( [
       this.userInput.textControl,

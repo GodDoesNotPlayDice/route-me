@@ -27,8 +27,7 @@ import {
 } from 'src/app/shared/models'
 import {
   AppState,
-  notifyStep,
-  updateUserRegister
+  notifyStep
 } from 'src/app/shared/state'
 
 @Component( {
@@ -108,14 +107,15 @@ export class Step2Page implements ViewDidEnter {
       return
     }
 
-    this.store.dispatch( updateUserRegister( {
-      name    : this.userInput.textControl.value!,
-      lastName: this.lastNameInput.textControl.value!,
-      phone   : this.phoneInput.textControl.value!,
-      country : this.countryInput.countryControl.value!,
-      birthDay: this.dateSelectorInput.dateControl.value!,
-      genre   : this.radioButtonInput.radioControl.value!
-    } ) )
+    //TODO: enviar datos al passenger
+    // this.store.dispatch( updateUserRegister( {
+    //   name    : this.userInput.textControl.value!,
+    //   lastName: this.lastNameInput.textControl.value!,
+    //   phone   : this.phoneInput.textControl.value!,
+    //   country : this.countryInput.countryControl.value!,
+    //   birthDay: this.dateSelectorInput.dateControl.value!,
+    //   genre   : this.radioButtonInput.radioControl.value!
+    // } ) )
     this.store.dispatch( notifyStep() )
     await this.router.navigate( [ '/register/step4' ] )
   }
