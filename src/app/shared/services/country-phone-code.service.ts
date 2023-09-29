@@ -4,7 +4,6 @@ import { take } from 'rxjs'
 import {
   Country,
   countryFromJson,
-  newCountry
 } from 'src/app/shared/models'
 
 @Injectable( {

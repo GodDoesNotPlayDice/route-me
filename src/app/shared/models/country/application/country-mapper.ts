@@ -6,12 +6,12 @@ import {
 import {
 	Country,
 } from 'src/app/shared/models/country/domain'
-import { newCountry } from 'src/app/shared/models/country/infrastructure'
+import { newCountryRestCountries } from 'src/app/shared/models/country/infrastructure'
 
 export const countryFromJson = ( json: Record<string, any> ): Option<Country> => {
 	try {
 		return Some(
-			newCountry( {
+			newCountryRestCountries( {
 				name: json[ 'name' ],
 				flags: json[ 'flags' ],
 				cca2: json[ 'code' ],

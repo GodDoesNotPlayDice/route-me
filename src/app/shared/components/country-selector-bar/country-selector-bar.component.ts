@@ -50,9 +50,9 @@ export class CountrySelectorBarComponent {
     this.lastSelected = data
 
     if ( this.lastSelected !== undefined ) {
-      this.label = this.lastSelected.name
+      this.label = this.lastSelected.name.common
 
-      this.countryControl.patchValue( this.lastSelected.cca )
+      this.countryControl.patchValue( this.lastSelected.code.value )
       this.countryControl.updateValueAndValidity()
     }
   }

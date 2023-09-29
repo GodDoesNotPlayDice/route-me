@@ -18,7 +18,7 @@ export interface CountryRestCountries {
 	idd: Idd;
 }
 
-export const newCountry = ( props: CountryRestCountries ): Country => {
+export const newCountryRestCountries = ( props: CountryRestCountries ): Country => {
 	return{
 		flag  : newCountryFlagUrl( {
 			png: props.flags.png
