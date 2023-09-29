@@ -4,9 +4,10 @@ export const ChatIDSchema = z.object( {
   value : z.string()
 } )
 
-export type ChatID = z.infer<typeof ChatIDSchema>
+type ChatIDType = z.infer<typeof ChatIDSchema>
+export interface ChatID extends ChatIDType {}
 
-interface ChatIDProps {
+export interface ChatIDProps {
   value : string
 }
 

@@ -1,15 +1,14 @@
-import { z } from 'zod'
 import {
-	MessageContentSchema,
-	MessageIDSchema
+  MessageContent,
+  MessageID,
+  newMessageContent,
+  newMessageID
 } from '.'
 
-export const MessageSchema = z.object( {
-	id     : MessageIDSchema,
-	content: MessageContentSchema
-} )
-
-export type Message = z.infer<typeof MessageSchema>
+export interface Message {
+	id     : MessageID,
+	content: MessageContent
+}
 
 export interface MessageProps {
 	id: string
@@ -17,12 +16,11 @@ export interface MessageProps {
 }
 
 export const newMessage = ( props: MessageProps ): Message => {
-	return MessageSchema.parse( {
-		id     : MessageIDSchema.parse( {
-			value: props.id
-		} ),
-		content: MessageContentSchema.parse( {
-			value: props.content
-		} )
-	} )
-}
+	return {
+    id: newMessageID({
+      value: props.id
+    }),
+    content: newMessageContent({
+      value: props.content
+    })
+  }}

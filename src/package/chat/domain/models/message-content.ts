@@ -4,9 +4,10 @@ export const MessageContentSchema = z.object( {
   value : z.string()
 } )
 
-export type MessageContent = z.infer<typeof MessageContentSchema>
+type MessageContentType = z.infer<typeof MessageContentSchema>
+export interface MessageContent extends MessageContentType {}
 
-interface MessageContentProps {
+export interface MessageContentProps {
   value : string
 }
 

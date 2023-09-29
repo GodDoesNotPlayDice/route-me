@@ -4,9 +4,10 @@ export const MessageIDSchema = z.object( {
   value : z.string()
 } )
 
-export type MessageID = z.infer<typeof MessageIDSchema>
+type MessageIDType = z.infer<typeof MessageIDSchema>
+export interface MessageID extends MessageIDType {}
 
-interface MessageIDProps {
+export interface MessageIDProps {
   value : string
 }
 

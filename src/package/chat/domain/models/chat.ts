@@ -1,26 +1,24 @@
-import { ChatIDSchema } from 'src/package/chat/domain/models/'
-import { TripIDSchema } from 'src/package/trip/domain/models'
-import { z } from 'zod'
+import { TripID } from 'src/package/trip/domain'
+import {
+  ChatID,
+  newChatID
+} from '.'
 
-export const ChatSchema = z.object( {
-	id    : ChatIDSchema,
-	tripID: TripIDSchema
-} )
-
-export type Chat = z.infer<typeof ChatSchema>
+export interface Chat {
+  id: ChatID,
+  tripID: TripID
+}
 
 export interface ChatProps {
-	id: string
-	tripID: string
+  id: string
+  tripID: TripID
 }
 
 export const newChat = ( props: ChatProps ): Chat => {
-	return ChatSchema.parse( {
-		id    : ChatIDSchema.parse( {
-			value: props.id
-		} ),
-		tripID: TripIDSchema.parse( {
-			value: props.tripID
-		} )
-	} )
+  return {
+    id    : newChatID( {
+      value: props.id
+    } ),
+    tripID: props.tripID
+  }
 }
