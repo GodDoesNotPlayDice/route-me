@@ -13,9 +13,18 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
+import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { UserPreferenceService } from 'src/app/shared/services'
-import { Preference } from 'src/package/preference'
+import { AppState } from 'src/app/shared/state'
+import {
+  selectUserPreferences,
+  updateUserPreferences
+} from 'src/app/shared/state/user-preference'
+import {
+  Preference,
+  PreferenceID
+} from 'src/package/preference'
 import { PreferencesSelectorComponent } from '..'
 
 @Component( {
@@ -34,11 +43,12 @@ export class PreferencesSelectorBarComponent {
 
   constructor(
     private modalCtrl: ModalController,
-    private userPreferenceService: UserPreferenceService
+    private userPreferenceService: UserPreferenceService,
+    private store: Store<AppState>
   )
   {
     //TODO: tomar desde authService
-    this.preferencesUser$    = this.store.select( selectPassengerPreferencesRegister )
+    this.preferencesUser$    = this.store.select( selectUserPreferences )
     this.databasePreferences = this.userPreferenceService.getUserPreferences()
     this.preferencesUser$.subscribe(
       ( preferences ) => {
@@ -47,7 +57,7 @@ export class PreferencesSelectorBarComponent {
         }
 
         preferences.map( ( item ) => {
-          this.selectedPreferences.set( item.name, item )
+          this.selectedPreferences.push( item)
         } )
       }
     )
@@ -68,7 +78,7 @@ export class PreferencesSelectorBarComponent {
 
 
   preferencesUser$: Observable<Preference[]>
-  selectedPreferences = new Map<string, Preference>()
+  selectedPreferences : Preference[] = []
   databasePreferences = new Map<string, Preference>()
 
   async openModal() {
@@ -76,19 +86,25 @@ export class PreferencesSelectorBarComponent {
       component     : PreferencesSelectorComponent,
       componentProps: {
         preferencesData    : this.userPreferenceService.getUserPreferences(),
-        selectedPreferences: this.selectedPreferences
+        selectedPreferences: new Map<string, PreferenceID>(
+          this.selectedPreferences.map( ( item ) => {
+            return [ item.id.value, item.id ]
+          } )
+        )
       }
     } )
     await modal.present()
 
     const { data, role } = await modal.onWillDismiss()
 
+    this.selectedPreferences = data
+
     // if ( role1 === 'confirm' ) {}
-    this.store.dispatch( updatePassengerRegister( {
-      preferences: data
+    this.store.dispatch( updateUserPreferences( {
+      value: this.selectedPreferences
     } ) )
 
-    this.preferencesControl.patchValue( data )
+    this.preferencesControl.patchValue( this.selectedPreferences )
     this.preferencesControl.updateValueAndValidity()
   }
 }

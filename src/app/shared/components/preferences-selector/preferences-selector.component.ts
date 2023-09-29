@@ -11,83 +11,82 @@ import {
   newPreferenceItem,
   PreferenceItem
 } from 'src/app/shared/models'
-import { DividerComponent, UserPreferencesSelectorItemComponent } from '..'
+import { PreferenceID } from 'src/package/preference'
+import {
+  DividerComponent,
+  UserPreferencesSelectorItemComponent
+} from '..'
 
 
 @Component( {
-  standalone : true,
-  selector   : 'app-user-preferences-selector',
-  templateUrl: './preferences-selector.component.html',
-  styleUrls  : [ './preferences-selector.component.scss' ],
-  imports    : [
-    IonicModule,
-    CommonModule,
-    UserPreferencesSelectorItemComponent,
-    DividerComponent
-  ]
+	standalone : true,
+	selector   : 'app-user-preferences-selector',
+	templateUrl: './preferences-selector.component.html',
+	styleUrls  : [ './preferences-selector.component.scss' ],
+	imports    : [
+		IonicModule,
+		CommonModule,
+		UserPreferencesSelectorItemComponent,
+		DividerComponent
+	]
 } )
 export class PreferencesSelectorComponent {
 
-  constructor( private modalCtrl: ModalController ) {}
+	constructor( private modalCtrl: ModalController ) {}
 
-  @Input() preferencesData     = new Map<string, PreferenceItem>()
-  @Input() selectedPreferences = new Map<string, PreferenceItem>()
+	@Input() preferencesData     = new Map<string, PreferenceItem>()
+	@Input() selectedPreferences = new Map<string, PreferenceID>()
 
-  getPreferences(): PreferenceItem[] {
-    return Array.from( this.preferencesData.values() )
-                .map( ( data ) => {
-                  const isSelected = this.selectedPreferences.get( data.name )
-                  if ( isSelected !== undefined ) {
-                    return newPreferenceItem( {
-                      name    : isSelected.name,
-                      icon    : isSelected.icon,
-                      selected: true
-                    } )
-                  }
-                  else {
-                    return newPreferenceItem( {
-                      name    : data.name,
-                      icon    : data.icon,
-                      selected: false
-                    } )
-                  }
-                } )
-  }
+	getPreferences(): PreferenceItem[] {
+		return Array.from( this.preferencesData.values() )
+      .map( ( data ) => {
+        const isSelected = this.selectedPreferences.get( data.id.value )
+        if ( isSelected !== undefined ) {
+          return newPreferenceItem( {
+            ...data,
+            selected: true
+          } )
+        }
+        else {
+          return newPreferenceItem( {
+            ...data,
+            selected: false
+          } )
+        }
+      } )
+	}
 
-  cancel() {
-    return this.modalCtrl.dismiss( [], 'cancel' )
-  }
+	cancel() {
+		return this.modalCtrl.dismiss( [], 'cancel' )
+	}
 
-  confirm() {
-    return this.modalCtrl.dismiss( Array.from(
-        this.selectedPreferences.values() )
-                                        .map(
-                                          ( item ) => {
-                                            return {
-                                              name: item.name,
-                                              icon: item.icon
-                                            }
-                                          }
-                                        ),
-      'confirm'
-    )
-  }
+	confirm() {
+		return this.modalCtrl.dismiss( Array.from(
+				this.selectedPreferences.values() )
+          .map(
+            ( item ) => {
+              return item.value
+            }
+          ),
+			'confirm'
+		)
+	}
 
-  public onSelectItem( $event: string ): void {
+	public onSelectItem( $event: string ): void {
 
-    const pref = this.preferencesData.get( $event )
+		const pref = this.preferencesData.get( $event )
 
-    if ( pref !== undefined ) {
-      this.selectedPreferences.set( $event, pref )
-    }
-  }
+		if ( pref !== undefined ) {
+			this.selectedPreferences.set( $event, pref.id )
+		}
+	}
 
-  public onDeselectItem( $event: string ): void {
-    const pref = this.preferencesData.get( $event )
+	public onDeselectItem( $event: string ): void {
+		const pref = this.preferencesData.get( $event )
 
-    if ( pref !== undefined ) {
-      this.selectedPreferences.delete( $event )
-    }
-  }
+		if ( pref !== undefined ) {
+			this.selectedPreferences.delete( $event )
+		}
+	}
 }
 

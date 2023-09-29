@@ -1,23 +1,16 @@
-import { z } from 'zod'
+import {
+  Preference,
+} from 'src/package/preference'
 
-export const PreferenceItemSchema = z.object( {
-  icon    : z.string(),
-  name    : z.string(),
-  selected: z.boolean()
-} )
-
-type PreferenceItemType = z.infer<typeof PreferenceItemSchema>
-export interface PreferenceItem extends PreferenceItemType {}
-export interface PreferenceItemProps {
-  icon    : string,
-  name    : string,
+export interface PreferenceItem extends Preference {
+  selected: boolean
+}
+export interface PreferenceItemProps extends Preference {
   selected: boolean
 }
 
 export const newPreferenceItem = ( props: PreferenceItemProps ): PreferenceItem => {
-  return PreferenceItemSchema.parse( {
-    icon    : props.icon,
-    name    : props.name,
-    selected: props.selected
-  } )
+  return {
+    ...props
+  }
 }

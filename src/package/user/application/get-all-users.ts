@@ -8,6 +8,7 @@ import {
   UserDao
 } from 'src/package/user/domain'
 
+//TODO: cambiar use case a funciones
 export class GetAllUsers {
   constructor( private repository: UserDao ) {}
 
