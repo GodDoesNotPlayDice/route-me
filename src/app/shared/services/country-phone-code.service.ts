@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core'
 import { take } from 'rxjs'
 import {
   Country,
+  countryFromJson,
   newCountry
 } from 'src/app/shared/models'
 
@@ -17,8 +18,12 @@ export class CountryPhoneCodeService {
     this.http.get( this.url )
         .pipe(take(1))
         .subscribe( ( res: any ) => {
-          this.countriesList = Array.from(res).map((country: any) => {
-            return newCountry(res)
+          this.countriesList = Object.values(res).map((country: any) => {
+            const c = countryFromJson(country)
+            if (c.isNone()) {
+              return newCountry({})
+            }
+            return c.unwrap()
           }).sort( ( a, b ) => {
             if ( a.name.common > b.name.common ) {
               return 1
