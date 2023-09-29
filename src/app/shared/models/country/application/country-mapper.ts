@@ -5,10 +5,6 @@ import {
 } from 'oxide.ts'
 import {
 	Country,
-	newCountryFlagUrl,
-	newCountryNameCode,
-	newCountryName,
-	newCountryNumberCode
 } from 'src/app/shared/models/country/domain'
 import { newCountry } from 'src/app/shared/models/country/infrastructure'
 
@@ -16,7 +12,10 @@ export const countryFromJson = ( json: Record<string, any> ): Option<Country> =>
 	try {
 		return Some(
 			newCountry( {
-				name: json
+				name: json[ 'name' ],
+				flags: json[ 'flags' ],
+				cca2: json[ 'code' ],
+				idd: json[ 'number' ]
 			} )
 		)
 	}
