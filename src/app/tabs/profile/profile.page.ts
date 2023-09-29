@@ -2,10 +2,8 @@ import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 import { Some } from 'oxide.ts'
-import {
-  DividerComponent,
-  LabeledIconComponent
-} from 'src/app/shared/components'
+import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
+import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
 import { AuthService } from 'src/app/shared/services'
 import { defaultUsers } from 'src/main'
 import { Passenger } from 'src/package/passenger'

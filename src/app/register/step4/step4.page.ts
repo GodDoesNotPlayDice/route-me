@@ -15,12 +15,10 @@ import {
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import {
-  FilledButtonComponent,
-  InputAreaComponent,
-  PreferencesSelectorBarComponent,
-  StepperComponent
-} from 'src/app/shared/components'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { InputAreaComponent } from 'src/app/shared/components/input-area/input-area.component'
+import { PreferencesSelectorBarComponent } from 'src/app/shared/components/preferences-selector-bar/preferences-selector-bar.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import {
   AppState,
   notifyStep,

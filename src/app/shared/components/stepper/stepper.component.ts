@@ -7,7 +7,7 @@ import {
   AppState,
   selectStepRegister
 } from 'src/app/shared/state'
-import { StepperItemComponent } from 'src/app/shared/components'
+import { StepperItemComponent } from 'src/app/shared/components/stepper-item/stepper-item.component'
 
 @Component( {
   standalone : true,
@@ -23,10 +23,8 @@ import { StepperItemComponent } from 'src/app/shared/components'
 } )
 export class StepperComponent {
   constructor( private store: Store<AppState> ) {
-    console.log( 'StepperComponent')
     this.store.select( selectStepRegister )
         .subscribe( ( step ) => {
-          console.log( 'step', step )
             this.currentStep = step.currentStep
             this.maxStep = step.maxStep
           }

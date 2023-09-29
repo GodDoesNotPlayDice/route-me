@@ -4,7 +4,8 @@ import {
   OnInit
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { BubbleChatComponent, ChatInputComponent } from 'src/app/shared/components'
+import { BubbleChatComponent } from 'src/app/shared/components/bubble-chat/bubble-chat.component'
+import { ChatInputComponent } from 'src/app/shared/components/chat-input/chat-input.component'
 import { UrlService } from 'src/app/shared/services'
 
 @Component( {

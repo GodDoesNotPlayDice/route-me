@@ -8,12 +8,12 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
+import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import {
   CountryItem,
   newCountryItem
 } from 'src/app/shared/models'
-import { DividerComponent } from '..'
-import { CountryPhoneCodeService } from '../../services'
+import { CountryPhoneCodeService } from 'src/app/shared/services'
 
 @Component( {
 	standalone : true,

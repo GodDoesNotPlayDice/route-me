@@ -13,14 +13,12 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import {
-  CountrySelectorBarComponent,
-  DateSelectorComponent,
-  FilledButtonComponent,
-  InputTextComponent,
-  RadioButtonComponent,
-  StepperComponent
-} from 'src/app/shared/components'
+import { CountrySelectorBarComponent } from 'src/app/shared/components/country-selector-bar/country-selector-bar.component'
+import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
+import { RadioButtonComponent } from 'src/app/shared/components/radio-button/radio-button.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import {
   newRadioButtonData,
   RadioButtonData

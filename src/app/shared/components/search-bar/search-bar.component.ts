@@ -4,7 +4,7 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
-import { SearchModalComponent } from '..'
+import { SearchModalComponent } from 'src/app/shared/components/search-modal/search-modal.component'
 
 @Component( {
   standalone : true,
@@ -13,7 +13,8 @@ import { SearchModalComponent } from '..'
   styleUrls  : [ './search-bar.component.scss' ],
   imports    : [
     IonicModule,
-    CommonModule
+    CommonModule,
+    SearchModalComponent
   ]
 } )
 export class SearchBarComponent {

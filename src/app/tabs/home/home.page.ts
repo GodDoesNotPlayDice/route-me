@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import {
-  DriveCardComponent,
-  FilterButtonComponent,
-  SearchBarComponent
-} from 'src/app/shared/components'
+import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
+import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
+import { SearchBarComponent } from 'src/app/shared/components/search-bar/search-bar.component'
 import {
   DriverCardInfo,
   FilterButtonData,

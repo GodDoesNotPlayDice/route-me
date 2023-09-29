@@ -15,6 +15,7 @@ import {
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
+import { PreferencesSelectorComponent } from 'src/app/shared/components/preferences-selector/preferences-selector.component'
 import { UserPreferenceService } from 'src/app/shared/services'
 import { AppState } from 'src/app/shared/state'
 import {
@@ -25,7 +26,6 @@ import {
   Preference,
   PreferenceID
 } from 'src/package/preference'
-import { PreferencesSelectorComponent } from '..'
 
 @Component( {
   standalone : true,
@@ -36,7 +36,8 @@ import { PreferencesSelectorComponent } from '..'
     IonicModule,
     CommonModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    PreferencesSelectorComponent
   ]
 } )
 export class PreferencesSelectorBarComponent {

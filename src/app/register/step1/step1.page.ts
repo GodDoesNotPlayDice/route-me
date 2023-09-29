@@ -13,13 +13,15 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
+import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
+import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import {
   AppState,
   notifyStep,
 } from 'src/app/shared/state'
-import { CheckboxComponent,
-  FilledButtonComponent, InputTextComponent,
-  OutlinedButtonComponent, StepperComponent } from 'src/app/shared/components'
 
 @Component( {
   standalone : true,

@@ -7,7 +7,8 @@ import { FormsModule } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
-import { FilledButtonComponent, StepperComponent } from 'src/app/shared/components'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import {
   AppState,
   StepState,

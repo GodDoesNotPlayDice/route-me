@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
+import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { DriversService } from 'src/app/shared/services'
-import { DriveCardComponent } from 'src/app/shared/components'
 import {
   DriverCardInfo,
 } from 'src/app/shared/models'

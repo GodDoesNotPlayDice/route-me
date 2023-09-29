@@ -7,15 +7,13 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
+import { PreferencesSelectorItemComponent } from 'src/app/shared/components/preferences-selector-item/preferences-selector-item.component'
 import {
   newPreferenceItem,
   PreferenceItem
 } from 'src/app/shared/models'
 import { PreferenceID } from 'src/package/preference'
-import {
-  DividerComponent,
-  PreferencesSelectorItemComponent
-} from 'src/app/shared/components'
+import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 
 
 @Component( {

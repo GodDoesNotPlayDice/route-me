@@ -7,7 +7,8 @@ import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
-import { FilledButtonComponent, InputTextComponent } from 'src/app/shared/components'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 
 @Component( {
   standalone : true,

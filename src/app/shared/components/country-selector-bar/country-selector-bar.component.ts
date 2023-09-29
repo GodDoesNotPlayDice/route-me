@@ -7,8 +7,8 @@ import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
+import { CountrySelectorComponent } from 'src/app/shared/components/country-selector/country-selector.component'
 import { CountryItem } from 'src/app/shared/models'
-import { CountrySelectorComponent } from '..'
 
 @Component( {
   standalone : true,
@@ -19,7 +19,8 @@ import { CountrySelectorComponent } from '..'
     IonicModule,
     CommonModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    CountrySelectorComponent
   ]
 } )
 export class CountrySelectorBarComponent {
