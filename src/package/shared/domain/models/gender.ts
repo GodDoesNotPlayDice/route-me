@@ -4,7 +4,8 @@ export const GenderSchema = z.object( {
   value : z.string()
 } )
 
-export type Gender = z.infer<typeof GenderSchema>
+type GenderType = z.infer<typeof GenderSchema>
+export interface Gender extends GenderType{}
 
 interface GenderProps {
   value : string

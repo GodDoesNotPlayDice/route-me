@@ -4,7 +4,8 @@ export const LocationSchema = z.object( {
   value : z.string()
 } )
 
-export type Location = z.infer<typeof LocationSchema>
+type LocationType = z.infer<typeof LocationSchema>
+export interface Location extends LocationType{}
 
 interface LocationProps {
   value : string

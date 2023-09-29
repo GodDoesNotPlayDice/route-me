@@ -15,7 +15,8 @@ export const CreatedAtSchema = z.object( {
   return val
 })
 
-export type CreatedAt = z.infer<typeof CreatedAtSchema>
+type CreatedAtType = z.infer<typeof CreatedAtSchema>
+export interface CreatedAt extends CreatedAtType{}
 
 interface CreatedAtProps {
   value : Date

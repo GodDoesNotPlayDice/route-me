@@ -4,7 +4,8 @@ export const MoneySchema = z.object( {
 	value : z.number().nonnegative()
 } )
 
-export type Money = z.infer<typeof MoneySchema>
+type MoneyType = z.infer<typeof MoneySchema>
+export interface Money extends MoneyType{}
 
 interface MoneyProps {
 	value : number

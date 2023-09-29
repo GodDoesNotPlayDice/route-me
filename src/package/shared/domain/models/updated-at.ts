@@ -1,10 +1,6 @@
 import { CreatedAtSchema } from 'src/package/shared/domain/models/created-at'
 import { z } from 'zod'
 
-// export const UpdatedAtSchema = z.object( {
-// 	value: z.date()
-// } )
-
 export const UpdatedAtSchema = z.object( {
   value : z.date(),
   createdAt: z.date()
@@ -19,7 +15,8 @@ export const UpdatedAtSchema = z.object( {
   return val
 })
 
-export type UpdatedAt = z.infer<typeof UpdatedAtSchema>
+type UpdatedAtType = z.infer<typeof UpdatedAtSchema>
+export interface UpdatedAt extends UpdatedAtType{}
 
 interface UpdatedAtProps {
 	value: Date,
