@@ -4,9 +4,10 @@ export const PassengerCountrySchema = z.object( {
   value : z.string()
 } )
 
-export type PassengerCountry = z.infer<typeof PassengerCountrySchema>
+type PassengerCountryType = z.infer<typeof PassengerCountrySchema>
+export interface PassengerCountry extends PassengerCountryType {}
 
-interface PassengerCountryProps {
+export interface PassengerCountryProps {
   value : string
 }
 

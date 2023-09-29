@@ -20,10 +20,11 @@ export const PassengerBirthDaySchema = z.object( {
   return val
 })
 
-export type PassengerBirthDay = z.infer<typeof PassengerBirthDaySchema>
+type PassengerBirthDayType = z.infer<typeof PassengerBirthDaySchema>
+export interface PassengerBirthDay extends PassengerBirthDayType {}
 
-interface PassengerBirthDayProps {
-  value : string
+export interface PassengerBirthDayProps {
+  value : Date
 }
 
 export const newPassengerBirthDay = (props : PassengerBirthDayProps): PassengerBirthDay => {

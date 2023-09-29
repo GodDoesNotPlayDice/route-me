@@ -4,9 +4,10 @@ export const PassengerDescriptionSchema = z.object( {
   value : z.string().min( 10 )
 } )
 
-export type PassengerDescription = z.infer<typeof PassengerDescriptionSchema>
+type PassengerDescriptionType = z.infer<typeof PassengerDescriptionSchema>
+export interface PassengerDescription extends PassengerDescriptionType{}
 
-interface PassengerDescriptionProps {
+export interface PassengerDescriptionProps {
   value : string
 }
 

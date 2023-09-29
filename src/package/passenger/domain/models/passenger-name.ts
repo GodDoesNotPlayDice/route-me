@@ -4,9 +4,11 @@ export const PassengerNameSchema = z.object( {
   value : z.string().email()
 } )
 
-export type PassengerName = z.infer<typeof PassengerNameSchema>
+type PassengerNameType = z.infer<typeof PassengerNameSchema>
 
-interface PassengerNameProps {
+export interface PassengerName extends PassengerNameType {}
+
+export interface PassengerNameProps {
   value : string
 }
 

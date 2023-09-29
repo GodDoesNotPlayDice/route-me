@@ -5,9 +5,11 @@ export const PassengerPhoneSchema = z.object( {
     // z.string().regex(RegExp('^\\(\\+\\d+\\)\\s\\d{4}-\\d{4}')).parse(value);
 } )
 
-export type PassengerPhone = z.infer<typeof PassengerPhoneSchema>
+type PassengerPhoneType = z.infer<typeof PassengerPhoneSchema>
 
-interface PassengerPhoneProps {
+export interface PassengerPhone extends PassengerPhoneType{}
+
+export interface PassengerPhoneProps {
   value : string
 }
 
