@@ -1,39 +1,56 @@
 import {
+  Location,
+  Money,
+  newLocation,
+  newMoney
+} from 'src/package/shared'
+import {
+  newValidDate,
+  ValidDate
+} from 'src/package/shared/domain/models/valid-date'
+import {
   TripState,
 } from 'src/package/trip'
-import { z } from 'zod'
 import {
   Avatar,
 } from './avatar'
 
-export const DriverCardInfoSchema = z.object( {
-  cost            : z.number(),
-  date            : z.date(),
-  startLocation   : z.string(),
-  endLocation     : z.string()
-} )
-
-type DriverCardInfoType = z.infer<typeof DriverCardInfoSchema>
-export interface DriverCardInfo extends DriverCardInfoType{
-  driverAvatar    : Avatar,
-  state           : TripState,
+export interface DriverCardInfo {
+  cost            : Money
+  date            : ValidDate
+  startLocation   : Location
+  endLocation   : Location
+  driverAvatar    : Avatar
+  state           : TripState
   passengerAvatars: Avatar[]
 }
 
 export interface DriverCardInfoProps {
-  driverAvatar    : Avatar,
-  state           : TripState,
+  cost            : number
+  date            : Date
+  startLocation   : string
+  endLocation     : string
+  driverAvatar    : Avatar
+  state           : TripState
   passengerAvatars: Avatar[]
 }
 
 export const newDriverCardInfo = ( props: DriverCardInfoProps ): DriverCardInfo => {
   return  {
     driverAvatar    : props.driverAvatar,
-    cost            : props.cost,
-    date            : props.date,
+    cost            : newMoney({
+      value: props.cost
+    }),
+    date            : newValidDate({
+      value: props.date
+    }),
     state           : props.state,
-    startLocation   : props.startLocation,
-    endLocation     : props.endLocation,
+    startLocation   : newLocation({
+      value: props.startLocation
+    }),
+    endLocation     : newLocation({
+      value: props.endLocation
+    }),
     passengerAvatars: props.passengerAvatars
   }
 }

@@ -13,7 +13,6 @@ export interface FilterButtonDataProps {
   name: string
 }
 
-
 export const newFilterButtonData = ( props: FilterButtonDataProps ): FilterButtonData => {
   return FilterButtonDataSchema.parse( {
     image: props.image,
