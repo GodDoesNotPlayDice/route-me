@@ -4,7 +4,8 @@ export const UserIDSchema = z.object( {
   value : z.string(),
 } )
 
-export type UserID = z.infer<typeof UserIDSchema>
+type UserIDType = z.infer<typeof UserIDSchema>
+export interface UserID extends UserIDType{}
 
 interface UserIDProps {
   value : string

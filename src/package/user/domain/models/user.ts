@@ -1,27 +1,27 @@
 import {
-	UserEmailSchema,
-	UserIDSchema,
+  newUserEmail,
+  newUserID,
+  UserEmail,
+  UserID
 } from 'src/package/user/domain/models'
-import { z } from 'zod'
 
-export const UserSchema = z.object( {
-	id: UserIDSchema,
-	email: UserEmailSchema,
-} )
-
-export type User = z.infer<typeof UserSchema>
+export interface User {
+  id: UserID
+  email: UserEmail
+}
 
 export interface UserProps {
-	id: string,
-	email: string,
+  id: string,
+  email: string,
 }
-export const newUser = (props : UserProps): User => {
-	return UserSchema.parse( {
-		id: UserIDSchema.parse({
-			value: props.id
-		}),
-		email: UserEmailSchema.parse({
-			value: props.email
-		})
-	} )
+
+export const newUser = ( props: UserProps ): User => {
+  return {
+    id   : newUserID({
+      value: props.id
+    }),
+    email: newUserEmail({
+      value: props.email
+    }),
+  }
 }

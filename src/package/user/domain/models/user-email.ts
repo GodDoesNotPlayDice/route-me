@@ -4,7 +4,8 @@ export const UserEmailSchema = z.object( {
   value : z.string().email()
 } )
 
-export type UserEmail = z.infer<typeof UserEmailSchema>
+type UserEmailType = z.infer<typeof UserEmailSchema>
+export interface UserEmail extends UserEmailType{}
 
 interface UserEmailProps {
   value : string

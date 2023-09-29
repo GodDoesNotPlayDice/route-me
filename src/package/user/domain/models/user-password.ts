@@ -4,7 +4,8 @@ export const UserPasswordSchema = z.object( {
 	value : z.string().min(8),
 } )
 
-export type UserPassword = z.infer<typeof UserPasswordSchema>
+type UserPasswordType = z.infer<typeof UserPasswordSchema>
+export interface UserPassword extends UserPasswordType{}
 
 interface UserPasswordProps {
 	value : string
