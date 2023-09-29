@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  EnvironmentInjector,
-  inject,
   OnInit
 } from '@angular/core'
 import {
@@ -10,12 +8,12 @@ import {
   Router
 } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import {
-  Dropdown,
-  initTE,
-  Input,
-  Ripple
-} from 'tw-elements'
+// import {
+//   Dropdown,
+//   initTE,
+//   Input,
+//   Ripple
+// } from 'tw-elements'
 import { CountryPhoneCodeService, UrlService } from 'src/app/shared/services'
 
 @Component( {
@@ -29,7 +27,6 @@ import { CountryPhoneCodeService, UrlService } from 'src/app/shared/services'
   styleUrls  : [ 'app.component.scss' ]
 } )
 export class AppComponent implements OnInit {
-  public environmentInjector = inject( EnvironmentInjector )
 
   constructor( private router: Router,
     private countryPhoneCode: CountryPhoneCodeService,
@@ -43,6 +40,6 @@ export class AppComponent implements OnInit {
       }
     } )
 
-    initTE( { Input, Dropdown, Ripple } )
+    // initTE( { Input, Dropdown, Ripple } )
   }
 }

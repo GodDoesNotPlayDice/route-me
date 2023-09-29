@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  EnvironmentInjector,
-  inject
+  Component
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 
@@ -17,6 +15,4 @@ import { IonicModule } from '@ionic/angular'
   ]
 } )
 export class TabsPage {
-  public environmentInjector = inject( EnvironmentInjector )
-
 }

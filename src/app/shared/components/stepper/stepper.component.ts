@@ -5,9 +5,9 @@ import { IonicModule } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import {
   AppState,
-  selectPageStep
+  selectStepRegister
 } from 'src/app/shared/state'
-import { StepperItemComponent } from '..'
+import { StepperItemComponent } from 'src/app/shared/components'
 
 @Component( {
   standalone : true,
@@ -23,13 +23,16 @@ import { StepperItemComponent } from '..'
 } )
 export class StepperComponent {
   constructor( private store: Store<AppState> ) {
-    this.store.select( selectPageStep )
-        .subscribe(
-          ( page ) => {
-            this.currentPage = page
+    console.log( 'StepperComponent')
+    this.store.select( selectStepRegister )
+        .subscribe( ( step ) => {
+          console.log( 'step', step )
+            this.currentStep = step.currentStep
+            this.maxStep = step.maxStep
           }
         )
   }
 
-  currentPage: number = 0
+  currentStep: number = -1
+  maxStep: number = 0
 }

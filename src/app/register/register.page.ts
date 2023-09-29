@@ -1,12 +1,8 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  EnvironmentInjector,
-  inject
+  Component
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { Store } from '@ngrx/store'
-import { AppState, addStep } from 'src/app/shared/state'
 
 @Component( {
   standalone : true,
@@ -19,11 +15,4 @@ import { AppState, addStep } from 'src/app/shared/state'
   ]
 } )
 export class RegisterPage {
-  public environmentInjector = inject( EnvironmentInjector )
-
-  constructor( private store: Store<AppState> ) {
-    this.store.dispatch( addStep() )
-    this.store.dispatch( addStep() )
-    this.store.dispatch( addStep() )
-  }
 }

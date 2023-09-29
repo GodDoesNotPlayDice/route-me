@@ -12,8 +12,3 @@ export const selectMaxStep = createSelector(
   selectStepRegister,
   ( state ) => state.maxStep
 )
-
-export const selectPageStep = createSelector(
-  selectStepRegister,
-  ( state ) => state.currentPage
-)

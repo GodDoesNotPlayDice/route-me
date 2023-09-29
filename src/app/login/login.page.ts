@@ -17,9 +17,7 @@ import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
-import { Store } from '@ngrx/store'
 import { match } from 'oxide.ts'
-import { AppState } from 'src/app/shared/state'
 import {
   CheckboxComponent,
   FilledButtonComponent,
@@ -34,24 +32,22 @@ import { AuthService } from 'src/app/shared/services'
   selector   : 'app-login',
   templateUrl: './login.page.html',
   imports    : [
+    IonicModule,
+    CommonModule,
     LogoComponent,
     InputTextComponent,
     RouterLink,
     CheckboxComponent,
     FilledButtonComponent,
     OutlinedButtonComponent,
-    IonicModule,
-    CommonModule,
     FormsModule,
     ReactiveFormsModule
   ],
   styleUrls  : [ './login.page.scss' ]
 } )
-// controller
 export class LoginPage implements ViewDidEnter {
 
   constructor(
-    private store: Store<AppState>,
     private authService: AuthService,
     private router: Router,
     private alertController: AlertController

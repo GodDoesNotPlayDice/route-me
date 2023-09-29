@@ -4,11 +4,6 @@ import {
   Input
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { Store } from '@ngrx/store'
-import {
-  AppState,
-  setPageStep
-} from 'src/app/shared/state'
 
 @Component( {
   standalone : true,
@@ -21,13 +16,7 @@ import {
   ]
 } )
 export class StepperItemComponent {
-  constructor( private store: Store<AppState> ) {
-  }
-
-  @Input() step !: number
-  @Input() currentPage !: number
-
-  public link( $event: MouseEvent ): void {
-    this.store.dispatch( setPageStep( { page: this.step } ) )
-  }
+  @Input({required: true}) step : number
+  @Input({required: true}) currentStep : number
+  @Input({required: true}) maxStep : number
 }

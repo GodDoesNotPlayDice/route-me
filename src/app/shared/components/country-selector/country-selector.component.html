@@ -18,7 +18,7 @@
     class="flex flex-col items-center w-full">
     <li
       *ngFor="let p of countriesList.values(); index as i">
-      <div (click)="selectCountry(p.name)"
+      <div (click)="selectCountry(p.name.common)"
         class="flex justify-evenly items-center gap-4 w-80"
         [ngClass]="{
       'rounded-lg': p.selected,
@@ -27,8 +27,8 @@
       }">
         <div class="basis-3/12 flex items-end justify-end">
           <img class="w-8 h-8 aspect-square object-contain"
-            [src]="p.image"
-            [alt]="p.name"/>
+            [src]="p.flag.png"
+            [alt]="p.name.common"/>
         </div>
         <div class="basis-9/12 flex items-center">
           {{ p.name }}

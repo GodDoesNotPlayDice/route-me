@@ -19,5 +19,5 @@ import {
   ]
 } )
 export class FilterButtonComponent {
-  @Input() data!: FilterButtonData
+  @Input({required: true}) data: FilterButtonData
 }
