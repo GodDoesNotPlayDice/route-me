@@ -14,8 +14,8 @@ export const countryFromJson = ( json: Record<string, any> ): Option<Country> =>
 			newCountryRestCountries( {
 				name: json[ 'name' ],
 				flags: json[ 'flags' ],
-				cca2: json[ 'code' ],
-				idd: json[ 'number' ]
+				cca2: json[ 'cca2' ],
+				idd: json[ 'idd' ]
 			} )
 		)
 	}
