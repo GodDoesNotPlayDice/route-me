@@ -4,9 +4,10 @@ export const CategoryPhotoSchema = z.object( {
   value : z.string()
 } )
 
-export type CategoryPhoto = z.infer<typeof CategoryPhotoSchema>
+type CategoryPhotoType = z.infer<typeof CategoryPhotoSchema>
+export interface CategoryPhoto extends CategoryPhotoType {}
 
-interface CategoryPhotoProps {
+export interface CategoryPhotoProps {
   value : string
 }
 

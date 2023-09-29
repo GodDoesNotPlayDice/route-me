@@ -4,9 +4,10 @@ export const CategoryNameSchema = z.object( {
   value : z.string()
 } )
 
-export type CategoryName = z.infer<typeof CategoryNameSchema>
+type CategoryNameType = z.infer<typeof CategoryNameSchema>
+export interface CategoryName extends CategoryNameType {}
 
-interface CategoryNameProps {
+export interface CategoryNameProps {
   value : string
 }
 

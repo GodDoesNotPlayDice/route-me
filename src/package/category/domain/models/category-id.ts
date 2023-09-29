@@ -4,9 +4,10 @@ export const CategoryIDSchema = z.object( {
   value : z.string()
 } )
 
-export type CategoryID = z.infer<typeof CategoryIDSchema>
+type CategoryIDType = z.infer<typeof CategoryIDSchema>
+export interface CategoryID extends CategoryIDType {}
 
-interface CategoryIDProps {
+export interface CategoryIDProps {
   value : string
 }
 

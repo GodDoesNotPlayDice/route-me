@@ -1,40 +1,41 @@
-import { z } from 'zod'
 import {
-	CategoryDescriptionSchema,
-	CategoryIDSchema,
-	CategoryNameSchema,
-	CategoryPhotoSchema
+  CategoryDescription,
+  CategoryID,
+  CategoryName,
+  CategoryPhoto,
+  newCategoryDescription,
+  newCategoryID,
+  newCategoryName,
+  newCategoryPhoto
 } from '.'
 
-export const CategorySchema = z.object( {
-	id         : CategoryIDSchema,
-	name       : CategoryNameSchema,
-	photo      : CategoryPhotoSchema,
-	description: CategoryDescriptionSchema
-} )
-
-export type Category = z.infer<typeof CategorySchema>
+export interface Category {
+  id: CategoryID
+  name: CategoryName
+  photo: CategoryPhoto
+  description: CategoryDescription
+}
 
 export interface CategoryProps {
-	id: string
-	name: string
-	photo: string
-	description: string
+  id: string
+  name: string
+  photo: string
+  description: string
 }
 
 export const newCategory = ( props: CategoryProps ): Category => {
-	return CategorySchema.parse( {
-		id         : CategoryIDSchema.parse( {
-			value: props.id
-		} ),
-		name       : CategoryNameSchema.parse( {
-			value: props.name
-		} ),
-		photo      : CategoryPhotoSchema.parse( {
-			value: props.photo
-		} ),
-		description: CategoryDescriptionSchema.parse( {
-			value: props.description
-		} )
-	} )
+  return {
+    id         : newCategoryID( {
+      value: props.id
+    } ),
+    name       : newCategoryName( {
+      value: props.name
+    } ),
+    photo      : newCategoryPhoto( {
+      value: props.photo
+    } ),
+    description: newCategoryDescription( {
+      value: props.description
+    } )
+  }
 }
