@@ -11,14 +11,14 @@ import { PreferenceItem } from 'src/app/shared/models'
 @Component( {
   standalone : true,
   selector   : 'app-user-preferences-selector-item',
-  templateUrl: './user-preferences-selector-item.component.html',
-  styleUrls  : [ './user-preferences-selector-item.component.scss' ],
+  templateUrl: './preferences-selector-item.component.html',
+  styleUrls  : [ './preferences-selector-item.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule
   ]
 } )
-export class UserPreferencesSelectorItemComponent {
+export class PreferencesSelectorItemComponent {
   @Input() selected: boolean                   = false
   @Input() item !: PreferenceItem
   @Output() onSelected: EventEmitter<string>   = new EventEmitter<string>()
@@ -27,10 +27,10 @@ export class UserPreferencesSelectorItemComponent {
   public onSelect( $event: MouseEvent ): void {
     this.selected = !this.selected
     if ( this.selected ) {
-      this.onSelected.emit( this.item.name )
+      this.onSelected.emit( this.item.name.value )
     }
     else {
-      this.onDeselected.emit( this.item.name )
+      this.onDeselected.emit( this.item.name.value )
     }
   }
 }

@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { UserPreferencesSelectorItemComponent } from 'src/app/shared/components/user-preferences-selector-item/user-preferences-selector-item.component'
+import { PreferencesSelectorItemComponent } from 'src/app/shared/components/preferences-selector-item/preferences-selector-item.component'
 
 describe( 'UserPreferencesSelectorItemComponent', () => {
-  let component: UserPreferencesSelectorItemComponent
-  let fixture: ComponentFixture<UserPreferencesSelectorItemComponent>
+  let component: PreferencesSelectorItemComponent
+  let fixture: ComponentFixture<PreferencesSelectorItemComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ UserPreferencesSelectorItemComponent ],
+      declarations: [ PreferencesSelectorItemComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( UserPreferencesSelectorItemComponent )
+    fixture   = TestBed.createComponent( PreferencesSelectorItemComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

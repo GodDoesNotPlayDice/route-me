@@ -14,8 +14,8 @@ import {
 import { PreferenceID } from 'src/package/preference'
 import {
   DividerComponent,
-  UserPreferencesSelectorItemComponent
-} from '..'
+  PreferencesSelectorItemComponent
+} from 'src/app/shared/components'
 
 
 @Component( {
@@ -26,7 +26,7 @@ import {
 	imports    : [
 		IonicModule,
 		CommonModule,
-		UserPreferencesSelectorItemComponent,
+		PreferencesSelectorItemComponent,
 		DividerComponent
 	]
 } )
