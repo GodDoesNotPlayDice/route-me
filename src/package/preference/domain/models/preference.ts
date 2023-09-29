@@ -1,14 +1,17 @@
-import { z } from 'zod'
-import { PreferenceIDSchema,
-	PreferenceIconSchema, PreferenceNameSchema } from '.'
+import {
+	newPreferenceIcon,
+	newPreferenceID,
+	newPreferenceName,
+	PreferenceIcon,
+	PreferenceID,
+	PreferenceName
+} from '.'
 
-export const PreferenceSchema = z.object( {
-	id: PreferenceIDSchema,
-	name: PreferenceNameSchema,
-	icon: PreferenceIconSchema
-} )
-
-export type Preference = z.infer<typeof PreferenceSchema>
+export interface Preference {
+	id: PreferenceID
+	name: PreferenceName
+	icon: PreferenceIcon
+}
 
 export interface PreferenceProps {
 	id: string
@@ -16,15 +19,14 @@ export interface PreferenceProps {
 	icon: string
 }
 export const newPreference = (props : PreferenceProps): Preference => {
-	return PreferenceSchema.parse( {
-		id: PreferenceIDSchema.parse({
+	return {
+		id: newPreferenceID({
 			value: props.id
 		}),
-		name: PreferenceNameSchema.parse({
+		name: newPreferenceName({
 			value: props.name
-			}),
-		icon: PreferenceIconSchema.parse({
+		}),
+		icon: newPreferenceIcon({
 			value: props.icon
 		})
-	} )
-}
+	}}

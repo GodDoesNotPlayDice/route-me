@@ -4,9 +4,10 @@ export const PreferenceIconSchema = z.object( {
   value : z.string()
 } )
 
-export type PreferenceIcon = z.infer<typeof PreferenceIconSchema>
+type PreferenceIconType = z.infer<typeof PreferenceIconSchema>
+export interface PreferenceIcon extends PreferenceIconType {}
 
-interface PreferenceIconProps {
+export interface PreferenceIconProps {
   value : string
 }
 
