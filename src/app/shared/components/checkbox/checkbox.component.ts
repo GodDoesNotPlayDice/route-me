@@ -24,19 +24,18 @@ import { IonicModule } from '@ionic/angular'
 } )
 export class CheckboxComponent implements OnInit {
 
-  @Input() activeError: boolean = false
+  @Input() activeError: boolean
 
-  @Input() isChecked: boolean = false
+  isChecked: boolean = false
 
-  @Input() errorText: string = ''
+  @Input() errorText: string
 
-  @Input() contentText: string = ''
+  @Input({required: true}) contentText: string = ''
 
   @Output() isCheckedChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
   readonly checkboxControl = new FormControl( false, control => {
     if ( this.activeError && !control.value ) {
-      control.addValidators( Validators.requiredTrue )
       return { required: true }
     }
     return null
@@ -47,6 +46,7 @@ export class CheckboxComponent implements OnInit {
     this.isCheckedChange.emit( this.isChecked )
     this.checkboxControl.patchValue( this.isChecked )
     this.checkboxControl.updateValueAndValidity()
+    this.checkboxControl.markAllAsTouched()
   }
 
   public ngOnInit(): void {

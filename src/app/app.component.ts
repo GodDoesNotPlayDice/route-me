@@ -8,12 +8,12 @@ import {
   Router
 } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-// import {
-//   Dropdown,
-//   initTE,
-//   Input,
-//   Ripple
-// } from 'tw-elements'
+import {
+  Dropdown,
+  initTE,
+  Input,
+  Ripple
+} from 'tw-elements'
 import { CountryPhoneCodeService, UrlService } from 'src/app/shared/services'
 
 @Component( {
@@ -40,6 +40,6 @@ export class AppComponent implements OnInit {
       }
     } )
 
-    // initTE( { Input, Dropdown, Ripple } )
+    initTE( { Input, Dropdown, Ripple } )
   }
 }
