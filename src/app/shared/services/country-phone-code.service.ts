@@ -18,13 +18,12 @@ export class CountryPhoneCodeService {
     this.http.get( this.url )
         .pipe(take(1))
         .subscribe( ( res: any ) => {
-          this.countriesList = Object.values(res).map((country: any) => {
-            const c = countryFromJson(country)
-            if (c.isNone()) {
-              return newCountry({})
-            }
-            return c.unwrap()
-          }).sort( ( a, b ) => {
+          for ( const value of Object.values(res) ) {
+            const c = countryFromJson(value as Record<string, any>)
+            if (c.isNone()) continue
+            this.countriesList.push(c.unwrap())
+          }
+          this.countriesList = this.countriesList.sort( ( a, b ) => {
             if ( a.name.common > b.name.common ) {
               return 1
             }
