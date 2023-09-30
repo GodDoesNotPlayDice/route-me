@@ -63,17 +63,30 @@ export class InputTextComponent {
         break
       case 'phone':
         try {
-          //TODO: revisar data zodIssue min y max
-          z.number()
-           .min( 8 )
-           .max( 9 )
-           .parse( Number.parseInt( control.value ) )
           newPassengerPhone( {
             value: control.value
           } )
         }
-        catch ( e ) {
-          return { number: true }
+        catch ( e: any ) {
+          const code = e?.issues?.[0]?.['code']
+          if ( code === 'invalid_string' ) {
+            return { number: true }
+          }
+          else if ( code === 'too_small' ) {
+            return {
+              minlength: {
+                requiredLength: e?.issues?.[0]?.['minimum']
+              }
+            }
+          }
+          // else if ( code === 'too_big' ) {
+          else {
+            return {
+              maxlength: {
+                requiredLength: e?.issues?.[0]?.['maximum']
+              }
+            }
+          }
         }
         break
       case 'number':
