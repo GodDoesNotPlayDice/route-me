@@ -36,4 +36,8 @@ export class PassengerDataMemory implements PassengerRepository {
 			return Promise.resolve( Err( 'memory error' ) )
 		}
 	}
+
+  public updatePassenger( props: Partial<Passenger> ): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok( true ) )
+  }
 }

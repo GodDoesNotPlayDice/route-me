@@ -10,13 +10,17 @@ import {
 import { loginUser } from 'src/package/authentication/application/login-user'
 import { registerUser } from 'src/package/authentication/application/register-user'
 import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
-import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import {
+  Passenger,
+  PassengerProps
+} from 'src/package/passenger/domain/models/passenger'
 import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
 import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
 import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
 import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
+import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
 import {
   newGender
 } from 'src/package/shared/domain/models/gender'
@@ -80,6 +84,11 @@ export class AuthService {
     if ( result.isErr() ) {
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
+    return Promise.resolve( Ok( true ) )
+  }
+
+  async updatePassenger( props: Partial<PassengerProps> ): Promise<Result<boolean, string>>{
+    console.log( 'update passenger', props )
     return Promise.resolve( Ok( true ) )
   }
 

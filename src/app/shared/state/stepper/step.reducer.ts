@@ -2,7 +2,10 @@ import {
   createReducer,
   on
 } from '@ngrx/store'
-import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
+import {
+  clearStep,
+  notifyStep
+} from 'src/app/shared/state/stepper/step.actions'
 import { StepState } from 'src/app/shared/state/stepper/step.state'
 
 const initialState: StepState = {
@@ -19,6 +22,11 @@ export const stepReducer = createReducer(
     return {
       ...state,
       currentStep: next,
+    }
+  } ),
+  on( clearStep, ( state ) => {
+    return {
+      ...initialState
     }
   } )
 )

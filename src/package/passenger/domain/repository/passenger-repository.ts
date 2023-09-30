@@ -5,4 +5,7 @@ export abstract class PassengerRepository {
 	abstract registerPassenger(
 		passenger: Omit<Passenger, 'id' | 'preferences' | 'description'>,
 	): Promise<Result<boolean, string>>
+  abstract updatePassenger(
+    props: Partial<Passenger>
+  ): Promise<Result<boolean, string>>
 }
