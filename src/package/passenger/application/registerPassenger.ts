@@ -3,8 +3,8 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { PassengerRepository } from 'src/package/passenger/domain'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
 
 export const registerPassenger = async ( repository: PassengerRepository,
   props: Omit<Passenger, 'id'> ): Promise<Result<boolean, string>> => {

@@ -3,15 +3,14 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { AuthRepository } from 'src/package/authentication/domain'
+import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
 import {
   newUser,
-  newUserID,
-  User,
-  UserEmail,
-  UserID,
-  UserPassword
-} from 'src/package/user'
+  User
+} from 'src/package/user/domain/models/user'
+import { UserEmail } from 'src/package/user/domain/models/user-email'
+import { UserID } from 'src/package/user/domain/models/user-id'
+import { UserPassword } from 'src/package/user/domain/models/user-password'
 import { ulid } from 'ulidx'
 
 export class AuthMemory implements AuthRepository {

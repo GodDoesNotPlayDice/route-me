@@ -8,11 +8,11 @@ import {
   Passenger
 } from 'src/package/passenger/domain/models/passenger'
 import {
-	newPreferenceID,
-	PreferenceID
-} from 'src/package/preference'
-import { newGender } from 'src/package/shared'
-import { newUserID } from 'src/package/user'
+  newPreferenceID,
+  PreferenceID
+} from 'src/package/preference/domain/models/preference-id'
+import { newGender } from 'src/package/shared/domain/models/gender'
+import { newUserID } from 'src/package/user/domain/models/user-id'
 
 export const passengerToJson   = ( passenger: Passenger ): Record<string, any> => {
 
@@ -57,8 +57,6 @@ export const passengerFromJson = ( json: Record<string, any> ): Option<Passenger
 				country    : json['country'],
 				gender     : newGender( {
 					value: json['gender']
-          // as GenderType
-					// value: 'Male'
 				} ),
 				preferences
 			} )

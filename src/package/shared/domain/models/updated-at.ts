@@ -1,4 +1,3 @@
-import { CreatedAtSchema } from 'src/package/shared/domain/models/created-at'
 import { z } from 'zod'
 
 export const UpdatedAtSchema = z.object( {

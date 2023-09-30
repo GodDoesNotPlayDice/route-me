@@ -1,9 +1,11 @@
 import {
   MessageContent,
+  newMessageContent
+} from 'src/package/chat/domain/models/message-content'
+import {
   MessageID,
-  newMessageContent,
   newMessageID
-} from '.'
+} from 'src/package/chat/domain/models/message-id'
 
 export interface Message {
 	id     : MessageID,

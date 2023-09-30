@@ -1,11 +1,7 @@
 import {
   CategoryName,
   newCategoryName
-} from 'src/package/category'
-import {
-	Location,
-	newLocation
-} from 'src/package/shared'
+} from 'src/package/category/domain/models/category-name'
 import {
 	newValidDate,
 	ValidDate
@@ -13,7 +9,11 @@ import {
 import {
   newTripID,
   TripID
-} from 'src/package/trip'
+} from 'src/package/trip/domain/models/trip-id'
+import {
+  Location,
+  newLocation
+} from 'src/package/shared/domain/models/location'
 import { z } from 'zod'
 
 export const NumberSchema = z.number()

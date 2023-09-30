@@ -1,10 +1,8 @@
 import { Result } from 'oxide.ts'
-import {
-  UserEmail,
-  UserID,
-  UserPassword
-} from 'src/package/user'
-import { User } from 'src/package/user/domain/models';
+import { User } from 'src/package/user/domain/models/user'
+import { UserEmail } from 'src/package/user/domain/models/user-email'
+import { UserID } from 'src/package/user/domain/models/user-id'
+import { UserPassword } from 'src/package/user/domain/models/user-password'
 
 export abstract class AuthRepository {
   abstract login( email: UserEmail,

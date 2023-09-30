@@ -1,13 +1,19 @@
 import {
   CategoryDescription,
+  newCategoryDescription
+} from 'src/package/category/domain/models/category-description'
+import {
   CategoryID,
+  newCategoryID
+} from 'src/package/category/domain/models/category-id'
+import {
   CategoryName,
+  newCategoryName
+} from 'src/package/category/domain/models/category-name'
+import {
   CategoryPhoto,
-  newCategoryDescription,
-  newCategoryID,
-  newCategoryName,
   newCategoryPhoto
-} from '.'
+} from 'src/package/category/domain/models/category-photo'
 
 export interface Category {
   id: CategoryID

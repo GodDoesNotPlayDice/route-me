@@ -1,11 +1,15 @@
 import {
-	newPreferenceIcon,
-	newPreferenceID,
-	newPreferenceName,
-	PreferenceIcon,
-	PreferenceID,
-	PreferenceName
-} from '.'
+  newPreferenceIcon,
+  PreferenceIcon
+} from 'src/package/preference/domain/models/preference-icon'
+import {
+  newPreferenceID,
+  PreferenceID
+} from 'src/package/preference/domain/models/preference-id'
+import {
+  newPreferenceName,
+  PreferenceName
+} from 'src/package/preference/domain/models/preference-name'
 
 export interface Preference {
 	id: PreferenceID

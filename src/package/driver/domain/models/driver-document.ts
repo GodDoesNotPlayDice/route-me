@@ -1,13 +1,19 @@
 import {
   DriverDocumentID,
+  newDriverDocumentID
+} from 'src/package/driver/domain/models/driver-document-id'
+import {
   DriverDocumentName,
+  newDriverDocumentName
+} from 'src/package/driver/domain/models/driver-document-name'
+import {
   DriverDocumentReference,
+  newDriverDocumentReference
+} from 'src/package/driver/domain/models/driver-document-reference'
+import {
   DriverID,
-  newDriverDocumentID,
-  newDriverDocumentName,
-  newDriverDocumentReference,
   newDriverID
-} from '.'
+} from 'src/package/driver/domain/models/driver-id'
 
 export interface DriverDocument {
   id: DriverDocumentID

@@ -1,9 +1,11 @@
 import {
-	newRatingID,
-	newRatingValue,
-	RatingID,
-	RatingValue
-} from '.'
+  newRatingID,
+  RatingID
+} from 'src/package/rating/domain/models/rating-id'
+import {
+  newRatingValue,
+  RatingValue
+} from 'src/package/rating/domain/models/rating-value'
 
 export interface Rating {
 	id: RatingID,
