@@ -7,13 +7,13 @@ import { newCategoryID } from 'src/package/category'
 import { newChatID } from 'src/package/chat/domain/models'
 import { newDriverID } from 'src/package/driver/domain/models'
 import {
-	newPassengerID,
-	PassengerID
-} from 'src/package/passenger'
+  newPassengerID,
+  PassengerID
+} from 'src/package/passenger/domain/models/passenger-id'
 import {
-	newTrip,
-	Trip
-} from 'src/package/trip/domain'
+  newTrip,
+  Trip
+} from 'src/package/trip/domain/models/trip'
 
 export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 	try {

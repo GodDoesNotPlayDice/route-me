@@ -3,11 +3,9 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import {
-	User,
-	UserDao,
-	UserID
-} from 'src/package/user/domain'
+import { User } from 'src/package/user/domain/models/user'
+import { UserID } from 'src/package/user/domain/models/user-id'
+import { UserDao } from 'src/package/user/domain/repository/user-dao'
 
 export class UserDaoMemory implements UserDao {
 

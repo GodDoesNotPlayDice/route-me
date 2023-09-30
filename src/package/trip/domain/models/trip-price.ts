@@ -16,17 +16,18 @@ export interface TripPrice {
 export interface TripPriceProps {
   amount: number,
   currency: string,
+//TODO: recordatorio para backend
   // seat: TripSeat,
   // pricing: PricingStrategy
 }
 
 export const newTripPrice = ( props: TripPriceProps ): TripPrice => {
   return {
-    amount: newMoney({
+    amount  : newMoney( {
       value: props.amount
-    }),
-    currency: newCurrency({
+    } ),
+    currency: newCurrency( {
       value: props.currency
-    })
+    } )
   }
 }

@@ -4,9 +4,9 @@ import {
 	Some
 } from 'oxide.ts'
 import {
-	newUser,
-	User
-} from 'src/package/user/domain'
+  newUser,
+  User
+} from 'src/package/user/domain/models/user'
 
 export const userToJson   = ( user: User ): Option<Record<string, any>> => {
 	try {

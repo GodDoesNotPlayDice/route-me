@@ -1,9 +1,9 @@
-import { TripID } from 'src/package/trip'
 import {
   newTripHistoryID,
   TripHistoryID
 } from 'src/package/trip-history/domain/models/trip-history-id'
-import { UserID } from 'src/package/user'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
+import { UserID } from 'src/package/user/domain/models/user-id'
 
 export interface TripHistory {
   id: TripHistoryID

@@ -4,12 +4,10 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { userFromJson } from 'src/package/user/application'
-import {
-  User,
-  UserDao,
-  UserID
-} from 'src/package/user/domain'
+import { userFromJson } from 'src/package/user/application/user-mapper'
+import { User } from 'src/package/user/domain/models/user'
+import { UserID } from 'src/package/user/domain/models/user-id'
+import { UserDao } from 'src/package/user/domain/repository/user-dao'
 
 export class UserDaoFirebase implements UserDao {
   constructor( private firebase: AngularFireDatabase ) {

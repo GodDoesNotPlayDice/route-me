@@ -9,22 +9,34 @@ import {
 	newLocation
 } from 'src/package/shared'
 import {
-	EndTripDate,
-	newEndTripDate,
-	newTripDescription,
-	newTripID,
-	newTripName,
-	newTripPrice,
-	newTripSeat,
-	newTripState,
-	TripDescription,
-	TripID,
-	TripName,
-	TripPrice,
-	TripPriceProps,
-	TripSeat,
-	TripState
-} from 'src/package/trip/domain/models'
+  EndTripDate,
+  newEndTripDate
+} from 'src/package/trip/domain/models/end-trip-date'
+import {
+  newTripDescription,
+  TripDescription
+} from 'src/package/trip/domain/models/trip-description'
+import {
+  newTripID,
+  TripID
+} from 'src/package/trip/domain/models/trip-id'
+import {
+  newTripName,
+  TripName
+} from 'src/package/trip/domain/models/trip-name'
+import {
+  newTripPrice,
+  TripPrice,
+  TripPriceProps
+} from 'src/package/trip/domain/models/trip-price'
+import {
+  newTripSeat,
+  TripSeat
+} from 'src/package/trip/domain/models/trip-seat'
+import {
+  newTripState,
+  TripState
+} from 'src/package/trip/domain/models/trip-state'
 
 export interface Trip {
 	id: TripID

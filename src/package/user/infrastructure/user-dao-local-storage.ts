@@ -3,12 +3,10 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import {
-  User,
-  UserDao,
-  UserID
-} from 'src/package/user/domain'
 import { Storage } from '@ionic/storage-angular'
+import { User } from 'src/package/user/domain/models/user'
+import { UserID } from 'src/package/user/domain/models/user-id'
+import { UserDao } from 'src/package/user/domain/repository/user-dao'
 
 export class UserDaoLocalStorage implements UserDao {
 

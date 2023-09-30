@@ -1,5 +1,6 @@
 import { Result } from 'oxide.ts'
-import { User, UserID } from 'src/package/user/domain/models'
+import { User } from 'src/package/user/domain/models/user'
+import { UserID } from 'src/package/user/domain/models/user-id'
 
 export abstract class UserDao { // Data access object
 

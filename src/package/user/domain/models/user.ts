@@ -1,9 +1,11 @@
 import {
   newUserEmail,
+  UserEmail
+} from 'src/package/user/domain/models/user-email'
+import {
   newUserID,
-  UserEmail,
   UserID
-} from 'src/package/user/domain/models'
+} from 'src/package/user/domain/models/user-id'
 
 export interface User {
   id: UserID
