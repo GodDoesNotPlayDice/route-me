@@ -10,6 +10,7 @@ import {
   newFilterButtonData
 } from 'src/app/shared/models/filter-button-data'
 import { DriversService } from 'src/app/shared/services/drivers.service'
+import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
   standalone : true,
@@ -30,7 +31,7 @@ export class HomePage {
   {
     this.driversService.getDrivers()
         .forEach( ( driver ) => {
-          if ( driver.state === 'open' ) {
+          if ( driver.state === TripStateEnum.Open ) {
             this.info.push( driver )
           }
         } )

@@ -1,17 +1,21 @@
 import { z } from 'zod'
 
-export type TripStateType = 'open' | 'progress' | 'completed'
+export enum TripStateEnum {
+  Open   = 'Open',
+  Progress = 'Progress',
+  Completed   = 'Completed'
+}
 
-export const TripStateSchema = z.enum( [ 'open', 'progress', 'completed' ] )
+export const TripEnumSchema = z.nativeEnum( TripStateEnum )
 
-type TripStateEnum = z.infer<typeof TripStateSchema>
+type TripStateEnumType = z.infer<typeof TripEnumSchema>
 
-export type TripState = TripStateEnum
+export type TripState = TripStateEnumType
 
 export interface TripStateProps {
   value : string
 }
 
 export const newTripState = ( props: TripStateProps ): TripState => {
-  return TripStateSchema.parse( props )
+  return TripEnumSchema.parse( props )
 }

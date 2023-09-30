@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { DriverCardInfo } from 'src/app/shared/models/driver-card-info'
 import { DriversService } from 'src/app/shared/services/drivers.service'
+import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
   standalone : true,
@@ -21,10 +22,10 @@ export class TripHistoryPage {
   constructor( private driversService: DriversService ) {
     this.driversService.getDrivers()
         .forEach( ( driver ) => {
-          if ( driver.state === 'progress' ) {
+          if ( driver.state === TripStateEnum.Progress ) {
             this.progressDrivers.push( driver )
           }
-          else if ( driver.state === 'completed' ) {
+          else if ( driver.state === TripStateEnum.Completed ) {
             this.completedDrivers.push( driver )
           }
         } )

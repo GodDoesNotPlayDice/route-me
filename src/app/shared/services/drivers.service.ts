@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { newAvatar } from 'src/app/shared/models/avatar'
 import { DriverCardInfo, newDriverCardInfo } from 'src/app/shared/models/driver-card-info'
+import { newTripState } from 'src/package/trip/domain/models/trip-state'
 
 @Injectable( {
   providedIn: 'root'
@@ -36,7 +37,9 @@ const driveInfoList: DriverCardInfo[] = [
     endLocation  : 'stgo',
     date         : new Date(),
     cost         : 50,
-    state        : 'open'
+    state        : newTripState({
+      value: 'Open'
+    })
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -57,7 +60,9 @@ const driveInfoList: DriverCardInfo[] = [
     endLocation     : 'stgo',
     date            : new Date(),
     cost            : 50,
-    state           : 'completed'
+    state        : newTripState({
+      value: 'Completed'
+    })
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -78,7 +83,9 @@ const driveInfoList: DriverCardInfo[] = [
     endLocation     : 'stgo',
     date            : new Date(),
     cost            : 50,
-    state           : 'progress'
+    state        : newTripState({
+      value: 'Progress'
+    })
   } )
 ]
 
