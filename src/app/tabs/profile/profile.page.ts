@@ -4,12 +4,10 @@ import { IonicModule } from '@ionic/angular'
 import { Some } from 'oxide.ts'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
-import { AuthService } from 'src/app/shared/services'
+import { AuthService } from 'src/app/shared/services/auth.service'
 import { defaultUsers } from 'src/main'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import {
-  User
-} from 'src/package/user'
+import { User } from 'src/package/user/domain/models/user'
 
 @Component( {
   standalone : true,

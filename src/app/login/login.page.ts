@@ -22,8 +22,8 @@ import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.c
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
-import { AuthService } from 'src/app/shared/services'
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
+import { AuthService } from 'src/app/shared/services/auth.service'
 
 @Component( {
   standalone : true,

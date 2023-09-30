@@ -10,7 +10,7 @@ import {
 } from '@ionic/angular'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
-import { MapService } from 'src/app/shared/services'
+import { MapService } from 'src/app/shared/services/map.service'
 
 @Component( {
   standalone : true,

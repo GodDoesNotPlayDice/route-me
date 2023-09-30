@@ -22,11 +22,9 @@ import { StepperComponent } from 'src/app/shared/components/stepper/stepper.comp
 import {
   newRadioButtonData,
   RadioButtonData
-} from 'src/app/shared/models'
-import {
-  AppState,
-  notifyStep
-} from 'src/app/shared/state'
+} from 'src/app/shared/models/radio-button-data'
+import { AppState } from 'src/app/shared/state/app.state'
+import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 
 @Component( {
   standalone : true,

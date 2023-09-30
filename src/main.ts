@@ -28,16 +28,14 @@ import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
-import {
-  AuthMemory,
-  AuthRepository,
-} from 'src/package/authentication'
+import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
+import { AuthMemory } from 'src/package/authentication/infrastructure/auth-memory'
 import {
   newUser,
-  User,
-  UserDao,
-  UserDaoLocalStorage
-} from 'src/package/user'
+  User
+} from 'src/package/user/domain/models/user'
+import { UserDao } from 'src/package/user/domain/repository/user-dao'
+import { UserDaoLocalStorage } from 'src/package/user/infrastructure/user-dao-local-storage'
 import { environment } from './environments/environment'
 import { Storage } from '@ionic/storage-angular'
 

@@ -22,19 +22,19 @@ import {
   newPassengerPhone,
   PassengerPhone
 } from 'src/package/passenger/domain/models/passenger-phone'
-import { PreferenceID } from 'src/package/preference'
-import {
-  Gender,
-  newGender
-} from 'src/package/shared/domain/models'
-import {
-  newUserID,
-  UserID
-} from 'src/package/user'
 import {
   newPassengerID,
   PassengerID
 } from 'src/package/passenger/domain/models/passenger-id'
+import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
+import {
+  Gender,
+  newGender
+} from 'src/package/shared/domain/models/gender'
+import {
+  newUserID,
+  UserID
+} from 'src/package/user/domain/models/user-id'
 
 export interface Passenger {
   id: PassengerID

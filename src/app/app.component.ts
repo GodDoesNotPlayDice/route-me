@@ -8,13 +8,14 @@ import {
   Router
 } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
+import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
+import { UrlService } from 'src/app/shared/services/url.service'
 import {
   Dropdown,
   initTE,
   Input,
   Ripple
 } from 'tw-elements'
-import { CountryPhoneCodeService, UrlService } from 'src/app/shared/services'
 
 @Component( {
   standalone : true,

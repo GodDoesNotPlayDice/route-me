@@ -9,14 +9,14 @@ import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
+import { AppState } from 'src/app/shared/state/app.state'
+import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 import {
-  AppState,
-  StepState,
   selectCurrentStep,
   selectMaxStep,
-  selectStepRegister,
-  notifyStep
-} from 'src/app/shared/state'
+  selectStepRegister
+} from 'src/app/shared/state/stepper/step.selectors'
+import { StepState } from 'src/app/shared/state/stepper/step.state'
 
 @Component( {
   standalone : true,

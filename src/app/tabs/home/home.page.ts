@@ -4,12 +4,12 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchBarComponent } from 'src/app/shared/components/search-bar/search-bar.component'
+import { DriverCardInfo } from 'src/app/shared/models/driver-card-info'
 import {
-  DriverCardInfo,
   FilterButtonData,
   newFilterButtonData
-} from 'src/app/shared/models'
-import { DriversService } from 'src/app/shared/services'
+} from 'src/app/shared/models/filter-button-data'
+import { DriversService } from 'src/app/shared/services/drivers.service'
 
 @Component( {
   standalone : true,

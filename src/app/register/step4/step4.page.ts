@@ -19,14 +19,14 @@ import { FilledButtonComponent } from 'src/app/shared/components/filled-button/f
 import { InputAreaComponent } from 'src/app/shared/components/input-area/input-area.component'
 import { PreferencesSelectorBarComponent } from 'src/app/shared/components/preferences-selector-bar/preferences-selector-bar.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
+import { AppState } from 'src/app/shared/state/app.state'
+import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 import {
-  AppState,
-  notifyStep,
   selectCurrentStep,
   selectMaxStep,
-  selectStepRegister,
-  StepState
-} from 'src/app/shared/state'
+  selectStepRegister
+} from 'src/app/shared/state/stepper/step.selectors'
+import { StepState } from 'src/app/shared/state/stepper/step.state'
 
 @Component( {
   standalone : true,
