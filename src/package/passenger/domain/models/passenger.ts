@@ -1,3 +1,27 @@
+import {
+  newPassengerBirthDay,
+  PassengerBirthDay
+} from 'src/package/passenger/domain/models/passenger-birth-day'
+import {
+  newPassengerCountry,
+  PassengerCountry
+} from 'src/package/passenger/domain/models/passenger-country'
+import {
+  newPassengerDescription,
+  PassengerDescription
+} from 'src/package/passenger/domain/models/passenger-description'
+import {
+  newPassengerLastName,
+  PassengerLastName
+} from 'src/package/passenger/domain/models/passenger-last-name'
+import {
+  newPassengerName,
+  PassengerName
+} from 'src/package/passenger/domain/models/passenger-name'
+import {
+  newPassengerPhone,
+  PassengerPhone
+} from 'src/package/passenger/domain/models/passenger-phone'
 import { PreferenceID } from 'src/package/preference'
 import {
   Gender,
@@ -8,21 +32,9 @@ import {
   UserID
 } from 'src/package/user'
 import {
-  newPassengerBirthDay,
-  newPassengerCountry,
-  newPassengerDescription,
   newPassengerID,
-  newPassengerLastName,
-  newPassengerName,
-  newPassengerPhone,
-  PassengerBirthDay,
-  PassengerCountry,
-  PassengerDescription,
-  PassengerID,
-  PassengerLastName,
-  PassengerName,
-  PassengerPhone
-} from '.'
+  PassengerID
+} from 'src/package/passenger/domain/models/passenger-id'
 
 export interface Passenger {
   id: PassengerID
@@ -92,7 +104,7 @@ export const defaultPassengers: Passenger[] = [
     birthDay   : new Date( '1990-03-25' ),
     country    : 'CL',
     gender     : newGender({
-      value: 'Hombre'
+      value: 'Male'
     }),
     preferences: []
   } )

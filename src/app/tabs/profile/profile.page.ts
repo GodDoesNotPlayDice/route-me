@@ -6,7 +6,7 @@ import { DividerComponent } from 'src/app/shared/components/divider/divider.comp
 import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
 import { AuthService } from 'src/app/shared/services'
 import { defaultUsers } from 'src/main'
-import { Passenger } from 'src/package/passenger'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import {
   User
 } from 'src/package/user'

@@ -7,7 +7,7 @@ export const GenderSchema = z.enum( [ 'Male', 'Female', 'None' ] )
 export type Gender = z.infer<typeof GenderSchema>
 
 interface GenderProps {
-  value : string
+  value : GenderType
 }
 
 export const newGender = (props : GenderProps): Gender => {

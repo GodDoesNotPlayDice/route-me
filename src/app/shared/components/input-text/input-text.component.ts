@@ -9,6 +9,11 @@ import {
   Validators
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
+import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
+import {
+  newUserEmail,
+  newUserPassword
+} from 'src/package/user'
 import { z } from 'zod'
 
 type InputTextType = 'email' | 'password' | 'text' | 'phone' | 'number'
@@ -31,27 +36,41 @@ export class InputTextComponent {
     switch ( this.type ) {
       case 'email':
         try {
-          z.string()
-           .email()
-           .parse( control.value )
+          newUserEmail( {
+            value: control.value
+          } )
         }
         catch ( e ) {
           return { email: true }
         }
         break
       case 'password':
-        control.addValidators( Validators.minLength( 8 ) )
+        try {
+          newUserPassword( {
+            value: control.value
+          } )
+        }
+        catch ( e: any ) {
+          return {
+            minlength: {
+              requiredLength: e?.issues?.[0]?.['minimum']
+            }
+          }
+        }
         break
       case 'text':
         control.addValidators( Validators.minLength( 3 ) )
         break
       case 'phone':
-        control.addValidators( Validators.minLength( 8 ) )
-        control.addValidators( Validators.maxLength( 9 ) )
         try {
-          const numberParsed = Number.parseInt( control.value )
+          //TODO: revisar data zodIssue min y max
           z.number()
-           .parse( numberParsed )
+           .min( 8 )
+           .max( 9 )
+           .parse( Number.parseInt( control.value ) )
+          newPassengerPhone( {
+            value: control.value
+          } )
         }
         catch ( e ) {
           return { number: true }
@@ -59,9 +78,8 @@ export class InputTextComponent {
         break
       case 'number':
         try {
-          const numberParsed = Number.parseInt( control.value )
           z.number()
-           .parse( numberParsed )
+           .parse( Number.parseInt( control.value ) )
         }
         catch ( e ) {
           return { number: true }

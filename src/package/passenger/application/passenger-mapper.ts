@@ -4,9 +4,9 @@ import {
 	Some
 } from 'oxide.ts'
 import {
-	newPassenger,
-	Passenger
-} from 'src/package/passenger/domain'
+  newPassenger,
+  Passenger
+} from 'src/package/passenger/domain/models/passenger'
 import {
 	newPreferenceID,
 	PreferenceID
@@ -57,6 +57,8 @@ export const passengerFromJson = ( json: Record<string, any> ): Option<Passenger
 				country    : json['country'],
 				gender     : newGender( {
 					value: json['gender']
+          // as GenderType
+					// value: 'Male'
 				} ),
 				preferences
 			} )

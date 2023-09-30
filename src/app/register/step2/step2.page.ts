@@ -60,24 +60,14 @@ export class Step2Page implements ViewDidEnter {
 
   buttons: RadioButtonData[] = [
     newRadioButtonData( {
-      name: 'Hombre',
+      name: 'Male',
       icon: 'male-outline'
     } ),
     newRadioButtonData( {
-      name: 'Mujer',
+      name: 'Female',
       icon: 'female-outline'
     } )
   ]
-  // buttons : RadioButtonData[] = [
-  //   {
-  //     name: "Hombre",
-  //     icon: "male-outline"
-  //   },
-  //   {
-  //     name: "Mujer",
-  //     icon: "female-outline"
-  //   },
-  // ]
 
   formGroup!: FormGroup
 

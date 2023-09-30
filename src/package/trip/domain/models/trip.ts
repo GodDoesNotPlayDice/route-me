@@ -1,7 +1,7 @@
 import { CategoryID } from 'src/package/category'
 import { ChatID } from 'src/package/chat/domain/models'
 import { DriverID } from 'src/package/driver/domain/models'
-import { PassengerID } from 'src/package/passenger'
+import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
 import {
 	CreatedAt,
 	Location,

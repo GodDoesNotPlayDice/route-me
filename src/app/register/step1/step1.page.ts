@@ -13,6 +13,7 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
+import { AuthService } from 'src/app/shared'
 import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
@@ -42,7 +43,8 @@ import {
 export class Step1Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
-    private router: Router )
+    private router: Router ,
+    private auth : AuthService)
   {}
 
   @ViewChild( 'user' ) userInput!: InputTextComponent
@@ -51,12 +53,12 @@ export class Step1Page implements ViewDidEnter {
   @ViewChild( 'check' ) checkbox!: CheckboxComponent
 
   formGroup!: FormGroup
-  checkerGroup: FormGroup | undefined
+  checkerGroup!: FormGroup
 
   async submit( $event: SubmitEvent ): Promise<void> {
     $event.preventDefault()
-    this.checkerGroup?.updateValueAndValidity()
-    this.checkerGroup?.markAllAsTouched()
+    this.checkerGroup.updateValueAndValidity()
+    this.checkerGroup.markAllAsTouched()
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
@@ -69,6 +71,9 @@ export class Step1Page implements ViewDidEnter {
 
     //TODO: enviar datos al servidor
     this.store.dispatch( notifyStep() )
+    const email = this.userInput.textControl.value!
+    const password = this.passwordInput.textControl.value!
+    this.auth.register(email, password)
     await this.router.navigate( [ '/register/step2' ] )
   }
 

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const PassengerPhoneSchema = z.object( {
-  value : z.string().email()
+  value : z.string().min( 8 ).max( 9)
     // z.string().regex(RegExp('^\\(\\+\\d+\\)\\s\\d{4}-\\d{4}')).parse(value);
 } )
 

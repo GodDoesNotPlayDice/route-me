@@ -11,7 +11,7 @@ import {
   LoginUser,
   RegisterUser
 } from 'src/package/authentication'
-import { Passenger } from 'src/package/passenger'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { User } from 'src/package/user/domain/models'
 
 @Injectable( {
@@ -49,6 +49,7 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<Result<boolean, string>> {
+    console.log( 'register', email, password)
     //TODO: deberia devolver un string, en caso de token
     const result = await this.registerUser.execute(
       email,
