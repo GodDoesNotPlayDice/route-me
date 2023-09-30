@@ -36,5 +36,9 @@ export const routes: Routes = [
     path         : 'chat',
     // canActivate: [ CanLoginGuard ],
     loadComponent: () => import('./chat/chat.page').then( m => m.ChatPage )
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./error/error.page').then( m => m.ErrorPage)
   }
 ]

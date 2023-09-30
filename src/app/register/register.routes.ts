@@ -22,11 +22,6 @@ export const routes: Routes = [
           m => m.Step3Page )
       },
       {
-        path         : 'step4',
-        loadComponent: () => import('./step4/step4.page').then(
-          m => m.Step4Page )
-      },
-      {
         path      : '',
         redirectTo: '/register/step1',
         pathMatch : 'full'
