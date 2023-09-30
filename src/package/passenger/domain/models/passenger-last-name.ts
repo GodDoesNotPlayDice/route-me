@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 export const PassengerLastNameSchema = z.object( {
   value: z.string()
-          .email()
 } )
 
 type PassengerLastNameType = z.infer<typeof PassengerLastNameSchema>
