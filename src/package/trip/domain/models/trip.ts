@@ -1,13 +1,15 @@
-import { CategoryID } from 'src/package/category'
-import { ChatID } from 'src/package/chat/domain/models'
-import { DriverID } from 'src/package/driver/domain/models'
+import { CategoryID } from 'src/package/category/domain/models/category-id'
+import { ChatID } from 'src/package/chat/domain/models/chat-id'
+import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
 import {
-	CreatedAt,
-	Location,
-	newCreatedAt,
-	newLocation
-} from 'src/package/shared'
+  CreatedAt,
+  newCreatedAt
+} from 'src/package/shared/domain/models/created-at'
+import {
+  Location,
+  newLocation
+} from 'src/package/shared/domain/models/location'
 import {
   EndTripDate,
   newEndTripDate

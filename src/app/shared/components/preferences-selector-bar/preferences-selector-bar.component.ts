@@ -69,10 +69,7 @@ export class PreferencesSelectorBarComponent {
     const { data, role } = await modal.onWillDismiss()
 
     this.selectedPreferences = data
-    console.log( 'selectedPreferences', this.selectedPreferences )
-
     // if ( role1 === 'confirm' ) {}
-
     this.preferencesControl.patchValue( this.selectedPreferences )
     this.preferencesControl.updateValueAndValidity()
   }

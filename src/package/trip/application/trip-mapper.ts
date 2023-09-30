@@ -3,9 +3,9 @@ import {
 	Option,
 	Some
 } from 'oxide.ts'
-import { newCategoryID } from 'src/package/category'
-import { newChatID } from 'src/package/chat/domain/models'
-import { newDriverID } from 'src/package/driver/domain/models'
+import { newCategoryID } from 'src/package/category/domain/models/category-id'
+import { newChatID } from 'src/package/chat/domain/models/chat-id'
+import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import {
   newPassengerID,
   PassengerID

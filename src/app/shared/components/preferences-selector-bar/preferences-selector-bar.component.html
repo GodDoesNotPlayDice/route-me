@@ -3,8 +3,7 @@
   <div *ngIf="selectedPreferences.length !== 0"
     class="flex flex-wrap w-80 gap-2">
     <ng-container *ngFor="let pref of selectedPreferences">
-      <div>a</div>
-      <!--      <div class="inline bg-gray-200 rounded-full p-2 font-gotham">{{ pref.name.value }}</div>-->
+            <div class="inline bg-gray-200 rounded-full p-2 font-gotham">{{ pref.name.value }}</div>
     </ng-container>
   </div>
   <mat-form-field (click)="openModal()">
