@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  ViewChild
+	Component,
+	ViewChild
 } from '@angular/core'
 import {
-  FormGroup,
-  FormsModule
+	FormGroup,
+	FormsModule
 } from '@angular/forms'
 import { Router } from '@angular/router'
 import {
-  IonicModule,
-  ViewDidEnter
+	IonicModule,
+	ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
@@ -23,73 +23,73 @@ import { AppState } from 'src/app/shared/state/app.state'
 import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 
 @Component( {
-  standalone : true,
-  selector   : 'app-step1',
-  templateUrl: './step1.page.html',
-  styleUrls  : [ './step1.page.scss' ],
-  imports    : [
-    IonicModule,
-    StepperComponent,
-    OutlinedButtonComponent,
-    InputTextComponent,
-    CheckboxComponent,
-    FilledButtonComponent,
-    FormsModule,
-    CommonModule
-  ]
+	standalone : true,
+	selector   : 'app-step1',
+	templateUrl: './step1.page.html',
+	styleUrls  : [ './step1.page.scss' ],
+	imports    : [
+		IonicModule,
+		StepperComponent,
+		OutlinedButtonComponent,
+		InputTextComponent,
+		CheckboxComponent,
+		FilledButtonComponent,
+		FormsModule,
+		CommonModule
+	]
 } )
 export class Step1Page implements ViewDidEnter {
 
-  constructor( private store: Store<AppState>,
-    private router: Router ,
-    private auth : AuthService)
-  {}
+	constructor( private store: Store<AppState>,
+		private router: Router,
+		private auth: AuthService )
+	{}
 
-  @ViewChild( 'user' ) userInput!: InputTextComponent
-  @ViewChild( 'password' ) passwordInput!: InputTextComponent
-  @ViewChild( 'confirmpassword' ) passwordConfirmInput!: InputTextComponent
-  @ViewChild( 'check' ) checkbox!: CheckboxComponent
+	@ViewChild( 'user' ) userInput!: InputTextComponent
+	@ViewChild( 'password' ) passwordInput!: InputTextComponent
+	@ViewChild( 'confirmpassword' ) passwordConfirmInput!: InputTextComponent
+	@ViewChild( 'check' ) checkbox!: CheckboxComponent
 
-  formGroup!: FormGroup
-  checkerGroup!: FormGroup
+	formGroup!: FormGroup
+	checkerGroup!: FormGroup
 
-  async submit( $event: SubmitEvent ): Promise<void> {
-    $event.preventDefault()
-    this.checkerGroup.updateValueAndValidity()
-    this.checkerGroup.markAllAsTouched()
-    this.formGroup.updateValueAndValidity()
-    this.formGroup.markAllAsTouched()
+	async submit( $event: SubmitEvent ): Promise<void> {
+		$event.preventDefault()
+		this.checkerGroup.updateValueAndValidity()
+		this.checkerGroup.markAllAsTouched()
+		this.formGroup.updateValueAndValidity()
+		this.formGroup.markAllAsTouched()
 
-    if (
-      !this.formGroup.valid
-    )
-    {
-      return
-    }
+		if (
+			!this.formGroup.valid
+		)
+		{
+			return
+		}
 
-    //TODO: enviar datos al servidor
-    this.store.dispatch( notifyStep() )
-    const email = this.userInput.textControl.value!
-    const password = this.passwordInput.textControl.value!
-    this.auth.userRegister(email, password)
-    await this.router.navigate( [ '/register/step2' ] )
-  }
+		//TODO: enviar datos al servidor
+		this.store.dispatch( notifyStep() )
+		const email    = this.userInput.textControl.value!
+		const password = this.passwordInput.textControl.value!
+		await this.auth.userRegister( email, password )
+		await this.router.navigate( [ '/register/step2' ] )
+	}
 
-  ionViewDidEnter() {
-    this.checkerGroup = new FormGroup( {
-      pw1: this.passwordInput.textControl,
-      pw2: this.passwordConfirmInput.textControl
-    }, control => {
-      if ( control.value.pw1 !== control.value.pw2 ) {
-        return { password: true }
-      }
-      return null
-    } )
+	ionViewDidEnter() {
+		this.checkerGroup = new FormGroup( {
+			pw1: this.passwordInput.textControl,
+			pw2: this.passwordConfirmInput.textControl
+		}, control => {
+			if ( control.value.pw1 !== control.value.pw2 ) {
+				return { password: true }
+			}
+			return null
+		} )
 
-    this.formGroup = new FormGroup( [
-      this.userInput.textControl,
-      this.checkerGroup,
-      this.checkbox.checkboxControl
-    ] )
-  }
+		this.formGroup = new FormGroup( [
+			this.userInput.textControl,
+			this.checkerGroup,
+			this.checkbox.checkboxControl
+		] )
+	}
 }

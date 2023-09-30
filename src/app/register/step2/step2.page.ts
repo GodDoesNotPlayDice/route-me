@@ -23,6 +23,7 @@ import {
   newRadioButtonData,
   RadioButtonData
 } from 'src/app/shared/models/radio-button-data'
+import { AuthService } from 'src/app/shared/services/auth.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 
@@ -46,6 +47,7 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 export class Step2Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
+    private auth : AuthService,
     private router: Router )
   {}
 
@@ -93,16 +95,15 @@ export class Step2Page implements ViewDidEnter {
       return
     }
 
-    //TODO: enviar datos al passenger
-    // this.store.dispatch( updateUserRegister( {
-    //   name    : this.userInput.textControl.value!,
-    //   lastName: this.lastNameInput.textControl.value!,
-    //   phone   : this.phoneInput.textControl.value!,
-    //   country : this.countryInput.countryControl.value!,
-    //   birthDay: this.dateSelectorInput.dateControl.value!,
-    //   genre   : this.radioButtonInput.radioControl.value!
-    // } ) )
     this.store.dispatch( notifyStep() )
+    await this.auth.registerPassenger({
+      name: this.userInput.textControl.value!,
+      lastName: this.lastNameInput.textControl.value!,
+      phone: this.phoneInput.textControl.value!,
+      country: this.countryInput.countryControl.value!,
+      birthDay: this.dateSelectorInput.dateControl.value!,
+      gender: this.radioButtonInput.radioControl.value!
+    })
     await this.router.navigate( [ '/register/step4' ] )
   }
 }

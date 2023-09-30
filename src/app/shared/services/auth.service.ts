@@ -11,7 +11,15 @@ import { loginUser } from 'src/package/authentication/application/login-user'
 import { registerUser } from 'src/package/authentication/application/register-user'
 import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
+import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
+import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
+import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
+import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
 import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
+import {
+  newGender
+} from 'src/package/shared/domain/models/gender'
 import { User } from 'src/package/user/domain/models/user'
 import { newUserEmail } from 'src/package/user/domain/models/user-email'
 import { newUserPassword } from 'src/package/user/domain/models/user-password'
@@ -75,11 +83,39 @@ export class AuthService {
     return Promise.resolve( Ok( true ) )
   }
 
-  async registerPassenger( props: Omit<Passenger, 'id'> ): Promise<Result<boolean, string>> {
+  async registerPassenger( props: {
+    name: string,
+    lastName: string,
+    phone: string,
+    birthDay: Date,
+    country: string,
+    gender: string,
+  } ): Promise<Result<boolean, string>> {
     console.log( 'register passenger', props )
 
+    //TODO: ver si register devuelve token o entidad
     const result   = await this.passengerRepository.registerPassenger(
-      { ...props } )
+      {
+        userID: this.currentUser.unwrap().id,
+        name: newPassengerName({
+          value: props.name
+        }),
+        lastName: newPassengerLastName({
+          value: props.lastName
+        }),
+        country: newPassengerCountry({
+          value: props.country
+        }),
+        phone: newPassengerPhone({
+          value: props.phone
+        }),
+        birthDay: newPassengerBirthDay({
+          value: props.birthDay
+        }),
+        gender: newGender({
+          value: props.gender
+        }),
+      } )
 
     if ( result.isErr() ) {
       return Promise.resolve( Err( result.unwrapErr() ) )

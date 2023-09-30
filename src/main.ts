@@ -30,6 +30,8 @@ import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
 import { AuthMemory } from 'src/package/authentication/infrastructure/auth-memory'
+import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
+import { PassengerDataMemory } from 'src/package/passenger/infrastructure/passenger-data-memory'
 import {
   newUser,
   User
@@ -73,12 +75,13 @@ bootstrapApplication( AppComponent, {
       },
       deps      : [Storage]
     },
-    // {
-      // provide: PassengerRepository,
-      // useFactory: () => {
-      // },
-      // deps      : []
-    // },
+    {
+      provide: PassengerRepository,
+      useFactory: () => {
+        return new PassengerDataMemory([])
+      },
+      deps      : []
+    },
     importProvidersFrom(
       [ IonicModule.forRoot( {} ),
         FormsModule,
