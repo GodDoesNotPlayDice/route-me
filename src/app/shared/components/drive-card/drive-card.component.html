@@ -9,7 +9,7 @@
     <div class="flex flex-col m-1 justify-between">
       <div class="">Fecha viaje: {{info.date.value | date}}</div>
       <div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
-      <div>Inicio: {{info.startLocation}} - Fin: {{info.endLocation}}</div>
+      <div>Inicio: {{info.startLocation.value}} - Fin: {{info.endLocation.value}}</div>
     </div>
   </div>
   <div class="flex justify-between items-center gap-2">
@@ -19,7 +19,7 @@
         <app-avatar-home [url]="passenger.url"></app-avatar-home>
       </div>
     </div>
-    <div>${{info.cost}}</div>
+    <div>${{info.cost.value}}</div>
     <button
       (click)="buttonClick($event)"
       type="button"

@@ -10,7 +10,7 @@ import {
   newValidDate,
   ValidDate
 } from 'src/package/shared/domain/models/valid-date'
-import { TripState } from 'src/package/trip/domain/models/trip-state'
+import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 import {
   Avatar,
 } from './avatar'
@@ -21,7 +21,7 @@ export interface DriverCardInfo {
   startLocation   : Location
   endLocation   : Location
   driverAvatar    : Avatar
-  state           : TripState
+  state           : TripStateEnum
   passengerAvatars: Avatar[]
 }
 
@@ -31,7 +31,7 @@ export interface DriverCardInfoProps {
   startLocation   : string
   endLocation     : string
   driverAvatar    : Avatar
-  state           : TripState
+  state           : TripStateEnum
   passengerAvatars: Avatar[]
 }
 

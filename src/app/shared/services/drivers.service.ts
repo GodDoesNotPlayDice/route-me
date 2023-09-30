@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core'
 import { newAvatar } from 'src/app/shared/models/avatar'
-import { DriverCardInfo, newDriverCardInfo } from 'src/app/shared/models/driver-card-info'
+import {
+  DriverCardInfo,
+  newDriverCardInfo
+} from 'src/app/shared/models/driver-card-info'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
 
 @Injectable( {
@@ -15,31 +18,31 @@ export class DriversService {
 
 const driveInfoList: DriverCardInfo[] = [
   newDriverCardInfo( {
-    driverAvatar : newAvatar( {
+    driverAvatar    : newAvatar( {
       name: 'Juan',
       url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148055951946027070/640px-LinuxCon_Europe_Linus_Torvalds_03_28cropped29.png'
     } ),
     passengerAvatars: [
-      newAvatar({
+      newAvatar( {
         name: 'noseve1',
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } ),
-      newAvatar({
+      newAvatar( {
         name: 'noseve1',
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } ),
-      newAvatar({
+      newAvatar( {
         name: 'noseve2',
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } )
     ],
-    startLocation: 'viña',
-    endLocation  : 'stgo',
-    date         : new Date(),
-    cost         : 50,
-    state        : newTripState({
+    startLocation   : 'viña',
+    endLocation     : 'stgo',
+    date            : new Date(),
+    cost            : 50,
+    state           : newTripState( {
       value: 'Open'
-    })
+    } )
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -60,9 +63,9 @@ const driveInfoList: DriverCardInfo[] = [
     endLocation     : 'stgo',
     date            : new Date(),
     cost            : 50,
-    state        : newTripState({
+    state           : newTripState( {
       value: 'Completed'
-    })
+    } )
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -83,9 +86,9 @@ const driveInfoList: DriverCardInfo[] = [
     endLocation     : 'stgo',
     date            : new Date(),
     cost            : 50,
-    state        : newTripState({
+    state           : newTripState( {
       value: 'Progress'
-    })
+    } )
   } )
 ]
 

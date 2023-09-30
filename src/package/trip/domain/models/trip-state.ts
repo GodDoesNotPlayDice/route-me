@@ -17,5 +17,5 @@ export interface TripStateProps {
 }
 
 export const newTripState = ( props: TripStateProps ): TripState => {
-  return TripEnumSchema.parse( props )
+  return TripEnumSchema.parse( props.value )
 }

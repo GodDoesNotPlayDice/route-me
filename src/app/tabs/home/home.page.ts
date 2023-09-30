@@ -29,12 +29,9 @@ export class HomePage {
 
   constructor( private driversService: DriversService )
   {
-    this.driversService.getDrivers()
-        .forEach( ( driver ) => {
-          if ( driver.state === TripStateEnum.Open ) {
-            this.info.push( driver )
-          }
-        } )
+    this.info = this.driversService.getDrivers().filter( ( driver ) => {
+      return driver.state === TripStateEnum.Open
+    } )
 
     if ( this.info.length === 0 ) {
       this.error = true

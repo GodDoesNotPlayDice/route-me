@@ -37,14 +37,14 @@ import {
 } from 'src/package/trip/domain/models/trip-seat'
 import {
   newTripState,
-  TripState
+  TripStateEnum
 } from 'src/package/trip/domain/models/trip-state'
 
 export interface Trip {
 	id: TripID
 	name: TripName
 	description: TripDescription
-	state: TripState
+	state: TripStateEnum
 	price: TripPrice
 	seat: TripSeat
 	startLocation: Location
