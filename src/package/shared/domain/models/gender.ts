@@ -1,18 +1,20 @@
 import { z } from 'zod'
 
-export type GenderType = 'Male' | 'Female' | 'None'
-
-export const GenderSchema = z.enum( [ 'Male', 'Female', 'None' ] )
-
-export type Gender = z.infer<typeof GenderSchema>
-
-interface GenderProps {
-  value : string
+export enum GenderEnum {
+	Male   = 'Male',
+	Female = 'Female',
+	None   = 'None'
 }
 
-export const newGender = (props : GenderProps): Gender => {
-  return GenderSchema.parse( {
-    value : props.value
-  } )
+export const GenderEnumSchema = z.nativeEnum( GenderEnum )
+
+export type Gender = z.infer<typeof GenderEnumSchema>
+
+interface GenderProps {
+	value: string
+}
+
+export const newGender = ( props: GenderProps ): Gender => {
+	return GenderEnumSchema.parse( props.value )
 }
 
