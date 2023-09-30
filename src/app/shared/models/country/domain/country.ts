@@ -1,17 +1,23 @@
 import {
 	CountryFlagUrl,
 	CountryFlagUrlProps,
+	newCountryFlagUrl
+} from 'src/app/shared/models/country/domain/country-flag-url'
+import {
 	CountryName,
+	CountryNameProps,
+	newCountryName
+} from 'src/app/shared/models/country/domain/country-name'
+import {
 	CountryNameCode,
 	CountryNameCodeProps,
-	CountryNameProps,
+	newCountryNameCode
+} from 'src/app/shared/models/country/domain/country-name-code'
+import {
 	CountryNumberCode,
 	CountryNumberCodeProps,
-	newCountryFlagUrl,
-	newCountryName,
-	newCountryNameCode,
 	newCountryNumberCode
-} from '.'
+} from 'src/app/shared/models/country/domain/country-number-code'
 
 export interface Country {
 	flag: CountryFlagUrl

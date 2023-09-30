@@ -1,15 +1,11 @@
-import {
-	Country,
-	newCountryFlagUrl,
-	newCountryName,
-	newCountryNameCode,
-	newCountryNumberCode
-} from 'src/app/shared/models/country/domain'
-import {
-	Flags,
-	Idd,
-	Name
-} from 'src/app/shared/models/country/infrastructure/rest-countries'
+import { Country } from 'src/app/shared/models/country/domain/country'
+import { newCountryFlagUrl } from 'src/app/shared/models/country/domain/country-flag-url'
+import { newCountryName } from 'src/app/shared/models/country/domain/country-name'
+import { newCountryNameCode } from 'src/app/shared/models/country/domain/country-name-code'
+import { newCountryNumberCode } from 'src/app/shared/models/country/domain/country-number-code'
+import { Flags } from 'src/app/shared/models/country/infrastructure/rest-countries/country-flag-url'
+import { Name } from 'src/app/shared/models/country/infrastructure/rest-countries/country-name'
+import { Idd } from 'src/app/shared/models/country/infrastructure/rest-countries/country-number-code'
 
 export interface CountryRestCountries {
 	flags: Flags;

@@ -3,10 +3,10 @@ import {
 	on
 } from '@ngrx/store'
 import {
-	UserPreferencesState,
 	clearUserPreferences,
 	updateUserPreferences
-} from 'src/app/shared/state/user-preference'
+} from 'src/app/shared/state/user-preference/user-preference.actions'
+import { UserPreferencesState } from 'src/app/shared/state/user-preference/user-preference.state'
 
 const initialState: UserPreferencesState ={
 	value: []

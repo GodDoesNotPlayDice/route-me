@@ -10,10 +10,10 @@ import {
 } from '@ionic/angular'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import {
-  CountryItem,
-  newCountryItem
-} from 'src/app/shared/models'
-import { CountryPhoneCodeService } from 'src/app/shared/services'
+	CountryItem,
+	newCountryItem
+} from 'src/app/shared/models/country-item'
+import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
 
 @Component( {
 	standalone : true,

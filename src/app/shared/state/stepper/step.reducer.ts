@@ -2,10 +2,8 @@ import {
   createReducer,
   on
 } from '@ngrx/store'
-import {
-  notifyStep,
-  StepState
-} from 'src/app/shared/state/stepper'
+import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
+import { StepState } from 'src/app/shared/state/stepper/step.state'
 
 const initialState: StepState = {
   maxStep    : 3,

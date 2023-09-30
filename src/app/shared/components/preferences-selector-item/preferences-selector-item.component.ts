@@ -6,7 +6,7 @@ import {
   Output
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { PreferenceItem } from 'src/app/shared/models'
+import { PreferenceItem } from 'src/app/shared/models/preference-item'
 
 @Component( {
   standalone : true,

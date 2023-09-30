@@ -16,16 +16,12 @@ import {
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { PreferencesSelectorComponent } from 'src/app/shared/components/preferences-selector/preferences-selector.component'
-import { UserPreferenceService } from 'src/app/shared/services'
-import { AppState } from 'src/app/shared/state'
-import {
-  selectUserPreferences,
-  updateUserPreferences
-} from 'src/app/shared/state/user-preference'
-import {
-  Preference,
-  PreferenceID
-} from 'src/package/preference'
+import { UserPreferenceService } from 'src/app/shared/services/user-preference.service'
+import { AppState } from 'src/app/shared/state/app.state'
+import { updateUserPreferences } from 'src/app/shared/state/user-preference/user-preference.actions'
+import { selectUserPreferences } from 'src/app/shared/state/user-preference/user-preference.selectors'
+import { Preference } from 'src/package/preference/domain/models/preference'
+import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
 
 @Component( {
   standalone : true,

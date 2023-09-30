@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { take } from 'rxjs'
-import {
-  Country,
-  countryFromJson,
-} from 'src/app/shared/models'
+import { countryFromJson } from 'src/app/shared/models/country/application/country-mapper'
+import { Country } from 'src/app/shared/models/country/domain/country'
 
 @Injectable( {
   providedIn: 'root'

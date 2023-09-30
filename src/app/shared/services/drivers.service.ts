@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core'
-import {
-  DriverCardInfo,
-  newAvatar,
-  newDriverCardInfo
-} from 'src/app/shared/models'
+import { newAvatar } from 'src/app/shared/models/avatar'
+import { DriverCardInfo, newDriverCardInfo } from 'src/app/shared/models/driver-card-info'
 
 @Injectable( {
   providedIn: 'root'

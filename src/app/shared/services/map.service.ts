@@ -5,7 +5,7 @@ import {
 import { environment } from '@env/environment'
 import * as mapboxgl from 'mapbox-gl'
 import { Subscription } from 'rxjs'
-import { LocationService } from 'src/app/shared/services'
+import { LocationService } from 'src/app/shared/services/location.service'
 
 @Injectable( {
   providedIn: 'root'

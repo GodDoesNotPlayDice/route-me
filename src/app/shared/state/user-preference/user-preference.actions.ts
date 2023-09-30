@@ -2,7 +2,7 @@ import {
 	createAction,
 	props
 } from '@ngrx/store'
-import { UserPreferencesState } from 'src/app/shared/state/user-preference'
+import { UserPreferencesState } from 'src/app/shared/state/user-preference/user-preference.state'
 
 export const updateUserPreferences = createAction(
 	'[USER-PREFERENCES] Update USER-PREFERENCES',

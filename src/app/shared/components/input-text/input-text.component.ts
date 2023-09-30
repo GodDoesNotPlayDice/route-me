@@ -10,10 +10,8 @@ import {
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
-import {
-  newUserEmail,
-  newUserPassword
-} from 'src/package/user'
+import { newUserEmail } from 'src/package/user/domain/models/user-email'
+import { newUserPassword } from 'src/package/user/domain/models/user-password'
 import { z } from 'zod'
 
 type InputTextType = 'email' | 'password' | 'text' | 'phone' | 'number'

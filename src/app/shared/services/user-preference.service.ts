@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import {
   newPreference,
   Preference
-} from 'src/package/preference'
+} from 'src/package/preference/domain/models/preference'
 
 @Injectable( {
   providedIn: 'root'

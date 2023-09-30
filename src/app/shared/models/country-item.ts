@@ -1,4 +1,4 @@
-import { Country } from 'src/app/shared/models/country'
+import { Country } from 'src/app/shared/models/country/domain/country'
 
 export interface CountryItem extends Country {
 	selected: boolean

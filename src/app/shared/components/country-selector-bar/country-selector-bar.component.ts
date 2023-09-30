@@ -8,7 +8,7 @@ import {
   ModalController
 } from '@ionic/angular'
 import { CountrySelectorComponent } from 'src/app/shared/components/country-selector/country-selector.component'
-import { CountryItem } from 'src/app/shared/models'
+import { CountryItem } from 'src/app/shared/models/country-item'
 
 @Component( {
   standalone : true,

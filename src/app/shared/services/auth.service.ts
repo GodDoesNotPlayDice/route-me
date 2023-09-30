@@ -7,18 +7,14 @@ import {
   Result,
   Some
 } from 'oxide.ts'
-import {
-  AuthRepository,
-  loginUser,
-  registerUser
-} from 'src/package/authentication'
-import { PassengerRepository } from 'src/package/passenger'
+import { loginUser } from 'src/package/authentication/application/login-user'
+import { registerUser } from 'src/package/authentication/application/register-user'
+import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import {
-  newUserEmail,
-  newUserPassword,
-  User
-} from 'src/package/user/domain/models'
+import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
+import { User } from 'src/package/user/domain/models/user'
+import { newUserEmail } from 'src/package/user/domain/models/user-email'
+import { newUserPassword } from 'src/package/user/domain/models/user-password'
 
 @Injectable( {
   providedIn: 'root'

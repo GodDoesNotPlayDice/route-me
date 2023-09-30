@@ -1,16 +1,16 @@
 import {
   Location,
+  newLocation
+} from 'src/package/shared/domain/models/location'
+import {
   Money,
-  newLocation,
   newMoney
-} from 'src/package/shared'
+} from 'src/package/shared/domain/models/money'
 import {
   newValidDate,
   ValidDate
 } from 'src/package/shared/domain/models/valid-date'
-import {
-  TripState,
-} from 'src/package/trip'
+import { TripState } from 'src/package/trip/domain/models/trip-state'
 import {
   Avatar,
 } from './avatar'

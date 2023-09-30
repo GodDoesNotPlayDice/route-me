@@ -1,12 +1,8 @@
 import { ActionReducerMap } from '@ngrx/store'
-import {
-  stepReducer,
-  StepState
-} from 'src/app/shared/state/stepper'
-import {
-  userPreferencesReducer,
-  UserPreferencesState
-} from 'src/app/shared/state/user-preference'
+import { stepReducer } from 'src/app/shared/state/stepper/step.reducer'
+import { StepState } from 'src/app/shared/state/stepper/step.state'
+import { userPreferencesReducer } from 'src/app/shared/state/user-preference/user-preference.reducer'
+import { UserPreferencesState } from 'src/app/shared/state/user-preference/user-preference.state'
 
 export interface AppState {
   readonly stepRegister: StepState
