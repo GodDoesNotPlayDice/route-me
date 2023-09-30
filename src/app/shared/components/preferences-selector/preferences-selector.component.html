@@ -15,7 +15,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ul class="w-full">
-    <li *ngFor="let pref of getPreferences(); index as i">
+    <li *ngFor="let pref of preferencesList; index as i">
       <app-user-preferences-selector-item
         [selected]="pref.selected"
         (onSelected)="onSelectItem($event)"

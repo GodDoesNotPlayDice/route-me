@@ -39,8 +39,7 @@ export class AuthService {
   currentUser: Option<User>           = None
   currentPassenger: Option<Passenger> = None
 
-  async userLogin( email: string,
-    password: string ): Promise<Result<boolean, string>> {
+  async userLogin( email: string, password: string ): Promise<Result<boolean, string>> {
     console.log( 'login', email, password )
 
     const result = await loginUser(

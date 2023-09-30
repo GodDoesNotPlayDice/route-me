@@ -79,23 +79,8 @@ export class Step4Page implements OnInit, ViewDidEnter {
     }
 
     //TODO: breaking. enviar update a authService
-
-    // const userRegister$ = this.store.select( selectPassengerRegister )
-    //                           .subscribe( ( userRegister ) => {
-    //                             if ( userRegister.description !== '' ) {
-    //                               console.log( userRegister )
-    //                             }
-    //                           } )
-
-    // this.store.dispatch( updatePassengerRegister( {
-    //   description: this.areaInput.textControl.value!,
-    //   preferences: this.preferenceInput.preferencesControl.value!
-    // } ) )
-
-    // TODO: revisar mejor forma de desuscribirse, revisar pipe takeLast(1)
-    // userRegister$.unsubscribe()
+    //TODO: clear preferences
     this.store.dispatch( notifyStep() )
-    // this.store.dispatch( clearPassengerRegister() )
     await this.router.navigate( [ '/tabs/home' ] )
   }
 

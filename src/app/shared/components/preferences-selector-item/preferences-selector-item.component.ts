@@ -20,7 +20,7 @@ import { PreferenceItem } from 'src/app/shared/models/preference-item'
 } )
 export class PreferencesSelectorItemComponent {
   @Input() selected: boolean                   = false
-  @Input() item !: PreferenceItem
+  @Input({required: true}) item : PreferenceItem
   @Output() onSelected: EventEmitter<string>   = new EventEmitter<string>()
   @Output() onDeselected: EventEmitter<string> = new EventEmitter<string>()
 

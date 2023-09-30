@@ -20,7 +20,6 @@ export class MapService implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    console.log( 'me destruyo' )
     this.locationSub.unsubscribe()
   }
 
