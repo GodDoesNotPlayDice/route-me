@@ -8,15 +8,13 @@ import {
   UserDao
 } from 'src/package/user/domain'
 
-//TODO: cambiar use case a funciones
-export class GetAllUsers {
-  constructor( private repository: UserDao ) {}
+export const getAllUsers = async ( repository: UserDao ): Promise<Result<User[], string>> => {
+  const result   = await repository.getAll()
+  const response = result.unwrap()
 
-  async execute(): Promise<Result<User[], string>> {
-    const result = await this.repository.getAll()
-    if ( result.isErr() ) {
-      return Promise.resolve( Err( result.unwrapErr() ) )
-    }
-    return Promise.resolve( Ok( result.unwrap() ) )
+  if ( result.isErr() ) {
+    return Promise.resolve( Err( result.unwrapErr() ) )
   }
+
+  return Promise.resolve( Ok( response ) )
 }

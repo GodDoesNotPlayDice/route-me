@@ -94,7 +94,7 @@ export class LoginPage implements ViewDidEnter {
     // si el checkbox esta marcado
     // this.checkbox.checkboxControl.value
 
-    const result = await this.authService.login(
+    const result = await this.authService.userLogin(
       this.userInput.textControl.value!,
       this.passwordInput.textControl.value!
     )

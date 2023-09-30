@@ -8,11 +8,17 @@ import {
   Some
 } from 'oxide.ts'
 import {
-  LoginUser,
-  RegisterUser
+  AuthRepository,
+  loginUser,
+  registerUser
 } from 'src/package/authentication'
+import { PassengerRepository } from 'src/package/passenger'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { User } from 'src/package/user/domain/models'
+import {
+  newUserEmail,
+  newUserPassword,
+  User
+} from 'src/package/user/domain/models'
 
 @Injectable( {
   providedIn: 'root'
@@ -20,24 +26,29 @@ import { User } from 'src/package/user/domain/models'
 export class AuthService {
 
   constructor(
-    private loginUser: LoginUser,
-    private registerUser: RegisterUser
+    private authRepository: AuthRepository,
+    private passengerRepository: PassengerRepository
   )
   { }
 
-  currentUser: Option<User> = None
+  currentUser: Option<User>           = None
   currentPassenger: Option<Passenger> = None
 
-  async login( email: string,
+  async userLogin( email: string,
     password: string ): Promise<Result<boolean, string>> {
+    console.log( 'login', email, password )
 
-    const result = await this.loginUser.execute(
-      email,
-      password
+    const result = await loginUser(
+      this.authRepository,
+      newUserEmail( {
+        value: email
+      } ),
+      newUserPassword( {
+        value: password
+      } )
     )
 
     if ( result.isErr() ) {
-
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
 
@@ -45,19 +56,40 @@ export class AuthService {
     return Promise.resolve( Ok( true ) )
   }
 
-  async register(
+  async userRegister(
     email: string,
     password: string
   ): Promise<Result<boolean, string>> {
-    console.log( 'register', email, password)
+    console.log( 'register', email, password )
     //TODO: deberia devolver un string, en caso de token
-    const result = await this.registerUser.execute(
-      email,
-      password,
+
+    const result = await registerUser(
+      this.authRepository,
+      newUserEmail( {
+        value: email
+      } ),
+      newUserPassword( {
+        value: password
+      } )
     )
+
     if ( result.isErr() ) {
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
     return Promise.resolve( Ok( true ) )
+  }
+
+  async registerPassenger( props: Omit<Passenger, 'id'> ): Promise<Result<boolean, string>> {
+    console.log( 'register passenger', props )
+
+    const result   = await this.passengerRepository.registerPassenger(
+      { ...props } )
+
+    if ( result.isErr() ) {
+      return Promise.resolve( Err( result.unwrapErr() ) )
+    }
+
+    const response = result.unwrap()
+    return Promise.resolve( Ok( response ) )
   }
 }

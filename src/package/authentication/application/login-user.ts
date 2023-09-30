@@ -5,23 +5,20 @@ import {
 } from 'oxide.ts'
 import { AuthRepository } from 'src/package/authentication/domain'
 import {
-  User
+  User,
+  UserEmail,
+  UserPassword
 } from 'src/package/user'
 
-export class LoginUser {
-  constructor( private repository: AuthRepository ) {
+export const loginUser = async ( repository: AuthRepository,
+  email: UserEmail,
+  password: UserPassword ): Promise<Result<User, string>> => {
+  try {
+    const result   = await repository.login( email, password )
+    const response = result.unwrap()
+    return Promise.resolve( Ok( response ) )
   }
-
-  async execute( email: string,
-    password: string ): Promise<Result<User, string>> {
-
-    const result = await this.repository.login(
-      email,
-      password
-    )
-    if ( result.isErr() ) {
-      return Promise.resolve( Err( result.unwrapErr() ) )
-    }
-    return Promise.resolve( Ok( result.unwrap() ) )
+  catch ( e ) {
+    return Promise.resolve( Err( 'register error' ) )
   }
 }

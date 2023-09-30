@@ -6,42 +6,34 @@ import {
 import { AuthRepository } from 'src/package/authentication/domain'
 import {
   newUser,
+  newUserID,
   User,
-  userFromJson,
-  UserID
+  UserEmail,
+  UserID,
+  UserPassword
 } from 'src/package/user'
+import { ulid } from 'ulidx'
 
 export class AuthMemory implements AuthRepository {
   constructor(private context: User[]) {}
 
-  async login( email: string,
-    password: string ): Promise<Result<User, string>> {
+  async login( email: UserEmail,
+    password: UserPassword ): Promise<Result<User, string>> {
     for ( const user of this.context ) {
-      if ( user.email.value === email)
+      if ( user.email.value === email.value)
       {
-        const data: Record<string, any> = {
-          id         : user.id.value,
-          email      : user.email.value
-        }
-        const response                  = userFromJson( data )
-
-        if ( response.isNone() ) {
-          return Promise.resolve( Err( 'map error' ) )
-        }
-
         return Promise.resolve( Ok( user ) )
       }
     }
     return Promise.resolve( Err( 'memory error' ) )
   }
 
-  register(id: string,
-      email: string,
-      password: string): Promise<Result<boolean, string>> {
+  register( email: UserEmail,
+    password: UserPassword ): Promise<Result<boolean, string>> {
     try {
       this.context.push( newUser({
-        id,
-        email
+        id: ulid(),
+        email: email.value,
       }) )
       return Promise.resolve( Ok( true ) )
     }

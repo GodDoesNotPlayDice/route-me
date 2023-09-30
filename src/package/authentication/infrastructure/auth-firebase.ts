@@ -7,8 +7,10 @@ import {
 import { AuthRepository } from 'src/package/authentication/domain'
 import {
 	User,
+  UserEmail,
 	userFromJson,
-	UserID
+	UserID,
+    UserPassword
 } from 'src/package/user'
 
 export class AuthFirebase implements AuthRepository {
@@ -27,8 +29,8 @@ export class AuthFirebase implements AuthRepository {
 		return Promise.resolve( Ok( true ) )
 	}
 
-	login( email: string,
-		password: string ): Promise<Result<User, string>> {
+	async login( email: UserEmail,
+    password: UserPassword ): Promise<Result<User, string>> {
 		//TODO: corregir data
 		const data: Record<string, any> = {
 			id         : 'abc',
@@ -51,9 +53,8 @@ export class AuthFirebase implements AuthRepository {
 		return Promise.resolve( Ok( user.unwrap() ) )
 	}
 
-	register( id: string,
-		email: string,
-		password: string ): Promise<Result<boolean, string>> {
+	async register( email: UserEmail,
+    password: UserPassword ): Promise<Result<boolean, string>> {
 		return Promise.resolve( Ok( true ) )
 	}
 }

@@ -27,16 +27,12 @@ import { IonicStorageModule } from '@ionic/storage-angular'
 import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
-import { AuthService } from 'src/app/shared/services/auth.service'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import {
   AuthMemory,
   AuthRepository,
-  LoginUser,
-  RegisterUser
 } from 'src/package/authentication'
 import {
-  GetAllUsers,
   newUser,
   User,
   UserDao,
@@ -79,40 +75,12 @@ bootstrapApplication( AppComponent, {
       },
       deps      : [Storage]
     },
-    {
-      provide   : GetAllUsers,
-      useFactory: ( authDao: UserDao ) => {
-        return new GetAllUsers( authDao )
-      },
-      deps      : [ UserDao ]
-    },
-    {
-      provide   : LoginUser,
-      useFactory: ( authRepository: AuthRepository ) => {
-        return new LoginUser( authRepository )
-      },
-      deps      : [ AuthRepository ]
-    },
-    {
-      provide   : RegisterUser,
-      useFactory: ( authRepository: AuthRepository ) => {
-        return new RegisterUser( authRepository )
-      },
-      deps      : [ AuthRepository ]
-    },
-    {
-      provide   : AuthService,
-      useFactory: (
-        registerUser: RegisterUser,
-        loginUser: LoginUser
-      ) => {
-        return new AuthService(
-          loginUser,
-          registerUser
-        )
-      },
-      deps      : [ RegisterUser, LoginUser ]
-    },
+    // {
+      // provide: PassengerRepository,
+      // useFactory: () => {
+      // },
+      // deps      : []
+    // },
     importProvidersFrom(
       [ IonicModule.forRoot( {} ),
         FormsModule,

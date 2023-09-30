@@ -1,15 +1,8 @@
 import { Result } from 'oxide.ts'
-import { PreferenceID } from 'src/package/preference'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 
 export abstract class PassengerRepository {
-	abstract fillPassenger(
-		name: string,
-		lastName: string,
-		description: string,
-		phone: string,
-		birthDay: Date,
-		country: string,
-		gender: string,
-		preferences: PreferenceID[]
+	abstract registerPassenger(
+		passenger: Omit<Passenger, 'id'>,
 	): Promise<Result<boolean, string>>
 }

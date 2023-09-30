@@ -73,7 +73,7 @@ export class Step1Page implements ViewDidEnter {
     this.store.dispatch( notifyStep() )
     const email = this.userInput.textControl.value!
     const password = this.passwordInput.textControl.value!
-    this.auth.register(email, password)
+    this.auth.userRegister(email, password)
     await this.router.navigate( [ '/register/step2' ] )
   }
 

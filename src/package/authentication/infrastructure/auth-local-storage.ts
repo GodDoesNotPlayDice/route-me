@@ -7,7 +7,9 @@ import {
 import { AuthRepository } from 'src/package/authentication/domain'
 import {
   User,
-  UserID
+  UserEmail,
+  UserID,
+  UserPassword
 } from 'src/package/user'
 
 export class AuthLocalStorage implements AuthRepository {
@@ -19,14 +21,13 @@ export class AuthLocalStorage implements AuthRepository {
     await this.storage.create()
   }
 
-  login( email: string,
-    password: string ): Promise<Result<User, string>> {
+  login( email: UserEmail,
+    password: UserPassword ): Promise<Result<User, string>> {
     return Promise.resolve( Err( 'data error' ) )
   }
 
-  async register(id: string,
-    email: string,
-    password: string,): Promise<Result<boolean, string>> {
+  async register( email: UserEmail,
+    password: UserPassword ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok( true ) )
   }
 
