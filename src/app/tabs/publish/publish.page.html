@@ -9,15 +9,15 @@
         <app-input-text placeholder="Asientos"></app-input-text>
       </div>
     </div>
-    <app-adaptative-button text="Publicar Viaje"
-      color="bg-stone-800"
-      color_hover="bg-stone-700"
-      font_size="text-xl font-gotham"
-      size="px-8 py-4 w-full"
-      text_color="text-white"></app-adaptative-button>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
+  <app-adaptative-button class="absolute bottom-0 z-50 w-full" text="Publicar Viaje"
+                         color="bg-stone-800"
+                         color_hover="bg-stone-700"
+                         font_size="text-xl font-gotham"
+                         size="px-8 py-4 w-full"
+                         text_color="text-white"></app-adaptative-button>
   <div id="pmap"
     #pmap
     class="map"
