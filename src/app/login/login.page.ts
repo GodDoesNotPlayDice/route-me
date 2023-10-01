@@ -48,7 +48,6 @@ export class LoginPage implements ViewDidEnter {
 
   constructor(
     private authService: AuthService,
-    private userDao : UserDao,
     private router: Router,
     private alertController: AlertController
   ) {}
@@ -72,9 +71,6 @@ export class LoginPage implements ViewDidEnter {
 
   ionViewDidEnter() {
     //TODO: ver si colocar div dentro de backButton u manual, responde click
-    this.userDao.getAll().then( ( users ) => {
-      console.log( 'users', users.unwrap() )
-    })
     this.formGroup = new FormGroup( [
       this.userInput.textControl,
       this.passwordInput.textControl

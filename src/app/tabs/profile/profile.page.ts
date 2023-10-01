@@ -5,8 +5,13 @@ import { Some } from 'oxide.ts'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
-import { defaultUsers } from 'src/main'
-import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import {
+  defaultPassangers,
+  defaultUsers
+} from 'src/main'
+import {
+  Passenger
+} from 'src/package/passenger/domain/models/passenger'
 import { User } from 'src/package/user/domain/models/user'
 
 @Component( {
@@ -24,11 +29,16 @@ import { User } from 'src/package/user/domain/models/user'
 export class ProfilePage {
 
   constructor( private authService: AuthService ) {
-    if ( authService.currentUser.isNone() ) {
-      authService.currentUser = Some( defaultUsers[0] )
+    if ( this.authService.currentUser.isNone() ) {
+      this.authService.currentUser = Some( defaultUsers[0] )
     }
 
-    this.user = authService.currentUser.unwrap()
+    if ( this.authService.currentPassenger.isNone() ) {
+      this.authService.currentPassenger = Some(defaultPassangers[0] )
+    }
+
+    this.user = this.authService.currentUser.unwrap()
+    this.passenger = this.authService.currentPassenger.unwrap()
     this.edad =
       new Date().getFullYear() - this.passenger.birthDay.value.getFullYear()
   }

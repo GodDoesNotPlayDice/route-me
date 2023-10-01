@@ -34,16 +34,21 @@ import { AuthUserRepository } from 'src/package/authentication/domain/repository
 import { AuthPassengerFirebase } from 'src/package/authentication/infrastructure/passenger/auth-passenger-firebase'
 import { AuthUserFirebase } from 'src/package/authentication/infrastructure/user/auth-user-firebase'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
+import {
+  newPassenger,
+  Passenger
+} from 'src/package/passenger/domain/models/passenger'
 import { PassengerDaoMemory } from 'src/package/passenger/infrastructure/passenger-dao-memory'
+import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
+import { newGender } from 'src/package/shared/domain/models/gender'
 import {
   newUser,
   User
 } from 'src/package/user/domain/models/user'
+import { newUserID } from 'src/package/user/domain/models/user-id'
 import { UserDao } from 'src/package/user/domain/repository/user-dao'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
-import { UserDaoLocalStorage } from 'src/package/user/infrastructure/user-dao-local-storage'
 import { environment } from './environments/environment'
-import { Storage } from '@ionic/storage-angular'
 
 
 if ( environment.production ) {
@@ -54,6 +59,29 @@ export const defaultUsers: User[] = [
   newUser( {
     id: 'abc',
     email: 'hola@gmail.com',
+  })
+]
+
+export const defaultPassangers: Passenger[] = [
+  newPassenger({
+    id: 'abc',
+    userID: newUserID({
+      value: 'abc'
+    }),
+    name: 'hola',
+    lastName: 'last',
+    description: 'descdescdescdesc',
+    phone: '123456788',
+    birthDay: new Date( '1990-03-25' ),
+    country: 'Argentina',
+    gender: newGender({
+      value: 'Female'
+    }),
+    preferences: [
+      newPreferenceID({
+        value: 'a1'
+      })
+    ]
   })
 ]
 

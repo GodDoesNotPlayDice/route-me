@@ -90,22 +90,3 @@ export const newPassenger = ( props: PassengerProps ): Passenger => {
     preferences: props.preferences
   }
 }
-
-export const defaultPassengers: Passenger[] = [
-  newPassenger( {
-    id         : 'ab2',
-    userID     : newUserID( {
-      value: 'abc'
-    } ),
-    name       : 'juan',
-    lastName   : 'pedro',
-    description: 'Soy un estudiante de ingeniería civil en informática, me gusta la programación y el desarrollo de software.',
-    phone      : '(+56)1234-1234',
-    birthDay   : new Date( '1990-03-25' ),
-    country    : 'CL',
-    gender     : newGender({
-      value: 'Male'
-    }),
-    preferences: []
-  } )
-]
