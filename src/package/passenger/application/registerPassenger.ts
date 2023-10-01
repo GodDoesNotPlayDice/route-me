@@ -4,9 +4,9 @@ import {
   Result
 } from 'oxide.ts'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
+import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 
-export const registerPassenger = async ( repository: PassengerRepository,
+export const registerPassenger = async ( repository: PassengerDao,
   props: Omit<Passenger, 'id'> ): Promise<Result<boolean, string>> => {
   try {
     const result   = await repository.registerPassenger( { ...props } )

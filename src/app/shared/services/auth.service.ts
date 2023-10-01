@@ -10,6 +10,7 @@ import {
 import { loginUser } from 'src/package/authentication/application/login-user'
 import { registerUser } from 'src/package/authentication/application/register-user'
 import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
+import { loginPassenger } from 'src/package/passenger/application/loginPassenger'
 import {
   Passenger,
   PassengerProps
@@ -19,8 +20,7 @@ import { newPassengerCountry } from 'src/package/passenger/domain/models/passeng
 import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
-import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
-import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
+import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import {
   newGender
 } from 'src/package/shared/domain/models/gender'
@@ -36,7 +36,7 @@ export class AuthService {
 
   constructor(
     private authRepository: AuthRepository,
-    private passengerRepository: PassengerRepository
+    private passengerRepository: PassengerDao
   )
   { }
 
@@ -44,8 +44,6 @@ export class AuthService {
   currentPassenger: Option<Passenger> = None
 
   async userLogin( email: string, password: string ): Promise<Result<boolean, string>> {
-    console.log( 'login', email, password )
-
     const result = await loginUser(
       this.authRepository,
       newUserEmail( {
@@ -57,10 +55,20 @@ export class AuthService {
     )
 
     if ( result.isErr() ) {
+      console.log("error auth")
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
 
     this.currentUser = Some( result.unwrap() )
+
+    const passengerResult = await loginPassenger( this.passengerRepository, this.currentUser.unwrap().id)
+
+    if ( passengerResult.isErr() ) {
+      return Promise.resolve( Err( passengerResult.unwrapErr() ) )
+    }
+
+    this.currentPassenger = Some( passengerResult.unwrap() )
+
     return Promise.resolve( Ok( true ) )
   }
 
@@ -88,7 +96,6 @@ export class AuthService {
   }
 
   async updatePassenger( props: Partial<PassengerProps> ): Promise<Result<boolean, string>>{
-    console.log( 'update passenger', props )
     return Promise.resolve( Ok( true ) )
   }
 
@@ -100,8 +107,6 @@ export class AuthService {
     country: string,
     gender: string,
   } ): Promise<Result<boolean, string>> {
-    console.log( 'register passenger', props )
-
     //TODO: ver si register devuelve token o entidad
     const result   = await this.passengerRepository.registerPassenger(
       {
@@ -136,4 +141,7 @@ export class AuthService {
     const response = result.unwrap()
     return Promise.resolve( Ok( response ) )
   }
+
+
+
 }

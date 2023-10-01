@@ -6,10 +6,12 @@ import {
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 import { newPassengerID } from 'src/package/passenger/domain/models/passenger-id'
-import { PassengerRepository } from 'src/package/passenger/domain/repository/passenger-repository'
+import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
+import { UserID } from 'src/package/user/domain/models/user-id'
 import { ulid } from 'ulidx'
+import { undefined } from 'zod'
 
-export class PassengerDataMemory implements PassengerRepository {
+export class PassengerDaoMemory implements PassengerDao {
 	constructor( private context: Passenger[] ) {}
 
 	public registerPassenger( passenger: Omit<Passenger, 'id' | 'preferences' | 'description'> ): Promise<Result<boolean, string>> {
@@ -39,5 +41,9 @@ export class PassengerDataMemory implements PassengerRepository {
 
   public updatePassenger( props: Partial<Passenger> ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok( true ) )
+  }
+
+  public loginPassenger( userID: UserID ): Promise<Result<Passenger, string>> {
+    return Promise.resolve( Err('u') )
   }
 }

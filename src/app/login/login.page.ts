@@ -24,6 +24,7 @@ import { InputTextComponent } from 'src/app/shared/components/input-text/input-t
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { UserDao } from 'src/package/user/domain/repository/user-dao'
 
 @Component( {
   standalone : true,
@@ -47,6 +48,7 @@ export class LoginPage implements ViewDidEnter {
 
   constructor(
     private authService: AuthService,
+    private userDao : UserDao,
     private router: Router,
     private alertController: AlertController
   ) {}
@@ -70,8 +72,9 @@ export class LoginPage implements ViewDidEnter {
 
   ionViewDidEnter() {
     //TODO: ver si colocar div dentro de backButton u manual, responde click
-    // this.store.dispatch( clearUserRegister() )
-
+    this.userDao.getAll().then( ( users ) => {
+      console.log( 'users', users.unwrap() )
+    })
     this.formGroup = new FormGroup( [
       this.userInput.textControl,
       this.passwordInput.textControl
