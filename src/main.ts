@@ -29,8 +29,10 @@ import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
-import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
-import { AuthFirebase } from 'src/package/authentication/infrastructure/auth-firebase'
+import { AuthPassengerRepository } from 'src/package/authentication/domain/repository/auth-passenger-repository'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
+import { AuthPassengerFirebase } from 'src/package/authentication/infrastructure/passenger/auth-passenger-firebase'
+import { AuthUserFirebase } from 'src/package/authentication/infrastructure/user/auth-user-firebase'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { PassengerDaoMemory } from 'src/package/passenger/infrastructure/passenger-dao-memory'
 import {
@@ -59,7 +61,7 @@ bootstrapApplication( AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
-      provide: AuthRepository,
+      provide: AuthUserRepository,
       // useFactory: () => {
         // return new AuthMemory(defaultUsers)
       // },
@@ -68,7 +70,14 @@ bootstrapApplication( AppComponent, {
       // },
       // deps      : [Storage]
       useFactory: ( firebase: AngularFireDatabase ) => {
-        return new AuthFirebase( firebase )
+        return new AuthUserFirebase( firebase )
+      },
+      deps      : [ AngularFireDatabase ]
+    },
+    {
+      provide: AuthPassengerRepository,
+      useFactory: ( firebase: AngularFireDatabase ) => {
+        return new AuthPassengerFirebase( firebase )
       },
       deps      : [ AngularFireDatabase ]
     },

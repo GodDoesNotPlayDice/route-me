@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import {
   newUser,
   User
@@ -13,7 +13,7 @@ import { UserID } from 'src/package/user/domain/models/user-id'
 import { UserPassword } from 'src/package/user/domain/models/user-password'
 import { ulid } from 'ulidx'
 
-export class AuthMemory implements AuthRepository {
+export class AuthUserMemory implements AuthUserRepository {
   constructor(private context: User[]) {}
 
   async login( email: UserEmail,
@@ -28,28 +28,24 @@ export class AuthMemory implements AuthRepository {
   }
 
   register( email: UserEmail,
-    password: UserPassword ): Promise<Result<boolean, string>> {
+    password: UserPassword ): Promise<Result<string, string>> {
     try {
       this.context.push( newUser({
         id: ulid(),
         email: email.value,
       }) )
-      return Promise.resolve( Ok( true ) )
+      return Promise.resolve( Ok( 'id' ) )
     }
     catch ( e ) {
       return Promise.resolve( Err( 'memory error' ) )
     }
   }
 
-  async create( user: User ): Promise<Result<boolean, string>> {
-    return Promise.resolve( Ok( true ) )
-  }
-
   async delete( id: UserID ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok( true ) )
   }
 
-  async update( user: User ): Promise<Result<boolean, string>> {
-    return Promise.resolve( Ok( true ) )
+  async update( user: User ): Promise<Result<User, string>> {
+    return Promise.resolve( Err( 'error' ) )
   }
 }

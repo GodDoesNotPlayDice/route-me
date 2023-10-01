@@ -3,12 +3,12 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { AuthRepository } from 'src/package/authentication/domain/repository/auth-repository'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { User } from 'src/package/user/domain/models/user'
 import { UserEmail } from 'src/package/user/domain/models/user-email'
 import { UserPassword } from 'src/package/user/domain/models/user-password'
 
-export const loginUser = async ( repository: AuthRepository,
+export const loginUser = async ( repository: AuthUserRepository,
   email: UserEmail,
   password: UserPassword ): Promise<Result<User, string>> => {
   try {
