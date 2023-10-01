@@ -27,6 +27,10 @@ import {
   TripName
 } from 'src/package/trip/domain/models/trip-name'
 import {
+  newTripPaymentMethod,
+  TripPaymentMethod
+} from 'src/package/trip/domain/models/trip-payment-method'
+import {
   newTripPrice,
   TripPrice,
   TripPriceProps
@@ -37,16 +41,17 @@ import {
 } from 'src/package/trip/domain/models/trip-seat'
 import {
   newTripState,
-  TripStateEnum
+  TripState
 } from 'src/package/trip/domain/models/trip-state'
 
 export interface Trip {
 	id: TripID
 	name: TripName
 	description: TripDescription
-	state: TripStateEnum
+	state: TripState
 	price: TripPrice
 	seat: TripSeat
+  paymentMethod : TripPaymentMethod
 	startLocation: Location
 	endLocation: Location
 	startDate: CreatedAt
@@ -66,6 +71,7 @@ export interface TripProps {
 	name: string
 	description: string
 	state: string,
+  paymentMethod: string,
 	price: TripPriceProps
 	seat: number
 	startLocation: string
@@ -91,6 +97,9 @@ export const newTrip = ( props: TripProps ): Trip => {
 		name         : newTripName( {
 			value: props.name
 		} ),
+    paymentMethod: newTripPaymentMethod({
+      value: props.paymentMethod
+    }),
 		description  : newTripDescription( {
 			value: props.description
 		} ),

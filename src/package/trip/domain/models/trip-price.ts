@@ -1,12 +1,12 @@
 import {
   Currency,
+  newCurrency
+} from 'src/package/shared/domain/models/currency'
+import {
   Money,
-  newCurrency,
   newMoney
-} from 'src/package/shared'
+} from 'src/package/shared/domain/models/money'
 
-
-// type TripPriceType = z.infer<typeof TripPriceSchema>
 
 export interface TripPrice {
   currency: Currency,

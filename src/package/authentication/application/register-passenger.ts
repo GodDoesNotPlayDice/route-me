@@ -3,13 +3,13 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { AuthPassengerRepository } from 'src/package/authentication/domain/repository/auth-passenger-repository'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 
-export const registerPassenger = async ( repository: PassengerDao,
-  props: Omit<Passenger, 'id'> ): Promise<Result<boolean, string>> => {
+export const registerPassenger = async ( repository: AuthPassengerRepository,
+  props: Omit<Passenger, 'id'> ): Promise<Result<string, string>> => {
   try {
-    const result   = await repository.registerPassenger( { ...props } )
+    const result   = await repository.register( { ...props } )
     const response = result.unwrap()
     return Promise.resolve( Ok( response ) )
   }
