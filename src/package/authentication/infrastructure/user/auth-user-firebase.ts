@@ -10,6 +10,7 @@ import { User } from 'src/package/user/domain/models/user'
 import { UserEmail } from 'src/package/user/domain/models/user-email'
 import { UserID } from 'src/package/user/domain/models/user-id'
 import { UserPassword } from 'src/package/user/domain/models/user-password'
+import { ulid } from 'ulidx'
 
 //TODO: se podria pasar a funcional
 export class AuthUserFirebase implements AuthUserRepository {
@@ -33,9 +34,9 @@ export class AuthUserFirebase implements AuthUserRepository {
      .then( async ( snapshot ) => {
        const snapshotValue = Object.values(
          snapshot.val() )[0] as Record<string, any>
-       const user = userFromJson( snapshotValue)
+       const user          = userFromJson( snapshotValue )
        if ( user.isNone() ) {
-         console.log( 'none')
+         console.log( 'none' )
          return Promise.resolve( Err( 'user not found' ) )
        }
 
@@ -50,6 +51,20 @@ export class AuthUserFirebase implements AuthUserRepository {
 
   async register( email: UserEmail,
     password: UserPassword ): Promise<Result<string, string>> {
-    return Promise.resolve( Ok( 'id' ) )
+    try {
+      const path = await this.firebase.database.ref( 'users' )
+       .push(
+         {
+           //TODO: temporal, deberia mandarse servidor y este generar el id
+           id: ulid(),
+           email   : email.value,
+           password: password.value
+         }
+       )
+      return Promise.resolve( Ok( 'user reg' ) )
+    }
+    catch ( e ) {
+      return Promise.resolve( Err( 'not user reg' ) )
+    }
   }
 }

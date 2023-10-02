@@ -96,6 +96,11 @@ export class AuthService {
   }
 
   async updatePassenger( props: Partial<PassengerProps> ): Promise<Result<boolean, string>> {
+    this.passengerRepository.update({
+      userID: newUserID({
+        value: 'abc'
+      })
+    })
     return Promise.resolve( Ok( true ) )
   }
 
