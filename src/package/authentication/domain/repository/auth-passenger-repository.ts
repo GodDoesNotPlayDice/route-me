@@ -10,5 +10,5 @@ export abstract class AuthPassengerRepository {
 
   abstract delete( id: UserID ): Promise<Result<boolean, string>>
 
-  abstract update( passenger: Partial<Passenger> ): Promise<Result<Passenger, string>>
+  abstract update( passenger: Passenger ): Promise<Result<boolean, string>>
 }

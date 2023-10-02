@@ -71,7 +71,7 @@ export class Step3Page implements ViewDidEnter {
 
     await this.auth.updatePassenger({
       preferences: this.preferenceInput.preferencesControl.value!.map( ( preference ) => preference.id),
-      description: this.areaInput.textControl.value!
+      // description: this.areaInput.textControl.value!
     })
 
     this.store.dispatch( clearStep() )

@@ -33,7 +33,7 @@ export class AuthUserLocalStorage implements AuthUserRepository {
     return Promise.resolve( Ok( true ) )
   }
 
-  async update( user: User ): Promise<Result<User, string>> {
+  async update( user: User ): Promise<Result<boolean, string>> {
     return Promise.resolve( Err( 'error' ) )
   }
 }

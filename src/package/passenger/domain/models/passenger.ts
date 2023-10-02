@@ -29,10 +29,8 @@ import {
 import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
 import {
   Gender,
-  newGender
 } from 'src/package/shared/domain/models/gender'
 import {
-  newUserID,
   UserID
 } from 'src/package/user/domain/models/user-id'
 

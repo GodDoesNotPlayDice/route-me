@@ -23,7 +23,7 @@ export class AuthPassengerMemory implements AuthPassengerRepository {
     return Promise.resolve( Err( 'error' ) )
   }
 
-  public update( passenger: Partial<Passenger> ): Promise<Result<Passenger, string>> {
+  public update( passenger: Passenger ): Promise<Result<boolean, string>> {
     return Promise.resolve( Err( 'error' ) )
   }
 }

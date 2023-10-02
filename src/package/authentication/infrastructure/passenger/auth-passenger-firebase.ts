@@ -14,8 +14,27 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
   constructor( private firebase: AngularFireDatabase ) {
   }
 
-  public delete( id: UserID ): Promise<Result<boolean, string>> {
-    return Promise.resolve( Ok( true ) )
+  async delete( id: UserID ): Promise<Result<boolean, string>> {
+    const keySaved = await this.getKey( id )
+
+    if ( keySaved.isErr() ) {
+      return Promise.resolve( Err( keySaved.unwrapErr() ) )
+    }
+
+    let completed : string | null = null
+    await this.firebase.database.ref( 'passengers' ).child(keySaved.unwrap()).remove(
+      ( error ) => {
+        if ( !error ) {
+          completed = 'completed'
+        }
+      }
+    )
+
+    if ( completed === null ) {
+      return Promise.resolve( Err( 'error' ) )
+    }
+
+    return Promise.resolve( Ok(true) )
   }
 
   async login( userID: UserID ): Promise<Result<Passenger, string>> {
@@ -37,22 +56,32 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
 
   async register( passenger: Omit<Passenger, 'id' | 'preferences' | 'description'> ): Promise<Result<string, string>> {
     try {
+      let completed : string | null = null
+      await this.firebase.database.ref( 'passengers' )
+                .push(
+                  {
+                    id         : ulid(),
+                    userID     : passenger.userID.value,
+                    name       : passenger.name.value,
+                    lastName   : passenger.lastName.value,
+                    description: '',
+                    phone      : passenger.phone.value,
+                    birthDay   : passenger.birthDay.value,
+                    country    : passenger.country.value,
+                    gender     : passenger.gender,
+                    preferences: []
+                  },
+                  ( error ) => {
+                    if ( !error ){
+                      completed = 'completed'
+                    }
+                  }
+                )
 
-      const path = await this.firebase.database.ref( 'passengers' )
-                             .push(
-                               {
-                                 id         : ulid(),
-                                 userID     : passenger.userID.value,
-                                 name       : passenger.name.value,
-                                 lastName   : passenger.lastName.value,
-                                 description: '',
-                                 phone      : passenger.phone.value,
-                                 birthDay   : passenger.birthDay.value,
-                                 country    : passenger.country.value,
-                                 gender     : passenger.gender,
-                                 preferences: []
-                               }
-                             )
+      if ( completed === null ) {
+        return Promise.resolve( Err( 'error' ) )
+      }
+
       return Promise.resolve( Ok( 'pasn reg' ) )
     }
     catch ( e ) {
@@ -60,28 +89,67 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
     }
   }
 
-  async update( passenger: Partial<Passenger> ): Promise<Result<Passenger, string>> {
-      console.log( 'update fire')
-    const userID = passenger.userID?.value
+  async update( passenger: Passenger ): Promise<Result<boolean, string>> {
+    const keySaved = await this.getKey( passenger.userID )
+
+    if ( keySaved.isErr() ) {
+      return Promise.resolve( Err( keySaved.unwrapErr() ) )
+    }
+    let completed : string | null = null
+
+    await this.firebase.database.ref( 'passengers' ).child(keySaved.unwrap())
+      .set( {
+        id         : passenger.id.value,
+        userID     : passenger.userID.value,
+        name       : passenger.name.value,
+        lastName   : passenger.lastName.value,
+        description: passenger.description.value,
+        phone      : passenger.phone.value,
+        birthDay   : passenger.birthDay.value,
+        country    : passenger.country.value,
+        gender     : passenger.gender,
+        preferences: passenger.preferences.map( ( preference ) => {
+          return {
+            id: preference.value
+          }
+        } )
+      } ,
+        ( error ) => {
+          if ( !error ) {
+            completed = 'completed'
+          }
+        })
 
 
-    if ( !userID ) {
-      console.log( 'no user id')
+    if ( completed === null ) {
       return Promise.resolve( Err( 'error' ) )
     }
 
-    const passengerKey = await this.firebase.database.ref( 'passengers' )
-                                        .orderByChild( 'userID' )
-                                        .equalTo( userID )
-                                        .get()
-                                        .then( async ( snapshot ) => {
-                                          //TODO: guardar key generada de firebase en id entidad
-                                          return '1'
-                                        } )
+    return Promise.resolve( Ok(true) )
+  }
 
-    //TODO: ver como actualizar correctamente objetos
-    // const passengerUpdate = await this.firebase.database.ref( `passengers/${passengerKey}` ).update({})
+  private async getKey(id: UserID) : Promise<Result<string, string>>{
+    return await this.firebase.database.ref( `passengers` )
+     .orderByChild( 'userID' )
+     .equalTo(
+       id.value )
+     .get()
+     .then(
+       async ( snapshot ) => {
 
-    return Promise.resolve( Err( 'error' ) )
+         let key: string | null = null
+
+         snapshot.forEach(
+           ( childSnapshot ) => {
+             key = childSnapshot.key
+           } )
+
+         if ( key === null ) {
+           return Promise.resolve(
+             Err( 'error' ) )
+         }
+         return Promise.resolve(
+           Ok( key ) )
+       } )
   }
 }

@@ -72,7 +72,6 @@ export class LoginPage implements ViewDidEnter {
 
   ionViewDidEnter() {
     //TODO: ver si colocar div dentro de backButton u manual, responde click
-    this.authService.updatePassenger({})
     this.formGroup = new FormGroup( [
       this.userInput.textControl,
       this.passwordInput.textControl

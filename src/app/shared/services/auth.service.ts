@@ -14,7 +14,6 @@ import { AuthPassengerRepository } from 'src/package/authentication/domain/repos
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import {
   Passenger,
-  PassengerProps
 } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
 import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
@@ -95,12 +94,19 @@ export class AuthService {
     return Promise.resolve( Ok( true ) )
   }
 
-  async updatePassenger( props: Partial<PassengerProps> ): Promise<Result<boolean, string>> {
-    this.passengerRepository.update({
-      userID: newUserID({
-        value: 'abc'
-      })
-    })
+
+  async updatePassenger( props: Partial<Passenger> ): Promise<Result<boolean, string>> {
+    const newPassenger : Passenger = {
+      ...this.currentPassenger.unwrap(),
+      ...props
+    }
+
+    const result = await this.passengerRepository.update( newPassenger)
+    if ( result.isErr() ) {
+      return Promise.resolve( Err( result.unwrapErr() ) )
+    }
+
+    this.currentPassenger = Some( newPassenger )
     return Promise.resolve( Ok( true ) )
   }
 
@@ -147,3 +153,11 @@ export class AuthService {
     return Promise.resolve( Ok( response ) )
   }
 }
+
+interface algo {
+  name: string,
+  lastName: string,
+}
+
+
+
