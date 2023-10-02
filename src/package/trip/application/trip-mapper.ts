@@ -30,6 +30,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 				name         : json['name'],
 				description  : json['description'],
 				state        : json['state'],
+        paymentMethod: json['paymentMethod'],
 				price        : {
 					amount  : json['price']['amount'],
 					currency: json['price']['currency']
