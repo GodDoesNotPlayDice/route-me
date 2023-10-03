@@ -70,7 +70,19 @@ export class LoginPage implements ViewDidEnter {
     await alert.present()
   }
 
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
+    // const d = new Date("1/12/1990")
+    //   console.log(d.toJSON())
+    // const n = new Date(d.toJSON())
+    // console.log('n', n)
+    // await this.authService.registerPassenger({
+    //   birthDay: d,
+    //   country: 'Peru',
+    //   gender: 'Male',
+    //   lastName: 'Perez',
+    //   name: 'Juan',
+    //   phone: '123456789',
+    // })
     //TODO: ver si colocar div dentro de backButton u manual, responde click
     this.formGroup = new FormGroup( [
       this.userInput.textControl,

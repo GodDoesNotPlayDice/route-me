@@ -61,8 +61,7 @@ export interface PassengerProps {
 }
 
 export const newPassenger = ( props: PassengerProps ): Passenger => {
-  console.log( 'newPassenger' )
-  const p : Passenger = {
+  return {
     id         : newPassengerID( {
       value: props.id
     } ),
@@ -88,6 +87,4 @@ export const newPassenger = ( props: PassengerProps ): Passenger => {
     gender     : props.gender,
     preferences: props.preferences
   }
-  console.log(p)
-  return p
 }

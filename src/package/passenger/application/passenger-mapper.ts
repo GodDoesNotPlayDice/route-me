@@ -28,7 +28,7 @@ export const passengerToJson   = ( passenger: Passenger ): Record<string, any> =
     lastName   : passenger.lastName.value,
     description: passenger.description.value,
     phone      : passenger.phone.value,
-    birthDay   : passenger.birthDay.value,
+    birthDay   : passenger.birthDay.value.toJSON(),
     country    : passenger.country.value,
     gender     : passenger.gender,
     preferences
@@ -42,8 +42,6 @@ export const passengerFromJson = ( json: Record<string, any> ): Option<Passenger
           { value: preference } )
       } )
 
-    console.log('birthDay')
-    console.log(json['birthDay'])
     return Some(
       newPassenger( {
         id         : json['id'],

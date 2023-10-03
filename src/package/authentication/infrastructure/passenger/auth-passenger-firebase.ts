@@ -70,13 +70,13 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
       await this.firebase.database.ref( 'passengers' )
                 .push(
                   {
-                    id         : ulid(),
+                    id         : passenger.id.value,
                     userID     : passenger.userID.value,
                     name       : passenger.name.value,
                     lastName   : passenger.lastName.value,
-                    description: '',
+                    description: passenger.description.value,
                     phone      : passenger.phone.value,
-                    birthDay   : passenger.birthDay.value,
+                    birthDay   : passenger.birthDay.value.toJSON(),
                     country    : passenger.country.value,
                     gender     : passenger.gender,
                     preferences: "none"
