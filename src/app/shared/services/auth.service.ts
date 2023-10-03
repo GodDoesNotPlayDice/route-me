@@ -25,6 +25,7 @@ import { User } from 'src/package/user/domain/models/user'
 import { newUserEmail } from 'src/package/user/domain/models/user-email'
 import { newUserID } from 'src/package/user/domain/models/user-id'
 import { newUserPassword } from 'src/package/user/domain/models/user-password'
+import { ulid } from 'ulidx'
 
 @Injectable( {
   providedIn: 'root'
@@ -121,10 +122,11 @@ export class AuthService {
     //TODO: ver si register devuelve token o entidad
     const result = await this.passengerRepository.register(
       {
-        // userID: this.currentUser.unwrap().id,
-        userID  : newUserID( {
-          value: '1'
+        id      : newUserID( {
+          value: ulid()
         } ),
+        preferences: [],
+        userID: this.currentUser.unwrap().id,
         name    : newPassengerName( {
           value: props.name
         } ),

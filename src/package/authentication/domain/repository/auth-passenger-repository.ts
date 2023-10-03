@@ -5,8 +5,7 @@ import { UserID } from 'src/package/user/domain/models/user-id'
 export abstract class AuthPassengerRepository {
   abstract login( userID: UserID ): Promise<Result<Passenger, string>>
 
-  abstract register( passenger: Omit<Passenger, 'id' | 'preferences' | 'description'>
-  ): Promise<Result<string, string>>
+  abstract register( passenger: Omit<Passenger, 'description'> ): Promise<Result<string, string>>
 
   abstract delete( id: UserID ): Promise<Result<boolean, string>>
 
