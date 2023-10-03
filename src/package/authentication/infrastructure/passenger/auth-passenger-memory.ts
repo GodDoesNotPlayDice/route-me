@@ -23,7 +23,7 @@ export class AuthPassengerMemory implements AuthPassengerRepository {
     return Promise.resolve( Err( 'error' ) )
   }
 
-  async register( passenger: Omit<Passenger, "id" | "preferences" | "description"> ): Promise<Result<string, string>> {
+  async register( passenger: Passenger ): Promise<Result<string, string>> {
     return Promise.resolve( Err( 'error' ) )
   }
 

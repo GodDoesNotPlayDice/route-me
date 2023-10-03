@@ -104,6 +104,6 @@ export class Step2Page implements ViewDidEnter {
       birthDay: this.dateSelectorInput.dateControl.value!,
       gender: this.radioButtonInput.radioControl.value!
     })
-    await this.router.navigate( [ '/register/step4' ] )
+    await this.router.navigate( [ '/register/step3' ] )
   }
 }

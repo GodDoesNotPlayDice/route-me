@@ -29,7 +29,7 @@ export class AuthPassengerLocalStorage implements AuthPassengerRepository {
     return Promise.resolve( Err( 'error' ) )
   }
 
-  public register( passenger: Omit<Passenger, "id" | "preferences" | "description"> ): Promise<Result<string, string>> {
+  public register( passenger: Passenger ): Promise<Result<string, string>> {
     return Promise.resolve( Err( 'error' ) )
   }
 

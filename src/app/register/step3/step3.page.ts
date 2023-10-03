@@ -23,6 +23,7 @@ import {
   clearStep,
   notifyStep
 } from 'src/app/shared/state/stepper/step.actions'
+import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 
 @Component( {
   standalone : true,
@@ -71,7 +72,9 @@ export class Step3Page implements ViewDidEnter {
 
     await this.auth.updatePassenger({
       preferences: this.preferenceInput.preferencesControl.value!.map( ( preference ) => preference.id),
-      // description: this.areaInput.textControl.value!
+      description: newPassengerDescription({
+        value: this.areaInput.textControl.value!
+      })
     })
 
     this.store.dispatch( clearStep() )

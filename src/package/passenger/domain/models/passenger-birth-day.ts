@@ -9,7 +9,6 @@ export const PassengerBirthDaySchema = z.object( {
       currentDate.getMonth(),
       currentDate.getDay()
     )
-
     if ( val.value >= date18years ) {
       ctx.addIssue( {
         code   : z.ZodIssueCode.custom,

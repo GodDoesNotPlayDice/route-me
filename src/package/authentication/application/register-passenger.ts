@@ -7,7 +7,7 @@ import { AuthPassengerRepository } from 'src/package/authentication/domain/repos
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 
 export const registerPassenger = async ( repository: AuthPassengerRepository,
-  props: Omit<Passenger, 'id'> ): Promise<Result<string, string>> => {
+  props: Passenger ): Promise<Result<string, string>> => {
   try {
     const result   = await repository.register( { ...props } )
     const response = result.unwrap()

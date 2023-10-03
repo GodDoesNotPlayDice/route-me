@@ -13,7 +13,7 @@ import { registerUser } from 'src/package/authentication/application/register-us
 import { AuthPassengerRepository } from 'src/package/authentication/domain/repository/auth-passenger-repository'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import {
-  Passenger,
+  Passenger, newPassenger,
 } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
 import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
@@ -130,34 +130,20 @@ export class AuthService {
   } ): Promise<Result<string, string>> {
     //TODO: ver si register devuelve token o entidad
     const result = await this.passengerRepository.register(
-      {
-        id      : newUserID( {
-          value: ulid()
-        } ),
-        description: newPassengerDescription({
-          value: ''
-        }),
+      newPassenger( {
+        id      : ulid(),
+        description: '',
         preferences: [],
         userID: this.currentUser.unwrap().id,
-        name    : newPassengerName( {
-          value: props.name
-        } ),
-        lastName: newPassengerLastName( {
-          value: props.lastName
-        } ),
-        country : newPassengerCountry( {
-          value: props.country
-        } ),
-        phone   : newPassengerPhone( {
-          value: props.phone
-        } ),
-        birthDay: newPassengerBirthDay( {
-          value: props.birthDay
-        } ),
+        name    : props.name,
+        lastName: props.lastName,
+        country : props.country,
+        phone   : props.phone,
+        birthDay: props.birthDay,
         gender  : newGender( {
-          value: props.gender
-        } )
-      } )
+          value: props.gender,
+        })
+      } ))
 
     if ( result.isErr() ) {
       return Promise.resolve( Err( result.unwrapErr() ) )

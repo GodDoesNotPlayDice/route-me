@@ -17,6 +17,7 @@ export const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.routes').then( m => m.routes )
   },
   {
+    //TODO: agregar si existe user, redirigir  home
     path        : 'register',
     loadChildren: () => import('./register/register.routes').then(
       m => m.routes )

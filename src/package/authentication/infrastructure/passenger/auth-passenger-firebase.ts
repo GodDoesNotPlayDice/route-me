@@ -49,6 +49,12 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
                      .then( async ( snapshot ) => {
                        const snapshotValue = Object.values(
                          snapshot.val() )[0] as Record<string, any>
+
+                       if(snapshotValue['preferences'] === "none") {
+                          snapshotValue['preferences'] = []
+                       }
+                       console.log('snapshotValue')
+                       console.log(snapshotValue)
                        const passenger     = passengerFromJson( snapshotValue )
                        if ( passenger.isNone() ) {
                          console.log( 'none' )
@@ -58,7 +64,7 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
                      } )
   }
 
-  async register( passenger: Omit<Passenger, 'id' | 'preferences' | 'description'> ): Promise<Result<string, string>> {
+  async register( passenger: Passenger ): Promise<Result<string, string>> {
     try {
       let completed : string | null = null
       await this.firebase.database.ref( 'passengers' )
@@ -73,7 +79,7 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
                     birthDay   : passenger.birthDay.value,
                     country    : passenger.country.value,
                     gender     : passenger.gender,
-                    preferences: []
+                    preferences: "none"
                   },
                   ( error ) => {
                     if ( !error ){
