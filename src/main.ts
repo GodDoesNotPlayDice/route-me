@@ -1,4 +1,7 @@
-import { HttpClientModule } from '@angular/common/http'
+import {
+  HttpClient,
+  HttpClientModule
+} from '@angular/common/http'
 import {
   enableProdMode,
   importProvidersFrom
@@ -41,6 +44,8 @@ import {
 import { PassengerDaoMemory } from 'src/package/passenger/infrastructure/passenger-dao-memory'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { newGender } from 'src/package/shared/domain/models/gender'
+import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
+import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
 import {
   newUser,
   User
@@ -119,6 +124,13 @@ bootstrapApplication( AppComponent, {
         return new UserDaoFirebase( firebase )
       },
       deps      : [ AngularFireDatabase ]
+    },
+    {
+      provide: TripDao,
+      useFactory: ( http: HttpClient ) => {
+        return new TripDaoApi( http)
+      },
+      deps      : [ HttpClient ]
     },
     {
       provide: PassengerDao,

@@ -46,6 +46,10 @@ import {
 
 export interface Trip {
 	id: TripID
+	driverID: DriverID
+	categoryID: CategoryID
+	chatID: ChatID
+	passengersID: PassengerID[]
 	name: TripName
 	description: TripDescription
 	state: TripState
@@ -56,10 +60,6 @@ export interface Trip {
 	endLocation: Location
 	startDate: CreatedAt
 	endDate: EndTripDate
-	driverID: DriverID
-	passengers: PassengerID[]
-	category: CategoryID
-	chat: ChatID
 }
 
 export interface TripProps {
@@ -91,9 +91,9 @@ export const newTrip = ( props: TripProps ): Trip => {
 			value: props.id
 		} ),
 		driverID     : props.driverID,
-		passengers   : props.passengers,
-		category     : props.category,
-		chat         : props.chat,
+		passengersID : props.passengers,
+		categoryID   : props.category,
+		chatID       : props.chat,
 		name         : newTripName( {
 			value: props.name
 		} ),

@@ -59,9 +59,9 @@ export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 	}
 }
 
-export const tripToJSON = ( trip: Trip ): Record<string, any> => {
+export const tripToJSON = ( trip: Trip): Record<string, any> => {
 
-	const passengers = trip.passengers.map(
+	const passengers = trip.passengersID.map(
 		( passengers: PassengerID ) => {
 			return passengers.value
 		} )
@@ -71,6 +71,7 @@ export const tripToJSON = ( trip: Trip ): Record<string, any> => {
 		name         : trip.name.value,
 		description  : trip.description.value,
 		state        : trip.state,
+    paymentMethod: trip.paymentMethod,
 		price        : {
 			amount  : trip.price.amount.value,
 			currency: trip.price.currency.value
@@ -82,7 +83,7 @@ export const tripToJSON = ( trip: Trip ): Record<string, any> => {
 		endDate      : trip.endDate.value,
 		driverID     : trip.driverID.value,
 		passengers   : passengers,
-		category     : trip.category.value,
-		chat         : trip.chat.value
+		category     : trip.categoryID.value,
+		chat         : trip.chatID.value
 	}
 }
