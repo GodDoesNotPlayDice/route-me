@@ -10,6 +10,15 @@ import {
   newFilterButtonData
 } from 'src/app/shared/models/filter-button-data'
 import { DriversService } from 'src/app/shared/services/drivers.service'
+import { TripService } from 'src/app/shared/services/trip.service'
+import { newCategory } from 'src/package/category/domain/models/category'
+import { newCategoryID } from 'src/package/category/domain/models/category-id'
+import { newChat } from 'src/package/chat/domain/models/chat'
+import { newChatID } from 'src/package/chat/domain/models/chat-id'
+import { newDriverID } from 'src/package/driver/domain/models/driver-id'
+import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
+import { newTrip } from 'src/package/trip/domain/models/trip'
+import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
@@ -27,8 +36,21 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 } )
 export class HomePage {
 
-  constructor( private driversService: DriversService )
+  constructor( private driversService: DriversService ,
+    private tripService : TripService )
   {
+    // this.tripService.create({
+    //   name: 'Viaje a la playa',
+    //   description: 'Viaje a la playa',
+    //   paymentMethod: 'Basic',
+    //   price: {
+    //     amount: 100,
+    //     currency: 'USD'
+    //   },
+    //   seat: 4,
+    //   startLocation: 'Calle 1',
+    //   endLocation: 'Calle 2'
+    // })
     this.info = this.driversService.getDrivers().filter( ( driver ) => {
       return driver.state === TripStateEnum.Open
     } )
