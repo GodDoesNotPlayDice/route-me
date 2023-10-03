@@ -11,6 +11,7 @@ export abstract class AuthUserRepository {
     email: UserEmail,
     password: UserPassword,
   ): Promise<Result<string, string>>
+  abstract logout(id : UserID): Promise<Result<boolean, string>>
   abstract delete(id : UserID): Promise<Result<boolean, string>>
   abstract update(user: Partial<User>): Promise<Result<boolean, string>>
 }

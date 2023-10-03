@@ -13,6 +13,10 @@ export class AuthPassengerLocalStorage implements AuthPassengerRepository {
     this.init()
   }
 
+  async logout(id: UserID): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok( true ) )
+  }
+
   private async init() {
     await this.storage.create()
   }

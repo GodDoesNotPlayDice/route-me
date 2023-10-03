@@ -16,6 +16,10 @@ import { ulid } from 'ulidx'
 export class AuthUserMemory implements AuthUserRepository {
   constructor(private context: User[]) {}
 
+  async logout(id: UserID): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok( true ) )
+  }
+
   async login( email: UserEmail,
     password: UserPassword ): Promise<Result<User, string>> {
     for ( const user of this.context ) {

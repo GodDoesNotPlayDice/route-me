@@ -11,19 +11,23 @@ export class AuthPassengerMemory implements AuthPassengerRepository {
 
   constructor(private context: Passenger[]) {}
 
-  public delete( id: UserID ): Promise<Result<boolean, string>> {
+  async logout(id: UserID): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok( true ) )
+    }
+
+  async delete( id: UserID ): Promise<Result<boolean, string>> {
     return Promise.resolve( Ok( true ) )
   }
 
-  public login( userID: UserID ): Promise<Result<Passenger, string>> {
+  async login( userID: UserID ): Promise<Result<Passenger, string>> {
     return Promise.resolve( Err( 'error' ) )
   }
 
-  public register( passenger: Omit<Passenger, "id" | "preferences" | "description"> ): Promise<Result<string, string>> {
+  async register( passenger: Omit<Passenger, "id" | "preferences" | "description"> ): Promise<Result<string, string>> {
     return Promise.resolve( Err( 'error' ) )
   }
 
-  public update( passenger: Passenger ): Promise<Result<boolean, string>> {
+  async update( passenger: Passenger ): Promise<Result<boolean, string>> {
     return Promise.resolve( Err( 'error' ) )
   }
 }

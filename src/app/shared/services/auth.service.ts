@@ -76,9 +76,7 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<Result<boolean, string>> {
-    console.log( 'register', email, password )
     //TODO: deberia devolver un string, en caso de token
-
     const result = await registerUser(
       this.authRepository,
       newUserEmail( {

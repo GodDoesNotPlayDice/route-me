@@ -14,6 +14,10 @@ export class AuthPassengerFirebase implements AuthPassengerRepository {
   constructor( private firebase: AngularFireDatabase ) {
   }
 
+  async logout(id: UserID): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok( true ) )
+  }
+
   async delete( id: UserID ): Promise<Result<boolean, string>> {
     const keySaved = await this.getKey( id )
 

@@ -19,6 +19,10 @@ export class AuthUserLocalStorage implements AuthUserRepository {
     await this.storage.create()
   }
 
+  async logout(id: UserID): Promise<Result<boolean, string>> {
+    return Promise.resolve( Ok( true ) )
+  }
+
   login( email: UserEmail,
     password: UserPassword ): Promise<Result<User, string>> {
     return Promise.resolve( Err( 'data error' ) )
