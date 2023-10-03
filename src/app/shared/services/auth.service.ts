@@ -17,13 +17,17 @@ import {
 } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
 import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
+import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { User } from 'src/package/user/domain/models/user'
 import { newUserEmail } from 'src/package/user/domain/models/user-email'
-import { newUserID } from 'src/package/user/domain/models/user-id'
+import {
+  newUserID,
+  UserID
+} from 'src/package/user/domain/models/user-id'
 import { newUserPassword } from 'src/package/user/domain/models/user-password'
 import { ulid } from 'ulidx'
 
@@ -90,6 +94,13 @@ export class AuthService {
     if ( result.isErr() ) {
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
+
+    const userLogResult = await this.userLogin( email, password )
+
+    if ( userLogResult.isErr() ) {
+      return Promise.resolve( Err( userLogResult.unwrapErr() ) )
+    }
+
     return Promise.resolve( Ok( true ) )
   }
 
@@ -123,6 +134,9 @@ export class AuthService {
         id      : newUserID( {
           value: ulid()
         } ),
+        description: newPassengerDescription({
+          value: ''
+        }),
         preferences: [],
         userID: this.currentUser.unwrap().id,
         name    : newPassengerName( {
@@ -149,15 +163,33 @@ export class AuthService {
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
 
+    const passengerResult = await this.passengerRepository.login( this.currentUser.unwrap().id )
+
+    if ( passengerResult.isErr() ) {
+      return Promise.resolve( Err( passengerResult.unwrapErr() ) )
+    }
+
     const response = result.unwrap()
     return Promise.resolve( Ok( response ) )
   }
+
+  async logout(id : UserID): Promise<Result<boolean, string>>{
+    const resultUser = await this.authRepository.logout( id )
+    if ( resultUser.isErr() ) {
+      return Promise.resolve( Err( resultUser.unwrapErr() ) )
+    }
+
+    this.currentUser = None
+
+    const resultPassenger = await this.passengerRepository.logout( id )
+
+    if ( resultPassenger.isErr() ) {
+      return Promise.resolve( Err( resultPassenger.unwrapErr() ) )
+    }
+    //TODO: talvez manejar si uno si se hace y el otro no
+    this.currentPassenger = None
+
+    return Promise.resolve( Ok( true ) )
+  }
+
 }
-
-interface algo {
-  name: string,
-  lastName: string,
-}
-
-
-
