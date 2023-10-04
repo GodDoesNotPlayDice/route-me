@@ -44,6 +44,10 @@ export class AuthService {
 
     this.currentUser = Some( result.unwrap() )
 
+    return Promise.resolve( Ok( true ) )
+  }
+
+  async passengerLogin(): Promise<Result<boolean, string>> {
     const passengerResult = await loginPassenger( this.passengerRepository,
       this.currentUser.unwrap().id )
 
@@ -55,6 +59,7 @@ export class AuthService {
 
     return Promise.resolve( Ok( true ) )
   }
+
 
   async userRegister(
     email: string,
@@ -112,8 +117,7 @@ export class AuthService {
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
 
-    const passengerResult = await loginPassenger( this.passengerRepository,
-      this.currentUser.unwrap().id )
+    const passengerResult = await this.passengerLogin()
 
     if ( passengerResult.isErr() ) {
       return Promise.resolve( Err( passengerResult.unwrapErr() ) )
