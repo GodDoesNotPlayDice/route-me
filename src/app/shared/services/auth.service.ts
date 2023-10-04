@@ -7,29 +7,17 @@ import {
   Result,
   Some
 } from 'oxide.ts'
-import { loginPassenger } from 'src/package/authentication/application/login-passenger'
-import { loginUser } from 'src/package/authentication/application/login-user'
-import { registerUser } from 'src/package/authentication/application/register-user'
-import { AuthPassengerRepository } from 'src/package/authentication/domain/repository/auth-passenger-repository'
-import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
-import {
-  Passenger, newPassenger,
-} from 'src/package/passenger/domain/models/passenger'
-import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
-import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
-import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
-import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
-import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
-import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
-import { newGender } from 'src/package/shared/domain/models/gender'
+import { loginPassenger } from 'src/package/authentication/passenger/application/login-passenger'
+import { logoutPassenger } from 'src/package/authentication/passenger/application/logout-passenger'
+import { loginUser } from 'src/package/authentication/user/application/login-user'
+import { registerPassenger } from 'src/package/authentication/passenger/application/register-passenger'
+import { logoutUser } from 'src/package/authentication/user/application/logout-user'
+import { registerUser } from 'src/package/authentication/user/application/register-user'
+import { AuthPassengerRepository } from 'src/package/authentication/passenger/domain/auth-passenger-repository'
+import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-user-repository'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { User } from 'src/package/user/domain/models/user'
-import { newUserEmail } from 'src/package/user/domain/models/user-email'
-import {
-  newUserID,
-  UserID
-} from 'src/package/user/domain/models/user-id'
-import { newUserPassword } from 'src/package/user/domain/models/user-password'
-import { ulid } from 'ulidx'
+import { UserID } from 'src/package/user/domain/models/user-id'
 
 @Injectable( {
   providedIn: 'root'
@@ -47,15 +35,7 @@ export class AuthService {
 
   async userLogin( email: string,
     password: string ): Promise<Result<boolean, string>> {
-    const result = await loginUser(
-      this.authRepository,
-      newUserEmail( {
-        value: email
-      } ),
-      newUserPassword( {
-        value: password
-      } )
-    )
+    const result = await loginUser( this.authRepository, email, password )
 
     if ( result.isErr() ) {
       console.log( 'error auth' )
@@ -82,13 +62,7 @@ export class AuthService {
   ): Promise<Result<boolean, string>> {
     //TODO: deberia devolver un string, en caso de token
     const result = await registerUser(
-      this.authRepository,
-      newUserEmail( {
-        value: email
-      } ),
-      newUserPassword( {
-        value: password
-      } )
+      this.authRepository, email, password
     )
 
     if ( result.isErr() ) {
@@ -106,12 +80,12 @@ export class AuthService {
 
 
   async updatePassenger( props: Partial<Passenger> ): Promise<Result<boolean, string>> {
-    const newPassenger : Passenger = {
+    const newPassenger: Passenger = {
       ...this.currentPassenger.unwrap(),
       ...props
     }
 
-    const result = await this.passengerRepository.update( newPassenger)
+    const result = await this.passengerRepository.update( newPassenger )
     if ( result.isErr() ) {
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
@@ -126,30 +100,20 @@ export class AuthService {
     phone: string,
     birthDay: Date,
     country: string,
-    gender: string,
+    gender: string
   } ): Promise<Result<string, string>> {
     //TODO: ver si register devuelve token o entidad
-    const result = await this.passengerRepository.register(
-      newPassenger( {
-        id      : ulid(),
-        description: '',
-        preferences: [],
-        userID: this.currentUser.unwrap().id,
-        name    : props.name,
-        lastName: props.lastName,
-        country : props.country,
-        phone   : props.phone,
-        birthDay: props.birthDay,
-        gender  : newGender( {
-          value: props.gender,
-        })
-      } ))
+    const result = await registerPassenger( this.passengerRepository, {
+      ...props,
+      userID: this.currentUser.unwrap().id
+    } )
 
     if ( result.isErr() ) {
       return Promise.resolve( Err( result.unwrapErr() ) )
     }
 
-    const passengerResult = await this.passengerRepository.login( this.currentUser.unwrap().id )
+    const passengerResult = await loginPassenger( this.passengerRepository,
+      this.currentUser.unwrap().id )
 
     if ( passengerResult.isErr() ) {
       return Promise.resolve( Err( passengerResult.unwrapErr() ) )
@@ -159,15 +123,16 @@ export class AuthService {
     return Promise.resolve( Ok( response ) )
   }
 
-  async logout(id : UserID): Promise<Result<boolean, string>>{
-    const resultUser = await this.authRepository.logout( id )
+  async authLogout( id: UserID ): Promise<Result<boolean, string>> {
+    const resultUser = await logoutUser(this.authRepository, id )
+
     if ( resultUser.isErr() ) {
       return Promise.resolve( Err( resultUser.unwrapErr() ) )
     }
 
     this.currentUser = None
 
-    const resultPassenger = await this.passengerRepository.logout( id )
+    const resultPassenger = await logoutPassenger(this.passengerRepository, id)
 
     if ( resultPassenger.isErr() ) {
       return Promise.resolve( Err( resultPassenger.unwrapErr() ) )

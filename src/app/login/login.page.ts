@@ -17,15 +17,17 @@ import {
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
-import { match } from 'oxide.ts'
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
 import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
-import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
+import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
-import { newUserID } from 'src/package/user/domain/models/user-id'
-import { UserDao } from 'src/package/user/domain/repository/user-dao'
 
 @Component( {
   standalone : true,
@@ -51,7 +53,8 @@ export class LoginPage implements ViewDidEnter {
     private authService: AuthService,
     private router: Router,
     private alertController: AlertController
-  ) {}
+  )
+  {}
 
   @ViewChild( 'user' ) userInput!: InputTextComponent
   @ViewChild( 'password' ) passwordInput!: InputTextComponent
@@ -71,18 +74,15 @@ export class LoginPage implements ViewDidEnter {
   }
 
   async ionViewDidEnter() {
-    // const d = new Date("1/12/1990")
-    //   console.log(d.toJSON())
-    // const n = new Date(d.toJSON())
-    // console.log('n', n)
-    // await this.authService.registerPassenger({
-    //   birthDay: d,
-    //   country: 'Peru',
-    //   gender: 'Male',
-    //   lastName: 'Perez',
-    //   name: 'Juan',
-    //   phone: '123456789',
-    // })
+    const result = await ejecutarPromesas()
+
+    if ( result.isErr() ) {
+      console.log( result.unwrapErr() )
+    }else {
+      console.log( result.unwrap() )
+    }
+
+
     //TODO: ver si colocar div dentro de backButton u manual, responde click
     this.formGroup = new FormGroup( [
       this.userInput.textControl,
@@ -111,15 +111,85 @@ export class LoginPage implements ViewDidEnter {
       this.passwordInput.textControl.value!
     )
 
-    const response = match( result, {
-      Ok : ( value: boolean ) => {
-        this.router.navigate( [ '/tabs' ] )
-        return 'exito'
-      },
-      Err: ( error: string ) => {
-        this.presentAlert()
-        return 'error msg'
-      }
-    } )
+    // const response = match( result, {
+    //   Ok : ( value: boolean ) => {
+    //     this.router.navigate( [ '/tabs' ] )
+    //     return 'exito'
+    //   },
+    //   Err: ( error: string ) => {
+    //     this.presentAlert()
+    //     return 'error msg'
+    //   }
+    // } )
   }
+}
+
+async function ejecutarPromesas() : Promise<Result<number, string[]>> {
+  const resultados       = await Promise.allSettled(
+    [ funcionAsincrona1(), funcionAsincrona2(),
+      funcionAsincrona3() ]
+  )
+  const errors: string[] = []
+  let sum = 0
+  resultados.forEach( ( resultado, index ) => {
+    if ( resultado.status === 'fulfilled' ) {
+      console.log( `Promesa ${ index + 1 } se resolvió con resultado:`,
+        resultado.value )
+      sum += (typeof resultado.value === "number" ? resultado.value : 0)
+    }
+    else if ( resultado.status === 'rejected' ) {
+      console.log( `Promesa ${ index + 1 } fue rechazada con error:`,
+        resultado.reason instanceof Error
+          ? resultado.reason.name
+          : 'other' )
+      errors.push( resultado.reason instanceof Error
+        ? resultado.reason.name
+        : 'other' )
+    }
+  } )
+
+  if ( errors.length > 0 ) {
+    return Promise.resolve(Err(errors))
+  }
+
+  return Promise.resolve(Ok(sum))
+}
+
+class CustomError extends Error {
+  constructor( message: string ) {
+    super( `Lorem "${ message }" ipsum dolor.` )
+    this.name = 'CustomError'
+  }
+}
+
+class OtherError extends Error {
+  constructor( message: string ) {
+    super( `Lorem "${ message }" ipsum dolor.` )
+    this.name = 'OtherError'
+  }
+}
+
+function funcionAsincrona1() {
+  return new Promise( ( resolve, reject ) => {
+    setTimeout( () => {
+      resolve( 1 )
+    }, 1000 )
+  } )
+}
+
+function funcionAsincrona2() {
+  return new Promise( ( resolve, reject ) => {
+    setTimeout( () => {
+      resolve( 2 )
+      // reject( new CustomError( 'Error en la promesa 2' ) )
+    }, 1500 )
+  } )
+}
+
+function funcionAsincrona3() {
+  return new Promise( ( resolve, reject ) => {
+    setTimeout( () => {
+      resolve( 2 )
+    }, 2000 )
+  } )
 }
