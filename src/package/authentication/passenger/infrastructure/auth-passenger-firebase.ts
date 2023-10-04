@@ -4,11 +4,10 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { AuthPassengerRepository } from 'src/package/authentication/domain/repository/auth-passenger-repository'
+import { AuthPassengerRepository } from 'src/package/authentication/passenger/domain/auth-passenger-repository'
 import { passengerFromJson } from 'src/package/passenger/application/passenger-mapper'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { UserID } from 'src/package/user/domain/models/user-id'
-import { ulid } from 'ulidx'
 
 export class AuthPassengerFirebase implements AuthPassengerRepository {
   constructor( private firebase: AngularFireDatabase ) {
