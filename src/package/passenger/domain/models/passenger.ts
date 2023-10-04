@@ -1,4 +1,3 @@
-import { Result } from 'oxide.ts'
 import {
   newPassengerBirthDay,
   PassengerBirthDay
@@ -89,35 +88,3 @@ export const newPassenger = ( props: PassengerProps ): Passenger => {
     preferences: props.preferences
   }
 }
-
-export const newPassengerResult = ( props: PassengerProps ): Promise<Result<Passenger, Error[]>> => {
-
-
-  return {
-    id         : newPassengerID( {
-      value: props.id
-    } ),
-    userID     : props.userID,
-    name       : newPassengerName( {
-      value: props.name
-    } ),
-    lastName   : newPassengerLastName( {
-      value: props.lastName
-    } ),
-    description: newPassengerDescription( {
-      value: props.description
-    } ),
-    phone      : newPassengerPhone( {
-      value: props.phone
-    } ),
-    birthDay   : newPassengerBirthDay( {
-      value: props.birthDay
-    } ),
-    country    : newPassengerCountry( {
-      value: props.country
-    } ),
-    gender     : props.gender,
-    preferences: props.preferences
-  }
-}
-

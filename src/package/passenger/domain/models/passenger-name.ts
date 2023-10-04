@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const PassengerNameSchema = z.object( {
-  value : z.string()
+  value : z.string().nonempty()
 } )
 
 type PassengerNameType = z.infer<typeof PassengerNameSchema>
