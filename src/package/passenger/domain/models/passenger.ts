@@ -1,3 +1,4 @@
+import { Result } from 'oxide.ts'
 import {
   newPassengerBirthDay,
   PassengerBirthDay
