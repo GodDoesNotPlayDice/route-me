@@ -2,6 +2,7 @@ import { CategoryID } from 'src/package/category/domain/models/category-id'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
 import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
+import { ComparableDate } from 'src/package/shared/domain/models/comparable-date'
 import {
   CreatedAt,
   newCreatedAt
@@ -27,9 +28,9 @@ import {
   TripName
 } from 'src/package/trip/domain/models/trip-name'
 import {
-  newTripPaymentMethod,
-  TripPaymentMethod
-} from 'src/package/trip/domain/models/trip-payment-method'
+  newTripFeeMethod,
+  TripFeeMethod
+} from 'src/package/trip/domain/models/trip-fee-method'
 import {
   newTripPrice,
   TripPrice,
@@ -55,11 +56,11 @@ export interface Trip {
 	state: TripState
 	price: TripPrice
 	seat: TripSeat
-  paymentMethod : TripPaymentMethod
+  paymentMethod : TripFeeMethod
 	startLocation: Location
 	endLocation: Location
-	startDate: CreatedAt
-	endDate: EndTripDate
+	startDate: ComparableDate
+	endDate: ComparableDate
 }
 
 export interface TripProps {
@@ -97,7 +98,7 @@ export const newTrip = ( props: TripProps ): Trip => {
 		name         : newTripName( {
 			value: props.name
 		} ),
-    paymentMethod: newTripPaymentMethod({
+    paymentMethod: newTripFeeMethod({
       value: props.paymentMethod
     }),
 		description  : newTripDescription( {

@@ -6,7 +6,7 @@ import {
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
 
-export const createTrip = async ( dao: TripDao, trip: Omit<Trip, 'id'>): Promise<Result<boolean, string>> => {
+export const createTrip = async ( dao: TripDao, trip: Trip): Promise<Result<boolean, string>> => {
   try {
     const result   = await dao.create(trip)
     const response = result.unwrap()

@@ -21,7 +21,7 @@ export class TripService {
   async create(props:{
     name: string
     description: string
-    paymentMethod: string,
+    feeMethod: string,
     price: TripPriceProps
     seat: number
     startLocation: string
@@ -34,7 +34,7 @@ export class TripService {
     const result = await this.tripDao.create(newTrip(
       {
         id: ulid(),
-        paymentMethod: props.paymentMethod,
+        paymentMethod: props.feeMethod,
         name: props.name,
         description: props.description,
         state: 'Open',
