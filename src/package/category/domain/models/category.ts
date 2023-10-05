@@ -18,15 +18,15 @@ import {
 export interface Category {
   id: CategoryID
   name: CategoryName
-  photo: CategoryPhoto
-  description: CategoryDescription
+  // photo: CategoryPhoto
+  // description: CategoryDescription
 }
 
 export interface CategoryProps {
   id: string
   name: string
-  photo: string
-  description: string
+  // photo: string
+  // description: string
 }
 
 export const newCategory = ( props: CategoryProps ): Category => {
@@ -37,11 +37,11 @@ export const newCategory = ( props: CategoryProps ): Category => {
     name       : newCategoryName( {
       value: props.name
     } ),
-    photo      : newCategoryPhoto( {
-      value: props.photo
-    } ),
-    description: newCategoryDescription( {
-      value: props.description
-    } )
+    // photo      : newCategoryPhoto( {
+    //   value: props.photo
+    // } ),
+    // description: newCategoryDescription( {
+    //   value: props.description
+    // } )
   }
 }
