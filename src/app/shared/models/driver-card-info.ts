@@ -1,7 +1,8 @@
 import {
   Location,
   newLocation
-} from 'src/package/shared/domain/models/location'
+} from 'src/package/shared/domain/models/location/location'
+import { newLocationID } from 'src/package/shared/domain/models/location/location-id'
 import {
   Money,
   newMoney
@@ -11,6 +12,7 @@ import {
   ValidDate
 } from 'src/package/shared/domain/models/valid-date'
 import { TripStateEnum } from 'src/app/shared/models/trip-state'
+import { ulid } from 'ulidx'
 import {
   Avatar,
 } from './avatar'
@@ -28,8 +30,8 @@ export interface DriverCardInfo {
 export interface DriverCardInfoProps {
   cost            : number
   date            : Date
-  startLocation   : string
-  endLocation     : string
+  startLocation   : Location
+  endLocation     : Location
   driverAvatar    : Avatar
   state           : TripStateEnum
   passengerAvatars: Avatar[]
@@ -45,12 +47,8 @@ export const newDriverCardInfo = ( props: DriverCardInfoProps ): DriverCardInfo 
       value: props.date
     }),
     state           : props.state,
-    startLocation   : newLocation({
-      value: props.startLocation
-    }),
-    endLocation     : newLocation({
-      value: props.endLocation
-    }),
+    startLocation   : props.startLocation,
+    endLocation     : props.endLocation,
     passengerAvatars: props.passengerAvatars
   }
 }

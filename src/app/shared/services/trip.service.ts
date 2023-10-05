@@ -5,21 +5,17 @@ import {
   Result
 } from 'oxide.ts'
 import { newCategory } from 'src/package/category/domain/models/category'
-import { newCategoryID } from 'src/package/category/domain/models/category-id'
-import { newCategoryName } from 'src/package/category/domain/models/category-name'
 import { newChatID } from 'src/package/chat/domain/models/chat-id'
 import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { newLocation } from 'src/package/shared/domain/models/location/location'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newTrip } from 'src/package/trip/domain/models/trip'
-import { TripPriceProps } from 'src/app/shared/models/trip-price'
 import { ulid } from 'ulidx'
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripService {
-
   constructor(private tripDao : TripDao ) { }
   async create(props:{
     startLocation: string
@@ -30,7 +26,6 @@ export class TripService {
     const driverID = newDriverID({
       value: ulid()
     })
-
 
     const category = newCategory({
       id: ulid() ,
@@ -72,5 +67,4 @@ export class TripService {
     }
     return Promise.resolve( Ok( true ) )
   }
-
 }

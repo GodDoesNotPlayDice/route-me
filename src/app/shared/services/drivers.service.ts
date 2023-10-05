@@ -5,6 +5,8 @@ import {
   newDriverCardInfo
 } from 'src/app/shared/models/driver-card-info'
 import { newTripState } from 'src/app/shared/models/trip-state'
+import { newLocation } from 'src/package/shared/domain/models/location/location'
+import { ulid } from 'ulidx'
 
 @Injectable( {
   providedIn: 'root'
@@ -36,8 +38,18 @@ const driveInfoList: DriverCardInfo[] = [
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } )
     ],
-    startLocation   : 'viña',
-    endLocation     : 'stgo',
+    startLocation   : newLocation({
+      id: ulid(),
+      name: 'viña',
+      latitude: 0,
+      longitude: 0
+    }),
+    endLocation     : newLocation({
+      id: ulid(),
+      name: 'santiago',
+      latitude: 0,
+      longitude: 0
+    }),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
@@ -59,8 +71,18 @@ const driveInfoList: DriverCardInfo[] = [
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } )
     ],
-    startLocation   : 'viña',
-    endLocation     : 'stgo',
+    startLocation   : newLocation({
+      id: ulid(),
+      name: 'viña',
+      latitude: 0,
+      longitude: 0
+    }),
+    endLocation     : newLocation({
+      id: ulid(),
+      name: 'santiago',
+      latitude: 0,
+      longitude: 0
+    }),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
@@ -82,8 +104,18 @@ const driveInfoList: DriverCardInfo[] = [
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } )
     ],
-    startLocation   : 'viña',
-    endLocation     : 'stgo',
+    startLocation   : newLocation({
+      id: ulid(),
+      name: 'viña',
+      latitude: 0,
+      longitude: 0
+    }),
+    endLocation     : newLocation({
+      id: ulid(),
+      name: 'santiago',
+      latitude: 0,
+      longitude: 0
+    }),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
