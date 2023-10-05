@@ -39,6 +39,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 				startLocation: json['startLocation'],
 				endLocation  : json['endLocation'],
 				startDate    : new Date( json['startDate'] ),
+				endDate    : new Date( json['endDate'] ),
 				driverID     : newDriverID( {
 					value: json['driverID']
 				} ),
@@ -79,8 +80,8 @@ export const tripToJSON = ( trip: Trip): Record<string, any> => {
 		seat         : trip.seat.value,
 		startLocation: trip.startLocation.value,
 		endLocation  : trip.endLocation.value,
-		startDate    : trip.startDate.value,
-		endDate      : trip.endDate.value,
+		startDate    : trip.startDate.toJSON(),
+		endDate      : trip.endDate.toJSON(),
 		driverID     : trip.driverID.value,
 		passengers   : passengers,
 		category     : trip.categoryID.value,

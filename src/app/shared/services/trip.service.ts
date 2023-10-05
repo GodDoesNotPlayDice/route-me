@@ -26,6 +26,8 @@ export class TripService {
     seat: number
     startLocation: string
     endLocation: string
+    startDate: Date,
+    endDate: Date
   }): Promise<Result<boolean, string>>{
     const driverID = newDriverID({
       value: ulid()
@@ -45,7 +47,8 @@ export class TripService {
         seat: props.seat,
         startLocation: props.startLocation,
         endLocation: props.endLocation,
-        startDate: new Date(),
+        startDate: props.startDate,
+        endDate: props.endDate,
         driverID: driverID,
         passengers: [],
         category: newCategoryID({

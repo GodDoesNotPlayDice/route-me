@@ -1,3 +1,4 @@
+import { LimitDateSchema } from 'src/package/shared/domain/models/limit-date'
 import { z } from 'zod'
 
 export enum ComparatorEnum {
@@ -22,20 +23,28 @@ export const ComparableDateSchema = z.object( {
 	otherDate : z.date(),
 	comparator : ComparatorEnumSchema,
 } ).superRefine( ( val, ctx ) => {
-	const now          = new Date()
-	const oneSecondAgo = new Date( now.getTime() - 1000 )
-	if ( val.value < oneSecondAgo ) {
-		ctx.addIssue( {
-			code   : z.ZodIssueCode.custom,
-			message: "Not a valid date",
-		} );
-		return z.NEVER;
+	switch ( val.comparator ) {
+		case "Before":
+			if ( val.otherDate > val.value ) {
+				ctx.addIssue( {
+					code   : z.ZodIssueCode.custom,
+					message: "Other date is greater than value",
+				} )
+				return z.NEVER
+			}
+			break
+		case "After":
+			if ( val.value > val.otherDate ) {
+				ctx.addIssue( {
+					code   : z.ZodIssueCode.custom,
+					message: "Value is greater than other date",
+				} )
+				return z.NEVER
+			}
+			break
 	}
 	return val
 })
-// ComparableDate, value, otherDate, comparator-type
-// ComparableDate, 10/10, 24/10, after - check
-// ComparableDate, 24/10, 10/10, before - check
 
 type ComparableDateType = z.infer<typeof ComparableDateSchema>
 export interface ComparableDate extends ComparableDateType{}

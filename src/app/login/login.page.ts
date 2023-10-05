@@ -17,26 +17,13 @@ import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
-import {
-	Err,
-	match,
-	Ok,
-	Result
-} from 'oxide.ts'
+import { match } from 'oxide.ts'
 import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
-import {
-	newPassengerID,
-	PassengerID
-} from 'src/package/passenger/domain/models/passenger-id'
-import {
-	newPassengerName,
-	PassengerName
-} from 'src/package/passenger/domain/models/passenger-name'
 
 @Component( {
 	standalone : true,

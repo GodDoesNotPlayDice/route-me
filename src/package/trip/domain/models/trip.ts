@@ -2,47 +2,44 @@ import { CategoryID } from 'src/package/category/domain/models/category-id'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
 import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
-import { ComparableDate } from 'src/package/shared/domain/models/comparable-date'
 import {
-  CreatedAt,
-  newCreatedAt
-} from 'src/package/shared/domain/models/created-at'
+	newComparableDate,
+	newComparator
+} from 'src/package/shared/domain/models/comparable-date'
+import { newLimitDate } from 'src/package/shared/domain/models/limit-date'
 import {
-  Location,
-  newLocation
+	Location,
+	newLocation
 } from 'src/package/shared/domain/models/location'
+import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import {
-  EndTripDate,
-  newEndTripDate
-} from 'src/package/trip/domain/models/end-trip-date'
-import {
-  newTripDescription,
-  TripDescription
+	newTripDescription,
+	TripDescription
 } from 'src/package/trip/domain/models/trip-description'
 import {
-  newTripID,
-  TripID
-} from 'src/package/trip/domain/models/trip-id'
-import {
-  newTripName,
-  TripName
-} from 'src/package/trip/domain/models/trip-name'
-import {
-  newTripFeeMethod,
-  TripFeeMethod
+	newTripFeeMethod,
+	TripFeeMethod
 } from 'src/package/trip/domain/models/trip-fee-method'
 import {
-  newTripPrice,
-  TripPrice,
-  TripPriceProps
+	newTripID,
+	TripID
+} from 'src/package/trip/domain/models/trip-id'
+import {
+	newTripName,
+	TripName
+} from 'src/package/trip/domain/models/trip-name'
+import {
+	newTripPrice,
+	TripPrice,
+	TripPriceProps
 } from 'src/package/trip/domain/models/trip-price'
 import {
-  newTripSeat,
-  TripSeat
+	newTripSeat,
+	TripSeat
 } from 'src/package/trip/domain/models/trip-seat'
 import {
-  newTripState,
-  TripState
+	newTripState,
+	TripState
 } from 'src/package/trip/domain/models/trip-state'
 
 export interface Trip {
@@ -56,11 +53,11 @@ export interface Trip {
 	state: TripState
 	price: TripPrice
 	seat: TripSeat
-  paymentMethod : TripFeeMethod
+	paymentMethod: TripFeeMethod
 	startLocation: Location
 	endLocation: Location
-	startDate: ComparableDate
-	endDate: ComparableDate
+	startDate: Date
+	endDate: Date
 }
 
 export interface TripProps {
@@ -72,20 +69,53 @@ export interface TripProps {
 	name: string
 	description: string
 	state: string,
-  paymentMethod: string,
+	paymentMethod: string,
 	price: TripPriceProps
 	seat: number
 	startLocation: string
 	endLocation: string
 	startDate: Date
+	endDate: Date
 }
 
 export const newTrip = ( props: TripProps ): Trip => {
-	const seat      = newTripSeat( {
-		value: props.seat
+	const endDateValid = newValidDate( {
+		value: props.endDate
 	} )
-	const startDate = newCreatedAt( {
+
+	const startDateValid = newValidDate( {
 		value: props.startDate
+	} )
+
+	const startDateInRange = newLimitDate( {
+		value   : startDateValid.value,
+		numTimes: 12096e5
+	} )
+
+	const endDateInRange = newLimitDate( {
+		value   : endDateValid.value,
+		numTimes: 12096e5
+	} )
+
+	const startDate = newComparableDate( {
+		value     : startDateInRange.value,
+		otherDate : endDateInRange.value,
+		comparator: newComparator( {
+			value: 'Before'
+		} )
+	} )
+
+	const endDate = newComparableDate( {
+		value     : endDateInRange.value,
+		otherDate : startDateInRange.value,
+		comparator: newComparator( {
+			value: 'After'
+		} )
+	} )
+
+
+	const seat = newTripSeat( {
+		value: props.seat
 	} )
 	return {
 		id           : newTripID( {
@@ -98,9 +128,9 @@ export const newTrip = ( props: TripProps ): Trip => {
 		name         : newTripName( {
 			value: props.name
 		} ),
-    paymentMethod: newTripFeeMethod({
-      value: props.paymentMethod
-    }),
+		paymentMethod: newTripFeeMethod( {
+			value: props.paymentMethod
+		} ),
 		description  : newTripDescription( {
 			value: props.description
 		} ),
@@ -109,7 +139,7 @@ export const newTrip = ( props: TripProps ): Trip => {
 		} ),
 		price        : newTripPrice( {
 			amount  : props.price.amount,
-			currency: props.price.currency,
+			currency: props.price.currency
 		} ),
 		seat         : seat,
 		startLocation: newLocation( {
@@ -118,9 +148,7 @@ export const newTrip = ( props: TripProps ): Trip => {
 		endLocation  : newLocation( {
 			value: props.endLocation
 		} ),
-		startDate    : startDate,
-		endDate      : newEndTripDate( {
-			value: startDate.value
-		} )
+		startDate    : startDate.value,
+		endDate      : endDate.value
 	}
 }
