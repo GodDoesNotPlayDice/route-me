@@ -1,18 +1,34 @@
-import { z } from 'zod'
+import {
+  newValidNumber,
+  ValidNumber
+} from 'src/package/shared/domain/models/valid-number'
+import {
+  LocationName,
+  newLocationName
+} from './location-name'
 
-export const LocationSchema = z.object( {
-	value : z.string()
-} )
-
-type LocationType = z.infer<typeof LocationSchema>
-export interface Location extends LocationType{}
+export interface Location {
+  name: LocationName
+  latitude: ValidNumber
+  longitude: ValidNumber
+}
 
 export interface LocationProps {
-	value : string
+	name : string
+	longitude : number
+	latitude : number
 }
 
 export const newLocation = (props : LocationProps): Location => {
-	return LocationSchema.parse( {
-		value : props.value
-	} )
+	return {
+    name: newLocationName( {
+      value: props.name
+    } ),
+    latitude: newValidNumber({
+      value: props.latitude
+    }),
+    longitude: newValidNumber({
+      value: props.longitude
+    })
+  }
 }

@@ -3,39 +3,24 @@ import { ChatID } from 'src/package/chat/domain/models/chat-id'
 import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
 import {
-	newComparableDate,
-	newComparator
+  newComparableDate,
+  newComparator
 } from 'src/package/shared/domain/models/comparable-date'
 import { newLimitDate } from 'src/package/shared/domain/models/limit-date'
 import {
-	Location,
-	LocationProps,
-	newLocation
-} from 'src/package/shared/domain/models/location'
+  Location,
+  LocationProps,
+  newLocation
+} from 'src/package/shared/domain/models/location/location'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import {
-	newTripDescription,
-	TripDescription
+  newTripDescription,
+  TripDescription
 } from 'src/package/trip/domain/models/trip-description'
 import {
-	newTripFeeMethod,
-} from 'src/package/trip/domain/models/trip-fee-method'
-import {
-	newTripID,
-	TripID
+  newTripID,
+  TripID
 } from 'src/package/trip/domain/models/trip-id'
-import {
-	newTripName,
-} from 'src/package/trip/domain/models/trip-name'
-import {
-	newTripPrice,
-} from 'src/app/shared/models/trip-price'
-import {
-	newTripSeat,
-} from 'src/app/shared/models/trip-seat'
-import {
-	newTripState,
-} from 'src/app/shared/models/trip-state'
 
 export interface Trip {
 	id: TripID
@@ -110,11 +95,15 @@ export const newTrip = ( props: TripProps ): Trip => {
 			value: props.description
 		} ),
 		startLocation: newLocation( {
-			value: props.startLocation
+			name     : props.startLocation.name,
+      longitude: props.startLocation.longitude,
+      latitude : props.startLocation.latitude
 		} ),
 		endLocation  : newLocation( {
-			value: props.endLocation
-		} ),
+      name     : props.endLocation.name,
+      longitude: props.endLocation.longitude,
+      latitude : props.endLocation.latitude
+    } ),
 		startDate    : startDate.value,
 		endDate      : endDate.value
 	}
