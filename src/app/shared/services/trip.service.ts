@@ -32,18 +32,18 @@ export class TripService {
       {
         id: ulid(),
         description: '',
-        driverID: driverID,
-        passengers: [],
-        category: newCategoryID({
+        driverID       : driverID,
+        passengers     : [],
+        category       : newCategoryID({
           value: ulid()
         }),
-        chat: newChatID({
+        chat           : newChatID({
           value: ulid()
         }),
-        startDate: props.startDate,
-        endDate: props.endDate,
-        startLocation: props.startLocation,
-        endLocation: props.endLocation
+        startDate      : props.startDate,
+        endDate        : props.endDate,
+        startLocationID: props.startLocation,
+        endLocationID: props.endLocation
       }
     ))
     if ( result.isErr() ) {

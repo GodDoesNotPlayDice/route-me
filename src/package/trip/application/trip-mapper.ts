@@ -10,6 +10,7 @@ import {
   newPassengerID,
   PassengerID
 } from 'src/package/passenger/domain/models/passenger-id'
+import { newLocationID } from 'src/package/shared/domain/models/location/location-id'
 import {
   newTrip,
   Trip
@@ -27,19 +28,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 		return Some(
 			newTrip( {
 				id           : json['id'],
-				name         : json['name'],
 				description  : json['description'],
-				state        : json['state'],
-        paymentMethod: json['paymentMethod'],
-				price        : {
-					amount  : json['price']['amount'],
-					currency: json['price']['currency']
-				},
-				seat         : json['seat'],
-				startLocation: json['startLocation'],
-				endLocation  : json['endLocation'],
-				startDate    : new Date( json['startDate'] ),
-				endDate    : new Date( json['endDate'] ),
 				driverID     : newDriverID( {
 					value: json['driverID']
 				} ),
@@ -49,7 +38,15 @@ export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 				} ),
 				chat         : newChatID( {
 					value: json['chat']
-				} )
+				} ),
+				startDate    : new Date( json['startDate'] ),
+				endDate    : new Date( json['endDate'] ),
+				startLocationID: newLocationID({
+          value: json['startLocationID']
+        }),
+        endLocationID: newLocationID({
+          value: json['endLocationID']
+        }),
 			} )
 		)
 	}
@@ -69,22 +66,14 @@ export const tripToJSON = ( trip: Trip): Record<string, any> => {
 
 	return {
 		id           : trip.id.value,
-		name         : trip.name.value,
 		description  : trip.description.value,
-		state        : trip.state,
-    paymentMethod: trip.paymentMethod,
-		price        : {
-			amount  : trip.price.amount.value,
-			currency: trip.price.currency.value
-		},
-		seat         : trip.seat.value,
-		startLocation: trip.startLocation.value,
-		endLocation  : trip.endLocation.value,
-		startDate    : trip.startDate.toJSON(),
-		endDate      : trip.endDate.toJSON(),
 		driverID     : trip.driverID.value,
 		passengers   : passengers,
 		category     : trip.categoryID.value,
-		chat         : trip.chatID.value
+		chat         : trip.chatID.value,
+		startDate    : trip.startDate.toJSON(),
+		endDate      : trip.endDate.toJSON(),
+		startLocation: trip.startLocation.value,
+		endLocation  : trip.endLocation.value,
 	}
 }

@@ -7,11 +7,7 @@ import {
   newComparator
 } from 'src/package/shared/domain/models/comparable-date'
 import { newLimitDate } from 'src/package/shared/domain/models/limit-date'
-import {
-  Location,
-  LocationProps,
-  newLocation
-} from 'src/package/shared/domain/models/location/location'
+import { LocationID } from 'src/package/shared/domain/models/location/location-id'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import {
   newTripDescription,
@@ -31,8 +27,8 @@ export interface Trip {
 	startDate: Date
 	endDate: Date
 	description: TripDescription
-	startLocation: Location
-	endLocation: Location
+	startLocation: LocationID
+	endLocation: LocationID
 }
 
 export interface TripProps {
@@ -42,8 +38,8 @@ export interface TripProps {
 	category: CategoryID
 	chat: ChatID
 	description: string
-	startLocation: LocationProps
-	endLocation: LocationProps
+	startLocationID: LocationID
+	endLocationID: LocationID
 	startDate: Date
 	endDate: Date
 }
@@ -94,17 +90,9 @@ export const newTrip = ( props: TripProps ): Trip => {
 		description  : newTripDescription( {
 			value: props.description
 		} ),
-		startLocation: newLocation( {
-			name     : props.startLocation.name,
-      longitude: props.startLocation.longitude,
-      latitude : props.startLocation.latitude
-		} ),
-		endLocation  : newLocation( {
-      name     : props.endLocation.name,
-      longitude: props.endLocation.longitude,
-      latitude : props.endLocation.latitude
-    } ),
-		startDate    : startDate.value,
-		endDate      : endDate.value
+		startLocation: props.startLocationID,
+		endLocation  : props.endLocationID,
+		startDate    : props.startDate,
+		endDate      : props.endDate
 	}
 }
