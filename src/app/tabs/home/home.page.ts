@@ -19,7 +19,7 @@ import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newTrip } from 'src/package/trip/domain/models/trip'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
-import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
+import { TripStateEnum } from 'src/app/shared/models/trip-state'
 
 @Component( {
   standalone : true,

@@ -9,7 +9,7 @@ import { newChatID } from 'src/package/chat/domain/models/chat-id'
 import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newTrip } from 'src/package/trip/domain/models/trip'
-import { TripPriceProps } from 'src/package/trip/domain/models/trip-price'
+import { TripPriceProps } from 'src/app/shared/models/trip-price'
 import { ulid } from 'ulidx'
 
 @Injectable({
@@ -19,11 +19,6 @@ export class TripService {
 
   constructor(private tripDao : TripDao ) { }
   async create(props:{
-    name: string
-    description: string
-    feeMethod: string,
-    price: TripPriceProps
-    seat: number
     startLocation: string
     endLocation: string
     startDate: Date,
@@ -36,19 +31,7 @@ export class TripService {
     const result = await this.tripDao.create(newTrip(
       {
         id: ulid(),
-        paymentMethod: props.feeMethod,
-        name: props.name,
-        description: props.description,
-        state: 'Open',
-        price: {
-          amount: props.price.amount,
-          currency: props.price.currency
-        },
-        seat: props.seat,
-        startLocation: props.startLocation,
-        endLocation: props.endLocation,
-        startDate: props.startDate,
-        endDate: props.endDate,
+        description: '',
         driverID: driverID,
         passengers: [],
         category: newCategoryID({
@@ -56,7 +39,11 @@ export class TripService {
         }),
         chat: newChatID({
           value: ulid()
-        })
+        }),
+        startDate: props.startDate,
+        endDate: props.endDate,
+        startLocation: props.startLocation,
+        endLocation: props.endLocation
       }
     ))
     if ( result.isErr() ) {

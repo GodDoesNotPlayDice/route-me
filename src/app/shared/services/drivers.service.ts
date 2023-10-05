@@ -4,7 +4,7 @@ import {
   DriverCardInfo,
   newDriverCardInfo
 } from 'src/app/shared/models/driver-card-info'
-import { newTripState } from 'src/package/trip/domain/models/trip-state'
+import { newTripState } from 'src/app/shared/models/trip-state'
 
 @Injectable( {
   providedIn: 'root'

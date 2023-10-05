@@ -9,6 +9,7 @@ import {
 import { newLimitDate } from 'src/package/shared/domain/models/limit-date'
 import {
 	Location,
+	LocationProps,
 	newLocation
 } from 'src/package/shared/domain/models/location'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
@@ -18,7 +19,6 @@ import {
 } from 'src/package/trip/domain/models/trip-description'
 import {
 	newTripFeeMethod,
-	TripFeeMethod
 } from 'src/package/trip/domain/models/trip-fee-method'
 import {
 	newTripID,
@@ -26,21 +26,16 @@ import {
 } from 'src/package/trip/domain/models/trip-id'
 import {
 	newTripName,
-	TripName
 } from 'src/package/trip/domain/models/trip-name'
 import {
 	newTripPrice,
-	TripPrice,
-	TripPriceProps
-} from 'src/package/trip/domain/models/trip-price'
+} from 'src/app/shared/models/trip-price'
 import {
 	newTripSeat,
-	TripSeat
-} from 'src/package/trip/domain/models/trip-seat'
+} from 'src/app/shared/models/trip-seat'
 import {
 	newTripState,
-	TripState
-} from 'src/package/trip/domain/models/trip-state'
+} from 'src/app/shared/models/trip-state'
 
 export interface Trip {
 	id: TripID
@@ -48,16 +43,11 @@ export interface Trip {
 	categoryID: CategoryID
 	chatID: ChatID
 	passengersID: PassengerID[]
-	name: TripName
-	description: TripDescription
-	state: TripState
-	price: TripPrice
-	seat: TripSeat
-	paymentMethod: TripFeeMethod
-	startLocation: Location
-	endLocation: Location
 	startDate: Date
 	endDate: Date
+	description: TripDescription
+	startLocation: Location
+	endLocation: Location
 }
 
 export interface TripProps {
@@ -66,14 +56,9 @@ export interface TripProps {
 	passengers: PassengerID[]
 	category: CategoryID
 	chat: ChatID
-	name: string
 	description: string
-	state: string,
-	paymentMethod: string,
-	price: TripPriceProps
-	seat: number
-	startLocation: string
-	endLocation: string
+	startLocation: LocationProps
+	endLocation: LocationProps
 	startDate: Date
 	endDate: Date
 }
@@ -113,10 +98,6 @@ export const newTrip = ( props: TripProps ): Trip => {
 		} )
 	} )
 
-
-	const seat = newTripSeat( {
-		value: props.seat
-	} )
 	return {
 		id           : newTripID( {
 			value: props.id
@@ -125,23 +106,9 @@ export const newTrip = ( props: TripProps ): Trip => {
 		passengersID : props.passengers,
 		categoryID   : props.category,
 		chatID       : props.chat,
-		name         : newTripName( {
-			value: props.name
-		} ),
-		paymentMethod: newTripFeeMethod( {
-			value: props.paymentMethod
-		} ),
 		description  : newTripDescription( {
 			value: props.description
 		} ),
-		state        : newTripState( {
-			value: props.state
-		} ),
-		price        : newTripPrice( {
-			amount  : props.price.amount,
-			currency: props.price.currency
-		} ),
-		seat         : seat,
 		startLocation: newLocation( {
 			value: props.startLocation
 		} ),
