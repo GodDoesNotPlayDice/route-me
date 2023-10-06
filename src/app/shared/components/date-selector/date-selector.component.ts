@@ -11,19 +11,24 @@ import {
   MatDatepickerModule
 } from '@angular/material/datepicker'
 import { MatInputModule } from '@angular/material/input'
-import { IonicModule } from '@ionic/angular'
+import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker'
+import {
+  DatetimeCustomEvent,
+  IonicModule
+} from '@ionic/angular'
 
 @Component( {
   standalone : true,
   selector   : 'app-date-selector',
   templateUrl: './date-selector.component.html',
   styleUrls  : [ './date-selector.component.scss' ],
-  imports    : [
+  imports: [
     IonicModule,
     CommonModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    OwlDateTimeModule
   ]
 } )
 export class DateSelectorComponent implements OnInit {
@@ -52,10 +57,20 @@ export class DateSelectorComponent implements OnInit {
     this.dateNowAsc  = this.mustAdult ? null : new Date()
   }
 
-  onDate( event: MatDatepickerInputEvent<Date> ) {
+  onDate( event: MatDatepickerInputEvent<Date>  ) {
     this.dateSelected = event.value
     this.dateControl.patchValue( this.dateSelected )
     this.dateControl.markAllAsTouched()
     this.dateControl.updateValueAndValidity()
+  }
+
+  public onTime( $event: DatetimeCustomEvent ): void {
+    console.log( '$event' )
+    const date = new Date( $event.detail.value as string)
+    console.log(date.toUTCString())
+    console.log(date.toISOString())
+    console.log(date.toJSON())
+    console.log(date.toTimeString())
+    console.log(date.getTime())
   }
 }

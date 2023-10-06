@@ -11,21 +11,19 @@ import {
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
-import { AuthService } from 'src/app/shared/services/auth.service'
 import { MapService } from 'src/app/shared/services/map.service'
-import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 
 @Component( {
   standalone : true,
   selector   : 'app-publish',
   templateUrl: './publish.page.html',
   styleUrls  : [ './publish.page.scss' ],
-  imports    : [
+  imports: [
     IonicModule,
     CommonModule,
     InputTextComponent,
     DateSelectorComponent,
-    AdaptativeButtonComponent
+    AdaptativeButtonComponent,
   ]
 } )
 export class PublishPage implements ViewDidEnter {

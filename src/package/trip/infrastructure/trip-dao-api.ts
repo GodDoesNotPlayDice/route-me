@@ -41,7 +41,6 @@ export class TripDaoApi implements TripDao {
           .subscribe( ( data ) => {
             console.log( 'data', data )
           } )
-
       return Promise.resolve( Ok( true ) )
     }
     catch ( e ) {
@@ -49,7 +48,11 @@ export class TripDaoApi implements TripDao {
     }
   }
 
-  public getAll(): Promise<Result<Trip[], string>> {
+  async getAll(): Promise<Result<Trip[], string>> {
+    this.http.get( this.url )
+        .subscribe( ( data ) => {
+          console.log( 'data', data )
+        } )
     return Promise.resolve( Ok( [] ) )
   }
 }
