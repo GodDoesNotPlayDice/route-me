@@ -8,16 +8,16 @@ import { SearchModalComponent } from 'src/app/shared/components/search-modal/sea
 
 @Component( {
   standalone : true,
-  selector   : 'app-search-bar',
-  templateUrl: './search-bar.component.html',
-  styleUrls  : [ './search-bar.component.scss' ],
+  selector   : 'app-search-launcher',
+  templateUrl: './search-launcher.component.html',
+  styleUrls  : [ './search-launcher.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule,
     SearchModalComponent
   ]
 } )
-export class SearchBarComponent {
+export class SearchLauncherComponent {
   constructor( private modalCtrl: ModalController ) {}
 
   async openModal() {
