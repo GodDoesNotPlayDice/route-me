@@ -15,13 +15,13 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ul class="w-full">
-    <li *ngFor="let pref of preferencesList; index as i">
-      <app-user-preferences-selector-item
+    <li *ngFor="let pref of dataList; index as i">
+      <app-multiple-selector-item
         [selected]="pref.selected"
         (onSelected)="onSelectItem($event)"
         (onDeselected)="onDeselectItem($event)"
-        [item]="pref"></app-user-preferences-selector-item>
-      <ng-container *ngIf="preferencesData.size - 1 !== i">
+        [item]="pref"></app-multiple-selector-item>
+      <ng-container *ngIf="databaseData.size - 1 !== i">
         <app-divider></app-divider>
       </ng-container>
     </li>

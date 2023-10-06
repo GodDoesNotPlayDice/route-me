@@ -6,31 +6,31 @@ import {
   Output
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { PreferenceItem } from 'src/app/shared/models/preference-item'
+import { MultipleSelectorData } from 'src/app/shared/models/multiple-selector-data'
 
 @Component( {
   standalone : true,
-  selector   : 'app-user-preferences-selector-item',
-  templateUrl: './preferences-selector-item.component.html',
-  styleUrls  : [ './preferences-selector-item.component.scss' ],
+  selector   : 'app-multiple-selector-item',
+  templateUrl: './multiple-selector-item.component.html',
+  styleUrls  : [ './multiple-selector-item.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule
   ]
 } )
-export class PreferencesSelectorItemComponent {
+export class MultipleSelectorItemComponent {
   @Input() selected: boolean                   = false
-  @Input({required: true}) item : PreferenceItem
+  @Input({required: true}) item : MultipleSelectorData
   @Output() onSelected: EventEmitter<string>   = new EventEmitter<string>()
   @Output() onDeselected: EventEmitter<string> = new EventEmitter<string>()
 
   public onSelect( $event: MouseEvent ): void {
     this.selected = !this.selected
     if ( this.selected ) {
-      this.onSelected.emit( this.item.name.value )
+      this.onSelected.emit( this.item.name )
     }
     else {
-      this.onDeselected.emit( this.item.name.value )
+      this.onDeselected.emit( this.item.name )
     }
   }
 }
