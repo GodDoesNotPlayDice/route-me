@@ -10,36 +10,35 @@ import {
 } from '@ionic/angular'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import {
-	CountryItem,
-	newCountryItem
-} from 'src/app/shared/models/country-item'
-import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
+	SingleSelectorData,
+	newSingleSelectorData
+} from 'src/app/shared/models/single-selector-data'
 
 @Component( {
 	standalone : true,
-	selector   : 'app-country-selector',
-	templateUrl: './country-selector.component.html',
-	styleUrls  : [ './country-selector.component.scss' ],
+	selector   : 'app-single-selector-modal',
+	templateUrl: './single-selector-modal.component.html',
+	styleUrls  : [ './single-selector-modal.component.scss' ],
 	imports    : [
 		IonicModule,
 		CommonModule,
 		DividerComponent
 	]
 } )
-export class CountrySelectorComponent implements OnInit {
+export class SingleSelectorModalComponent implements OnInit {
 
-	constructor( private modalCtrl: ModalController,
-		private countryPhoneCode: CountryPhoneCodeService )
+	constructor( private modalCtrl: ModalController)
 	{}
 
-	@Input() lastSelected: CountryItem | undefined
-	countriesList = new Map<string, CountryItem>()
+	@Input() lastSelected: SingleSelectorData | undefined
+  @Input({required:true}) dataList = new Map<string, SingleSelectorData>()
+  @Input({required:true}) databaseData : SingleSelectorData[]
 
 	ngOnInit() {
-		const list: CountryItem[] = this.countryPhoneCode.countriesList.map(
+		const list: SingleSelectorData[] = this.databaseData.map(
 			( data ) =>
 			{
-				const notSelected = newCountryItem( {
+				const notSelected = newSingleSelectorData( {
 					...data,
 					selected: false
 				} )
@@ -48,19 +47,19 @@ export class CountrySelectorComponent implements OnInit {
 					return notSelected
 				}
 
-				if ( this.lastSelected.name.common !== data.name.common ) {
+				if ( this.lastSelected.name !== data.name ) {
 					return notSelected
 				}
 				else {
-					return newCountryItem( {
+					return newSingleSelectorData( {
 						...data,
 						selected: true
 					} )
 				}
 			} )
 
-		this.countriesList = new Map<string, CountryItem>(
-			list.map( ( item ) => [ item.name.common, item ] ) )
+		this.dataList = new Map<string, SingleSelectorData>(
+			list.map( ( item ) => [ item.name, item ] ) )
 	}
 
 	cancel() {
@@ -73,13 +72,13 @@ export class CountrySelectorComponent implements OnInit {
 
 	public selectCountry( name: string ): void {
 		if ( this.lastSelected !== undefined ) {
-			const countryEntry = this.countriesList.get( this.lastSelected.name.common )
+			const countryEntry = this.dataList.get( this.lastSelected.name )
 			if ( countryEntry !== undefined ) {
 				countryEntry.selected = false
 			}
 		}
 
-		const countrySelected = this.countriesList.get( name )
+		const countrySelected = this.dataList.get( name )
 		if ( countrySelected !== undefined ) {
 
 			countrySelected.selected = true

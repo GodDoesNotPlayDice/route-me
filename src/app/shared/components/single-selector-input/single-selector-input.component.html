@@ -5,9 +5,9 @@
     </mat-select>
   </mat-form-field>
   <div class="mt-2 text-xs text-threateningRed-500 font-gotham">
-    <div *ngIf="countryControl.invalid && (countryControl.dirty || countryControl.touched)">
-      <div *ngIf="countryControl.errors?.['required']">
-        Debes ingresar un pais de procedencia
+    <div *ngIf="singleSelectorControl.invalid && (singleSelectorControl.dirty || singleSelectorControl.touched)">
+      <div *ngIf="singleSelectorControl.errors?.['required']">
+        {{ errorText }}
       </div>
     </div>
   </div>
