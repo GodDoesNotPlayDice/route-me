@@ -62,7 +62,7 @@ export class MultipleSelectorInputComponent {
             ( data ) => [ data.id, data ] ) ),
         selectedData: new Map<string, MultipleSelectorData>(
           this.selectedData.map(
-            ( item ) => [ item.name, item ] ) )
+            ( item ) => [ item.id, item ] ) )
       }
     } )
     await modal.present()

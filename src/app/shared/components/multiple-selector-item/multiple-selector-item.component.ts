@@ -27,10 +27,10 @@ export class MultipleSelectorItemComponent {
   public onSelect( $event: MouseEvent ): void {
     this.selected = !this.selected
     if ( this.selected ) {
-      this.onSelected.emit( this.item.name )
+      this.onSelected.emit( this.item.id )
     }
     else {
-      this.onDeselected.emit( this.item.name )
+      this.onDeselected.emit( this.item.id )
     }
   }
 }

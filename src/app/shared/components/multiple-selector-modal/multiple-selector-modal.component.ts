@@ -33,7 +33,7 @@ export class MultipleSelectorModalComponent implements OnInit {
   ngOnInit(): void {
     this.dataList = Array.from( this.databaseData.values() )
                          .map( ( data ) => {
-                                  const isSelected = this.selectedData.get( data.name)
+                                  const isSelected = this.selectedData.get( data.id)
                                   if ( isSelected !== undefined ) {
                                     return newMultipleSelectorData( {
                                       ...data,
@@ -72,7 +72,7 @@ export class MultipleSelectorModalComponent implements OnInit {
     const pref = this.databaseData.get( $event )
 
     if ( pref !== undefined ) {
-      this.selectedData.set( $event, pref )
+      this.selectedData.set( pref.id, pref )
     }
   }
 
@@ -80,7 +80,7 @@ export class MultipleSelectorModalComponent implements OnInit {
     const pref = this.databaseData.get( $event )
 
     if ( pref !== undefined ) {
-      this.selectedData.delete( $event )
+      this.selectedData.delete( pref.id )
     }
   }
 }
