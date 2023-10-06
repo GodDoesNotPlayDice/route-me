@@ -5,7 +5,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { TripState } from 'src/app/shared/models/trip-state'
+import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { tripToJSON } from 'src/package/trip/application/trip-mapper'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
