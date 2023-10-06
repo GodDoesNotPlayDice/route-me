@@ -52,6 +52,7 @@ export class Step3Page implements ViewDidEnter {
     private userPreferenceService: UserPreferenceService,
     private auth: AuthService )
   {
+    //TODO: colocar con observable despues, como en country service
     this.preferences = this.userPreferenceService.getUserPreferences()
                            .map(
                              ( preference ) => newMultipleSelectorData( {
@@ -79,7 +80,6 @@ export class Step3Page implements ViewDidEnter {
 
   async submit( $event: SubmitEvent ) {
     $event.preventDefault()
-
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 

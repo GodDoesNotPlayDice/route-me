@@ -57,14 +57,17 @@ export class Step2Page implements ViewDidEnter {
     private auth : AuthService,
     private router: Router )
   {
-    this.countries = this.countryService.countriesList.map( country => {
-      return newSingleSelectorData({
-        id: country.code.value,
-        name: country.name.common,
-        image: country.flag.png,
-        selected: false
-      })
-    })
+    this.countryService.countriesList$.subscribe(
+      ( countries ) => {
+        this.countries = countries.map(country =>
+          newSingleSelectorData( {
+            id      : country.code.value,
+            name    : country.name.common,
+            image   : country.flag.png,
+            selected: false
+          } ))
+      }
+    )
   }
 
   @ViewChild( 'user' ) userInput !: InputTextComponent
@@ -74,8 +77,9 @@ export class Step2Page implements ViewDidEnter {
   @ViewChild( 'date' ) dateSelectorInput !: DateSelectorComponent
   @ViewChild( 'radio' ) radioButtonInput !: RadioInputComponent
 
-  readonly countries : SingleSelectorData[] = []
+  countries : SingleSelectorData[] = []
 
+  //TODO: esto podria venir de un servicio
   buttons: RadioButtonData[] = [
     newRadioButtonData( {
       name: 'Male',

@@ -31,8 +31,9 @@ export class SingleSelectorModalComponent implements OnInit {
 	{}
 
 	@Input() lastSelected: SingleSelectorData | undefined
-  @Input({required:true}) dataList = new Map<string, SingleSelectorData>()
   @Input({required:true}) databaseData : SingleSelectorData[]
+  // @Input({required:true})
+  dataList = new Map<string, SingleSelectorData>()
 
 	ngOnInit() {
 		const list: SingleSelectorData[] = this.databaseData.map(

@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { take } from 'rxjs'
+import {
+  BehaviorSubject,
+  Observable,
+  take
+} from 'rxjs'
 import { countryFromJson } from 'src/app/shared/models/country/application/country-mapper'
 import { Country } from 'src/app/shared/models/country/domain/country'
 
@@ -15,12 +19,13 @@ export class CountryPhoneCodeService {
     this.http.get( this.url )
         .pipe(take(1))
         .subscribe( ( res: any ) => {
+          let list: Country[] = []
           for ( const value of Object.values(res) ) {
             const c = countryFromJson(value as Record<string, any>)
             if (c.isNone()) continue
-            this.countriesList.push(c.unwrap())
+            list.push(c.unwrap())
           }
-          this.countriesList = this.countriesList.sort( ( a, b ) => {
+          list = list.sort( ( a, b ) => {
             if ( a.name.common > b.name.common ) {
               return 1
             }
@@ -29,9 +34,12 @@ export class CountryPhoneCodeService {
             }
             return 0
           })
+          this.countriesList.next( list )
           console.log( 'countries ready' )
         } )
   }
 
-  countriesList: Country[] = []
+  private countriesList                                 = new BehaviorSubject<Country[]>([])
+  public countriesList$: Observable<Country[]> = this.countriesList.asObservable()
+
 }

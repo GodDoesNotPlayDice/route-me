@@ -47,7 +47,8 @@ export class SingleSelectorInputComponent {
     const modal = await this.modalCtrl.create( {
       component     : SingleSelectorModalComponent,
       componentProps: {
-        lastSelected: this.lastSelected
+        lastSelected: this.lastSelected,
+        databaseData: this.databaseData
       }
     } )
     await modal.present()
