@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
+import { MultipleSelectorItemComponent } from 'src/app/shared/components/multiple-selector-item/multiple-selector-item.component'
 
-describe( 'CheckboxComponent', () => {
-  let component: CheckboxComponent
-  let fixture: ComponentFixture<CheckboxComponent>
+describe( 'MultipleSelectorItemComponent', () => {
+  let component: MultipleSelectorItemComponent
+  let fixture: ComponentFixture<MultipleSelectorItemComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ CheckboxComponent ],
+      declarations: [ MultipleSelectorItemComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( CheckboxComponent )
+    fixture   = TestBed.createComponent( MultipleSelectorItemComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { PreferencesSelectorBarComponent } from 'src/app/shared/components/preferences-selector-bar/preferences-selector-bar.component'
+import { CheckboxInputComponent } from 'src/app/shared/components/checkbox-input/checkbox-input.component'
 
-describe( 'UserPreferencesSelectorBarComponent', () => {
-  let component: PreferencesSelectorBarComponent
-  let fixture: ComponentFixture<PreferencesSelectorBarComponent>
+describe( 'CheckboxInputComponent', () => {
+  let component: CheckboxInputComponent
+  let fixture: ComponentFixture<CheckboxInputComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ PreferencesSelectorBarComponent ],
+      declarations: [ CheckboxInputComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( PreferencesSelectorBarComponent )
+    fixture   = TestBed.createComponent( CheckboxInputComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

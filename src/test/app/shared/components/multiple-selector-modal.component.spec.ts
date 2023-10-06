@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { CountrySelectorBarComponent } from 'src/app/shared/components/country-selector-bar/country-selector-bar.component'
+import { MultipleSelectorModalComponent } from 'src/app/shared/components/multiple-selector-modal/multiple-selector-modal.component'
 
-describe( 'CountrySelectorBarComponent', () => {
-  let component: CountrySelectorBarComponent
-  let fixture: ComponentFixture<CountrySelectorBarComponent>
+describe( 'MultipleSelectorModalComponent', () => {
+  let component: MultipleSelectorModalComponent
+  let fixture: ComponentFixture<MultipleSelectorModalComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ CountrySelectorBarComponent ],
+      declarations: [ MultipleSelectorModalComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( CountrySelectorBarComponent )
+    fixture   = TestBed.createComponent( MultipleSelectorModalComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

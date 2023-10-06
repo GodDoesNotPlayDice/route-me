@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { PreferencesSelectorComponent } from 'src/app/shared/components/preferences-selector/preferences-selector.component'
+import { RadioInputComponent } from 'src/app/shared/components/radio-input/radio-input.component'
 
-describe( 'UserPreferencesSelectorComponent', () => {
-  let component: PreferencesSelectorComponent
-  let fixture: ComponentFixture<PreferencesSelectorComponent>
+describe( 'RadioInputComponent', () => {
+  let component: RadioInputComponent
+  let fixture: ComponentFixture<RadioInputComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ PreferencesSelectorComponent ],
+      declarations: [ RadioInputComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( PreferencesSelectorComponent )
+    fixture   = TestBed.createComponent( RadioInputComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

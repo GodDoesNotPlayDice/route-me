@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { OutlinedSelectComponent } from 'src/app/shared/components/outlined-select/outlined-select.component'
+import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component'
 
-describe( 'OutlinedSelectComponent', () => {
-  let component: OutlinedSelectComponent
-  let fixture: ComponentFixture<OutlinedSelectComponent>
+describe( 'ItemListComponent', () => {
+  let component: ItemListComponent
+  let fixture: ComponentFixture<ItemListComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ OutlinedSelectComponent ],
+      declarations: [ ItemListComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( OutlinedSelectComponent )
+    fixture   = TestBed.createComponent( ItemListComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { RadioButtonComponent } from 'src/app/shared/components/radio-button/radio-button.component'
+import { SingleSelectorModalComponent } from 'src/app/shared/components/single-selector-modal/single-selector-modal.component'
 
-describe( 'RadioButtonComponent', () => {
-  let component: RadioButtonComponent
-  let fixture: ComponentFixture<RadioButtonComponent>
+describe( 'SingleSelectorModalComponent', () => {
+  let component: SingleSelectorModalComponent
+  let fixture: ComponentFixture<SingleSelectorModalComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ RadioButtonComponent ],
+      declarations: [ SingleSelectorModalComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( RadioButtonComponent )
+    fixture   = TestBed.createComponent( SingleSelectorModalComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

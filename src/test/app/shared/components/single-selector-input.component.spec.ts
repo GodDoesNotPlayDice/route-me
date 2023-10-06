@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { PassengerItemComponent } from 'src/app/shared/components/passenger-item/passenger-item.component'
+import { SingleSelectorInputComponent } from 'src/app/shared/components/single-selector-input/single-selector-input.component'
 
-describe( 'PassengerItemComponent', () => {
-  let component: PassengerItemComponent
-  let fixture: ComponentFixture<PassengerItemComponent>
+describe( 'SingleSelectorInputComponent', () => {
+  let component: SingleSelectorInputComponent
+  let fixture: ComponentFixture<SingleSelectorInputComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ PassengerItemComponent ],
+      declarations: [ SingleSelectorInputComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( PassengerItemComponent )
+    fixture   = TestBed.createComponent( SingleSelectorInputComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

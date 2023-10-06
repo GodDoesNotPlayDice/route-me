@@ -5,20 +5,20 @@ import {
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
-import { PreferencesSelectorItemComponent } from 'src/app/shared/components/preferences-selector-item/preferences-selector-item.component'
+import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 
-describe( 'UserPreferencesSelectorItemComponent', () => {
-  let component: PreferencesSelectorItemComponent
-  let fixture: ComponentFixture<PreferencesSelectorItemComponent>
+describe( 'SearchBarComponent', () => {
+  let component: SearchLauncherComponent
+  let fixture: ComponentFixture<SearchLauncherComponent>
 
   beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule( {
-      declarations: [ PreferencesSelectorItemComponent ],
+      declarations: [ SearchLauncherComponent ],
       imports     : [ IonicModule.forRoot() ]
     } )
            .compileComponents()
 
-    fixture   = TestBed.createComponent( PreferencesSelectorItemComponent )
+    fixture   = TestBed.createComponent( SearchLauncherComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )
