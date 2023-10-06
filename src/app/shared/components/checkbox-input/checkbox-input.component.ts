@@ -7,22 +7,21 @@ import {
   Output
 } from '@angular/core'
 import {
-  FormControl,
-  Validators
+  FormControl
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 
 @Component( {
   standalone : true,
-  selector   : 'app-checkbox',
-  templateUrl: './checkbox.component.html',
-  styleUrls  : [ './checkbox.component.scss' ],
+  selector   : 'app-checkbox-input',
+  templateUrl: './checkbox-input.component.html',
+  styleUrls  : [ './checkbox-input.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule
   ]
 } )
-export class CheckboxComponent implements OnInit {
+export class CheckboxInputComponent implements OnInit {
 
   @Input() activeError: boolean
 
