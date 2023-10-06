@@ -9,15 +9,15 @@ import { RadioButtonData } from 'src/app/shared/models/radio-button-data'
 
 @Component( {
   standalone : true,
-  selector   : 'app-radio-button',
-  templateUrl: './radio-button.component.html',
-  styleUrls  : [ './radio-button.component.scss' ],
+  selector   : 'app-radio-input',
+  templateUrl: './radio-input.component.html',
+  styleUrls  : [ './radio-input.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule
   ]
 } )
-export class RadioButtonComponent {
+export class RadioInputComponent {
   @Input( { required: true } ) radioButtons: RadioButtonData[] = []
   @Input( { required: true } ) name!: string
 
