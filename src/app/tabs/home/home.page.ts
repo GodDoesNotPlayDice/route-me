@@ -3,7 +3,7 @@ import { Component } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
-import { SearchBarComponent } from 'src/app/shared/components/search-bar/search-bar.component'
+import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 import { DriverCardInfo } from 'src/app/shared/models/driver-card-info'
 import {
   FilterButtonData,
@@ -19,7 +19,7 @@ import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newTrip } from 'src/package/trip/domain/models/trip'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
-import { TripStateEnum } from 'src/app/shared/models/trip-state'
+import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
   standalone : true,
@@ -29,7 +29,7 @@ import { TripStateEnum } from 'src/app/shared/models/trip-state'
   imports    : [
     IonicModule,
     CommonModule,
-    SearchBarComponent,
+    SearchLauncherComponent,
     FilterButtonComponent,
     DriveCardComponent
   ]

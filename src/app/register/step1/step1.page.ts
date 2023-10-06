@@ -13,7 +13,7 @@ import {
 	ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import { CheckboxComponent } from 'src/app/shared/components/checkbox/checkbox.component'
+import { CheckboxInputComponent } from 'src/app/shared/components/checkbox-input/checkbox-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
@@ -32,7 +32,7 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 		StepperComponent,
 		OutlinedButtonComponent,
 		InputTextComponent,
-		CheckboxComponent,
+		CheckboxInputComponent,
 		FilledButtonComponent,
 		FormsModule,
 		CommonModule
@@ -48,7 +48,7 @@ export class Step1Page implements ViewDidEnter {
 	@ViewChild( 'user' ) userInput!: InputTextComponent
 	@ViewChild( 'password' ) passwordInput!: InputTextComponent
 	@ViewChild( 'confirmpassword' ) passwordConfirmInput!: InputTextComponent
-	@ViewChild( 'check' ) checkbox!: CheckboxComponent
+	@ViewChild( 'check' ) checkbox!: CheckboxInputComponent
 
 	formGroup!: FormGroup
 	checkerGroup!: FormGroup

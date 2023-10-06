@@ -22,7 +22,11 @@
       <app-input-area #area
         label="Sobre mi"
         placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
-      <app-user-preferences-selector-bar #preference></app-user-preferences-selector-bar>
+      <app-multiple-selector-input
+        label="Preferencia al viajar"
+        [databaseList]="preferences"
+        placeholder="Elegir"
+        #preference></app-multiple-selector-input>
       <app-filled-button
         contentText="Finalizar"></app-filled-button>
     </form>

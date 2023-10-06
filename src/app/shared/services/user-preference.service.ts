@@ -9,15 +9,15 @@ import {
 } )
 export class UserPreferenceService {
 
-  context: Map<string, Preference> = defaultPreferenceMap()
+  private userPreferences: Preference[] = defaultPreference()
 
-  getUserPreferences(): Map<string, Preference> {
-    return this.context
+  getUserPreferences(): Preference[] {
+    return this.userPreferences
   }
 }
 
-function defaultPreferenceMap(): Map<string, Preference> {
-  const list: Preference[] = [
+function defaultPreference(): Preference[] {
+  return [
     newPreference( {
       id  : '1',
       icon: 'musical-notes-outline',
@@ -29,6 +29,4 @@ function defaultPreferenceMap(): Map<string, Preference> {
       name: 'Sin Fumar'
     } )
   ]
-  return new Map<string, Preference>(
-    list.map( ( item ) => [ item.name.value, item ] ) )
 }

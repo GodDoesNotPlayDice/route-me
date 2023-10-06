@@ -11,7 +11,7 @@ import {
   newValidDate,
   ValidDate
 } from 'src/package/shared/domain/models/valid-date'
-import { TripStateEnum } from 'src/app/shared/models/trip-state'
+import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 import { ulid } from 'ulidx'
 import {
   Avatar,

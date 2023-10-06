@@ -10,7 +10,7 @@ import {
 import { IonicModule } from '@ionic/angular'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
-import { PassengerItemComponent } from 'src/app/shared/components/passenger-item/passenger-item.component'
+import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component'
 import { UrlService } from 'src/app/shared/services/url.service'
 
 @Component( {
@@ -22,7 +22,7 @@ import { UrlService } from 'src/app/shared/services/url.service'
     CommonModule,
     AdaptativeButtonComponent,
     DividerComponent,
-    PassengerItemComponent,
+    ItemListComponent,
     RouterLink
   ],
   styleUrls  : [ './trip-details.page.scss' ]
