@@ -36,4 +36,5 @@ export class PublishPage implements ViewDidEnter {
   ionViewDidEnter(): void {
     this.map.init( 'publish', this.divElementElementRef.nativeElement )
   }
+  //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
 }

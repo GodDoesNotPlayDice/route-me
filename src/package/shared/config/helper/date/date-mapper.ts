@@ -8,9 +8,6 @@ import {
   Unit,
   UnitText
 } from 'src/package/shared/config/helper/date/unit'
-import {
-  newValidDate,
-} from 'src/package/shared/domain/models/valid-date'
 
 export const dateFromJSON = ( utc: string ): Date => {
   return new Date( utc )
@@ -20,31 +17,21 @@ export const dateToJSON = ( date: Date ): string => {
   return date.toJSON()
 }
 
-export interface HourMinutes {
-  hour: number
-  minute: number
-}
-
-export function hourSemicolonFormat( dateUTC: Date ): Result<HourMinutes, string> {
+export const dateRemainingUnits = ( utc: string ): Result<RemainingUnits, string> => {
   try {
-    const validDate = newValidDate({
-      value: dateUTC
-    })
-    const hourSemicolon = validDate.value.toJSON().split( 'T' )[1].slice( 0, 5 )
-    const hourMinuteArray = hourSemicolon.split( ':' )
-    const h = Number.parseInt(hourMinuteArray[0])
-    const m = Number.parseInt(hourMinuteArray[1])
-    return Ok( {
-      hour  : h,
-      minute: m
-    } )
+    const currentDate = new Date()
+    const otherDate   = new Date( utc )
+    const remainings  = remainingUnits( currentDate, otherDate )
+
+    return Ok( remainings )
   }
   catch ( e ) {
-    return Err('not a valid date to parse semicolon format')
+    return Err( 'date remaining units error' )
   }
 }
 
-export const dateDifference = ( utc: string,
+
+export const dateDifferenceText = ( utc: string,
   unit: Set<Unit> ): Result<string, string> => {
   const currentDate = new Date()
   const otherDate   = new Date( utc )
@@ -66,7 +53,7 @@ export const dateDifference = ( utc: string,
     } )
 
   if ( formatedArray.length === 0 ) {
-    return Err( 'date difference parse error' )
+    return Err( 'date difference text parse error' )
   }
 
   let formatedText = formatUnitsText(

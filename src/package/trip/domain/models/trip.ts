@@ -92,7 +92,7 @@ export const newTrip = ( props: TripProps ): Trip => {
 		} ),
 		startLocation: props.startLocationID,
 		endLocation  : props.endLocationID,
-		startDate    : props.startDate,
-		endDate      : props.endDate
+		startDate    : startDate.value,
+		endDate      : endDate.value
 	}
 }

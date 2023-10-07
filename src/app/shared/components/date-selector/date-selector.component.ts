@@ -15,27 +15,24 @@ import {
   DatetimeCustomEvent,
   IonicModule
 } from '@ionic/angular'
-import {
-  hourSemicolonFormat
-} from 'src/package/shared/config/helper/date/date-mapper'
 
 @Component( {
   standalone : true,
   selector   : 'app-date-selector',
   templateUrl: './date-selector.component.html',
   styleUrls  : [ './date-selector.component.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    MatNativeDateModule
   ]
 } )
 export class DateSelectorComponent implements OnInit {
 
-  dateSelected: Date | null = null
-  @Input({required:true}) label: string
+  dateSelected: Date | null   = null
+  @Input( { required: true } ) label: string
   @Input() mustAdult: boolean = false
 
   date18YearsAgo: Date = new Date(
@@ -43,9 +40,19 @@ export class DateSelectorComponent implements OnInit {
 
   dateNowDesc: Date | null = null
   dateNowAsc: Date | null  = null
-  readonly dateControl        = new FormControl<Date | null>( null, control => {
+
+
+  readonly dateControl = new FormControl<Date | null>( null, control => {
     if ( this.dateSelected === null ) {
       return { required: true }
+    }
+    const date2min = new Date(
+      new Date().getTime() + ( 2 * 60 * 1000 ) )
+
+    if ( date2min > this.dateSelected  ) {
+      return {
+        limit: true
+      }
     }
     if ( this.mustAdult && this.dateSelected > this.date18YearsAgo ) {
       return { invalid: true }
@@ -58,7 +65,7 @@ export class DateSelectorComponent implements OnInit {
     this.dateNowAsc  = this.mustAdult ? null : new Date()
   }
 
-  onDate( event: MatDatepickerInputEvent<Date>  ) {
+  onDate( event: MatDatepickerInputEvent<Date> ) {
     this.dateSelected = event.value
     this.dateControl.patchValue( this.dateSelected )
     this.dateControl.markAllAsTouched()
@@ -66,15 +73,19 @@ export class DateSelectorComponent implements OnInit {
   }
 
   public onTime( $event: DatetimeCustomEvent ): void {
-    console.log( '$event' )
-    const date = new Date( $event.detail.value as string)
-    const semicolon = hourSemicolonFormat( date ).unwrap()
+    if ( this.dateSelected !== null ) {
+      const date = new Date( $event.detail.value as string )
+      this.dateSelected = new Date(
+        this.dateSelected.getFullYear(),
+        this.dateSelected.getMonth(),
+        this.dateSelected.getDate(),
+        date.getHours(),
+        date.getMinutes()
+      )
+      this.dateControl.patchValue( this.dateSelected )
+    }
 
-    const year = this.dateSelected!.getFullYear()
-    const month = this.dateSelected!.getMonth()
-    const day = this.dateSelected!.getDate()
-    const update = new Date(year,month,day, semicolon.hour, semicolon.minute)
-    console.log(update.toJSON())
-    console.log(new Date(update.toJSON()))
+    this.dateControl.markAllAsTouched()
+    this.dateControl.updateValueAndValidity()
   }
 }

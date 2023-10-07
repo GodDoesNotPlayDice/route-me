@@ -10,6 +10,7 @@ import {
   newPassengerID,
   PassengerID
 } from 'src/package/passenger/domain/models/passenger-id'
+import { dateToJSON } from 'src/package/shared/config/helper/date/date-mapper'
 import { newLocationID } from 'src/package/shared/domain/models/location/location-id'
 import {
   newTrip,
@@ -71,8 +72,8 @@ export const tripToJSON = ( trip: Trip): Record<string, any> => {
 		passengers   : passengers,
 		category     : trip.categoryID.value,
 		chat         : trip.chatID.value,
-		startDate    : trip.startDate.toJSON(),
-		endDate      : trip.endDate.toJSON(),
+		startDate    : dateToJSON(trip.startDate),
+		endDate      : dateToJSON(trip.endDate),
 		startLocation: trip.startLocation.value,
 		endLocation  : trip.endLocation.value,
 	}
