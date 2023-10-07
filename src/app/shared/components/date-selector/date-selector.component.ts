@@ -11,16 +11,13 @@ import {
   MatDatepickerModule
 } from '@angular/material/datepicker'
 import { MatInputModule } from '@angular/material/input'
-import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker'
 import {
   DatetimeCustomEvent,
   IonicModule
 } from '@ionic/angular'
-import { dateDifference } from 'src/package/shared/config/helper/date/date-mapper'
 import {
-  Unit,
-  UnitEnum
-} from 'src/package/shared/config/helper/date/unit'
+  hourSemicolonFormat
+} from 'src/package/shared/config/helper/date/date-mapper'
 
 @Component( {
   standalone : true,
@@ -33,14 +30,13 @@ import {
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    OwlDateTimeModule
   ]
 } )
 export class DateSelectorComponent implements OnInit {
 
   dateSelected: Date | null = null
-  @Input() label: string      = 'Fecha de nacimiento'
-  @Input() mustAdult: boolean = true
+  @Input({required:true}) label: string
+  @Input() mustAdult: boolean = false
 
   date18YearsAgo: Date = new Date(
     new Date().setFullYear( new Date().getFullYear() - 18 ) )
@@ -72,19 +68,13 @@ export class DateSelectorComponent implements OnInit {
   public onTime( $event: DatetimeCustomEvent ): void {
     console.log( '$event' )
     const date = new Date( $event.detail.value as string)
-    console.log( date)
-    // const hhMM = date.toJSON().split('T')[1].slice(0,5)
-    // const hmSplit    = hhMM.split(':')
-    // const h          = hmSplit[0]
-    // const m          = hmSplit[1]
-    // console.log( hhMM )
-    // console.log( hmSplit )
-    // console.log( h )
-    // console.log( m )
-    // const n = new Date(2023, 10, 6, 20, 50)
-    // console.log(n)
-    // console.log(n.toJSON())
-    console.log('----------')
-    console.log(date.toJSON())
+    const semicolon = hourSemicolonFormat( date ).unwrap()
+
+    const year = this.dateSelected!.getFullYear()
+    const month = this.dateSelected!.getMonth()
+    const day = this.dateSelected!.getDate()
+    const update = new Date(year,month,day, semicolon.hour, semicolon.minute)
+    console.log(update.toJSON())
+    console.log(new Date(update.toJSON()))
   }
 }

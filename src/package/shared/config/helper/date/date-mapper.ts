@@ -8,6 +8,9 @@ import {
   Unit,
   UnitText
 } from 'src/package/shared/config/helper/date/unit'
+import {
+  newValidDate,
+} from 'src/package/shared/domain/models/valid-date'
 
 export const dateFromJSON = ( utc: string ): Date => {
   return new Date( utc )
@@ -15,6 +18,30 @@ export const dateFromJSON = ( utc: string ): Date => {
 
 export const dateToJSON = ( date: Date ): string => {
   return date.toJSON()
+}
+
+export interface HourMinutes {
+  hour: number
+  minute: number
+}
+
+export function hourSemicolonFormat( dateUTC: Date ): Result<HourMinutes, string> {
+  try {
+    const validDate = newValidDate({
+      value: dateUTC
+    })
+    const hourSemicolon = validDate.value.toJSON().split( 'T' )[1].slice( 0, 5 )
+    const hourMinuteArray = hourSemicolon.split( ':' )
+    const h = Number.parseInt(hourMinuteArray[0])
+    const m = Number.parseInt(hourMinuteArray[1])
+    return Ok( {
+      hour  : h,
+      minute: m
+    } )
+  }
+  catch ( e ) {
+    return Err('not a valid date to parse semicolon format')
+  }
 }
 
 export const dateDifference = ( utc: string,
@@ -42,7 +69,8 @@ export const dateDifference = ( utc: string,
     return Err( 'date difference parse error' )
   }
 
-  let formatedText = formatUnits( currentDate > otherDate ? 'Hace ' : 'Faltan ',formatedArray )
+  let formatedText = formatUnitsText(
+    currentDate > otherDate ? 'Hace ' : 'Faltan ', formatedArray )
 
   return Ok( formatedText )
 }
@@ -106,7 +134,7 @@ function textOfUnits(): UnitText {
   }
 }
 
-function formatUnits( begin : string,
+function formatUnitsText( begin: string,
   combinedArray: string[] ): string {
   combinedArray.map( ( value, index ) => {
     if ( index !== 0 ) {

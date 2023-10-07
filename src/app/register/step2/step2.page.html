@@ -26,7 +26,10 @@
         [databaseData]="countries"
         errorText="Debes ingresar un pais de procedencia"
         #country></app-single-selector-input>
-      <app-date-selector #date></app-date-selector>
+      <app-date-selector
+        [mustAdult]="true"
+        label="Fecha de nacimiento"
+        #date></app-date-selector>
       <div class="flex justify-center items-center gap-2">
         <div class="w-1/4 h-px bg-indigoBlack-500"></div>
         <div class="text-sm font-gotham text-indigoBlack-500">Genero</div>

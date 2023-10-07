@@ -1,7 +1,9 @@
 import { z } from 'zod'
 
 export const CurrencySchema = z.object( {
-	value : z.string().nonempty().max( 3 )
+	value : z.string()
+           .nonempty()
+           .max( 3 )
 } )
 
 type CurrencyType = z.infer<typeof CurrencySchema>
