@@ -28,7 +28,6 @@ type InputTextType = 'email' | 'password' | 'text' | 'phone' | 'number'
   ]
 } )
 export class InputTextComponent {
-
   readonly textControl = new FormControl( '', control => {
     control.addValidators( Validators.required )
     switch ( this.type ) {

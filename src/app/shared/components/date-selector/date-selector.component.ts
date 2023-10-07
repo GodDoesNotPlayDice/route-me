@@ -38,18 +38,18 @@ export class DateSelectorComponent implements OnInit {
   date18YearsAgo: Date = new Date(
     new Date().setFullYear( new Date().getFullYear() - 18 ) )
 
-  dateNowDesc: Date | null = null
-  dateNowAsc: Date | null  = null
-
-
-  readonly dateControl = new FormControl<Date | null>( null, control => {
+  dateNowDesc: Date | null  = null
+  dateNowAsc: Date | null   = null
+  timeSelected: Date | null = null
+  dateEntered: Date | null = null
+  readonly dateControl      = new FormControl<Date | null>( null, control => {
     if ( this.dateSelected === null ) {
       return { required: true }
     }
     const date2min = new Date(
       new Date().getTime() + ( 2 * 60 * 1000 ) )
 
-    if ( date2min > this.dateSelected  ) {
+    if ( date2min > this.dateSelected ) {
       return {
         limit: true
       }
@@ -63,24 +63,48 @@ export class DateSelectorComponent implements OnInit {
   ngOnInit() {
     this.dateNowDesc = this.mustAdult ? new Date() : null
     this.dateNowAsc  = this.mustAdult ? null : new Date()
+    this.dateEntered = new Date()
   }
 
   onDate( event: MatDatepickerInputEvent<Date> ) {
     this.dateSelected = event.value
+
+    if(this.timeSelected !== null) {
+      this.dateSelected = new Date(
+        this.dateSelected!.getFullYear(),
+        this.dateSelected!.getMonth(),
+        this.dateSelected!.getDate(),
+
+        this.timeSelected.getHours(),
+        this.timeSelected.getMinutes()
+      )
+    }
+    else {
+      this.dateSelected = new Date(
+        this.dateSelected!.getFullYear(),
+        this.dateSelected!.getMonth(),
+        this.dateSelected!.getDate(),
+
+        this.dateEntered!.getHours(),
+        this.dateEntered!.getMinutes()
+      )
+    }
+
     this.dateControl.patchValue( this.dateSelected )
     this.dateControl.markAllAsTouched()
     this.dateControl.updateValueAndValidity()
   }
 
   public onTime( $event: DatetimeCustomEvent ): void {
+    this.timeSelected = new Date( $event.detail.value as string )
     if ( this.dateSelected !== null ) {
-      const date = new Date( $event.detail.value as string )
       this.dateSelected = new Date(
         this.dateSelected.getFullYear(),
         this.dateSelected.getMonth(),
         this.dateSelected.getDate(),
-        date.getHours(),
-        date.getMinutes()
+
+        this.timeSelected.getHours(),
+        this.timeSelected.getMinutes()
       )
       this.dateControl.patchValue( this.dateSelected )
     }
