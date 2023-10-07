@@ -16,6 +16,11 @@ import {
   DatetimeCustomEvent,
   IonicModule
 } from '@ionic/angular'
+import { dateDifference } from 'src/package/shared/config/helper/date/date-mapper'
+import {
+  Unit,
+  UnitEnum
+} from 'src/package/shared/config/helper/date/unit'
 
 @Component( {
   standalone : true,
@@ -67,10 +72,19 @@ export class DateSelectorComponent implements OnInit {
   public onTime( $event: DatetimeCustomEvent ): void {
     console.log( '$event' )
     const date = new Date( $event.detail.value as string)
-    console.log(date.toUTCString())
-    console.log(date.toISOString())
+    console.log( date)
+    // const hhMM = date.toJSON().split('T')[1].slice(0,5)
+    // const hmSplit    = hhMM.split(':')
+    // const h          = hmSplit[0]
+    // const m          = hmSplit[1]
+    // console.log( hhMM )
+    // console.log( hmSplit )
+    // console.log( h )
+    // console.log( m )
+    // const n = new Date(2023, 10, 6, 20, 50)
+    // console.log(n)
+    // console.log(n.toJSON())
+    console.log('----------')
     console.log(date.toJSON())
-    console.log(date.toTimeString())
-    console.log(date.getTime())
   }
 }
