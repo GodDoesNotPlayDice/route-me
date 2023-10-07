@@ -4,7 +4,11 @@ import {
 } from '@angular/core'
 import { environment } from '@env/environment'
 import * as mapboxgl from 'mapbox-gl'
-import { Subscription } from 'rxjs'
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription
+} from 'rxjs'
 import { LocationService } from 'src/app/shared/services/location.service'
 
 @Injectable( {
@@ -23,11 +27,16 @@ export class MapService implements OnDestroy {
     this.locationSub.unsubscribe()
   }
 
+  private markerClick = new BehaviorSubject<[ lng: number , lat: number ] | null>(
+    null )
+
+  public markerClick$: Observable<[ lng: number , lat: number ] | null> = this.markerClick.asObservable()
+
   locationSub: Subscription
-  mapbox                                                = ( mapboxgl as typeof mapboxgl )
-  map: Map<string, mapboxgl.Map>                        = new Map()
-  style                                                 = `mapbox://styles/mapbox/streets-v11`
-  userMarkers: Map<string, mapboxgl.Marker | undefined> = new Map()
+  mapbox                                                        = ( mapboxgl as typeof mapboxgl )
+  map: Map<string, mapboxgl.Map>                                = new Map()
+  style                                                         = `mapbox://styles/mapbox/streets-v11`
+  userMarkers: Map<string, mapboxgl.Marker | undefined>         = new Map()
 
   async init( key: string, divElement: HTMLDivElement ) {
     if ( this.location.position !== undefined ) {
@@ -62,7 +71,6 @@ export class MapService implements OnDestroy {
     }
     else {
       this.userMarkers.set( key, undefined )
-
     }
 
     mapEntry.addControl( new mapboxgl.NavigationControl() )
@@ -70,11 +78,10 @@ export class MapService implements OnDestroy {
     mapEntry.on( 'click', ( e ) => {
       const lngLat = e.lngLat
 
-      console.log( 'Clic en coordenadas:', lngLat )
-
       const marker = new mapboxgl.Marker( { color: 'red' } )
         .setLngLat( lngLat )
         .addTo( mapEntry )
+      this.markerClick.next( [ lngLat.lng, lngLat.lat ])
     } )
   }
 

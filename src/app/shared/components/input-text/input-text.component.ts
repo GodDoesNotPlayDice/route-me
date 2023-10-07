@@ -100,7 +100,7 @@ export class InputTextComponent {
   } )
 
   @Input() type: InputTextType = 'text'
-  @Input() placeholder: string = ''
+  @Input({required:true}) placeholder: string
 
   public input( $event: Event ): void {
     this.textControl.updateValueAndValidity()

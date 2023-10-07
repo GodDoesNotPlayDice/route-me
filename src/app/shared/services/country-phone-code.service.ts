@@ -41,7 +41,4 @@ export class CountryPhoneCodeService {
 
   private countriesList                                 = new BehaviorSubject<Country[]>([])
   public countriesList$: Observable<Country[]> = this.countriesList.asObservable()
-
-  private success                                 = new BehaviorSubject<boolean>(false)
-  public success$: Observable<boolean> = this.success.asObservable()
 }
