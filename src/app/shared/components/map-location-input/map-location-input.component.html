@@ -1,5 +1,6 @@
 <div>
-  <div class="relative z-0 w-full">
+  <div class="flex w-full">
+  <div class="relative z-0 basis-11/12">
     <label class="font-gotham text-lg"
       [ngClass]="{
            'peer-focus:text-threateningRed-300': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
@@ -10,9 +11,7 @@
       {{placeholder}}
     </label>
     <input [formControl]="mapLocationControl"
-      [id]="id"
-      [autofocus]="false"
-      [focusBlur]="isFocused"
+      [selectInput]="true"
       #inputLocation
       type="text"
       class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
@@ -27,6 +26,13 @@
            }"
       placeholder=""
       required/>
+  </div>
+    <div class="basis-1/12 flex items-center justify-center">
+      <app-activable-circle
+        [isActive]="isFocused"
+        (isActiveChange)="onActiveChange($event)"
+      ></app-activable-circle>
+    </div>
   </div>
   <div class="mt-2 text-xs text-threateningRed-500 h-8 font-gotham">
     <div *ngIf="mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched)">
