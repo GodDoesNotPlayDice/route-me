@@ -1,10 +1,23 @@
-import { Directive } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input
+} from '@angular/core'
 
 @Directive({
-  selector: '[appSelectInput]'
+  standalone: true,
+  selector: '[selectInput]'
 })
 export class SelectInputDirective {
+  @Input('selectInput') shouldSelect: boolean;
 
-  constructor() { }
+  constructor(private el: ElementRef) { }
 
+  @HostListener('focus')
+  onFocus() {
+    if (this.shouldSelect) {
+      this.el.nativeElement.select();
+    }
+  }
 }
