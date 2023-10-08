@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ActivableCircleComponent } from './activable-circle.component';
+import { ActivableCircleComponent } from 'src/app/shared/components/activable-circle/activable-circle.component';
 
 describe('ActivableCircleComponent', () => {
   let component: ActivableCircleComponent;
