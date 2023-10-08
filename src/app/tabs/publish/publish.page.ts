@@ -14,7 +14,9 @@ import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
+import { LocationService } from 'src/app/shared/services/location.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { StreetService } from 'src/app/shared/services/street.service'
 
 @Component( {
   standalone : true,
@@ -33,6 +35,8 @@ import { MapService } from 'src/app/shared/services/map.service'
 export class PublishPage implements ViewDidEnter {
 
   constructor( private map: MapService,
+    private street: StreetService,
+    private location: LocationService,
     private alertController: AlertController )
   {}
 
@@ -42,7 +46,8 @@ export class PublishPage implements ViewDidEnter {
   @ViewChild( 'inicio' ) inicioInput!: MapLocationInputComponent
 
   formGroup!: FormGroup
-  pageKey = 'publish'
+  pageKey        = 'publish'
+  first: boolean = true
 
   ionViewDidEnter(): void {
     this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
@@ -57,6 +62,27 @@ export class PublishPage implements ViewDidEnter {
       }
       return null
     } )
+
+    // this.location.newPosition$.subscribe( async ( [ lat, lng ] ) => {
+    //   if ( this.first ) {
+    //     this.first     = false
+    //     const response = await this.street.getStreet( 'hospital',
+    //       { lat: lat, lng: lng } )
+    //
+    //     if ( response === undefined ) {
+    //       return
+    //     }
+    //
+    //     const features = Object.values( response )[2]
+    //     console.log( 'features', features)
+    //     for ( const feature of features ) {
+    //       const { center, place_name, text } = features[0]
+    //       console.log( 'center', center )
+    //       console.log( 'place_name', place_name )
+    //       console.log( 'text', text )
+    //     }
+    //   }
+    // } )
   }
 
   addRoute() {
