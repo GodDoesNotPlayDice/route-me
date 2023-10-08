@@ -57,11 +57,6 @@ export class PublishPage implements ViewDidEnter {
       }
       return null
     } )
-
-    this.map.addRouteMap( this.pageKey,
-      { lng: -71.533820, lat: -33.032320 },
-      { lng: -71.535835, lat: -33.031377 } )
-
   }
 
   addRoute() {

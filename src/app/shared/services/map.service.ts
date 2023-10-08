@@ -135,6 +135,44 @@ export class MapService implements OnDestroy {
   async addRouteMap( pageKey: string, inicio: { lng: number, lat: number },
     final: { lng: number, lat: number } )
   {
-    await this.direction.getDirection( inicio, final)
+    const response = await this.direction.getDirection( inicio, final)
+    if ( response === undefined ) return
+
+    const mapEntry = this.map.get( pageKey )
+
+    if ( mapEntry === undefined ) return
+
+    console.log('response')
+    const route = Object.values(response)[0]
+    const {geometry } = route[0]
+    const coordinates = geometry.coordinates
+
+    const routeKey = `${pageKey}-route`
+    if ( mapEntry.isSourceLoaded( routeKey ) ) {
+      mapEntry.removeSource(routeKey)
+      mapEntry.removeLayer(routeKey)
+    }
+
+    mapEntry.addSource(routeKey, {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type       : 'LineString',
+          coordinates: coordinates
+        },
+      }
+    })
+
+    mapEntry.addLayer({
+      id: routeKey,
+      type: 'line',
+      source: routeKey,
+      paint: {
+        'line-color': 'black',
+        'line-width': 3
+      }
+    })
   }
 }

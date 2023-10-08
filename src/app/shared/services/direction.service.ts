@@ -13,9 +13,7 @@ export class DirectionService {
     final: { lng: number, lat: number }) {
     const start = `${inicio.lng},${inicio.lat}`
     const end = `${final.lng},${final.lat}`
-    const a = await this.http.get(
+    return await this.http.get(
       `https://api.mapbox.com/directions/v5/mapbox/driving/${start};${end}?alternatives=true&geometries=geojson&overview=simplified&steps=false&access_token=${environment.mapBoxApiKey}` ).toPromise()
-    console.log('a')
-    console.log(a)
   }
 }
