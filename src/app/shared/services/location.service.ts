@@ -7,25 +7,31 @@ import {
 	BehaviorSubject,
 	Observable
 } from 'rxjs'
+import { startWatchLocation } from 'src/package/location-api/application/start-watch-location'
+import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
 
 @Injectable( {
 	providedIn: 'root'
 } )
 export class LocationService {
-	constructor() {
-		Geolocation.requestPermissions()
+	constructor(
+    private loc: LocationRepository
+  ) {
 
-		Geolocation.watchPosition( {}, ( position, err ) => {
+    startWatchLocation( this.loc, ( position, err ) => {
+		// Geolocation.watchPosition( {}, ( position, err ) => {
 			if ( err !== undefined ) {
 				return
 			}
 			if ( !position ) {
 				return
 			}
-			this.position = position
-			console.log( 'new position: ', this.position )
-			this.newPosition.next(
-				[ this.position.coords.latitude, this.position.coords.longitude ] )
+      console.log( 'new position: ', position )
+      //TODO: actualizar donde se utiliza con nuevo dominio de location
+			// this.position = position
+			// console.log( 'new position: ', this.position )
+			// this.newPosition.next(
+			// 	[ this.position.coords.latitude, this.position.coords.longitude ] )
 		} )
 	}
 

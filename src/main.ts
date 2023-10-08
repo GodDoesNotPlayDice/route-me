@@ -34,9 +34,11 @@ import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import { AuthPassengerRepository } from 'src/package/authentication/passenger/domain/auth-passenger-repository'
-import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-user-repository'
 import { AuthPassengerFirebase } from 'src/package/authentication/passenger/infrastructure/auth-passenger-firebase'
+import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/user/infrastructure/auth-user-firebase'
+import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
+import { Geolocation } from 'src/package/location-api/infrastructure/capacitor/geolocation'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import {
   newPassenger,
@@ -63,32 +65,32 @@ if ( environment.production ) {
 
 export const defaultUsers: User[] = [
   newUser( {
-    id: 'abc',
-    email: 'hola@gmail.com',
-  })
+    id   : 'abc',
+    email: 'hola@gmail.com'
+  } )
 ]
 
 export const defaultPassangers: Passenger[] = [
-  newPassenger({
-    id: 'abc',
-    userID: newUserID({
+  newPassenger( {
+    id         : 'abc',
+    userID     : newUserID( {
       value: 'abc'
-    }),
-    name: 'hola',
-    lastName: 'last',
+    } ),
+    name       : 'hola',
+    lastName   : 'last',
     description: 'descdescdescdesc',
-    phone: '123456788',
-    birthDay: new Date( '1990-03-25' ),
-    country: 'Argentina',
-    gender: newGender({
+    phone      : '123456788',
+    birthDay   : new Date( '1990-03-25' ),
+    country    : 'Argentina',
+    gender     : newGender( {
       value: 'Female'
-    }),
+    } ),
     preferences: [
-      newPreferenceID({
+      newPreferenceID( {
         value: 'a1'
-      })
+      } )
     ]
-  })
+  } )
 ]
 
 bootstrapApplication( AppComponent, {
@@ -97,10 +99,10 @@ bootstrapApplication( AppComponent, {
     {
       provide: AuthUserRepository,
       // useFactory: () => {
-        // return new AuthMemory(defaultUsers)
+      // return new AuthMemory(defaultUsers)
       // },
       // useFactory: (storage : Storage) => {
-        // return new AuthLocalStorage(storage)
+      // return new AuthLocalStorage(storage)
       // },
       // deps      : [Storage]
       useFactory: ( firebase: AngularFireDatabase ) => {
@@ -109,7 +111,7 @@ bootstrapApplication( AppComponent, {
       deps      : [ AngularFireDatabase ]
     },
     {
-      provide: AuthPassengerRepository,
+      provide   : AuthPassengerRepository,
       useFactory: ( firebase: AngularFireDatabase ) => {
         return new AuthPassengerFirebase( firebase )
       },
@@ -127,16 +129,23 @@ bootstrapApplication( AppComponent, {
       deps      : [ AngularFireDatabase ]
     },
     {
-      provide: TripDao,
+      provide   : TripDao,
       useFactory: ( http: HttpClient ) => {
-        return new TripDaoApi( http)
+        return new TripDaoApi( http )
       },
       deps      : [ HttpClient ]
     },
     {
-      provide: PassengerDao,
+      provide   : PassengerDao,
       useFactory: () => {
-        return new PassengerDaoMemory([])
+        return new PassengerDaoMemory( [] )
+      },
+      deps      : []
+    },
+    {
+      provide   : LocationRepository,
+      useFactory: () => {
+        return new Geolocation()
       },
       deps      : []
     },
