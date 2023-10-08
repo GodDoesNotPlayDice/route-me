@@ -21,7 +21,7 @@ import { MapService } from 'src/app/shared/services/map.service'
   selector   : 'app-publish',
   templateUrl: './publish.page.html',
   styleUrls  : [ './publish.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     InputTextComponent,
@@ -42,34 +42,53 @@ export class PublishPage implements ViewDidEnter {
   @ViewChild( 'inicio' ) inicioInput!: MapLocationInputComponent
 
   formGroup!: FormGroup
+  pageKey = 'publish'
 
   ionViewDidEnter(): void {
-    this.map.init( 'publish', this.divElementElementRef.nativeElement )
+    this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
 
-    this.formGroup = new FormGroup( [
-      this.dateInput.dateControl,
-      this.salidaInput.mapLocationControl,
-      this.inicioInput.mapLocationControl
-    ] )
+    this.formGroup = new FormGroup( {
+      date : this.dateInput.dateControl,
+      start: this.salidaInput.mapLocationControl,
+      end  : this.inicioInput.mapLocationControl
+    }, ( control ) => {
+      if ( control.value.start !== null && control.value.end !== null ) {
+        this.addRoute()
+      }
+      return null
+    } )
+
+    this.map.addRouteMap( this.pageKey,
+      { lng: -71.533820, lat: -33.032320 },
+      { lng: -71.535835, lat: -33.031377 } )
+
+  }
+
+  addRoute() {
+    const [ lngStart, latStart ] = this.inicioInput.mapLocationControl.value!
+    const [ lngEnd, latEnd ]     = this.salidaInput.mapLocationControl.value!
+    this.map.addRouteMap( this.pageKey,
+      { lng: lngStart, lat: latStart },
+      { lng: lngEnd, lat: latEnd } )
   }
 
   //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
   async presentAlert() {
     const alert = await this.alertController.create( {
-      header   : 'Confirma que deseas publicar el viaje',
+      header: 'Confirma que deseas publicar el viaje',
       // subHeader: '',
-      message  : `El viaje comenzara: ${this.dateInput.dateControl.value!.toLocaleString()}`,
+      message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cancelar'
         },
         {
-          text: 'Publicar',
+          text   : 'Publicar',
           handler: () => {
-            console.log('Publicado')
+            console.log( 'Publicado' )
           }
         }
-      ],
+      ]
     } )
 
     await alert.present()

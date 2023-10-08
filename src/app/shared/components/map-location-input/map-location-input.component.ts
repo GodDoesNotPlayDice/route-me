@@ -13,6 +13,7 @@ import { ActivableCircleComponent } from 'src/app/shared/components/activable-ci
 import { FocusBlurDirective } from 'src/app/shared/directives/focus-blur.directive'
 import { SelectInputDirective } from 'src/app/shared/directives/select-input.directive'
 import { MapService } from 'src/app/shared/services/map.service'
+import { ulid } from 'ulidx'
 
 @Component( {
   standalone : true,
@@ -31,8 +32,12 @@ import { MapService } from 'src/app/shared/services/map.service'
 export class MapLocationInputComponent {
 
   @Input({required:true}) placeholder: string
+  @Input({required:true}) pageKey: string
   isFocused: boolean = false
   locationText: string = ''
+
+  id = ulid()
+
   @ViewChild( 'inputLocation' ) input!: HTMLInputElement
 
   constructor( private map: MapService ) {
@@ -41,6 +46,10 @@ export class MapLocationInputComponent {
           async ( location ) => {
             if ( location !== null && this.isFocused ) {
               this.locationText = `${ location[ 0 ].toFixed( 4 ) }, ${ location[ 1 ].toFixed( 4 ) }`
+              this.map.addRouteMarker(this.pageKey, this.id, {
+                lng: location[0],
+                lat: location[1],
+              })
               this.mapLocationControl.patchValue( location )
               this.mapLocationControl.markAllAsTouched()
               this.mapLocationControl.updateValueAndValidity()

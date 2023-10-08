@@ -9,13 +9,17 @@ import {
   Observable,
   Subscription
 } from 'rxjs'
+import { DirectionService } from 'src/app/shared/services/direction.service'
 import { LocationService } from 'src/app/shared/services/location.service'
+
+type MarkerMap = Map<string, mapboxgl.Marker | undefined>
 
 @Injectable( {
   providedIn: 'root'
 } )
 export class MapService implements OnDestroy {
-  constructor( private location: LocationService ) {
+  constructor( private location: LocationService,
+  private direction : DirectionService) {
     this.mapbox.accessToken = environment.mapBoxApiKey
     this.locationSub        =
       this.location.newPosition$.subscribe( async ( [ lat, lng ] ) => {
@@ -27,16 +31,41 @@ export class MapService implements OnDestroy {
     this.locationSub.unsubscribe()
   }
 
-  private markerClick = new BehaviorSubject<[ lng: number , lat: number ] | null>(
+  private markerClick = new BehaviorSubject<[ lng: number, lat: number ] | null>(
     null )
 
-  public markerClick$: Observable<[ lng: number , lat: number ] | null> = this.markerClick.asObservable()
+  public markerClick$: Observable<[ lng: number, lat: number ] | null> = this.markerClick.asObservable()
 
   locationSub: Subscription
-  mapbox                                                        = ( mapboxgl as typeof mapboxgl )
-  map: Map<string, mapboxgl.Map>                                = new Map()
-  style                                                         = `mapbox://styles/mapbox/streets-v11`
-  userMarkers: Map<string, mapboxgl.Marker | undefined>         = new Map()
+  mapbox                                                = ( mapboxgl as typeof mapboxgl )
+  map: Map<string, mapboxgl.Map>                        = new Map()
+  style                                                 = `mapbox://styles/mapbox/streets-v11`
+  userMarkers: Map<string, mapboxgl.Marker | undefined> = new Map()
+  routeMarkers: Map<string, MarkerMap>                  = new Map()
+
+  public addRouteMarker( pageKey: string, locationKey: string,
+    center: { lat: number; lng: number } )
+  {
+    if ( !this.routeMarkers.has( pageKey ) ) {
+      this.routeMarkers.set( pageKey, new Map() )
+    }
+    let pageMarkers = this.routeMarkers.get( pageKey )!
+
+    if ( pageMarkers.has( locationKey ) ) {
+      pageMarkers.get( locationKey )!.remove()
+    }
+
+    const mapEntry = this.map.get( pageKey )
+
+    if ( mapEntry === undefined ) {
+      return
+    }
+
+    const newLocationMarker = new mapboxgl.Marker( { color: 'red' } )
+      .setLngLat( [ center.lng, center.lat ] )
+      .addTo( mapEntry )
+    pageMarkers.set( locationKey, newLocationMarker )
+  }
 
   async init( key: string, divElement: HTMLDivElement ) {
     if ( this.location.position !== undefined ) {
@@ -64,7 +93,7 @@ export class MapService implements OnDestroy {
     const mapEntry = this.map.get( key )!
 
     if ( this.location.position !== undefined ) {
-      this.addMarker( key, {
+      this.addUserMarker( key, {
         lat: this.location.position.coords.latitude,
         lng: this.location.position.coords.longitude
       }, mapEntry )
@@ -76,12 +105,8 @@ export class MapService implements OnDestroy {
     mapEntry.addControl( new mapboxgl.NavigationControl() )
 
     mapEntry.on( 'click', ( e ) => {
-      const lngLat = e.lngLat
-
-      const marker = new mapboxgl.Marker( { color: 'red' } )
-        .setLngLat( lngLat )
-        .addTo( mapEntry )
-      this.markerClick.next( [ lngLat.lng, lngLat.lat ])
+      const { lat, lng } = e.lngLat
+      this.markerClick.next( [ lng, lat ] )
     } )
   }
 
@@ -91,11 +116,11 @@ export class MapService implements OnDestroy {
     }
     for ( const [ keyEntry, mapEntry ] of this.map ) {
       mapEntry.panTo( { lat: center.lat, lng: center.lng } )
-      this.addMarker( keyEntry, center, mapEntry )
+      this.addUserMarker( keyEntry, center, mapEntry )
     }
   }
 
-  private addMarker( keyEntry: string, center: { lat: number; lng: number },
+  private addUserMarker( keyEntry: string, center: { lat: number; lng: number },
     mapEntry: mapboxgl.Map ): void {
     let userMark = this.userMarkers.get( keyEntry )
 
@@ -105,5 +130,11 @@ export class MapService implements OnDestroy {
     userMark = new mapboxgl.Marker( { color: 'black' } )
       .setLngLat( [ center.lng, center.lat ] )
       .addTo( mapEntry )
+  }
+
+  async addRouteMap( pageKey: string, inicio: { lng: number, lat: number },
+    final: { lng: number, lat: number } )
+  {
+    await this.direction.getDirection( inicio, final)
   }
 }
