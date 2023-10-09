@@ -15,6 +15,7 @@ export class LocationService {
     private locationRepository: LocationRepository
   ) {
     startWatchLocation( this.locationRepository, ( position, err ) => {
+      console.log('location service', position)
 			if ( err !== undefined ) {
 				return
 			}

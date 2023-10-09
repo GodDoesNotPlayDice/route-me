@@ -33,6 +33,7 @@ export interface CountryProps {
 	number: CountryNumberCodeProps
 }
 
+//TODO: revisar si se puede usar aqui implementacion
 export const newCountry = ( props: CountryProps ): Country => {
 	return{
 		flag  : newCountryFlagUrl( props.flag ),

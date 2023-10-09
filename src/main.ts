@@ -39,6 +39,8 @@ import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-
 import { AuthUserFirebase } from 'src/package/authentication/user/infrastructure/auth-user-firebase'
 import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
 import { Geolocation } from 'src/package/location-api/infrastructure/capacitor/geolocation'
+import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
+import { MapBox } from 'src/package/map-api/infrastructure/map-box'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import {
   newPassenger,
@@ -146,6 +148,13 @@ bootstrapApplication( AppComponent, {
       provide   : LocationRepository,
       useFactory: () => {
         return new Geolocation()
+      },
+      deps      : []
+    },
+    {
+      provide   : MapRepository,
+      useFactory: () => {
+        return new MapBox()
       },
       deps      : []
     },

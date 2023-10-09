@@ -49,16 +49,16 @@ export class PublishPage implements ViewDidEnter {
   pageKey        = 'publish'
   first: boolean = true
 
-  ionViewDidEnter(): void {
-    this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
+  async ionViewDidEnter(): Promise<void> {
+    await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
 
     this.formGroup = new FormGroup( {
       date : this.dateInput.dateControl,
       start: this.salidaInput.mapLocationControl,
       end  : this.inicioInput.mapLocationControl
-    }, ( control ) => {
+    }, async ( control ) => {
       if ( control.value.start !== null && control.value.end !== null ) {
-        this.addRoute()
+        await this.addRoute()
       }
       return null
     } )
