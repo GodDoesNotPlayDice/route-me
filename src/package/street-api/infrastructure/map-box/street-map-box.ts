@@ -7,14 +7,16 @@ import {
 } from 'oxide.ts'
 import { Position } from 'src/package/location-api/domain/models/position'
 import { streetFromJson } from 'src/package/street-api/application/street-mapper'
-import { Street } from 'src/package/street-api/domain/models/street'
+import {
+  StreetsData
+} from 'src/package/street-api/domain/models/street'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 
 export class StreetMapBox implements StreetRepository{
   constructor( private http: HttpClient ) {}
 
   async getStreet( searchTerm: string,
-    center: Position ): Promise<Result<Street, string>> {
+    center: Position ): Promise<Result<StreetsData, string>> {
 
     const response = await this.http.get( `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchTerm}.json?proximity=${center.lng},${center.lat}&access_token=${environment.mapBoxApiKey}`).toPromise()
 

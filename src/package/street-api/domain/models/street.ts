@@ -38,7 +38,7 @@ export const newStreet = ( props: StreetProps ): Street => {
   } )
 }
 
-export const newStreetData = ( props: StreetsDataProps ): StreetsData => {
+export const newStreetsData = ( props: StreetsDataProps ): StreetsData => {
   return {
     streets: props.streets.map( ( street ) => newStreet( {
       center: street.center,

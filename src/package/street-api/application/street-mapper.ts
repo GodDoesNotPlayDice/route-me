@@ -5,10 +5,11 @@ import {
 } from 'oxide.ts'
 import {
   newStreetsDataFromJson,
-  Street
+  Street,
+  StreetsData
 } from 'src/package/street-api/domain/models/street'
 
-export const streetFromJson = ( json: Record<string, any> ): Result<Street, string> => {
+export const streetFromJson = ( json: Record<string, any> ): Result<StreetsData, string> => {
   try {
     return Ok(
       newStreetsDataFromJson(json)
