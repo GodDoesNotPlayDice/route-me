@@ -51,6 +51,8 @@ import {
 import { PassengerDaoMemory } from 'src/package/passenger/infrastructure/passenger-dao-memory'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { newGender } from 'src/package/shared/domain/models/gender'
+import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
+import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
 import {
@@ -164,6 +166,13 @@ bootstrapApplication( AppComponent, {
       provide   : DirectionRepository,
       useFactory: ( http: HttpClient ) => {
         return new DirectionMapBox( http )
+      },
+      deps      : [ HttpClient ]
+    },
+    {
+      provide   : StreetRepository,
+      useFactory: ( http: HttpClient ) => {
+        return new StreetMapBox( http )
       },
       deps      : [ HttpClient ]
     },

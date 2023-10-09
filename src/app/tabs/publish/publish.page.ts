@@ -63,26 +63,21 @@ export class PublishPage implements ViewDidEnter {
       return null
     } )
 
-    // this.location.newPosition$.subscribe( async ( [ lat, lng ] ) => {
-    //   if ( this.first ) {
-    //     this.first     = false
-    //     const response = await this.street.getStreet( 'hospital',
-    //       { lat: lat, lng: lng } )
-    //
-    //     if ( response === undefined ) {
-    //       return
-    //     }
-    //
-    //     const features = Object.values( response )[2]
-    //     console.log( 'features', features)
-    //     for ( const feature of features ) {
-    //       const { center, place_name, text } = features[0]
-    //       console.log( 'center', center )
-    //       console.log( 'place_name', place_name )
-    //       console.log( 'text', text )
-    //     }
-    //   }
-    // } )
+    this.location.newPosition$.subscribe( async ( position ) => {
+      if ( position === null ) { return }
+      if ( this.first ) {
+        this.first     = false
+        const result = await this.street.getStreet( 'hospital', position )
+
+        if ( result.isErr() ) {
+          console.log( 'error', result.unwrapErr())
+          return
+        }
+
+        const street = result.unwrap()
+        console.log( 'street', street )
+      }
+    } )
   }
 
   async addRoute() {
@@ -91,7 +86,6 @@ export class PublishPage implements ViewDidEnter {
     const result = await this.map.addRouteMap( this.pageKey,
       { lng: start.lng, lat: start.lat },
       { lng: end.lng, lat: end.lat } )
-    console.log( 'result', result)
   }
 
   //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
