@@ -24,7 +24,7 @@ export const locationFromJson = ( json: Record<string, any> ): Option<Position> 
   }
 }
 
-export const loationToJson = ( position: Position ): Record<string, any> => {
+export const locationToJson = ( position: Position ): Record<string, any> => {
   return {
     latitude: position.lat,
     longitude: position.lng,
