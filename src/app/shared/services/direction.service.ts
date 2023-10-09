@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { environment } from '@env/environment'
 import {
-	None,
-	Option,
-	Some
+  Result
 } from 'oxide.ts'
+import { Direction } from 'src/package/direction-api/domain/models/direction'
+import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { Position } from 'src/package/location-api/domain/models/position'
 
 @Injectable( {
@@ -13,20 +12,10 @@ import { Position } from 'src/package/location-api/domain/models/position'
 } )
 export class DirectionService {
 
-	constructor( private http: HttpClient ) { }
+	constructor( private directionRepository: DirectionRepository ) { }
 
 	async getDirection( inicio: Position,
-		final: Position ): Promise<Option<object>> {
-		const start    = `${ inicio.lng },${ inicio.lat }`
-		const end      = `${ final.lng },${ final.lat }`
-		const response = await this.http.get(
-			`https://api.mapbox.com/directions/v5/mapbox/driving/${ start };${ end }?alternatives=true&geometries=geojson&overview=simplified&steps=false&access_token=${ environment.mapBoxApiKey }` )
-		                           .toPromise()
-		if ( response === undefined ) {
-			return None
-		}
-		else {
-			return Some( response )
-		}
+		final: Position ): Promise<Result<Direction, string>> {
+    return await this.directionRepository.getDirection( inicio, final )
 	}
 }

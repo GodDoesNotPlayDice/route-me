@@ -37,6 +37,8 @@ import { AuthPassengerRepository } from 'src/package/authentication/passenger/do
 import { AuthPassengerFirebase } from 'src/package/authentication/passenger/infrastructure/auth-passenger-firebase'
 import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/user/infrastructure/auth-user-firebase'
+import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
+import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
 import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
 import { Geolocation } from 'src/package/location-api/infrastructure/capacitor/geolocation'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
@@ -157,6 +159,13 @@ bootstrapApplication( AppComponent, {
         return new MapBox()
       },
       deps      : []
+    },
+    {
+      provide   : DirectionRepository,
+      useFactory: ( http: HttpClient ) => {
+        return new DirectionMapBox( http )
+      },
+      deps      : [ HttpClient ]
     },
     importProvidersFrom(
       [ IonicModule.forRoot( {} ),

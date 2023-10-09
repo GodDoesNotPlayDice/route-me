@@ -3,7 +3,6 @@ import {
   BehaviorSubject,
   Observable
 } from 'rxjs'
-import { startWatchLocation } from 'src/package/location-api/application/start-watch-location'
 import { Position } from 'src/package/location-api/domain/models/position'
 import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
 
@@ -14,7 +13,7 @@ export class LocationService {
 	constructor(
     private locationRepository: LocationRepository
   ) {
-    startWatchLocation( this.locationRepository, ( position, err ) => {
+    this.locationRepository.startWatch( ( position, err ) => {
       console.log('location service', position)
 			if ( err !== undefined ) {
 				return
