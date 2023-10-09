@@ -11,6 +11,7 @@ import {
 } from 'rxjs'
 import { DirectionService } from 'src/app/shared/services/direction.service'
 import { LocationService } from 'src/app/shared/services/location.service'
+import { Position } from 'src/package/location-api/domain/models/position'
 
 type MarkerMap = Map<string, mapboxgl.Marker | undefined>
 
@@ -22,19 +23,22 @@ export class MapService implements OnDestroy {
   private direction : DirectionService) {
     this.mapbox.accessToken = environment.mapBoxApiKey
     this.locationSub        =
-      this.location.newPosition$.subscribe( async ( [ lat, lng ] ) => {
-        await this.autoFollow( { lat: lat, lng: lng } )
+      this.location.newPosition$.subscribe( async ( value ) => {
+        if ( value === null ) return
+        this.lastPosition = value
+        await this.autoFollow( { lat: value.lat, lng: value.lng } )
       } )
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.locationSub.unsubscribe()
   }
 
-  private markerClick = new BehaviorSubject<[ lng: number, lat: number ] | null>(
-    null )
+  private lastPosition : Position | null = null
 
-  public markerClick$: Observable<[ lng: number, lat: number ] | null> = this.markerClick.asObservable()
+  private markerClick = new BehaviorSubject<Position | null>( null )
+
+  public markerClick$: Observable<Position | null> = this.markerClick.asObservable()
 
   locationSub: Subscription
   mapbox                                                = ( mapboxgl as typeof mapboxgl )
@@ -44,7 +48,7 @@ export class MapService implements OnDestroy {
   routeMarkers: Map<string, MarkerMap>                  = new Map()
 
   public addRouteMarker( pageKey: string, locationKey: string,
-    center: { lat: number; lng: number } )
+    center: Position )
   {
     if ( !this.routeMarkers.has( pageKey ) ) {
       this.routeMarkers.set( pageKey, new Map() )
@@ -68,17 +72,17 @@ export class MapService implements OnDestroy {
   }
 
   async init( key: string, divElement: HTMLDivElement ) {
-    if ( this.location.position !== undefined ) {
+    if ( this.lastPosition !== null ) {
       await this.autoFollow( {
-        lat: this.location.position.coords.latitude,
-        lng: this.location.position.coords.longitude
+        lat: this.lastPosition.lat,
+        lng: this.lastPosition.lng,
       } )
     }
-    const pos = this.location.position !== undefined
+    const pos = this.lastPosition !== null
       ? {
         coords: {
-          latitude : this.location.position.coords.latitude,
-          longitude: this.location.position.coords.longitude
+          latitude : this.lastPosition.lat,
+          longitude: this.lastPosition.lng,
         }
       }
       // : { coords: { latitude: 43.1746, longitude: -2.4125 } }
@@ -92,10 +96,10 @@ export class MapService implements OnDestroy {
 
     const mapEntry = this.map.get( key )!
 
-    if ( this.location.position !== undefined ) {
+    if ( this.lastPosition !== null ) {
       this.addUserMarker( key, {
-        lat: this.location.position.coords.latitude,
-        lng: this.location.position.coords.longitude
+        lat: this.lastPosition.lat,
+        lng: this.lastPosition.lng
       }, mapEntry )
     }
     else {
@@ -106,11 +110,15 @@ export class MapService implements OnDestroy {
 
     mapEntry.on( 'click', ( e ) => {
       const { lat, lng } = e.lngLat
-      this.markerClick.next( [ lng, lat ] )
+      //TODO: ver si es necesario hacer mapper
+      this.markerClick.next( {
+        lat: lat,
+        lng: lng
+      } )
     } )
   }
 
-  async autoFollow( center: { lat: number, lng: number } ) {
+  async autoFollow( center: Position ) {
     if ( this.userMarkers.size === 0 ) {
       return
     }
@@ -120,7 +128,7 @@ export class MapService implements OnDestroy {
     }
   }
 
-  private addUserMarker( keyEntry: string, center: { lat: number; lng: number },
+  private addUserMarker( keyEntry: string, center: Position,
     mapEntry: mapboxgl.Map ): void {
     let userMark = this.userMarkers.get( keyEntry )
 
@@ -132,8 +140,8 @@ export class MapService implements OnDestroy {
       .addTo( mapEntry )
   }
 
-  async addRouteMap( pageKey: string, inicio: { lng: number, lat: number },
-    final: { lng: number, lat: number } )
+  async addRouteMap( pageKey: string, inicio: Position,
+    final: Position )
   {
     const response = await this.direction.getDirection( inicio, final)
     if ( response === undefined ) return

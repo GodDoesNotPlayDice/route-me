@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core'
 import {
-	Geolocation,
-	Position
-} from '@capacitor/geolocation'
-import {
-	BehaviorSubject,
-	Observable
+  BehaviorSubject,
+  Observable
 } from 'rxjs'
 import { startWatchLocation } from 'src/package/location-api/application/start-watch-location'
+import { Position } from 'src/package/location-api/domain/models/position'
 import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
 
 @Injectable( {
@@ -15,29 +12,22 @@ import { LocationRepository } from 'src/package/location-api/domain/repository/l
 } )
 export class LocationService {
 	constructor(
-    private loc: LocationRepository
+    private locationRepository: LocationRepository
   ) {
-
-    startWatchLocation( this.loc, ( position, err ) => {
-		// Geolocation.watchPosition( {}, ( position, err ) => {
+    startWatchLocation( this.locationRepository, ( position, err ) => {
 			if ( err !== undefined ) {
 				return
 			}
 			if ( !position ) {
 				return
 			}
-      console.log( 'new position: ', position )
-      //TODO: actualizar donde se utiliza con nuevo dominio de location
-			// this.position = position
-			// console.log( 'new position: ', this.position )
-			// this.newPosition.next(
-			// 	[ this.position.coords.latitude, this.position.coords.longitude ] )
+			this.lastPosition = position
+			this.newPosition.next( this.lastPosition )
 		} )
 	}
 
-	position: Position | undefined
+  lastPosition: Position | null
 
-	private newPosition                                 = new BehaviorSubject<[ number, number ]>(
-		[ 0, 0 ] )
-	public newPosition$: Observable<[ number, number ]> = this.newPosition.asObservable()
+	private newPosition                                 = new BehaviorSubject<Position | null>(null)
+	public newPosition$: Observable<Position | null> = this.newPosition.asObservable()
 }

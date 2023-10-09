@@ -13,6 +13,7 @@ import { ActivableCircleComponent } from 'src/app/shared/components/activable-ci
 import { FocusBlurDirective } from 'src/app/shared/directives/focus-blur.directive'
 import { SelectInputDirective } from 'src/app/shared/directives/select-input.directive'
 import { MapService } from 'src/app/shared/services/map.service'
+import { Position } from 'src/package/location-api/domain/models/position'
 import { ulid } from 'ulidx'
 
 @Component( {
@@ -43,22 +44,23 @@ export class MapLocationInputComponent {
   constructor( private map: MapService ) {
     this.map.markerClick$.pipe()
         .subscribe(
-          async ( location ) => {
-            if ( location !== null && this.isFocused ) {
-              this.locationText = `${ location[ 0 ].toFixed( 4 ) }, ${ location[ 1 ].toFixed( 4 ) }`
+          async ( position ) => {
+            if ( position !== null && this.isFocused ) {
+              const { lng, lat } = position
+              this.locationText = `${ lng.toFixed( 4 ) }, ${ lat.toFixed( 4 ) }`
               this.map.addRouteMarker(this.pageKey, this.id, {
-                lng: location[0],
-                lat: location[1],
+                lng: lng,
+                lat: lat,
               })
-              this.mapLocationControl.patchValue( location )
+              this.mapLocationControl.patchValue( position )
               this.mapLocationControl.markAllAsTouched()
               this.mapLocationControl.updateValueAndValidity()
               this.isFocused = false
             }
           } )
   }
-  readonly mapLocationControl      = new FormControl<[ lng: number , lat: number ] | null>( null, control => {
-    if ( this.locationText.length  === 0 ) {
+  readonly mapLocationControl      = new FormControl<Position | null>( null, control => {
+    if ( this.locationText.length  === 0 && control.value === null ) {
       return { required: true }
     }
     return null

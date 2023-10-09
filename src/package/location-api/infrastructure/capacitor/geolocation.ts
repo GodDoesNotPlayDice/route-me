@@ -41,7 +41,7 @@ export class Geolocation implements LocationRepository {
   }
 
   async startWatch( callback: WatchPositionCallback ): Promise<string> {
-    return CapacitorGeolocation.watchPosition( {}, ( position, err ) => {
+    return await CapacitorGeolocation.watchPosition( {}, ( position, err ) => {
       let pos : Position | null = null
       if ( position !== null ){
         pos = newPosition({
@@ -66,3 +66,4 @@ export class Geolocation implements LocationRepository {
     })
   }
 }
+

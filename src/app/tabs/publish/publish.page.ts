@@ -85,12 +85,12 @@ export class PublishPage implements ViewDidEnter {
     // } )
   }
 
-  addRoute() {
-    const [ lngStart, latStart ] = this.inicioInput.mapLocationControl.value!
-    const [ lngEnd, latEnd ]     = this.salidaInput.mapLocationControl.value!
-    this.map.addRouteMap( this.pageKey,
-      { lng: lngStart, lat: latStart },
-      { lng: lngEnd, lat: latEnd } )
+  async addRoute() {
+    const start = this.inicioInput.mapLocationControl.value!
+    const end     = this.salidaInput.mapLocationControl.value!
+    await this.map.addRouteMap( this.pageKey,
+      { lng: start.lng, lat: start.lat },
+      { lng: end.lng, lat: end.lat } )
   }
 
   //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
