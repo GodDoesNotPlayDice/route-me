@@ -23,10 +23,6 @@ export interface StreetsData {
   streets : Street[]
 }
 
-export interface StreetsDataProps   {
-  streets : StreetProps[]
-}
-
 export const newStreet = ( props: StreetProps ): Street => {
   return StreetSchema.parse( {
     center: newPosition({
@@ -38,9 +34,9 @@ export const newStreet = ( props: StreetProps ): Street => {
   } )
 }
 
-export const newStreetsData = ( props: StreetsDataProps ): StreetsData => {
+export const newStreetsData = ( streets : StreetProps[] ): StreetsData => {
   return {
-    streets: props.streets.map( ( street ) => newStreet( {
+    streets: streets.map( ( street ) => newStreet( {
       center: street.center,
       place_name: street.place_name,
       text: street.text

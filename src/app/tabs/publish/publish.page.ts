@@ -63,21 +63,21 @@ export class PublishPage implements ViewDidEnter {
       return null
     } )
 
-    this.location.newPosition$.subscribe( async ( position ) => {
-      if ( position === null ) { return }
-      if ( this.first ) {
-        this.first     = false
-        const result = await this.street.getStreet( 'hospital', position )
-
-        if ( result.isErr() ) {
-          console.log( 'error', result.unwrapErr())
-          return
-        }
-
-        const street = result.unwrap()
-        console.log( 'street', street )
-      }
-    } )
+    // this.location.newPosition$.subscribe( async ( position ) => {
+    //   if ( position === null ) { return }
+    //   if ( this.first ) {
+    //     this.first     = false
+    //     const result = await this.street.getStreet( 'hospital', position )
+    //
+    //     if ( result.isErr() ) {
+    //       console.log( 'error', result.unwrapErr())
+    //       return
+    //     }
+    //
+    //     const street = result.unwrap()
+    //     console.log( 'street', street )
+    //   }
+    // } )
   }
 
   async addRoute() {

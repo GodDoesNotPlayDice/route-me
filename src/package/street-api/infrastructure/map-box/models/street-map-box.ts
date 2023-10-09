@@ -27,15 +27,11 @@ export const newStreetMapBox = ( json: Record<string, any> ): Street => {
 }
 
 export const newStreetsDataMapBox = ( json: Record<string, any> ): StreetsData => {
-  console.log('json')
-  console.log(json)
-  console.log('------')
-  console.log(json['features'])
-  console.log('------')
-  const features = Object.values( json )[2]
-  console.log(features)
-  // const { center, place_name, text } = features[0]
-  const a = features.map( ( feature : Record<string, any>) => newStreetMapBox( feature ) )
+  const streets = Object.values( json['features'] ).map(
+    value => {
+      return newStreetMapBox( value as Record<string, any>)
+    }
+  )
 
-  return newStreetsData(a)
+  return newStreetsData(streets)
 }

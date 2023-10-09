@@ -2,7 +2,6 @@ import {
   Direction,
   newDirection
 } from 'src/package/direction-api/domain/models/direction'
-import { newGeometry } from 'src/package/direction-api/domain/models/geometry'
 import { Route } from 'src/package/direction-api/infrastructure/mapbox/models/route-map-box'
 import { Waypoint } from 'src/package/direction-api/infrastructure/mapbox/models/way-point-map-box'
 
@@ -19,9 +18,4 @@ export const newDirectionMapBox = ( json: Record<string, any> ): Direction => {
       values: json[ 'routes' ][0][ 'geometry' ][ 'coordinates' ]
     }
   })
-  // return{
-  // 	coordinates: newGeometry({
-  // 		values: json[ 'routes' ][0][ 'geometry' ][ 'coordinates' ]
-  // 	})
-  // }
 }
