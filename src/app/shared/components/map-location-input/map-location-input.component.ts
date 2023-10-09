@@ -48,7 +48,7 @@ export class MapLocationInputComponent {
             if ( position !== null && this.isFocused ) {
               const { lng, lat } = position
               this.locationText = `${ lng.toFixed( 4 ) }, ${ lat.toFixed( 4 ) }`
-              this.map.addRouteMarker(this.pageKey, this.id, {
+              await this.map.addRouteMarker(this.pageKey, this.id, {
                 lng: lng,
                 lat: lat,
               })

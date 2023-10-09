@@ -37,8 +37,10 @@ export class ActivableCircleComponent {
       if ( event.target.id === this.id ) {
         this.isActive = !this.isActive
         this.isActiveChange.emit( this.isActive )
+        return
       }
     }
+    this.isActive = false
   }
 
   onClick() {}
