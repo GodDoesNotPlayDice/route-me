@@ -3,18 +3,15 @@ import {
 	Option,
 	Some
 } from 'oxide.ts'
-import { Country } from 'src/app/shared/models/country/domain/country'
-import { newCountryRestCountries } from 'src/app/shared/models/country/infrastructure/rest-countries/country'
+import {
+  Country,
+  newCountryFromJson
+} from 'src/app/shared/models/country/domain/country'
 
 export const countryFromJson = ( json: Record<string, any> ): Option<Country> => {
 	try {
 		return Some(
-			newCountryRestCountries( {
-				name: json[ 'name' ],
-				flags: json[ 'flags' ],
-				cca2: json[ 'cca2' ],
-				idd: json[ 'idd' ]
-			} )
+			newCountryFromJson( json )
 		)
 	}
 	catch ( e ) {

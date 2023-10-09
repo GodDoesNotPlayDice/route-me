@@ -18,6 +18,7 @@ import {
 	CountryNumberCodeProps,
 	newCountryNumberCode
 } from 'src/app/shared/models/country/domain/country-number-code'
+import { newCountryRestCountries } from 'src/app/shared/models/country/infrastructure/rest-countries/country'
 
 export interface Country {
 	flag: CountryFlagUrl
@@ -33,7 +34,10 @@ export interface CountryProps {
 	number: CountryNumberCodeProps
 }
 
-//TODO: revisar si se puede usar aqui implementacion
+export const newCountryFromJson = ( json: Record<string, any> ): Country => {
+  return newCountryRestCountries(json)
+}
+
 export const newCountry = ( props: CountryProps ): Country => {
 	return{
 		flag  : newCountryFlagUrl( props.flag ),

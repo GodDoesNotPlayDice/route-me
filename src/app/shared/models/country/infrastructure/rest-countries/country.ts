@@ -14,21 +14,21 @@ export interface CountryRestCountries {
 	idd: Idd;
 }
 
-export const newCountryRestCountries = ( props: CountryRestCountries ): Country => {
-	return{
+export const newCountryRestCountries = ( json: Record<string, any> ): Country => {
+	return {
 		flag  : newCountryFlagUrl( {
-			png: props.flags.png
+			png: json[ 'flags' ][ 'png' ]
 		} ),
 		name  : newCountryName( {
-			common  : props.name.common,
-			official: props.name.official
+			common  : json[ 'name' ][ 'common' ],
+			official: json[ 'name' ][ 'official' ]
 		} ),
 		code  : newCountryNameCode( {
-			value: props.cca2
+			value: json[ 'cca2' ]
 		} ),
 		number: newCountryNumberCode( {
-			root    : props.idd.root,
-			suffixes: props.idd.suffixes
+			root    : json[ 'idd' ][ 'root' ],
+			suffixes: json[ 'idd' ][ 'suffixes' ]
 		} )
 	}
 }
