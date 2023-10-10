@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
 import {
-	Component,
-	ViewChild
+  Component,
+  OnInit,
+  ViewChild
 } from '@angular/core'
 import {
 	FormGroup,
@@ -38,7 +39,7 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 		CommonModule
 	]
 } )
-export class Step1Page implements ViewDidEnter {
+export class Step1Page implements ViewDidEnter{
 
 	constructor( private store: Store<AppState>,
 		private router: Router,

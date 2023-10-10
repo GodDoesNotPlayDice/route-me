@@ -1,10 +1,17 @@
 import { CommonModule } from '@angular/common'
-import { Component } from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
 import {
   IonicModule,
   ModalController
 } from '@ionic/angular'
 import { SearchModalComponent } from 'src/app/shared/components/search-modal/search-modal.component'
+import { Position } from 'src/package/location-api/domain/models/position'
+import { Street } from 'src/package/street-api/domain/models/street'
 
 @Component( {
   standalone : true,
@@ -20,6 +27,11 @@ import { SearchModalComponent } from 'src/app/shared/components/search-modal/sea
 export class SearchLauncherComponent {
   constructor( private modalCtrl: ModalController ) {}
 
+  streetSearch: Street | undefined = undefined
+  @Input() value: string           = ''
+  @Output() onStreetPosition: EventEmitter<Street> = new EventEmitter<Street>()
+
+
   async openModal() {
     const modal = await this.modalCtrl.create( {
       component: SearchModalComponent
@@ -27,5 +39,11 @@ export class SearchLauncherComponent {
     await modal.present()
 
     const { data, role } = await modal.onWillDismiss()
+    if ( data === undefined ) {
+      return
+    }
+    this.streetSearch     = data
+    this.value = this.streetSearch!.place_name
+    this.onStreetPosition.emit( this.streetSearch!)
   }
 }

@@ -13,7 +13,11 @@ export class StreetService {
 
   constructor(private streetRepository : StreetRepository) { }
 
-  async getStreet(searchTerm : string, center : Position) : Promise<Result<StreetsData, string>> {
-    return this.streetRepository.getStreet(searchTerm, center)
+  async getStreetByTerm(searchTerm : string, center : Position) : Promise<Result<StreetsData, string>> {
+    return this.streetRepository.getStreetsByTerm(searchTerm, center)
+  }
+
+  async getStreetsByPosition( center: Position ) : Promise<Result<StreetsData, string>>{
+    return this.streetRepository.getStreetsByPosition(center)
   }
 }

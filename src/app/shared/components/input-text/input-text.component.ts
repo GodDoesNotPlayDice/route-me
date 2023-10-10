@@ -100,6 +100,8 @@ export class InputTextComponent {
   } )
 
   @Input() type: InputTextType = 'text'
+  @Input() focusLabel: boolean = false
+  @Input() value: string = ''
   @Input({required:true}) placeholder: string
 
   public input( $event: Event ): void {

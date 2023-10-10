@@ -9,7 +9,7 @@ import {
   StreetsData
 } from 'src/package/street-api/domain/models/street'
 
-export const streetFromJson = ( json: Record<string, any> ): Result<StreetsData, string> => {
+export const streetsDataFromJson = ( json: Record<string, any> ): Result<StreetsData, string> => {
   try {
     return Ok(
       newStreetsDataFromJson(json)

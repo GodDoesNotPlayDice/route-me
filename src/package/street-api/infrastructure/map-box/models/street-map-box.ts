@@ -23,7 +23,6 @@ export const newStreetMapBox = ( json: Record<string, any> ): Street => {
     place_name: json['place_name'],
     text: json['text']
   })
-
 }
 
 export const newStreetsDataMapBox = ( json: Record<string, any> ): StreetsData => {

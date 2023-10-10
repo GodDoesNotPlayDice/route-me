@@ -10,10 +10,14 @@ import {
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 import { ActivableCircleComponent } from 'src/app/shared/components/activable-circle/activable-circle.component'
+import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
+import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 import { FocusBlurDirective } from 'src/app/shared/directives/focus-blur.directive'
 import { SelectInputDirective } from 'src/app/shared/directives/select-input.directive'
 import { MapService } from 'src/app/shared/services/map.service'
+import { StreetService } from 'src/app/shared/services/street.service'
 import { Position } from 'src/package/location-api/domain/models/position'
+import { Street } from 'src/package/street-api/domain/models/street'
 import { ulid } from 'ulidx'
 
 @Component( {
@@ -26,7 +30,8 @@ import { ulid } from 'ulidx'
     ReactiveFormsModule,
     FocusBlurDirective,
     ActivableCircleComponent,
-    SelectInputDirective
+    SelectInputDirective,
+    SearchLauncherComponent
   ],
   styleUrls  : [ './map-location-input.component.scss' ]
 } )
@@ -41,25 +46,30 @@ export class MapLocationInputComponent {
 
   @ViewChild( 'inputLocation' ) input!: HTMLInputElement
 
-  constructor( private map: MapService ) {
+  constructor( private map: MapService,
+    private steetService: StreetService ) {
     this.map.markerClick$.pipe()
         .subscribe(
           async ( position ) => {
             if ( position !== null && this.isFocused ) {
-              const { lng, lat } = position
-              this.locationText = `${ lng.toFixed( 4 ) }, ${ lat.toFixed( 4 ) }`
-              await this.map.addRouteMarker(this.pageKey, this.id, {
-                lng: lng,
-                lat: lat,
-              })
-              this.mapLocationControl.patchValue( position )
+              const result = await this.steetService.getStreetsByPosition( position)
+              if ( result.isErr() ) {
+                console.log( 'location input, street position error' )
+                console.log( result.unwrapErr() )
+                return
+              }
+              const street = result.unwrap().streets[0]
+              this.locationText = street.place_name
+              await this.map.addRouteMarker( this.pageKey, this.id, position )
+              this.mapLocationControl.patchValue( street )
               this.mapLocationControl.markAllAsTouched()
               this.mapLocationControl.updateValueAndValidity()
               this.isFocused = false
             }
           } )
   }
-  readonly mapLocationControl      = new FormControl<Position | null>( null, control => {
+
+  readonly mapLocationControl      = new FormControl<Street | null>( null, control => {
     if ( this.locationText.length  === 0 && control.value === null ) {
       return { required: true }
     }
@@ -68,5 +78,13 @@ export class MapLocationInputComponent {
 
   onActiveChange( $event: boolean ): void {
     this.isFocused = $event
+  }
+
+  async onStreetPosition( $event: Street ): Promise<void> {
+    await this.map.addRouteMarker( this.pageKey, this.id, $event.center )
+    this.mapLocationControl.patchValue( $event )
+    this.mapLocationControl.markAllAsTouched()
+    this.mapLocationControl.updateValueAndValidity()
+    this.isFocused = false
   }
 }

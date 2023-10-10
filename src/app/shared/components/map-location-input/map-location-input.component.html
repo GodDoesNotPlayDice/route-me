@@ -1,40 +1,28 @@
 <div>
-  <div class="flex w-full">
-  <div class="relative z-0 basis-11/12">
-    <label class="font-gotham text-lg"
-      [ngClass]="{
+  <label class="font-gotham text-lg"
+    [ngClass]="{
            'peer-focus:text-threateningRed-300': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
            'peer-focus:text-indigoBlack-300' : mapLocationControl.valid || !mapLocationControl.touched,
            'text-threateningRed-500': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
            'text-gray-500' : mapLocationControl.valid || !mapLocationControl.touched
            }">
-      {{placeholder}}
-    </label>
-    <input [formControl]="mapLocationControl"
-      [selectInput]="true"
-      #inputLocation
-      type="text"
-      class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
-      [value]="locationText"
-      [ngClass]="{
-           'text-threateningRed-900': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
-           'text-gray-900' : mapLocationControl.valid || !mapLocationControl.touched,
-           'border-threateningRed-300': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
-           'border-gray-300' : mapLocationControl.valid || !mapLocationControl.touched,
-           'focus:border-threateningRed-300': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
-           'focus:border-indigoBlack-300' : mapLocationControl.valid || !mapLocationControl.touched
-           }"
-      placeholder=""
-      required/>
-  </div>
-    <div class="basis-1/12 flex items-center justify-center">
+    {{placeholder}}
+  </label>
+  <div class="flex w-full gap-2 justify-center items-center">
+    <div class="relative z-0 basis-11/12">
+      <app-search-launcher
+        [value]="locationText"
+        (onStreetPosition)="onStreetPosition($event)"
+      ></app-search-launcher>
+    </div>
+    <div class="basis-1/12 flex">
       <app-activable-circle
         [isActive]="isFocused"
         (isActiveChange)="onActiveChange($event)"
       ></app-activable-circle>
     </div>
   </div>
-  <div class="mt-2 text-xs text-threateningRed-500 h-8 font-gotham">
+  <div class="text-xs text-threateningRed-500 h-8 font-gotham">
     <div *ngIf="mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched)">
       <div *ngIf="mapLocationControl.errors?.['required']">
         {{placeholder}} es requerido

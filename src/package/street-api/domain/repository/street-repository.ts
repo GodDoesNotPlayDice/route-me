@@ -5,5 +5,6 @@ import {
 } from 'src/package/street-api/domain/models/street'
 
 export abstract class StreetRepository {
-  abstract getStreet( searchTerm: string, center: Position ) : Promise<Result<StreetsData, string>>
+  abstract getStreetsByTerm( searchTerm: string, center: Position ) : Promise<Result<StreetsData, string>>
+  abstract getStreetsByPosition( center: Position ) : Promise<Result<StreetsData, string>>
 }
