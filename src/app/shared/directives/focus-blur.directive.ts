@@ -11,11 +11,11 @@ export class FocusBlurDirective {
 
   ngOnChanges() {
     if (this.isFocused) {
-      this.renderer.addClass(this.el.nativeElement, 'focused');
-      this.el.nativeElement.focus();
+      this.renderer.addClass(this.el.nativeElement, 'focused')
+      this.el.nativeElement.focus()
     } else {
-      this.renderer.removeClass(this.el.nativeElement, 'focused');
-      this.el.nativeElement.blur();
+      this.renderer.removeClass(this.el.nativeElement, 'focused')
+      this.el.nativeElement.blur()
     }
   }
 }
