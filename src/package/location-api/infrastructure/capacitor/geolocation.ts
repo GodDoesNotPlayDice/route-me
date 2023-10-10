@@ -14,17 +14,19 @@ import {
   LocationRepository,
   WatchPositionCallback
 } from 'src/package/location-api/domain/repository/location-repository'
+import { ulid } from 'ulidx'
 
 export class Geolocation implements LocationRepository {
   async checkPermissions(): Promise<PermissionState> {
-    const permission = await CapacitorGeolocation.checkPermissions()
-    return this.convertPermissions(permission)
+    CapacitorGeolocation.checkPermissions()
+    return this.convertPermissions(PermissionState.Prompt)
   }
 
   endWatch( id: string ): Promise<void> {
-    return CapacitorGeolocation.clearWatch( {
+    CapacitorGeolocation.clearWatch( {
       id: id
     } )
+    return Promise.resolve()
   }
 
   async getLastPosition(): Promise<Position> {
@@ -36,12 +38,12 @@ export class Geolocation implements LocationRepository {
   }
 
   async requestPermissions(): Promise<PermissionState> {
-    const permission = await CapacitorGeolocation.requestPermissions()
-    return this.convertPermissions(permission)
+    CapacitorGeolocation.requestPermissions()
+    return this.convertPermissions(PermissionState.Prompt)
   }
 
   async startWatch( callback: WatchPositionCallback ): Promise<string> {
-    return await CapacitorGeolocation.watchPosition( {}, ( position, err ) => {
+    CapacitorGeolocation.watchPosition( {}, ( position, err ) => {
       console.log('location capacitor', position)
       let pos : Position | null = null
       if ( position !== null ){
@@ -52,19 +54,22 @@ export class Geolocation implements LocationRepository {
       }
       callback(pos, err)
     } )
+    return Promise.resolve(ulid())
   }
 
-  convertPermissions(permission : CapacitorPermission): PermissionState {
-    let p = 'Denied'
-    if ( permission.location === 'prompt' || permission.location === 'prompt-with-rationale' ){
-      p = 'Prompt'
-    }
-    else if ( permission.location === 'granted' ){
-      p = 'Granted'
-    }
-    return newPermissionState({
-      value: p
-    })
+  // convertPermissions(permission : CapacitorPermission): PermissionState {
+  convertPermissions(permission : PermissionState): PermissionState {
+      return permission
+    // let p = 'Denied'
+    // if ( perm.location === 'prompt' || perm.location === 'prompt-with-rationale' ){
+    //   p = 'Prompt'
+    // }
+    // else if ( perm.location === 'granted' ){
+    //   p = 'Granted'
+    // }
+    // return newPermissionState({
+    //   value: p
+    // })
   }
 }
 
