@@ -40,7 +40,11 @@ export class ActivableCircleComponent implements OnInit, OnChanges{
   @Output() isActiveChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
   public ngOnInit(): void {
+    console.log('this.color')
+    console.log(this.color)
     this.iconName = this.iconNames[0]
+    this.isActive = false
+    //TODO: problema de color
   }
 
   @HostListener( 'document:click', [ '$event' ] )
