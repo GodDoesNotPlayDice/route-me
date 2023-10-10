@@ -11,10 +11,10 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 			return
 		}
 		const routeKey = `${ pageKey }-route`
-		if ( mapEntry.isSourceLoaded( routeKey ) ) {
-			mapEntry.removeSource( routeKey )
-			mapEntry.removeLayer( routeKey )
-		}
+		// if ( mapEntry.isSourceLoaded( routeKey ) ) {
+		// 	mapEntry.removeSource( routeKey )
+		// 	mapEntry.removeLayer( routeKey )
+		// }
 		mapEntry.addSource( routeKey, {
 			type: 'geojson',
 			data: {

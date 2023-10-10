@@ -56,9 +56,9 @@ export class PublishPage implements ViewDidEnter {
       date : this.dateInput.dateControl,
       start: this.salidaInput.mapLocationControl,
       end  : this.inicioInput.mapLocationControl
-    }, async ( control ) => {
+    }, ( control ) => {
       if ( control.value.start !== null && control.value.end !== null ) {
-        await this.addRoute()
+        this.addRoute()
       }
       return null
     } )
