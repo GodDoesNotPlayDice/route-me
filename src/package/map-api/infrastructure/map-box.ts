@@ -39,7 +39,7 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	}
 
 	async addRouteMarker( pageKey: string, locationKey: string,
-		center: Position ): Promise<void> {
+		center: Position, color : string ): Promise<void> {
 		if ( !this.routeMarkers.has( pageKey ) ) {
 			this.routeMarkers.set( pageKey, new Map() )
 		}
@@ -55,7 +55,7 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 			return
 		}
 
-		const newLocationMarker = new mapboxgl.Marker( { color: 'red' } )
+		const newLocationMarker = new mapboxgl.Marker( { color: color } )
 			.setLngLat( [ center.lng, center.lat ] )
 			.addTo( mapEntry )
 		pageMarkers.set( locationKey, newLocationMarker )

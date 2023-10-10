@@ -17,6 +17,8 @@
     </div>
     <div class="basis-1/12 flex">
       <app-activable-circle
+        [color]="color"
+        [iconNames]="['edit_location','location_on']"
         [isActive]="isFocused"
         (isActiveChange)="onActiveChange($event)"
       ></app-activable-circle>

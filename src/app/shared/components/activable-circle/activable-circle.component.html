@@ -1,8 +1,7 @@
-<div (click)="onClick()"
+  <mat-icon
+  (click)="onClick()"
   [id]="id"
-  class="w-8 h-8 rounded-full"
-  [ngClass]="{
-           'bg-red-500': !isActive,
-           'bg-blue-500': isActive,
-           }"
-></div>
+  [ngClass]="[
+  isActive ? 'text-green-500' : 'text-'+color+'-500'
+   ]"
+    aria-hidden="false" class="scale-150 fill-current" aria-label="icon" [fontIcon]="iconName"></mat-icon>

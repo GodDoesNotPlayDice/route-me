@@ -49,10 +49,10 @@ export class MapService implements OnDestroy {
   public markerClick$: Observable<Position | null> = this.markerClick.asObservable()
 
   async addRouteMarker( pageKey: string, locationKey: string,
-    center: Position ): Promise<void>
+    center: Position, color : string ): Promise<void>
   {
     return await this.mapRepository.addRouteMarker( pageKey, locationKey,
-      center )
+      center, color )
   }
 
   async init( key: string, divElement: HTMLDivElement ) {

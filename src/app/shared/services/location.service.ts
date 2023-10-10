@@ -13,6 +13,7 @@ export class LocationService {
 	constructor(
     private locationRepository: LocationRepository
   ) {
+	this.locationRepository.requestPermissions()
     this.locationRepository.startWatch( ( position, err ) => {
       console.log('location service', position)
 			if ( err !== undefined ) {

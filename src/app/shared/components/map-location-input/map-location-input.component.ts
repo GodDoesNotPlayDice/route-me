@@ -10,13 +10,11 @@ import {
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 import { ActivableCircleComponent } from 'src/app/shared/components/activable-circle/activable-circle.component'
-import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 import { FocusBlurDirective } from 'src/app/shared/directives/focus-blur.directive'
 import { SelectInputDirective } from 'src/app/shared/directives/select-input.directive'
 import { MapService } from 'src/app/shared/services/map.service'
 import { StreetService } from 'src/app/shared/services/street.service'
-import { Position } from 'src/package/location-api/domain/models/position'
 import { Street } from 'src/package/street-api/domain/models/street'
 import { ulid } from 'ulidx'
 
@@ -39,6 +37,7 @@ export class MapLocationInputComponent {
 
   @Input({required:true}) placeholder: string
   @Input({required:true}) pageKey: string
+  @Input({required:true}) color: string
   isFocused: boolean = false
   locationText: string = ''
 
@@ -60,7 +59,7 @@ export class MapLocationInputComponent {
               }
               const street = result.unwrap().streets[0]
               this.locationText = street.place_name
-              await this.map.addRouteMarker( this.pageKey, this.id, position )
+              await this.map.addRouteMarker( this.pageKey, this.id, position, this.color )
               this.mapLocationControl.patchValue( street )
               this.mapLocationControl.markAllAsTouched()
               this.mapLocationControl.updateValueAndValidity()
@@ -81,7 +80,7 @@ export class MapLocationInputComponent {
   }
 
   async onStreetPosition( $event: Street ): Promise<void> {
-    await this.map.addRouteMarker( this.pageKey, this.id, $event.center )
+    await this.map.addRouteMarker( this.pageKey, this.id, $event.center, this.color)
     this.mapLocationControl.patchValue( $event )
     this.mapLocationControl.markAllAsTouched()
     this.mapLocationControl.updateValueAndValidity()
