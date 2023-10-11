@@ -1,11 +1,17 @@
-<ion-content [fullscreen]="true">
-  <div class="flex flex-col gap-4">
-    <div class="p-2 w-full gap-3 mt-6 mx-auto flex flex-col">
-      <app-search-input #search></app-search-input>
-      <div>
-        inputs
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="flex flex-col pt-4 px-4">
+      <app-search-input></app-search-input>
+      <div class="w-full flex gap-4">
+        <app-input-text placeholder="Fecha inicio"></app-input-text>
+        <app-input-text placeholder="Fecha termino"></app-input-text>
       </div>
-      <app-google-map></app-google-map>
     </div>
-  </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div id="smap"
+    #smap
+    class="map"
+    tabindex="0"></div>
 </ion-content>

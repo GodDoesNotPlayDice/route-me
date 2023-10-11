@@ -1,58 +1,106 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  OnInit
+  ViewChild
 } from '@angular/core'
-import { FormsModule } from '@angular/forms'
-import { IonicModule } from '@ionic/angular'
-import { Store } from '@ngrx/store'
-import { Observable } from 'rxjs'
-import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
-import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
-import { AppState } from 'src/app/state/app.state'
-import { notifyStep } from 'src/app/state/stepper/step.actions'
 import {
-  selectCurrentStep,
-  selectMaxStep,
-  selectStepRegister
-} from 'src/app/state/stepper/step.selectors'
-import { StepState } from 'src/app/state/stepper/step.state'
+  FormGroup,
+  FormsModule
+} from '@angular/forms'
+import { Router } from '@angular/router'
+import {
+  IonicModule,
+  ViewDidEnter
+} from '@ionic/angular'
+import { Store } from '@ngrx/store'
+import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { InputAreaComponent } from 'src/app/shared/components/input-area/input-area.component'
+import { MultipleSelectorInputComponent } from 'src/app/shared/components/multiple-selector-input/multiple-selector-input.component'
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
+import {
+  MultipleSelectorData,
+  newMultipleSelectorData
+} from 'src/app/shared/models/multiple-selector-data'
+import { AuthService } from 'src/app/shared/services/auth.service'
+import { UserPreferenceService } from 'src/app/shared/services/user-preference.service'
+import { AppState } from 'src/app/shared/state/app.state'
+import {
+  clearStep,
+  notifyStep
+} from 'src/app/shared/state/stepper/step.actions'
+import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
+import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 
 @Component( {
   standalone : true,
   selector   : 'app-step3',
   templateUrl: './step3.page.html',
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     StepperComponent,
+    InputAreaComponent,
+    MultipleSelectorInputComponent,
     FilledButtonComponent,
     FormsModule
   ],
   styleUrls  : [ './step3.page.scss' ]
 } )
-export class Step3Page implements OnInit {
+export class Step3Page implements ViewDidEnter {
 
-  constructor( private store: Store<AppState> ) {
-    this.registerStep$ = this.store.select( selectStepRegister )
-    this.currentStep$  = this.store.select( selectCurrentStep )
-    this.maxStep$      = this.store.select( selectMaxStep )
+  constructor( private store: Store<AppState>, private router: Router,
+    private userPreferenceService: UserPreferenceService,
+    private auth: AuthService )
+  {
+    //TODO: colocar con observable despues, como en country service
+    this.preferences = this.userPreferenceService.getUserPreferences()
+                           .map(
+                             ( preference ) => newMultipleSelectorData( {
+                               id      : preference.id.value,
+                               name    : preference.name.value,
+                               icon    : preference.icon.value,
+                               selected: false
+                             } ) )
   }
 
-  registerStep$: Observable<StepState>
-  currentStep$: Observable<number>
-  maxStep$: Observable<number>
-  canFinish: boolean = false
+  @ViewChild( 'area' ) areaInput !: InputAreaComponent
+  @ViewChild(
+    'preference' ) preferenceInput !: MultipleSelectorInputComponent
 
-  public submit( $event: SubmitEvent ): void {
+  formGroup!: FormGroup
+
+  readonly preferences: MultipleSelectorData[] = []
+
+  ionViewDidEnter() {
+    this.formGroup = new FormGroup( [
+      this.areaInput.textControl,
+      this.preferenceInput.multipleSelectorControl
+    ] )
+  }
+
+  async submit( $event: SubmitEvent ) {
+    $event.preventDefault()
+    this.formGroup.updateValueAndValidity()
+    this.formGroup.markAllAsTouched()
+
+    if ( !this.formGroup.valid ) {
+      return
+    }
+
     this.store.dispatch( notifyStep() )
-  }
 
-  public ngOnInit(): void {
-    this.registerStep$.subscribe( ( step ) => {
-      if ( step.maxStep - 1 === step.currentStep ) {
-        this.canFinish = true
-      }
+    await this.auth.updatePassenger( {
+      preferences: this.preferenceInput.multipleSelectorControl.value!.map(
+        ( preference ) => newPreferenceID( {
+          value: preference
+        } ) ),
+      description: newPassengerDescription( {
+        value: this.areaInput.textControl.value!
+      } )
     } )
+
+    this.store.dispatch( clearStep() )
+
+    await this.router.navigate( [ '/tabs/home' ] )
   }
 }

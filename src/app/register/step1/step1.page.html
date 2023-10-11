@@ -10,40 +10,44 @@
 <ion-content [fullscreen]="true">
   <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col gap-3">
     <app-stepper></app-stepper>
-    <div class="flex justify-evenly items-center">
-      <app-outlined-button contentText="Facebook">
-        <ion-icon name="logo-facebook"
-          class="mr-2"></ion-icon>
-      </app-outlined-button>
-      <app-outlined-button contentText="Google">
-        <ion-icon name="logo-google"
-          class="mr-2"></ion-icon>
-      </app-outlined-button>
-    </div>
-    <div class="flex justify-center items-center gap-2">
-      <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-      <div class="text-sm font-gotham text-indigoBlack-500">O tambien</div>
-      <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-    </div>
+<!--    <div class="flex justify-evenly items-center">-->
+<!--      <app-outlined-button contentText="Facebook">-->
+<!--        <ion-icon name="logo-facebook"-->
+<!--          class="mr-2"></ion-icon>-->
+<!--      </app-outlined-button>-->
+<!--      <app-outlined-button contentText="Google">-->
+<!--        <ion-icon name="logo-google"-->
+<!--          class="mr-2"></ion-icon>-->
+<!--      </app-outlined-button>-->
+<!--    </div>-->
+<!--    <div class="flex justify-center items-center gap-2">-->
+<!--      <div class="w-1/4 h-px bg-indigoBlack-500"></div>-->
+<!--      <div class="text-sm font-gotham text-indigoBlack-500">O tambien</div>-->
+<!--      <div class="w-1/4 h-px bg-indigoBlack-500"></div>-->
+<!--    </div>-->
     <form (ngSubmit)="submit($event)"
       class="flex flex-col gap-4">
-      <app-input-text #user placeholder="Email"
+      <app-input-text #user
+        placeholder="Email"
         [type]="'email'"></app-input-text>
-      <app-input-text #password placeholder="Password"
+      <app-input-text #password
+        placeholder="Password"
         [type]="'password'"></app-input-text>
-      <app-input-text #confirmpassword placeholder="Confirmar Password"
+      <app-input-text #confirmpassword
+        placeholder="Confirmar Password"
         [type]="'password'"></app-input-text>
-      <div *ngIf="checkerGroup" class="text-xs text-threateningRed-500 h-4 font-gotham">
+      <div *ngIf="checkerGroup"
+        class="text-xs text-threateningRed-500 h-4 font-gotham">
         <div *ngIf="checkerGroup?.invalid && (checkerGroup?.dirty || checkerGroup?.touched)">
           <div *ngIf="checkerGroup?.errors?.['password']">
             Las contraseñas no coinciden
           </div>
         </div>
       </div>
-      <app-checkbox #check
+      <app-checkbox-input #check
         errorText="Debes aceptar los terminos y condiciones"
         [activeError]="true"
-        contentText="Aceptar terminos y condiciones"></app-checkbox>
+        contentText="Aceptar terminos y condiciones"></app-checkbox-input>
       <app-filled-button contentText="Continuar"></app-filled-button>
     </form>
   </div>

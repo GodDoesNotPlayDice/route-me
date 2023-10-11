@@ -1,14 +1,36 @@
 <div>
-<mat-form-field class="w-full">
-  <mat-label>{{label}}</mat-label>
-  <input
-    [max]="dateNowDesc"
-    [min]="dateNowAsc"
-    placeholder="MM/DD/YYYY" (dateInput)="onDate($event)" matInput [matDatepicker]="picker">
-<!--  <mat-hint>MM/DD/YYYY</mat-hint>-->
-  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-form-field>
+  <div class="flex w-full gap-3">
+    <mat-form-field>
+      <mat-label>{{label}}</mat-label>
+      <input
+        [max]="dateNowDesc"
+        [min]="dateNowAsc"
+        placeholder="MM/DD/YYYY"
+        (dateInput)="onDate($event)"
+        matInput
+        #dateInput
+        [value]="dateSelected"
+        [matDatepicker]="picker">
+      <mat-datepicker-toggle matIconSuffix
+        [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <div class="flex flex-col">
+      <div class="basis-2/3 flex items-center">
+      <ion-datetime-button
+        datetime="datetime"></ion-datetime-button>
+      </div>
+    </div>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          [value]="timeSelected"
+          locale="es-ES"
+          (ionChange)="onTime($event)"
+          id="datetime" presentation="time"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </div>
   <div class="mt-2 text-xs text-threateningRed-500 font-gotham">
     <div *ngIf="dateControl.invalid && (dateControl.dirty || dateControl.touched)">
       <div *ngIf="dateControl.errors?.['required']">
@@ -16,6 +38,9 @@
       </div>
       <div *ngIf="dateControl.errors?.['invalid']">
         Debes tener al menos 18 años
+      </div>
+      <div *ngIf="dateControl.errors?.['limit']">
+        La hora debe ser almenos 2 minutos mayor a la actual
       </div>
     </div>
   </div>

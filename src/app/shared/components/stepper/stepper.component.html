@@ -1,9 +1,15 @@
 <div class="my-2 flex justify-center items-center gap-2">
   <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-  <app-stepper-item [currentPage]="currentPage" [routerLink]="['/register/step1']" [step]="1"></app-stepper-item>
+  <app-stepper-item [currentStep]="currentStep"
+    [maxStep]="maxStep"
+    [step]="1"></app-stepper-item>
   <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-  <app-stepper-item [currentPage]="currentPage" [routerLink]="['/register/step2']" [step]="2"></app-stepper-item>
+  <app-stepper-item [currentStep]="currentStep"
+    [maxStep]="maxStep"
+    [step]="2"></app-stepper-item>
   <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-  <app-stepper-item [currentPage]="currentPage" [routerLink]="['/register/step4']" [step]="3"></app-stepper-item>
+  <app-stepper-item [currentStep]="currentStep"
+    [maxStep]="maxStep"
+    [step]="3"></app-stepper-item>
   <div class="w-1/4 h-px bg-indigoBlack-500"></div>
 </div>

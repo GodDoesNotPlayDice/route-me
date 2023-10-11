@@ -15,17 +15,18 @@ import { InputTextComponent } from 'src/app/shared/components/input-text/input-t
   selector   : 'app-reset-password',
   templateUrl: './reset-password.page.html',
   styleUrls  : [ './reset-password.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     InputTextComponent,
     FilledButtonComponent
   ]
-})
-export class ResetPasswordPage implements ViewDidEnter{
+} )
+export class ResetPasswordPage implements ViewDidEnter {
 
-  @ViewChild('pw1') password1Input!: InputTextComponent
-  @ViewChild('pw2') password2Input!: InputTextComponent
+  @ViewChild( 'pw1' ) password1Input!: InputTextComponent
+  @ViewChild( 'pw2' ) password2Input!: InputTextComponent
+
   // formGroup! : FormGroup
 
   public ionViewDidEnter(): void {

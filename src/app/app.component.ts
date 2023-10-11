@@ -1,20 +1,20 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  EnvironmentInjector,
-  inject,
   OnInit
 } from '@angular/core'
 import {
-	NavigationEnd,
-	Router
+  NavigationEnd,
+  Router
 } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { CountryPhoneCodeService } from 'src/app/services/country-phone-code/country-phone-code.service'
-import { UrlService } from 'src/app/services/url/url.service'
+import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
+import { UrlService } from 'src/app/shared/services/url.service'
 import {
-	Input,
-	initTE
+  Dropdown,
+  initTE,
+  Input,
+  Ripple
 } from 'tw-elements'
 
 @Component( {
@@ -28,20 +28,19 @@ import {
   styleUrls  : [ 'app.component.scss' ]
 } )
 export class AppComponent implements OnInit {
-  public environmentInjector = inject(EnvironmentInjector);
 
-	constructor( private router: Router,
-		private countryPhoneCode: CountryPhoneCodeService,
-		private urlService : UrlService)
-	{}
+  constructor( private router: Router,
+    private countryPhoneCode: CountryPhoneCodeService,
+    private urlService: UrlService )
+  {}
 
-	ngOnInit() {
-		this.router.events.subscribe((val) => {
-			if(val instanceof NavigationEnd){
-				this.urlService.setPreviousUrl(val.url)
-			}
-		})
+  ngOnInit() {
+    this.router.events.subscribe( ( val ) => {
+      if ( val instanceof NavigationEnd ) {
+        this.urlService.setPreviousUrl( val.url )
+      }
+    } )
 
-		initTE( { Input } )
-	}
+    initTE( { Input, Dropdown, Ripple } )
+  }
 }
