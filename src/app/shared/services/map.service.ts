@@ -10,7 +10,6 @@ import {
 } from 'oxide.ts'
 import {
   BehaviorSubject,
-  debounce,
   Observable,
   Subscription
 } from 'rxjs'
@@ -48,8 +47,13 @@ export class MapService implements OnDestroy {
 
   public markerClick$: Observable<Position | null> = this.markerClick.asObservable()
 
-  async addRouteMarker( pageKey: string, locationKey: string,
-    center: Position, color : string ): Promise<void>
+
+  async removeRouteMarker(pageKey: string, locationKey: string): Promise<void> {
+    return await this.mapRepository.removeRouteMarker( pageKey, locationKey )
+  }
+
+    async addRouteMarker( pageKey: string, locationKey: string,
+    center: Position, color: string ): Promise<void>
   {
     return await this.mapRepository.addRouteMarker( pageKey, locationKey,
       center, color )
@@ -79,6 +83,10 @@ export class MapService implements OnDestroy {
     return this.mapRepository.addUserMarker( pageKey, center, map )
   }
 
+  async removeRouteMap( pageKey: string ): Promise<void> {
+    return await this.mapRepository.removeRouteMap( pageKey )
+  }
+
   async addRouteMap( pageKey: string, inicio: Position,
     final: Position ): Promise<Result<boolean, string>>
   {
@@ -89,6 +97,6 @@ export class MapService implements OnDestroy {
     }
     await this.mapRepository.addRouteMap( pageKey,
       result.unwrap().coordinates )
-    return Ok(true)
+    return Ok( true )
   }
 }
