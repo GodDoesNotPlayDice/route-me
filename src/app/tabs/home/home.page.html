@@ -1,12 +1,11 @@
 <ion-content [fullscreen]="true">
   <div class="flex flex-col gap-4">
     <div class="p-2 w-full gap-3 mt-6 mx-auto flex flex-col">
-      <app-search-bar [routerLink]="['/tabs/search']"></app-search-bar>
+      <app-search-launcher></app-search-launcher>
       <div class="flex gap-2 overflow-x-auto">
-        <app-filter-button></app-filter-button>
-        <app-filter-button></app-filter-button>
-        <app-filter-button></app-filter-button>
-        <app-filter-button></app-filter-button>
+        <div *ngFor="let e of filterButtonList">
+          <app-filter-button [data]="e"></app-filter-button>
+        </div>
       </div>
     </div>
     <div class="p-2.5 w-full mx-auto flex flex-col gap-4">

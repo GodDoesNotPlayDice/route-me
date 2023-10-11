@@ -1,5 +1,15 @@
 <button
   type="submit"
-  class="tracking-wider font-gotham inline-block w-full rounded bg-indigoBlack-500 p-4 text-lg uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] ">
+  (click)="clicked($event)"
+  [disabled]="blocked"
+  class="tracking-wider font-gotham inline-block w-full rounded p-4 text-lg uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0"
+  [ngClass]="{
+  'bg-indigoBlack-500': !blocked,
+  'active:bg-primary-700': !blocked,
+  'active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]': !blocked,
+  'shadow-[0_4px_9px_-4px_#3b71ca]': !blocked,
+  'bg-gray-500': blocked
+  }"
+>
   {{contentText}}
 </button>

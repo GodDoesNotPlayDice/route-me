@@ -1,14 +1,28 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
+import { IonicModule } from '@ionic/angular'
 
-@Component({
-  selector: 'app-filled-button',
+@Component( {
+  standalone : true,
+  selector   : 'app-filled-button',
   templateUrl: './filled-button.component.html',
-  styleUrls: ['./filled-button.component.scss'],
-})
-export class FilledButtonComponent  implements OnInit {
-  @Input() contentText: string = '';
-  constructor() { }
+  styleUrls  : [ './filled-button.component.scss' ],
+  imports    : [
+    IonicModule,
+    CommonModule
+  ]
+} )
+export class FilledButtonComponent {
+  @Input() contentText: string = ''
+  @Input() blocked: boolean    = false
+  @Output() onClick            = new EventEmitter<void>()
 
-  ngOnInit() {}
-
+  public clicked( $event: MouseEvent ): void {
+    this.onClick.emit()
+  }
 }

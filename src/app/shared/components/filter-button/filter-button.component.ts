@@ -1,14 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'
+import {
+  Component,
+  Input
+} from '@angular/core'
+import { IonicModule } from '@ionic/angular'
+import { FilterButtonData } from 'src/app/shared/models/filter-button-data'
 
-@Component({
-  selector: 'app-filter-button',
+@Component( {
+  standalone : true,
+  selector   : 'app-filter-button',
   templateUrl: './filter-button.component.html',
-  styleUrls: ['./filter-button.component.scss'],
-})
-export class FilterButtonComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
+  styleUrls  : [ './filter-button.component.scss' ],
+  imports    : [
+    IonicModule,
+    CommonModule
+  ]
+} )
+export class FilterButtonComponent {
+  @Input({required: true}) data: FilterButtonData
 }

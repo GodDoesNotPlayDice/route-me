@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'
+import {
+  Component
+} from '@angular/core'
+import { IonicModule } from '@ionic/angular'
 
-@Component({
-  selector: 'app-tabs',
+@Component( {
+  standalone : true,
+  selector   : 'app-tabs',
   templateUrl: './tabs.page.html',
-  styleUrls: ['./tabs.page.scss'],
-})
-export class TabsPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  styleUrls  : [ './tabs.page.scss' ],
+  imports    : [
+    IonicModule,
+    CommonModule
+  ]
+} )
+export class TabsPage {
 }

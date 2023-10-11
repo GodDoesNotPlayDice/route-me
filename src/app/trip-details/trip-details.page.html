@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="prevHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Trip Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="flex flex-col gap-4">
+    <div class="bg-gray-300 h-96 bg-[url('https://s2.ppllstatics.com/laverdad/www/multimedia/202209/05/media/cortadas/mapa-murcia-kQgE-U170116261306200E-1248x770@La%20Verdad.jpg')]"></div>
+    <div class="flex justify-center gap-4">
+      <app-adaptative-button text_color="text-white"
+        color="bg-stone-800"
+        color_hover="bg-stone-800"
+        text="Reportar"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
+      <app-adaptative-button text_color="text-white"
+        color="bg-stone-800"
+        color_hover="bg-stone-700"
+        text="Compartir"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
+      <app-adaptative-button text_color="text-white"
+        [routerLink]="['/chat']"
+        color="bg-stone-800"
+        color_hover="bg-stone-800"
+        text="Chat"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
+      <app-adaptative-button text_color="text-white"
+        color="bg-stone-800"
+        color_hover="bg-stone-800"
+        text="Solicitar"
+        size="py-2.5 px-3"
+        font_size="text-sm"></app-adaptative-button>
+    </div>
+    <div class="flex flex-col gap-6 px-5 ">
+      <div class="flex">
+        <div class="basis-1/2">Fecha</div>
+        <div class="basis-1/2">Viernes 25 enero - 07:45</div>
+      </div>
+      <div class="flex">
+        <div class="basis-1/2">Estado</div>
+        <div class="basis-1/2">En planificacion</div>
+      </div>
+      <div class="flex">
+        <div class="basis-1/2">Conductor</div>
+        <div class="basis-1/2">Nombre</div>
+      </div>
+      <div class="flex">
+        <div class="basis-1/2">Inicio</div>
+        <div class="basis-1/2">Direccion Inicio</div>
+      </div>
+      <div class="flex">
+        <div class="basis-1/2">Direccion Fin</div>
+        <div class="basis-1/2">Direccion Destino</div>
+      </div>
+      <div class="flex flex-col">
+        <div>Pasajeros</div>
+        <app-divider></app-divider>
+        <div class="flex flex-col gap-4">
+          <app-item-list></app-item-list>
+        </div>
+        <div class="h-4"></div>
+      </div>
+    </div>
+  </div>
+  <!--  <app-adaptative-button text_color="text-white" color="bg-stone-800" color_hover="bg-stone-800" text="Success" size="px-4 py-2" font_size="text-xl"></app-adaptative-button>-->
+</ion-content>

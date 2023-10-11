@@ -1,27 +1,35 @@
-import {Component, Input} from '@angular/core';
+import { CommonModule } from '@angular/common'
+import {
+  Component,
+  Input
+} from '@angular/core'
+import { Router } from '@angular/router'
+import { IonicModule } from '@ionic/angular'
+import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
+import { DriverCardInfo } from 'src/app/shared/models/driver-card-info'
 
-@Component({
-  selector: 'app-drive-card',
+@Component( {
+  standalone : true,
+  selector   : 'app-drive-card',
   templateUrl: './drive-card.component.html',
-  styleUrls: ['./drive-card.component.scss'],
-})
+  styleUrls  : [ './drive-card.component.scss' ],
+  imports    : [
+    IonicModule,
+    CommonModule,
+    AvatarComponent
+  ]
+} )
 export class DriveCardComponent {
 
-  constructor() { }
+  constructor( private router: Router ) { }
 
-  @Input() info! : DriverCardInfo
+  @Input({required: true}) info: DriverCardInfo
+
+  async buttonClick( $event: MouseEvent ) {
+    $event.preventDefault()
+    await this.router.navigate( [ `/trip-details/` ],
+      { state: { ...this.info } } )
+  }
 }
 
-export interface Avatar {
-  name: string,
-  url: string
-}
 
-export interface DriverCardInfo {
-  driverAvatar : Avatar,
-  cost : number,
-  date : Date,
-  startLocation : string,
-  endLocation : string,
-  passengerAvatars : Avatar[]
-}

@@ -8,5 +8,27 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
+  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
+    <app-stepper></app-stepper>
+    <form (ngSubmit)="submit($event)"
+      class="flex flex-col gap-5">
+      <div class="flex flex-col items-center">
+        <ion-icon class="w-40 h-40"
+          name="person-circle-outline"></ion-icon>
+        <div class="font-gotham text-xl bg-bee-400 rounded-lg p-2">Cambiar
+          foto
+        </div>
+      </div>
+      <app-input-area #area
+        label="Sobre mi"
+        placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
+      <app-multiple-selector-input
+        label="Preferencia al viajar"
+        [databaseList]="preferences"
+        placeholder="Elegir"
+        #preference></app-multiple-selector-input>
+      <app-filled-button
+        contentText="Finalizar"></app-filled-button>
+    </form>
+  </div>
 </ion-content>

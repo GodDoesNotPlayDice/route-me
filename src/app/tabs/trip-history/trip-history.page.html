@@ -10,4 +10,14 @@
       <ion-title size="large">trip-history</ion-title>
     </ion-toolbar>
   </ion-header>
+  <div class="p-2.5 w-full mx-auto flex flex-col gap-4">
+    <div class="font-gotham text-xl">En Curso</div>
+    <div *ngFor="let card of progressDrivers">
+      <app-drive-card [info]="card"></app-drive-card>
+    </div>
+    <div class="font-gotham text-xl">Completados</div>
+    <div *ngFor="let card of completedDrivers">
+      <app-drive-card [info]="card"></app-drive-card>
+    </div>
+  </div>
 </ion-content>

@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'
+import { Component } from '@angular/core'
+import { IonicModule } from '@ionic/angular'
 
-@Component({
-  selector: 'app-logo',
+@Component( {
+  standalone : true,
+  selector   : 'app-logo',
   templateUrl: './logo.component.html',
-  styleUrls: ['./logo.component.scss'],
-})
-export class LogoComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
+  styleUrls  : [ './logo.component.scss' ],
+  imports    : [
+    IonicModule,
+    CommonModule
+  ]
+} )
+export class LogoComponent {
 }

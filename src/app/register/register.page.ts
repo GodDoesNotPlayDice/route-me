@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'
+import {
+  Component
+} from '@angular/core'
+import { IonicModule } from '@ionic/angular'
 
-@Component({
-  selector: 'app-register',
+@Component( {
+  standalone : true,
+  selector   : 'app-register',
   templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
-})
-export class RegisterPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  styleUrls  : [ './register.page.scss' ],
+  imports    : [
+    IonicModule,
+    CommonModule
+  ]
+} )
+export class RegisterPage {
 }
