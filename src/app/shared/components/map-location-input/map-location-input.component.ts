@@ -37,7 +37,7 @@ export class MapLocationInputComponent {
 
   @Input({required:true}) placeholder: string
   @Input({required:true}) pageKey: string
-  @Input({required:true}) color: string
+  @Input({required:true}) isRed: boolean
   isFocused: boolean = false
   locationText: string = ''
 
@@ -59,7 +59,7 @@ export class MapLocationInputComponent {
               }
               const street = result.unwrap().streets[0]
               this.locationText = street.place_name
-              await this.map.addRouteMarker( this.pageKey, this.id, position, this.color )
+              await this.map.addRouteMarker( this.pageKey, this.id, position, this.isRed ? 'red' : 'orange' )
               this.mapLocationControl.patchValue( street )
               this.mapLocationControl.markAllAsTouched()
               this.mapLocationControl.updateValueAndValidity()
@@ -80,10 +80,16 @@ export class MapLocationInputComponent {
   }
 
   async onStreetPosition( $event: Street ): Promise<void> {
-    await this.map.addRouteMarker( this.pageKey, this.id, $event.center, this.color)
+    await this.map.addRouteMarker( this.pageKey, this.id, $event.center, this.isRed ? 'red' : 'orange')
     this.mapLocationControl.patchValue( $event )
     this.mapLocationControl.markAllAsTouched()
     this.mapLocationControl.updateValueAndValidity()
+    this.isFocused = false
+  }
+
+  reset(): void {
+    this.mapLocationControl.reset()
+    this.locationText = ''
     this.isFocused = false
   }
 }

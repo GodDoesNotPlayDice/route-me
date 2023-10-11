@@ -8,6 +8,8 @@
         placeholder="MM/DD/YYYY"
         (dateInput)="onDate($event)"
         matInput
+        #dateInput
+        [value]="dateSelected"
         [matDatepicker]="picker">
       <mat-datepicker-toggle matIconSuffix
         [for]="picker"></mat-datepicker-toggle>
@@ -15,12 +17,14 @@
     </mat-form-field>
     <div class="flex flex-col">
       <div class="basis-2/3 flex items-center">
-      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-datetime-button
+        datetime="datetime"></ion-datetime-button>
       </div>
     </div>
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
         <ion-datetime
+          [value]="timeSelected"
           locale="es-ES"
           (ionChange)="onTime($event)"
           id="datetime" presentation="time"></ion-datetime>

@@ -28,23 +28,20 @@ export class ActivableCircleComponent implements OnInit, OnChanges{
   constructor() {}
 
   public ngOnChanges( changes: SimpleChanges ): void {
-    this.iconName = changes['isActive'].currentValue ? this.iconNames[1] : this.iconNames[0]
+    this.iconName = changes['isActive'].currentValue ? this.iconNameEnabled : this.iconNameDisabled
   }
 
   id = ulid()
-  @Input({required:true}) iconNames : string[]
-  @Input({required:true}) color : string
   iconName : string = ''
+  @Input({required:true}) iconNameEnabled : string
+  @Input({required:true}) iconNameDisabled : string
+  @Input({required:true}) isRed : boolean
   @Input() isActive: boolean = false
 
   @Output() isActiveChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
-  public ngOnInit(): void {
-    console.log('this.color')
-    console.log(this.color)
-    this.iconName = this.iconNames[0]
-    this.isActive = false
-    //TODO: problema de color
+  ngOnInit(): void {
+    this.iconName = this.iconNameDisabled
   }
 
   @HostListener( 'document:click', [ '$event' ] )
@@ -55,8 +52,7 @@ export class ActivableCircleComponent implements OnInit, OnChanges{
     if ( event.target instanceof Element ) {
       if ( event.target.id === this.id ) {
         this.isActive = !this.isActive
-        // this.iconName = this.isActive ? 'location_on' : 'edit_location'
-        this.iconName = this.isActive ? this.iconNames[1] : this.iconNames[0]
+        this.iconName = this.isActive ? this.iconNameEnabled : this.iconNameDisabled
         this.isActiveChange.emit( this.isActive )
         return
       }

@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
+  ElementRef,
   Input,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { MatNativeDateModule } from '@angular/material/core'
@@ -13,6 +15,8 @@ import {
 import { MatInputModule } from '@angular/material/input'
 import {
   DatetimeCustomEvent,
+  IonDatetime,
+  IonDatetimeButton,
   IonicModule
 } from '@ionic/angular'
 
@@ -31,7 +35,9 @@ import {
 } )
 export class DateSelectorComponent implements OnInit {
 
-  dateSelected: Date | null   = null
+  @ViewChild( 'dateInput', {static: true} ) dateInput!: HTMLInputElement
+  timeInput: HTMLIonDatetimeElement | undefined
+
   @Input( { required: true } ) label: string
   @Input() mustAdult: boolean = false
 
@@ -40,6 +46,7 @@ export class DateSelectorComponent implements OnInit {
 
   dateNowDesc: Date | null  = null
   dateNowAsc: Date | null   = null
+  dateSelected: Date | null   = null
   timeSelected: Date | null = null
   dateEntered: Date | null = null
   readonly dateControl      = new FormControl<Date | null>( null, control => {
@@ -95,8 +102,10 @@ export class DateSelectorComponent implements OnInit {
     this.dateControl.updateValueAndValidity()
   }
 
-  public onTime( $event: DatetimeCustomEvent ): void {
-    this.timeSelected = new Date( $event.detail.value as string )
+  async onTime( $event: DatetimeCustomEvent ): Promise<void> {
+    console.log('on time')
+    this.timeInput = $event.target
+    this.timeSelected = new Date( this.timeInput.value as string )
     if ( this.dateSelected !== null ) {
       this.dateSelected = new Date(
         this.dateSelected.getFullYear(),
@@ -110,6 +119,18 @@ export class DateSelectorComponent implements OnInit {
     }
 
     this.dateControl.markAllAsTouched()
+    this.dateControl.updateValueAndValidity()
+  }
+
+  async reset(): Promise<void> {
+    if ( this.timeInput !== undefined ) {
+      await this.timeInput.reset()
+    }
+
+    this.dateSelected   = null
+    this.timeSelected = null
+    this.dateEntered = null
+    this.dateControl.patchValue( this.dateSelected )
     this.dateControl.updateValueAndValidity()
   }
 }

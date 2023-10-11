@@ -2,10 +2,10 @@
   <ion-toolbar>
     <div class="flex flex-col px-6 py-4">
       <app-map-location-input [pageKey]="pageKey"
-        color="red"
+        [isRed]="true"
         #salida placeholder="Salida"></app-map-location-input>
       <app-map-location-input [pageKey]="pageKey"
-        color="orange"
+        [isRed]="false"
         #inicio placeholder="Destino"></app-map-location-input>
         <app-date-selector #date label="Fecha Inicio"></app-date-selector>
     </div>

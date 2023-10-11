@@ -62,22 +62,6 @@ export class PublishPage implements ViewDidEnter {
       }
       return null
     } )
-
-    // this.location.newPosition$.subscribe( async ( position ) => {
-    //   if ( position === null ) { return }
-    //   if ( this.first ) {
-    //     this.first     = false
-    //     const result = await this.street.getStreet( 'hospital', position )
-    //
-    //     if ( result.isErr() ) {
-    //       console.log( 'error', result.unwrapErr())
-    //       return
-    //     }
-    //
-    //     const street = result.unwrap()
-    //     console.log( 'street', street )
-    //   }
-    // } )
   }
 
   async addRoute() {
@@ -94,12 +78,13 @@ export class PublishPage implements ViewDidEnter {
       message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
       buttons: [
         {
-          text: 'Cancelar'
+          text: 'Cancelar',
         },
         {
           text   : 'Publicar',
-          handler: () => {
-            console.log( 'Publicado' )
+          handler: async () => {
+            //TODO: mandar post, dependiendo respuesta, resetear o mensaje error
+            await this.reset()
           }
         }
       ]
@@ -115,5 +100,15 @@ export class PublishPage implements ViewDidEnter {
     if ( !this.formGroup.valid ) { return }
 
     await this.presentAlert()
+  }
+
+  private async reset(): Promise<void> {
+    await this.map.removeRouteMap( this.pageKey )
+    await this.map.removeRouteMarker( this.pageKey, this.inicioInput.id )
+    await this.map.removeRouteMarker( this.pageKey, this.salidaInput.id )
+    this.formGroup.reset()
+    await this.dateInput.reset()
+    this.inicioInput.reset()
+    this.salidaInput.reset()
   }
 }
