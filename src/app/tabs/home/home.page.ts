@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common'
-import { Component } from '@angular/core'
+import {
+  Component,
+  OnInit
+} from '@angular/core'
 import { Geolocation } from '@capacitor/geolocation'
 import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
@@ -14,6 +17,23 @@ import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
+import { z } from "zod";
+
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+  if (issue.code === z.ZodIssueCode.invalid_type) {
+    if (issue.expected === "string") {
+      throw new MiErrorPersonalizado('Este es un error personalizado');
+      // return { message: "bad type!" };
+    }
+  }
+  if (issue.code === z.ZodIssueCode.custom) {
+    return { message: `less-than-${(issue.params || {})}` };
+  }
+  return { message: ctx.defaultError };
+};
+
+z.setErrorMap(customErrorMap);
+
 @Component( {
   standalone : true,
   selector   : 'app-home',
@@ -27,7 +47,7 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
     DriveCardComponent
   ]
 } )
-export class HomePage {
+export class HomePage implements OnInit{
 
   constructor( private driversService: DriversService ,
     private tripService : TripService )
@@ -53,6 +73,25 @@ export class HomePage {
     }
   }
 
+  ngOnInit(): void {
+    try {
+
+      console.log('a')
+      const a = z.string({ errorMap: customErrorMap }).parse(2);
+      console.log(a)
+
+      // throw new MiErrorPersonalizado('Este es un error personalizado');
+    } catch (error) {
+      // console.log('error' )
+      // console.log(error)
+      if (error instanceof MiErrorPersonalizado) {
+        console.log('¡Se ha producido un error personalizado:', error.message);
+      } else {
+        console.log('Se ha producido un error desconocido');
+      }
+    }
+    }
+
   info: DriverCardInfo[] = []
 
   error: boolean = false
@@ -74,3 +113,10 @@ const filterButtonList: FilterButtonData[] = [
     image: 'https://cdn.discordapp.com/attachments/982116594543099924/1148051316388679740/travel-bag.png'
   } )
 ]
+
+class MiErrorPersonalizado extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'MiErrorPersonalizado';
+  }
+}

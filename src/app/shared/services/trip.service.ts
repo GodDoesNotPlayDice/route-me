@@ -7,6 +7,7 @@ import {
 import { newCategory } from 'src/package/category/domain/models/category'
 import { newChatID } from 'src/package/chat/domain/models/chat-id'
 import { newDriverID } from 'src/package/driver/domain/models/driver-id'
+import { Position } from 'src/package/location-api/domain/models/position'
 import { newLocation } from 'src/package/shared/domain/models/location/location'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newTrip } from 'src/package/trip/domain/models/trip'
@@ -18,10 +19,13 @@ import { ulid } from 'ulidx'
 export class TripService {
   constructor(private tripDao : TripDao ) { }
   async create(props:{
-    startLocation: string
-    endLocation: string
-    startDate: Date,
-    endDate: Date
+    startPosition: Position,
+    endPosition: Position,
+    startName: string,
+    endName: string,
+    startDate: Date
+    //TODO: calcular end date por default a 2 semanas despues
+    // endDate: Date
   }): Promise<Result<boolean, string>>{
     const driverID = newDriverID({
       value: ulid()
@@ -57,7 +61,7 @@ export class TripService {
           value: ulid()
         }),
         startDate      : props.startDate,
-        endDate        : props.endDate,
+        endDate        : props.startDate,
         startLocationID: startLoc.id,
         endLocationID: endLoc.id
       }

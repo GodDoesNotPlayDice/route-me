@@ -14,9 +14,8 @@ import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
-import { LocationService } from 'src/app/shared/services/location.service'
 import { MapService } from 'src/app/shared/services/map.service'
-import { StreetService } from 'src/app/shared/services/street.service'
+import { TripService } from 'src/app/shared/services/trip.service'
 
 @Component( {
   standalone : true,
@@ -35,8 +34,7 @@ import { StreetService } from 'src/app/shared/services/street.service'
 export class PublishPage implements ViewDidEnter {
 
   constructor( private map: MapService,
-    private street: StreetService,
-    private location: LocationService,
+    private tripService: TripService,
     private alertController: AlertController )
   {}
 
@@ -65,9 +63,10 @@ export class PublishPage implements ViewDidEnter {
   }
 
   async addRoute() {
-    const start = this.inicioInput.mapLocationControl.value!
-    const end     = this.salidaInput.mapLocationControl.value!
-    const result = await this.map.addRouteMap( this.pageKey, start.center, end.center )
+    const start  = this.inicioInput.mapLocationControl.value!
+    const end    = this.salidaInput.mapLocationControl.value!
+    const result = await this.map.addRouteMap( this.pageKey, start.center,
+      end.center )
   }
 
   //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
@@ -78,11 +77,29 @@ export class PublishPage implements ViewDidEnter {
       message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
       buttons: [
         {
-          text: 'Cancelar',
+          text: 'Cancelar'
         },
         {
           text   : 'Publicar',
           handler: async () => {
+            const result = await this.tripService.create( {
+              startName    : this.salidaInput.mapLocationControl.value!.place_name,
+              endName      : this.salidaInput.mapLocationControl.value!.place_name,
+              endPosition  : this.salidaInput.mapLocationControl.value!.center,
+              startPosition: this.inicioInput.mapLocationControl.value!.center,
+              startDate    : this.dateInput.dateControl.value!
+            } )
+
+            //TODO: no se puede agregar elementos a alert, por lo que usar loading y toast con mensaje
+            if ( result.isErr() ) {
+              console.log( 'error publish' )
+              console.log( result.unwrapErr() )
+            }
+            else {
+              console.log( 'ok publish' )
+              console.log( result.unwrap() )
+            }
+
             //TODO: mandar post, dependiendo respuesta, resetear o mensaje error
             await this.reset()
           }
