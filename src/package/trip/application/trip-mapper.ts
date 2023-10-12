@@ -19,11 +19,12 @@ import {
 
 export const tripFromJSON = ( json: Record<string, any> ): Option<Trip> => {
 	try {
+		//TODO: revisar como mapear ids de forma segura
 		const passenger: PassengerID[] = Object.values( json['passengers'] )
 		                                       .map( ( id: any ) => {
 			                                       return newPassengerID( {
 				                                       value: id
-			                                       } )
+			                                       } ).unwrap()
 		                                       } )
 
 		return Some(

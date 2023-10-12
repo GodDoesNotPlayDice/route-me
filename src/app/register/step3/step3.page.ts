@@ -87,18 +87,21 @@ export class Step3Page implements ViewDidEnter {
       return
     }
 
-    this.store.dispatch( notifyStep() )
-
-    await this.auth.updatePassenger( {
+    const updated = await this.auth.updatePassenger({
+      description: this.areaInput.textControl.value!,
+      //TODO: tener cuidado ya que luego new preference id pasara a result y hay que pasarlo de alguna forma
       preferences: this.preferenceInput.multipleSelectorControl.value!.map(
         ( preference ) => newPreferenceID( {
           value: preference
-        } ) ),
-      description: newPassengerDescription( {
-        value: this.areaInput.textControl.value!
-      } )
+        } ) )
     } )
 
+    if ( !updated ) {
+      console.log( 'error updating passenger step3' )
+     return
+    }
+
+    this.store.dispatch( notifyStep() )
     this.store.dispatch( clearStep() )
 
     await this.router.navigate( [ '/tabs/home' ] )

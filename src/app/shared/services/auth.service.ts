@@ -1,150 +1,149 @@
 import { Injectable } from '@angular/core'
 import {
-  Err,
-  None,
-  Ok,
-  Option,
-  Result,
-  Some
+	None,
+	Option,
+	Some
 } from 'oxide.ts'
-import { loginPassenger } from 'src/package/authentication/passenger/application/login-passenger'
-import { logoutPassenger } from 'src/package/authentication/passenger/application/logout-passenger'
-import { loginUser } from 'src/package/authentication/user/application/login-user'
-import { registerPassenger } from 'src/package/authentication/passenger/application/register-passenger'
-import { logoutUser } from 'src/package/authentication/user/application/logout-user'
-import { registerUser } from 'src/package/authentication/user/application/register-user'
-import { AuthPassengerRepository } from 'src/package/authentication/passenger/domain/auth-passenger-repository'
-import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-user-repository'
+import { loginUser } from 'src/package/authentication/application/login-user'
+import { logoutUser } from 'src/package/authentication/application/logout-user'
+import { registerUser } from 'src/package/authentication/application/register-user'
+import { AuthUserRepository } from 'src/package/authentication/domain/auth-user-repository'
+import { createPassenger } from 'src/package/passenger/application/create-passenger'
+import { updatePassenger } from 'src/package/passenger/application/update-passenger'
+import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
 
 @Injectable( {
-  providedIn: 'root'
+	providedIn: 'root'
 } )
 export class AuthService {
 
-  constructor(
-    private authRepository: AuthUserRepository,
-    private passengerRepository: AuthPassengerRepository
-  )
-  { }
+	constructor(
+		private authRepository: AuthUserRepository,
+		private passengerDao: PassengerDao
+	)
+	{ }
 
-  currentUser: Option<User>           = None
-  currentPassenger: Option<Passenger> = None
+	currentUser: Option<User>           = None
+	currentPassenger: Option<Passenger> = None
 
-  async userLogin( email: string,
-    password: string ): Promise<Result<boolean, string>> {
-    const result = await loginUser( this.authRepository, email, password )
+	async userLogin( email: string,
+		password: string ): Promise<boolean> {
+		const result = await loginUser( this.authRepository, email, password )
 
-    if ( result.isErr() ) {
-      console.log( 'error auth' )
-      return Promise.resolve( Err( result.unwrapErr() ) )
-    }
+		if ( result.isErr() ) {
+			console.log( 'user login error' )
+			console.log( result.unwrapErr() )
+			return false
+		}
 
-    this.currentUser = Some( result.unwrap() )
+		this.currentUser = Some( result.unwrap() )
 
-    return Promise.resolve( Ok( true ) )
-  }
+		return true
+	}
 
-  async passengerLogin(): Promise<Result<boolean, string>> {
-    const passengerResult = await loginPassenger( this.passengerRepository,
-      this.currentUser.unwrap().id )
+	async getPassenger(): Promise<boolean> {
 
-    if ( passengerResult.isErr() ) {
-      return Promise.resolve( Err( passengerResult.unwrapErr() ) )
-    }
+		const passengerResult = await this.passengerDao.getById(this.currentUser.unwrap().id)
 
-    this.currentPassenger = Some( passengerResult.unwrap() )
+		if ( passengerResult.isErr() ) {
+			console.log( 'get passenger error' )
+			console.log( passengerResult.unwrapErr() )
+			return false
+		}
 
-    return Promise.resolve( Ok( true ) )
-  }
+		this.currentPassenger = Some( passengerResult.unwrap() )
 
-
-  async userRegister(
-    email: string,
-    password: string
-  ): Promise<Result<boolean, string>> {
-    //TODO: deberia devolver un string, en caso de token
-    const result = await registerUser(
-      this.authRepository, email, password
-    )
-
-    if ( result.isErr() ) {
-      return Promise.resolve( Err( result.unwrapErr() ) )
-    }
-
-    const userLogResult = await this.userLogin( email, password )
-
-    if ( userLogResult.isErr() ) {
-      return Promise.resolve( Err( userLogResult.unwrapErr() ) )
-    }
-
-    return Promise.resolve( Ok( true ) )
-  }
+		return true
+	}
 
 
-  async updatePassenger( props: Partial<Passenger> ): Promise<Result<boolean, string>> {
-    const newPassenger: Passenger = {
-      ...this.currentPassenger.unwrap(),
-      ...props
-    }
+	async userRegister(
+		email: string,
+		password: string
+	): Promise<boolean> {
+		//TODO: deberia devolver un string, en caso de token
+		const result = await registerUser(
+			this.authRepository, email, password
+		)
 
-    const result = await this.passengerRepository.update( newPassenger )
-    if ( result.isErr() ) {
-      return Promise.resolve( Err( result.unwrapErr() ) )
-    }
+		if ( result.isErr() ) {
+			console.log( 'user register error' )
+			console.log( result.unwrapErr() )
+			return false
+		}
 
-    this.currentPassenger = Some( newPassenger )
-    return Promise.resolve( Ok( true ) )
-  }
+		return await this.userLogin( email, password )
+	}
 
-  async registerPassenger( props: {
-    name: string,
-    lastName: string,
-    phone: string,
-    birthDay: Date,
-    country: string,
-    gender: string
-  } ): Promise<Result<string, string>> {
-    //TODO: ver si register devuelve token o entidad
-    const result = await registerPassenger( this.passengerRepository, {
-      ...props,
-      userID: this.currentUser.unwrap().id
-    } )
 
-    if ( result.isErr() ) {
-      return Promise.resolve( Err( result.unwrapErr() ) )
-    }
+	async updatePassenger( partialProps: {
+		name?: string,
+		lastName?: string,
+		description?: string,
+		preferences?: PreferenceID[],
+		phone?: string,
+		birthDay?: Date,
+		country?: string,
+		gender?: string
+	}): Promise<boolean> {
+		const result = await updatePassenger(this.passengerDao, this.currentPassenger.unwrap(), partialProps)
+		if ( result.isErr() ) {
+			console.log( 'update passenger error' )
+			console.log( result.unwrapErr() )
+			return false
+		}
 
-    const passengerResult = await this.passengerLogin()
+		this.currentPassenger = Some( result.unwrap() )
+		return true
+	}
 
-    if ( passengerResult.isErr() ) {
-      return Promise.resolve( Err( passengerResult.unwrapErr() ) )
-    }
+	async registerPassenger( props: {
+		name: string,
+		lastName: string,
+		phone: string,
+		birthDay: Date,
+		country: string,
+		gender: string
+	} ): Promise<boolean> {
+		//TODO: ver si register devuelve token o entidad
+		const result = await createPassenger(this.passengerDao, {
+			name		 : props.name,
+			lastName : props.lastName,
+			phone		 : props.phone,
+			birthDay : props.birthDay,
+			country	 : props.country,
+			gender: props.gender,
+			userID: this.currentUser.unwrap().id
+		})
 
-    const response = result.unwrap()
-    return Promise.resolve( Ok( response ) )
-  }
+		if ( result.isErr() ) {
+			console.log( 'register passenger error' )
+			console.log( result.unwrapErr() )
+			return false
+		}
 
-  async authLogout( id: UserID ): Promise<Result<boolean, string>> {
-    const resultUser = await logoutUser(this.authRepository, id )
+		this.currentPassenger = Some( result.unwrap() )
 
-    if ( resultUser.isErr() ) {
-      return Promise.resolve( Err( resultUser.unwrapErr() ) )
-    }
+		return true
+	}
 
-    this.currentUser = None
+	async authLogout( id: UserID ): Promise<boolean> {
+		const resultUser      = await logoutUser( this.authRepository, id )
 
-    const resultPassenger = await logoutPassenger(this.passengerRepository, id)
+		if ( resultUser.isErr()) {
+			console.log( 'user authLogout error' )
+			console.log( resultUser.unwrapErr() )
+			return false
+		}
 
-    if ( resultPassenger.isErr() ) {
-      return Promise.resolve( Err( resultPassenger.unwrapErr() ) )
-    }
-    //TODO: talvez manejar si uno si se hace y el otro no
-    this.currentPassenger = None
+		this.currentUser      = None
+		this.currentPassenger = None
 
-    return Promise.resolve( Ok( true ) )
-  }
+		return true
+	}
 
 }
