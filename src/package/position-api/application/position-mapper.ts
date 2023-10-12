@@ -8,7 +8,7 @@ import {
   Position
 } from 'src/package/position-api/domain/models/position'
 
-export const locationFromJson = ( json: Record<string, any> ): Option<Position> => {
+export const positionFromJson = ( json: Record<string, any> ): Option<Position> => {
   try {
     return Some(
       newPosition({
@@ -18,13 +18,13 @@ export const locationFromJson = ( json: Record<string, any> ): Option<Position> 
     )
   }
   catch ( e ) {
-    console.log( 'error location from json' )
+    console.log( 'error position from json' )
     console.log( e )
     return None
   }
 }
 
-export const locationToJson = ( position: Position ): Record<string, any> => {
+export const positionToJson = ( position: Position ): Record<string, any> => {
   return {
     latitude: position.lat,
     longitude: position.lng,

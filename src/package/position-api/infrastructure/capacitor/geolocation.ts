@@ -11,12 +11,12 @@ import {
   Position
 } from 'src/package/position-api/domain/models/position'
 import {
-  LocationRepository,
+  PositionRepository,
   WatchPositionCallback
-} from 'src/package/position-api/domain/repository/location-repository'
+} from 'src/package/position-api/domain/repository/position-repository'
 import { ulid } from 'ulidx'
 
-export class Geolocation implements LocationRepository {
+export class Geolocation implements PositionRepository {
   async checkPermissions(): Promise<PermissionState> {
     CapacitorGeolocation.checkPermissions()
     return this.convertPermissions(PermissionState.Prompt)

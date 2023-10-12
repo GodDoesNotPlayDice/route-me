@@ -39,7 +39,7 @@ import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-
 import { AuthUserFirebase } from 'src/package/authentication/user/infrastructure/auth-user-firebase'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
-import { LocationRepository } from 'src/package/position-api/domain/repository/location-repository'
+import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
 import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
@@ -149,7 +149,7 @@ bootstrapApplication( AppComponent, {
       deps      : []
     },
     {
-      provide   : LocationRepository,
+      provide   : PositionRepository,
       useFactory: () => {
         return new Geolocation()
       },
