@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage-angular'
 import {
 	Err,
 	Result
@@ -8,8 +9,14 @@ import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { UserID } from 'src/package/user/domain/models/user-id'
 
-export class PassengerDaoMemory implements PassengerDao {
-	constructor( private context: Passenger[] ) {}
+export class PassengerDaoLocalStorage implements PassengerDao {
+	constructor( private storage: Storage ) {
+		this.init()
+	}
+
+	private async init() {
+		await this.storage.create()
+	}
 
 	async create( passenger: Passenger ): Promise<Result<Passenger, Error>> {
 		return Err( new UnknownException() )
@@ -32,5 +39,4 @@ export class PassengerDaoMemory implements PassengerDao {
 	async update( passenger: Passenger ): Promise<Result<boolean, Error>> {
 		return Err( new UnknownException() )
 	}
-
 }

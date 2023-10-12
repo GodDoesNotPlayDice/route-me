@@ -6,7 +6,7 @@ import {
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 
-export const getAllUsers = async ( repository: PassengerDao ): Promise<Result<Passenger[], string>> => {
+export const getAllUsers = async ( repository: PassengerDao ): Promise<Result<Passenger[], Error[]>> => {
   const result   = await repository.getAll()
   const response = result.unwrap()
 

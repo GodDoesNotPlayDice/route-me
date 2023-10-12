@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PassengerPhoneInvalidException } from 'src/package/passenger/domain/exceptions/passenger-phone-invalid-exception'
 import { z } from 'zod'
 
 export const PassengerPhoneSchema = z.object( {
@@ -16,8 +22,19 @@ export interface PassengerPhoneProps {
   value: string
 }
 
-export const newPassengerPhone = ( props: PassengerPhoneProps ): PassengerPhone => {
-  return PassengerPhoneSchema.parse( {
+/**
+ * Create a passenger phone instance
+ * @throws {PassengerPhoneInvalidException} - if phone is invalid
+ */
+export const newPassengerPhone = ( props: PassengerPhoneProps ): Result<PassengerPhone, Error> => {
+  const result = PassengerPhoneSchema.safeParse( {
     value: props.value
   } )
+
+  if ( !result.success ) {
+    return Err( new PassengerPhoneInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }

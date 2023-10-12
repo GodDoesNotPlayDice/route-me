@@ -1,4 +1,9 @@
 import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import {
   newPassengerBirthDay,
   PassengerBirthDay
 } from 'src/package/passenger/domain/models/passenger-birth-day'
@@ -60,31 +65,81 @@ export interface PassengerProps {
   preferences: PreferenceID[]
 }
 
-export const newPassenger = ( props: PassengerProps ): Passenger => {
-  return {
-    id         : newPassengerID( {
-      value: props.id
-    } ),
-    userID     : props.userID,
-    name       : newPassengerName( {
-      value: props.name
-    } ),
-    lastName   : newPassengerLastName( {
-      value: props.lastName
-    } ),
-    description: newPassengerDescription( {
-      value: props.description
-    } ),
-    phone      : newPassengerPhone( {
-      value: props.phone
-    } ),
-    birthDay   : newPassengerBirthDay( {
-      value: props.birthDay
-    } ),
-    country    : newPassengerCountry( {
-      value: props.country
-    } ),
-    gender     : props.gender,
-    preferences: props.preferences
+export const newPassenger = ( props: PassengerProps ): Result<Passenger, Error[]> => {
+  const err : Error[] = []
+  //TODO: se podria hacer algo generico que tome el array y lo inserte para repetir menos
+
+  const id = newPassengerID( {
+    value: props.id
+  } )
+
+  if ( id.isErr() ) {
+    err.push( id.unwrapErr() )
   }
+
+  const name = newPassengerName( {
+    value: props.name
+  } )
+
+  if ( name.isErr() ) {
+    err.push( name.unwrapErr() )
+  }
+
+  const lastName = newPassengerLastName( {
+    value: props.lastName
+  } )
+
+  if ( lastName.isErr() ) {
+    err.push( lastName.unwrapErr() )
+  }
+
+  const description = newPassengerDescription( {
+    value: props.description
+  } )
+
+  if ( description.isErr() ) {
+    err.push( description.unwrapErr() )
+  }
+
+  const phone = newPassengerPhone( {
+    value: props.phone
+  } )
+
+  if ( phone.isErr() ) {
+    err.push( phone.unwrapErr() )
+  }
+
+  const birthDay = newPassengerBirthDay( {
+    value: props.birthDay
+  } )
+
+  if ( birthDay.isErr() ) {
+    err.push( birthDay.unwrapErr() )
+  }
+
+  const country = newPassengerCountry( {
+    value: props.country
+  } )
+
+  if ( country.isErr() ) {
+    err.push( country.unwrapErr() )
+  }
+
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
+
+  return Ok({
+      id         : id.unwrap(),
+      userID     : props.userID,
+      name       : name.unwrap(),
+      lastName   : lastName.unwrap(),
+      description: description.unwrap(),
+      phone      : phone.unwrap(),
+      birthDay   : birthDay.unwrap(),
+      country    : country.unwrap(),
+      gender     : props.gender,
+      preferences: props.preferences
+    }
+  )
 }
