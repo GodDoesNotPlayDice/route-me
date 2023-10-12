@@ -6,7 +6,7 @@ import {
 import {
   newPosition,
   Position
-} from 'src/package/location-api/domain/models/position'
+} from 'src/package/position-api/domain/models/position'
 
 export const locationFromJson = ( json: Record<string, any> ): Option<Position> => {
   try {

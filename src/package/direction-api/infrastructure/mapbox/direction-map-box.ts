@@ -8,7 +8,7 @@ import {
 import { directionFromJson } from 'src/package/direction-api/application/direction-mapper'
 import { Direction } from 'src/package/direction-api/domain/models/direction'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 
 export class DirectionMapBox implements DirectionRepository {
   constructor( private http: HttpClient ) {}

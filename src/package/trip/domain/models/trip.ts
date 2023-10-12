@@ -7,7 +7,7 @@ import {
   newComparator
 } from 'src/package/shared/domain/models/comparable-date'
 import { newLimitDate } from 'src/package/shared/domain/models/limit-date'
-import { LocationID } from 'src/package/shared/domain/models/location/location-id'
+import { LocationID } from 'src/package/location/domain/models/location-id'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import {
   newTripDescription,

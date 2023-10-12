@@ -2,7 +2,7 @@ import {
   newPosition,
   PositionProps,
   PositionSchema
-} from 'src/package/location-api/domain/models/position'
+} from 'src/package/position-api/domain/models/position'
 import { newStreetsDataMapBox } from 'src/package/street-api/infrastructure/map-box/models/street-map-box'
 import { z } from 'zod'
 

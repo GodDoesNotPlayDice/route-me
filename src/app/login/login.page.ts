@@ -25,7 +25,7 @@ import { InputTextComponent } from 'src/app/shared/components/input-text/input-t
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
-import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
+import { LocationRepository } from 'src/package/position-api/domain/repository/location-repository'
 
 @Component( {
   standalone : true,

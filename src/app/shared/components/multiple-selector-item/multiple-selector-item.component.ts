@@ -6,7 +6,7 @@ import {
   Output
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { MultipleSelectorData } from 'src/app/shared/models/multiple-selector-data'
+import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,

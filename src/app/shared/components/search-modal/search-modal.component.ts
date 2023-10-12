@@ -13,7 +13,7 @@ import { debounceTime } from 'rxjs'
 import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
 import { LocationService } from 'src/app/shared/services/location.service'
 import { StreetService } from 'src/app/shared/services/street.service'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 import {
   Street,
   StreetsData

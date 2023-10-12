@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
-import { newAvatar } from 'src/app/shared/models/avatar'
+import { newAvatar } from 'src/package/shared/domain/components/avatar'
 import {
   DriverCardInfo,
   newDriverCardInfo
-} from 'src/app/shared/models/driver-card-info'
+} from 'src/package/shared/domain/components/driver-card-info'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
-import { newLocation } from 'src/package/shared/domain/models/location/location'
+import { newLocation } from 'src/package/location/domain/models/location'
 import { ulid } from 'ulidx'
 
 @Injectable( {
@@ -41,12 +41,14 @@ const driveInfoList: DriverCardInfo[] = [
     startLocation   : newLocation({
       id: ulid(),
       name: 'viña',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     }),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     }),
@@ -74,12 +76,14 @@ const driveInfoList: DriverCardInfo[] = [
     startLocation   : newLocation({
       id: ulid(),
       name: 'viña',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     }),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     }),
@@ -107,12 +111,14 @@ const driveInfoList: DriverCardInfo[] = [
     startLocation   : newLocation({
       id: ulid(),
       name: 'viña',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     }),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     }),

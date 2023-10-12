@@ -1,8 +1,6 @@
 import {
   Location,
-  newLocation
-} from 'src/package/shared/domain/models/location/location'
-import { newLocationID } from 'src/package/shared/domain/models/location/location-id'
+} from 'src/package/location/domain/models/location'
 import {
   Money,
   newMoney
@@ -12,10 +10,9 @@ import {
   ValidDate
 } from 'src/package/shared/domain/models/valid-date'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
-import { ulid } from 'ulidx'
 import {
   Avatar,
-} from './avatar'
+} from 'src/package/shared/domain/components/avatar'
 
 export interface DriverCardInfo {
   cost            : Money

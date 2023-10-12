@@ -7,8 +7,8 @@ import {
 import { newCategory } from 'src/package/category/domain/models/category'
 import { newChatID } from 'src/package/chat/domain/models/chat-id'
 import { newDriverID } from 'src/package/driver/domain/models/driver-id'
-import { Position } from 'src/package/location-api/domain/models/position'
-import { newLocation } from 'src/package/shared/domain/models/location/location'
+import { Position } from 'src/package/position-api/domain/models/position'
+import { newLocation } from 'src/package/location/domain/models/location'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newTrip } from 'src/package/trip/domain/models/trip'
 import { ulid } from 'ulidx'
@@ -39,6 +39,7 @@ export class TripService {
     const startLoc = newLocation({
       id: ulid(),
       name: 'default',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     })
@@ -46,6 +47,7 @@ export class TripService {
     const endLoc = newLocation({
       id: ulid(),
       name: 'default',
+      countryCode: 'CL',
       latitude: 0,
       longitude: 0
     })

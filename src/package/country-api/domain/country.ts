@@ -2,23 +2,23 @@ import {
 	CountryFlagUrl,
 	CountryFlagUrlProps,
 	newCountryFlagUrl
-} from 'src/app/shared/models/country/domain/country-flag-url'
+} from 'src/package/country-api/domain/country-flag-url'
 import {
 	CountryName,
 	CountryNameProps,
 	newCountryName
-} from 'src/app/shared/models/country/domain/country-name'
+} from 'src/package/country-api/domain/country-name'
 import {
 	CountryNameCode,
 	CountryNameCodeProps,
 	newCountryNameCode
-} from 'src/app/shared/models/country/domain/country-name-code'
+} from 'src/package/country-api/domain/country-name-code'
 import {
 	CountryNumberCode,
 	CountryNumberCodeProps,
 	newCountryNumberCode
-} from 'src/app/shared/models/country/domain/country-number-code'
-import { newCountryRestCountries } from 'src/app/shared/models/country/infrastructure/rest-countries/country'
+} from 'src/package/country-api/domain/country-number-code'
+import { newCountryRestCountries } from 'src/package/country-api/infrastructure/rest-countries/country'
 
 export interface Country {
 	flag: CountryFlagUrl

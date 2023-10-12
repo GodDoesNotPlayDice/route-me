@@ -15,7 +15,7 @@ import {
   ModalController
 } from '@ionic/angular'
 import { MultipleSelectorModalComponent } from 'src/app/shared/components/multiple-selector-modal/multiple-selector-modal.component'
-import { MultipleSelectorData } from 'src/app/shared/models/multiple-selector-data'
+import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,

@@ -20,7 +20,7 @@ import { StepperComponent } from 'src/app/shared/components/stepper/stepper.comp
 import {
   MultipleSelectorData,
   newMultipleSelectorData
-} from 'src/app/shared/models/multiple-selector-data'
+} from 'src/package/shared/domain/components/multiple-selector-data'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { UserPreferenceService } from 'src/app/shared/services/user-preference.service'
 import { AppState } from 'src/app/shared/state/app.state'

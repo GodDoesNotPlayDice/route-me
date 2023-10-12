@@ -5,8 +5,8 @@ import {
   Observable,
   take
 } from 'rxjs'
-import { countryFromJson } from 'src/app/shared/models/country/application/country-mapper'
-import { Country } from 'src/app/shared/models/country/domain/country'
+import { countryFromJson } from 'src/package/country-api/application/country-mapper'
+import { Country } from 'src/package/country-api/domain/country'
 
 @Injectable( {
   providedIn: 'root'

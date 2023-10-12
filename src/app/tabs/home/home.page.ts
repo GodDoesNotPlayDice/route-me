@@ -7,11 +7,11 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
-import { DriverCardInfo } from 'src/app/shared/models/driver-card-info'
+import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import {
   FilterButtonData,
   newFilterButtonData
-} from 'src/app/shared/models/filter-button-data'
+} from 'src/package/shared/domain/components/filter-button-data'
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { newMyUserC1 } from 'src/package/shared/config/helper/error-handling/case-1-vo'
@@ -20,6 +20,7 @@ import {
   newValidDateC2
 } from 'src/package/shared/config/helper/error-handling/case-2-entity'
 import { InvalidDateUserException } from 'src/package/shared/config/helper/error-handling/exceptions'
+import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
@@ -76,11 +77,13 @@ export class HomePage implements OnInit {
 
     if ( result.isErr() ) {
       console.log( 'error' )
-      // console.log( result.unwrapErr())
+      const e = result.unwrapErr()
       result.unwrapErr().map(e => {
-        if ( e instanceof InvalidDateUserException) {
-          console.log('i err')
-        }
+        // if ( e instanceof InvalidDateUserException) {
+        //   console.log('i err')
+        // }
+          console.log(e.name)
+          console.log(e.message)
       })
     }
     else {

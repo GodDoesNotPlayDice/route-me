@@ -1,5 +1,5 @@
 import { Result } from 'oxide.ts'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 import {
   StreetsData
 } from 'src/package/street-api/domain/models/street'

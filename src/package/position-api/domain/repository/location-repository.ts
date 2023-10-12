@@ -1,5 +1,5 @@
-import { PermissionState } from 'src/package/location-api/domain/models/permission-state'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { PermissionState } from 'src/package/position-api/domain/models/permission-state'
+import { Position } from 'src/package/position-api/domain/models/position'
 
 export declare type WatchPositionCallback = (position: Position | null, err?: any) => void;
 

@@ -1,7 +1,11 @@
 import {
+  LocationCountryCode,
+  newLocationCountryCode
+} from 'src/package/location/domain/models/location-country-code'
+import {
   LocationID,
   newLocationID
-} from 'src/package/shared/domain/models/location/location-id'
+} from 'src/package/location/domain/models/location-id'
 import {
   newValidNumber,
   ValidNumber
@@ -9,11 +13,12 @@ import {
 import {
   LocationName,
   newLocationName
-} from './location-name'
+} from 'src/package/location/domain/models/location-name'
 
 export interface Location {
   id: LocationID
   name: LocationName
+  countryCode: LocationCountryCode
   latitude: ValidNumber
   longitude: ValidNumber
 }
@@ -21,6 +26,7 @@ export interface Location {
 export interface LocationProps {
 	id : string
 	name : string
+  countryCode: string
 	longitude : number
 	latitude : number
 }
@@ -33,6 +39,9 @@ export const newLocation = (props : LocationProps): Location => {
     name: newLocationName( {
       value: props.name
     } ),
+    countryCode: newLocationCountryCode({
+      value: props.countryCode
+    }),
     latitude: newValidNumber({
       value: props.latitude
     }),

@@ -1,5 +1,5 @@
 import { Geometry } from 'src/package/direction-api/domain/models/geometry'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 
 export abstract class MapRepository<Mp, Mr> {
 	abstract addRouteMarker( pageKey: string, locationKey: string, center: Position, color : string ): Promise<void>

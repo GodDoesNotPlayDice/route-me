@@ -15,7 +15,7 @@ import {
 } from 'rxjs'
 import { DirectionService } from 'src/app/shared/services/direction.service'
 import { LocationService } from 'src/app/shared/services/location.service'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 
 @Injectable( {

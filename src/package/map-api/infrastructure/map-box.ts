@@ -1,7 +1,7 @@
 import { environment } from '@env/environment'
 import * as mapboxgl from 'mapbox-gl'
 import { Geometry } from 'src/package/direction-api/domain/models/geometry'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 
 export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {

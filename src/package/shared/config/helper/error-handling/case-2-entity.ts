@@ -5,6 +5,7 @@ import {
 } from 'oxide.ts'
 import {
   InvalidDateUserException,
+  MyUserException,
   UnknowException
 } from 'src/package/shared/config/helper/error-handling/exceptions'
 import { z } from 'zod'
@@ -58,7 +59,7 @@ interface MyNewDateProps {
 }
 
 // caso 2 - entity
-export const newMyNewDateC2 = ( props: MyNewDateProps ): Result<MyNewDate, Error[]> => {
+export const newMyNewDateC2 = ( props: MyNewDateProps ): Result<MyNewDate, MyUserException[]> => {
   const dateResult = z.date().safeParse( props.date )
 
   const err: Error[] = []
@@ -72,12 +73,13 @@ export const newMyNewDateC2 = ( props: MyNewDateProps ): Result<MyNewDate, Error
   if ( !dateResult.success ) {
     const zodErrors = dateResult.error.errors.map( e => e.message )
     for ( const msg of zodErrors ) {
-      if ( msg === 'Invalid date' ) {
-        err.push( new InvalidDateUserException( msg ) )
-      }
-      else {
         err.push( new UnknowException( msg ) )
-      }
+      // if ( msg === 'Invalid date' ) {
+      //   err.push( new InvalidDateUserException( msg ) )
+      // }
+      // else {
+      //   err.push( new UnknowException( msg ) )
+      // }
     }
     return Err( err )
   }

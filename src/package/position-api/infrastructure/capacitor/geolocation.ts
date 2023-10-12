@@ -5,15 +5,15 @@ import {
 import {
   newPermissionState,
   PermissionState
-} from 'src/package/location-api/domain/models/permission-state'
+} from 'src/package/position-api/domain/models/permission-state'
 import {
   newPosition,
   Position
-} from 'src/package/location-api/domain/models/position'
+} from 'src/package/position-api/domain/models/position'
 import {
   LocationRepository,
   WatchPositionCallback
-} from 'src/package/location-api/domain/repository/location-repository'
+} from 'src/package/position-api/domain/repository/location-repository'
 import { ulid } from 'ulidx'
 
 export class Geolocation implements LocationRepository {

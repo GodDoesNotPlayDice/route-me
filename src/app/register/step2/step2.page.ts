@@ -19,15 +19,15 @@ import { FilledButtonComponent } from 'src/app/shared/components/filled-button/f
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { RadioInputComponent } from 'src/app/shared/components/radio-input/radio-input.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
-import { Country } from 'src/app/shared/models/country/domain/country'
+import { Country } from 'src/package/country-api/domain/country'
 import {
   newRadioButtonData,
   RadioButtonData
-} from 'src/app/shared/models/radio-button-data'
+} from 'src/package/shared/domain/components/radio-button-data'
 import {
   newSingleSelectorData,
   SingleSelectorData
-} from 'src/app/shared/models/single-selector-data'
+} from 'src/package/shared/domain/components/single-selector-data'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
 import { AppState } from 'src/app/shared/state/app.state'

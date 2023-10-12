@@ -3,8 +3,8 @@ import {
   BehaviorSubject,
   Observable
 } from 'rxjs'
-import { Position } from 'src/package/location-api/domain/models/position'
-import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
+import { Position } from 'src/package/position-api/domain/models/position'
+import { LocationRepository } from 'src/package/position-api/domain/repository/location-repository'
 
 @Injectable( {
 	providedIn: 'root'

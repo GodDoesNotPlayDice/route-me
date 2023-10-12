@@ -10,7 +10,7 @@ import {
   ModalController
 } from '@ionic/angular'
 import { SearchModalComponent } from 'src/app/shared/components/search-modal/search-modal.component'
-import { Position } from 'src/package/location-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 import { Street } from 'src/package/street-api/domain/models/street'
 
 @Component( {

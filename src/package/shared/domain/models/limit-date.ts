@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-	// value : z.date().default( new Date()),
-	// value : z.date().transform( ( val, ctx ) => new Date()),
-
 // 4/10
 // 12096e5
 // camino bueno: input: 10/10 --- (4/10 - 18/10) -> 10/10

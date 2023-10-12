@@ -6,7 +6,7 @@ import {
 import {
   Country,
   newCountryFromJson
-} from 'src/app/shared/models/country/domain/country'
+} from 'src/package/country-api/domain/country'
 
 export const countryFromJson = ( json: Record<string, any> ): Option<Country> => {
 	try {

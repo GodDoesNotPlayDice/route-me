@@ -11,7 +11,7 @@ import {
   ModalController
 } from '@ionic/angular'
 import { SingleSelectorModalComponent } from 'src/app/shared/components/single-selector-modal/single-selector-modal.component'
-import { SingleSelectorData } from 'src/app/shared/models/single-selector-data'
+import { SingleSelectorData } from 'src/package/shared/domain/components/single-selector-data'
 
 @Component( {
   standalone : true,

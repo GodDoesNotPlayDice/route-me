@@ -11,7 +11,7 @@ import {
   PassengerID
 } from 'src/package/passenger/domain/models/passenger-id'
 import { dateToJSON } from 'src/package/shared/config/helper/date/date-mapper'
-import { newLocationID } from 'src/package/shared/domain/models/location/location-id'
+import { newLocationID } from 'src/package/location/domain/models/location-id'
 import {
   newTrip,
   Trip
