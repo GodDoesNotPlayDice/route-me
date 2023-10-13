@@ -1,21 +1,21 @@
+import {
+	Err,
+	Ok,
+	Result
+} from 'oxide.ts'
 import { CategoryID } from 'src/package/category/domain/models/category-id'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
 import { DriverID } from 'src/package/driver/domain/models/driver-id'
-import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
-import {
-  newComparableDate,
-  newComparator
-} from 'src/package/shared/domain/models/comparable-date'
-import { newLimitDate } from 'src/package/shared/domain/models/limit-date'
 import { LocationID } from 'src/package/location/domain/models/location-id'
+import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import {
-  newTripDescription,
-  TripDescription
+	newTripDescription,
+	TripDescription
 } from 'src/package/trip/domain/models/trip-description'
 import {
-  newTripID,
-  TripID
+	newTripID,
+	TripID
 } from 'src/package/trip/domain/models/trip-id'
 
 export interface Trip {
@@ -44,55 +44,62 @@ export interface TripProps {
 	endDate: Date
 }
 
-export const newTrip = ( props: TripProps ): Trip => {
-	const endDateValid = newValidDate( {
+/**
+ * Create a valid date instance
+ * @throws {DateInvalidException} - if date is invalid
+ * @throws {TripIdInvalidException} - if id is invalid
+ * @throws {TripDescriptionInvalidException} - if description is invalid
+ */
+export const newTrip = ( props: TripProps ): Result<Trip, Error[]> => {
+	const err: Error[] = []
+
+	const endDate = newValidDate( {
 		value: props.endDate
 	} )
 
-	const startDateValid = newValidDate( {
+	if ( endDate.isErr() ) {
+		err.push( endDate.unwrapErr() )
+	}
+
+	const startDate = newValidDate( {
 		value: props.startDate
 	} )
 
-	const startDateInRange = newLimitDate( {
-		value   : startDateValid.value,
-		numTimes: 12096e5
-	} )
-
-	const endDateInRange = newLimitDate( {
-		value   : endDateValid.value,
-		numTimes: 12096e5
-	} )
-
-	const startDate = newComparableDate( {
-		value     : startDateInRange.value,
-		otherDate : endDateInRange.value,
-		comparator: newComparator( {
-			value: 'Before'
-		} )
-	} )
-
-	const endDate = newComparableDate( {
-		value     : endDateInRange.value,
-		otherDate : startDateInRange.value,
-		comparator: newComparator( {
-			value: 'After'
-		} )
-	} )
-
-	return {
-		id           : newTripID( {
-			value: props.id
-		} ),
-		driverID     : props.driverID,
-		passengersID : props.passengers,
-		categoryID   : props.category,
-		chatID       : props.chat,
-		description  : newTripDescription( {
-			value: props.description
-		} ),
-		startLocation: props.startLocationID,
-		endLocation  : props.endLocationID,
-		startDate    : startDate.value,
-		endDate      : endDate.value
+	if ( startDate.isErr() ) {
+		err.push( startDate.unwrapErr() )
 	}
+
+	const id = newTripID( {
+		value: props.id
+	} )
+
+	if ( id.isErr() ) {
+		err.push( id.unwrapErr() )
+	}
+
+	const description = newTripDescription( {
+		value: props.description
+	} )
+
+	if ( description.isErr() ) {
+		err.push( description.unwrapErr() )
+	}
+
+	if ( err.length > 0 ) {
+		return Err( err )
+	}
+
+	return Ok( {
+			id           : id.unwrap(),
+			description  : description.unwrap(),
+			startDate    : startDate.unwrap().value,
+			endDate      : endDate.unwrap().value,
+			driverID     : props.driverID,
+			passengersID : props.passengers,
+			categoryID   : props.category,
+			chatID       : props.chat,
+			startLocation: props.startLocationID,
+			endLocation  : props.endLocationID
+		}
+	)
 }

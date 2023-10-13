@@ -1,58 +1,87 @@
 import { HttpClient } from '@angular/common/http'
 import { environment } from '@env/environment'
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
-import { TripState } from 'src/package/trip/domain/models/trip-state'
+import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { tripToJSON } from 'src/package/trip/application/trip-mapper'
+import { TripState } from 'src/package/trip/domain/backend-models/trip-state'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripID } from '../domain/models/trip-id'
 
 export class TripDaoApi implements TripDao {
 
-  private url = environment.apiUrl
+	private url = environment.apiUrl
 
-  constructor( private http: HttpClient ) {}
+	constructor( private http: HttpClient ) {}
 
-  async getAllByState( state: TripState ): Promise<Result<Trip[], string>> {
-    return Promise.resolve( Err( '' ) )
+	/**
+	 * Get all trips by state
+	 * @throws {UnknownException} - if unknown error
+	 */
+	async getAllByState( state: TripState ): Promise<Result<Trip[], Error>> {
+		return Err( new UnknownException() )
+	}
 
-  }
+	/**
+	 * Get by id trip
+	 * @throws {UnknownException} - if unknown error
+	 */
+	async getById( id: TripID ): Promise<Result<Trip, Error>> {
+		return Err( new UnknownException() )
+	}
 
-  async getById( id: TripID ): Promise<Result<Trip, string>> {
-    return Promise.resolve( Err( '' ) )
-  }
+	/**
+	 * Delete trip
+	 * @throws {UnknownException} - if unknown error
+	 */
+	async delete( id: TripID ): Promise<Result<boolean, Error>> {
+		return Err( new UnknownException() )
+	}
 
-  async delete( id: TripID ): Promise<Result<boolean, string>> {
-    return Promise.resolve( Err( '' ) )
-  }
+	/**
+	 * Update trip
+	 * @throws {UnknownException} - if unknown error
+	 */
+	async update( trip: Trip ): Promise<Result<boolean, Error>> {
+		return Err( new UnknownException() )
+	}
 
-  async update( trip: Trip ): Promise<Result<boolean, string>> {
-    return Promise.resolve( Err( '' ) )
-  }
+	/**
+	 * Create trip
+	 * @throws {UnknownException} - if unknown error
+	 */
+	async create( trip: Trip ): Promise<Result<boolean, Error>> {
+		try {
+			const j = tripToJSON( trip )
+			this.http.post( this.url, j )
+			    .subscribe( ( data ) => {
+				    console.log( 'data', data )
+			    } )
+			return Ok( true )
+		}
+		catch ( e ) {
+			return Err( new UnknownException() )
+		}
+	}
 
-  async create( trip: Trip ): Promise<Result<boolean, string>> {
-    try {
-      const j = tripToJSON( trip )
-      this.http.post( this.url, j )
-          .subscribe( ( data ) => {
-            console.log( 'data', data )
-          } )
-      return Promise.resolve( Ok( true ) )
-    }
-    catch ( e ) {
-      return Promise.resolve( Err( 'err create trip' ) )
-    }
-  }
-
-  async getAll(): Promise<Result<Trip[], string>> {
-    this.http.get( this.url )
-        .subscribe( ( data ) => {
-          console.log( 'data', data )
-        } )
-    return Promise.resolve( Ok( [] ) )
-  }
+	/**
+	 * Get all trips
+	 * @throws {UnknownException} - if unknown error
+	 */
+	async getAll(): Promise<Result<Trip[], Error>> {
+		try {
+			this.http.get( this.url )
+			    .subscribe( ( data ) => {
+				    console.log( 'data', data )
+			    } )
+			return Ok( [] )
+		}
+		catch ( e ) {
+			return Err( new UnknownException() )
+		}
+	}
 }
