@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PreferenceNameInvalidException } from 'src/package/preference/domain/exceptions/preference-name-invalid-exception'
 import { z } from 'zod'
 
 export const PreferenceNameSchema = z.object( {
@@ -11,8 +17,19 @@ export interface PreferenceNameProps {
   value : string
 }
 
-export const newPreferenceName = (props : PreferenceNameProps): PreferenceName => {
-  return PreferenceNameSchema.parse( {
-    value : props.value
+/**
+ * Create a preference name instance
+ * @throws {PreferenceNameInvalidException} - if name is invalid
+ */
+export const newPreferenceName = (props : PreferenceNameProps): Result<PreferenceName, Error> => {
+  const result = PreferenceNameSchema.safeParse( {
+    value: props.value
   } )
+
+  if ( !result.success ) {
+    return Err( new PreferenceNameInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }
