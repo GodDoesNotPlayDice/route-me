@@ -11,7 +11,7 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 
 /**
  * Create a json from driver document instance
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const driverDocumentToJson   = ( driverDocument: DriverDocument ): Result<Record<string, any>, Error> => {
 	try {
