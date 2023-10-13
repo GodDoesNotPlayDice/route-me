@@ -19,7 +19,7 @@ export const directionFromJson = ( json: Record<string, any> ): Result<Direction
 
 /**
  * Create a json from direction instance
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const directionToJson = ( direction: Direction ): Result<Record<string, any>, Error> => {
 	try {

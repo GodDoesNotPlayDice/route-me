@@ -14,6 +14,10 @@ import { Position } from 'src/package/position-api/domain/models/position'
 export class DirectionMapBox implements DirectionRepository {
   constructor( private http: HttpClient ) {}
 
+  /**
+   * Get direction
+   * @throws {DirectionNotFoundException} - if direction not found
+   */
   async getDirection( inicio: Position,
     final: Position ): Promise<Result<Direction, Error>> {
     const start    = `${ inicio.lng },${ inicio.lat }`
