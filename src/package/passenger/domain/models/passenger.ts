@@ -65,6 +65,16 @@ export interface PassengerProps {
   preferences: PreferenceID[]
 }
 
+/**
+ * Create a passenger instance
+ * @throws {PassengerIdInvalidException} - if id is invalid
+ * @throws {PassengerNameInvalidException} - if name is invalid
+ * @throws {PassengerLastNameInvalidException} - if last name is invalid
+ * @throws {PassengerDescriptionInvalidException} - if description is invalid
+ * @throws {PassengerPhoneInvalidException} - if phone is invalid
+ * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
+ * @throws {PassengerCountryInvalidException} - if country is invalid
+ */
 export const newPassenger = ( props: PassengerProps ): Result<Passenger, Error[]> => {
   const err : Error[] = []
   //TODO: se podria hacer algo generico que tome el array y lo inserte para repetir menos

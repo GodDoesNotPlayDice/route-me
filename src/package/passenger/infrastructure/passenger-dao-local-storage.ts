@@ -18,24 +18,44 @@ export class PassengerDaoLocalStorage implements PassengerDao {
 		await this.storage.create()
 	}
 
+	/**
+	 * Create a passenger
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async create( passenger: Passenger ): Promise<Result<Passenger, Error>> {
 		return Err( new UnknownException() )
 	}
 
+	/**
+	 * Delete a passenger
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async delete( id: PassengerID ): Promise<Result<boolean, Error>> {
 		return Err( new UnknownException() )
 	}
 
+	/**
+	 * Get all passengers
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async getAll(): Promise<Result<Passenger[], Error[]>> {
 		const errors: Error[] = []
 		return Err( errors )
 	}
 
+	/**
+	 * Get passenger by id
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async getById( id: UserID ): Promise<Result<Passenger, Error[]>> {
 		const errors: Error[] = []
 		return Err( errors )
 	}
 
+	/**
+	 * Update a passenger
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async update( passenger: Passenger ): Promise<Result<boolean, Error>> {
 		return Err( new UnknownException() )
 	}

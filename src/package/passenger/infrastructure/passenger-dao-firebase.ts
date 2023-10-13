@@ -15,12 +15,20 @@ export class PassengerDaoFirebase implements PassengerDao {
 	constructor( private firebase: AngularFireDatabase ) {
 	}
 
+	/**
+	 * Get all passengers
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async getAll(): Promise<Result<Passenger[], Error[]>> {
 		//TODO: ver como llegan varios entradas por tabla en firebase
 		const errors: Error[] = []
 		return Err( errors )
 	}
 
+	/**
+	 * Get passenger by id
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async getById( id: UserID ): Promise<Result<Passenger, Error[]>> {
 		return await this.firebase.database.ref( 'passengers' )
 		                 .orderByChild( 'userID' )
@@ -42,6 +50,10 @@ export class PassengerDaoFirebase implements PassengerDao {
 		                 } )
 	}
 
+	/**
+	 * Delete a passenger
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async delete( id: PassengerID ): Promise<Result<boolean, Error>> {
 		const keySaved = await this.getKey( id )
 
@@ -68,6 +80,10 @@ export class PassengerDaoFirebase implements PassengerDao {
 		return Ok( true )
 	}
 
+	/**
+	 * Create a passenger
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async create( passenger: Passenger ): Promise<Result<Passenger, Error>> {
 			let completed: string | null = null
 			await this.firebase.database.ref( 'passengers' )
@@ -98,6 +114,10 @@ export class PassengerDaoFirebase implements PassengerDao {
 			return Ok( passenger )
 	}
 
+	/**
+	 * Update a passenger
+	 * @throws {UnknownException} - if unknown error
+	 */
 	async update( passenger: Passenger ): Promise<Result<boolean, Error>> {
 		const keySaved = await this.getKey( passenger.userID )
 
@@ -139,6 +159,10 @@ export class PassengerDaoFirebase implements PassengerDao {
 		return Ok( true )
 	}
 
+	/**
+	 * Get firebase key by id
+	 * @throws {UnknownException} - if unknown error
+	 */
 	private async getKey( id: UserID ): Promise<Result<string, Error>> {
 		return await this.firebase.database.ref( `passengers` )
 		                 .orderByChild( 'userID' )

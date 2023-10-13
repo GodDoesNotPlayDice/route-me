@@ -15,7 +15,11 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { newUserID } from 'src/package/user/domain/models/user-id'
 
-export const passengerToJson   = ( passenger: Passenger ): Result<Record<string, any>, Error> => {
+/**
+ * Create a json from passenger instance
+ * @throws {UnknownException} - if unknown error
+ */
+export const passengerToJson = ( passenger: Passenger ): Result<Record<string, any>, Error> => {
 	try {
 		const preferences = passenger.preferences.map(
 			( preference: PreferenceID ) => {
@@ -40,13 +44,33 @@ export const passengerToJson   = ( passenger: Passenger ): Result<Record<string,
 		return Err( new UnknownException( 'error passenger to json' ) )
 	}
 }
+
+/**
+ * Create a passenger instance from json
+ * @throws {PassengerIdInvalidException} - if id is invalid
+ * @throws {PassengerNameInvalidException} - if name is invalid
+ * @throws {PassengerLastNameInvalidException} - if last name is invalid
+ * @throws {PassengerDescriptionInvalidException} - if description is invalid
+ * @throws {PassengerPhoneInvalidException} - if phone is invalid
+ * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
+ * @throws {PassengerCountryInvalidException} - if country is invalid
+ */
 export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger, Error[]> => {
 	const error: Error[]              = []
-	const preferences: PreferenceID[] = Object.values( json['preferences'] )
-	                                          .map( ( preference: any ) => {
-		                                          return newPreferenceID(
-			                                          { value: preference } )
-	                                          } )
+
+	const preferences: PreferenceID[] = []
+
+	for ( const preference of Object.values( json['preferences'] ) ) {
+		const result = newPreferenceID( {
+			value: preference as string
+		} )
+		if ( result.isErr() ) {
+			error.push( result.unwrapErr() )
+		}
+		else {
+			preferences.push( result.unwrap() )
+		}
+	}
 
 	const userIDResult = newUserID( {
 		value: json['userID']
@@ -64,7 +88,9 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
 		error.push( genderResult.unwrapErr() )
 	}
 
-	if ( error.length > 0 ) return Err( error)
+	if ( error.length > 0 ) {
+		return Err( error )
+	}
 
 	const result = newPassenger( {
 		id         : json['id'],
