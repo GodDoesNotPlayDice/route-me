@@ -12,6 +12,7 @@ import {
 } from '@ionic/angular'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
+import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-selector/date-time-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
 import { MapService } from 'src/app/shared/services/map.service'
@@ -22,13 +23,13 @@ import { TripService } from 'src/app/shared/services/trip.service'
   selector   : 'app-publish',
   templateUrl: './publish.page.html',
   styleUrls  : [ './publish.page.scss' ],
-  imports    : [
+  imports: [
     IonicModule,
     CommonModule,
     InputTextComponent,
-    DateSelectorComponent,
     AdaptativeButtonComponent,
-    MapLocationInputComponent
+    MapLocationInputComponent,
+    DateTimeSelectorComponent
   ]
 } )
 export class PublishPage implements ViewDidEnter {
@@ -39,7 +40,7 @@ export class PublishPage implements ViewDidEnter {
   {}
 
   @ViewChild( 'pmap' ) divElementElementRef!: ElementRef<HTMLDivElement>
-  @ViewChild( 'date' ) dateInput!: DateSelectorComponent
+  @ViewChild( 'date' ) dateInput!: DateTimeSelectorComponent
   @ViewChild( 'salida' ) salidaInput!: MapLocationInputComponent
   @ViewChild( 'inicio' ) inicioInput!: MapLocationInputComponent
 
