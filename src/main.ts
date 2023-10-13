@@ -58,7 +58,7 @@ import {
   User
 } from 'src/package/user/domain/models/user'
 import { newUserID } from 'src/package/user/domain/models/user-id'
-import { UserDao } from 'src/package/user/domain/repository/user-dao'
+import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
 import { environment } from './environments/environment'
 

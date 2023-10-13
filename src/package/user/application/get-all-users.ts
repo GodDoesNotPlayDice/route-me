@@ -4,7 +4,7 @@ import {
   Result
 } from 'oxide.ts'
 import { User } from 'src/package/user/domain/models/user'
-import { UserDao } from 'src/package/user/domain/repository/user-dao'
+import { UserDao } from 'src/package/user/domain/dao/user-dao'
 
 /**
  * Get all users

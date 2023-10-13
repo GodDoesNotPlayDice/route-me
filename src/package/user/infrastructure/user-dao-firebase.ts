@@ -7,7 +7,7 @@ import {
 import { UserNotFoundException } from 'src/package/user/domain/exceptions/user-not-found-exception'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
-import { UserDao } from 'src/package/user/domain/repository/user-dao'
+import { UserDao } from 'src/package/user/domain/dao/user-dao'
 
 export class UserDaoFirebase implements UserDao {
   constructor( private firebase: AngularFireDatabase ) {
