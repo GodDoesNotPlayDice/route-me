@@ -14,7 +14,7 @@ import {
 } from 'src/package/shared/domain/components/filter-button-data'
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
-import { TripStateEnum } from 'src/package/trip/domain/backend-models/trip-state'
+import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
   standalone : true,

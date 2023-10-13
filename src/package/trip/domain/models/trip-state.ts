@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { TripStateInvalidException } from 'src/package/trip/domain/backend-models/exceptions/trip-state-invalid-exception'
+import { TripStateInvalidException } from 'src/package/trip/domain/exceptions/trip-state-invalid-exception'
 import { z } from 'zod'
 
 export enum TripStateEnum {

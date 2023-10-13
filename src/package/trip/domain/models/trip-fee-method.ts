@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { TripFeeInvalidException } from 'src/package/trip/domain/backend-models/exceptions/trip-fee-invalid-exception'
+import { TripFeeInvalidException } from 'src/package/trip/domain/exceptions/trip-fee-invalid-exception'
 import { z } from 'zod'
 
 export enum TripFeeMethodEnum {

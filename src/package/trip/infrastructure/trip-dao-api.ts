@@ -7,7 +7,7 @@ import {
 } from 'oxide.ts'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { tripToJSON } from 'src/package/trip/application/trip-mapper'
-import { TripState } from 'src/package/trip/domain/backend-models/trip-state'
+import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripID } from '../domain/models/trip-id'

@@ -4,7 +4,7 @@ import {
   DriverCardInfo,
   newDriverCardInfo
 } from 'src/package/shared/domain/components/driver-card-info'
-import { newTripState } from 'src/package/trip/domain/backend-models/trip-state'
+import { newTripState } from 'src/package/trip/domain/models/trip-state'
 import { newLocation } from 'src/package/location/domain/models/location'
 import { ulid } from 'ulidx'
 

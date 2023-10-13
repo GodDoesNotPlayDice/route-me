@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { TripSeatInvalidException } from 'src/package/trip/domain/backend-models/exceptions/trip-seat-invalid-exception'
+import { TripSeatInvalidException } from 'src/package/trip/domain/exceptions/trip-seat-invalid-exception'
 import { z } from 'zod'
 
 export const TripSeatSchema = z.object( {
