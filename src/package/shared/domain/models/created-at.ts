@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { DateInvalidException } from 'src/package/shared/domain/exceptions/date-invalid-exception'
 import { z } from 'zod'
 
 export const CreatedAtSchema = z.object( {
@@ -22,8 +28,19 @@ interface CreatedAtProps {
   value : Date
 }
 
-export const newCreatedAt = (props : CreatedAtProps): CreatedAt => {
-  return CreatedAtSchema.parse( {
+/**
+ * Create a created at instance
+ * @throws {DateInvalidException} - if date is invalid
+ */
+export const newCreatedAt = (props : CreatedAtProps): Result<CreatedAt, Error> => {
+  const result = CreatedAtSchema.safeParse( {
     value : props.value
   } )
+
+  if ( !result.success ) {
+    return Err( new DateInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }
