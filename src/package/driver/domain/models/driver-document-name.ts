@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { DriverDocumentNameInvalidException } from 'src/package/driver/domain/exceptions/driver-document-name-invalid-exception'
 import { z } from 'zod'
 
 export const DriverDocumentNameSchema = z.object( {
@@ -11,8 +17,19 @@ interface DriverDocumentNameProps {
   value : string
 }
 
-export const newDriverDocumentName = (props : DriverDocumentNameProps): DriverDocumentName => {
-  return DriverDocumentNameSchema.parse( {
-    value : props.value
-  } )
+/**
+ * Create driver document name instance
+ * @throws {DriverDocumentNameInvalidException} - if name is invalid
+ */
+export const newDriverDocumentName = (props : DriverDocumentNameProps): Result<DriverDocumentName, Error> => {
+const result = DriverDocumentNameSchema.safeParse( {
+  value : props.value
+} )
+
+if ( !result.success ) {
+  return Err( new DriverDocumentNameInvalidException() )
+}
+else {
+  return Ok( result.data )
+}
 }

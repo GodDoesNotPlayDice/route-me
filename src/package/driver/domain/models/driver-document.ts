@@ -1,4 +1,9 @@
 import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import {
   DriverDocumentID,
   newDriverDocumentID
 } from 'src/package/driver/domain/models/driver-document-id'
@@ -29,19 +34,58 @@ export interface DriverDocumentProps {
   reference: string
 }
 
-export const newDriverDocument = ( props: DriverDocumentProps ): DriverDocument => {
-  return {
-    id: newDriverDocumentID({
-      value: props.id
-    }),
-    driverID: newDriverID({
-      value: props.driverID
-    }),
-    name: newDriverDocumentName({
-      value: props.name
-    }),
-    reference: newDriverDocumentReference({
-      value: props.reference
-    })
+/**
+ * Create driver document id instance
+ * @throws {DriverDocumentIdInvalidException} - if id is invalid
+ * @throws {DriverIdInvalidException} - if id is invalid
+ * @throws {DriverDocumentNameInvalidException} - if name is invalid
+ * @throws {DriverDocumentReferenceInvalidException} - if document reference is invalid
+ */
+export const newDriverDocument = ( props: DriverDocumentProps ): Result<DriverDocument, Error[]> => {
+
+  const err: Error[] = []
+
+  const documentID = newDriverDocumentID({
+    value: props.id
+  })
+
+  if (documentID.isErr()) {
+    err.push(documentID.unwrapErr())
   }
+
+  const driverID = newDriverID({
+    value: props.driverID
+  })
+
+  if (driverID.isErr()) {
+    err.push(driverID.unwrapErr())
+  }
+
+  const documentName = newDriverDocumentName({
+    value: props.name
+  })
+
+  if (documentName.isErr()) {
+    err.push(documentName.unwrapErr())
+  }
+
+  const documentReference = newDriverDocumentReference({
+    value: props.reference
+  })
+
+  if (documentReference.isErr()) {
+    err.push(documentReference.unwrapErr())
+  }
+
+  if (err.length > 0) {
+    return Err(err)
+  }
+
+  return Ok({
+      id: documentID.unwrap(),
+      driverID: driverID.unwrap(),
+      name: documentName.unwrap(),
+      reference: documentReference.unwrap()
+    }
+  )
 }

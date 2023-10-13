@@ -12,9 +12,8 @@ export class DriverDaoFirebase implements DriverDao {
   constructor( private firebase: AngularFireDatabase ) {
   }
 
-  async create( driver: Driver ): Promise<Result<Driver, Error[]>> {
-    const errors: Error[] = []
-    return Err( errors)
+  async create( driver: Driver ): Promise<Result<Driver, Error>> {
+    return Err(new UnknownException())
   }
 
   async delete( id: DriverID ): Promise<Result<boolean, Error>> {

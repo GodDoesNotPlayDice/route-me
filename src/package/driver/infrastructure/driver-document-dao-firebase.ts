@@ -8,10 +8,9 @@ import { DriverDocumentID } from 'src/package/driver/domain/models/driver-docume
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 export class DriverDocumentDaoFirebase implements DriverDocumentDao {
-	async create( driver: DriverDocument ): Promise<Result<DriverDocument, Error[]>> {
-		const errors: Error[] = []
-		return Err( errors )
-	}
+	async create( driver: DriverDocument ): Promise<Result<DriverDocument, Error>> {
+    return Err(new UnknownException())
+  }
 
 	async delete( id: DriverDocumentID ): Promise<Result<boolean, Error>> {
 		return Err( new UnknownException() )
