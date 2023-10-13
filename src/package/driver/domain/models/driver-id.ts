@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { DriverIdInvalidException } from 'src/package/driver/domain/exceptions/driver-id-invalid-exception'
 import { z } from 'zod'
 
 export const DriverIDSchema = z.object( {
@@ -12,8 +18,19 @@ interface DriverIDProps {
   value: string
 }
 
-export const newDriverID = ( props: DriverIDProps ): DriverID => {
-  return DriverIDSchema.parse( {
+/**
+ * Create driver id instance
+ * @throws {DriverIdInvalidException} - if id is invalid
+ */
+export const newDriverID = ( props: DriverIDProps ): Result<DriverID, Error> => {
+  const result = DriverIDSchema.safeParse( {
     value: props.value
   } )
-}
+
+  if ( !result.success ) {
+    return Err(new DriverIdInvalidException())
+  }
+  else {
+    return Ok(result.data)
+  }
+  }

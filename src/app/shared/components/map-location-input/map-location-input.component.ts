@@ -58,7 +58,7 @@ export class MapLocationInputComponent {
                 return
               }
               const street = result.unwrap().streets[0]
-              this.locationText = street.place_name
+              this.locationText = street.place.value
               await this.map.addRouteMarker( this.pageKey, this.id, position, this.isRed ? 'red' : 'orange' )
               this.mapLocationControl.patchValue( street )
               this.mapLocationControl.markAllAsTouched()

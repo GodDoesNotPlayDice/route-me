@@ -1,4 +1,9 @@
 import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import {
   DriverDocumentID,
   newDriverDocumentID
 } from 'src/package/driver/domain/models/driver-document-id'
@@ -20,16 +25,45 @@ export interface DriverProps {
   documents: string[]
 }
 
-export const newDriver = ( props: DriverProps ): Driver => {
-  return {
-    id: newDriverID({
-      value: props.id
-    }),
-    userID: props.userID,
-    documents: props.documents.map( document => {
-      return newDriverDocumentID({
-        value: document
-      })
-    } )
+/**
+ * Create driver  instance
+ * @throws {DriverIdInvalidException} - if id is invalid
+ * @throws {DriverDocumentIdInvalidException} - if id is invalid
+ */
+export const newDriver = ( props: DriverProps ): Result<Driver, Error[]> => {
+  const err: Error[] = []
+  const driverID     = newDriverID( {
+    value: props.id
+  } )
+
+  if ( driverID.isErr() ) {
+    err.push( driverID.unwrapErr() )
   }
+
+  const documents: DriverDocumentID[] = []
+
+  for ( const document of props.documents ) {
+    const driverDocumentID = newDriverDocumentID( {
+      value: document
+    } )
+
+    if ( driverDocumentID.isErr() ) {
+      err.push( driverDocumentID.unwrapErr() )
+    }
+    else {
+      documents.push( driverDocumentID.unwrap() )
+    }
+  }
+
+  if ( err.length > 0 ) {
+    err.push( ...err )
+    return Err( err)
+  }
+
+  return Ok( {
+      id       : driverID.unwrap(),
+      userID   : props.userID,
+      documents: documents
+    }
+  )
 }

@@ -33,14 +33,13 @@ import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
-import { AuthPassengerRepository } from 'src/package/authentication/passenger/domain/auth-passenger-repository'
-import { AuthPassengerFirebase } from 'src/package/authentication/passenger/infrastructure/auth-passenger-firebase'
-import { AuthUserRepository } from 'src/package/authentication/user/domain/auth-user-repository'
-import { AuthUserFirebase } from 'src/package/authentication/user/infrastructure/auth-user-firebase'
+import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
+import { AuthUserFirebase } from 'src/package/authentication/infrastructure/auth-user-firebase'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
-import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
-import { Geolocation } from 'src/package/location-api/infrastructure/capacitor/geolocation'
+import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
+import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
@@ -48,7 +47,6 @@ import {
   newPassenger,
   Passenger
 } from 'src/package/passenger/domain/models/passenger'
-import { PassengerDaoMemory } from 'src/package/passenger/infrastructure/passenger-dao-memory'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
@@ -73,7 +71,7 @@ export const defaultUsers: User[] = [
   newUser( {
     id   : 'abc',
     email: 'hola@gmail.com'
-  } )
+  } ).unwrap()
 ]
 
 export const defaultPassangers: Passenger[] = [
@@ -81,7 +79,7 @@ export const defaultPassangers: Passenger[] = [
     id         : 'abc',
     userID     : newUserID( {
       value: 'abc'
-    } ),
+    } ).unwrap(),
     name       : 'hola',
     lastName   : 'last',
     description: 'descdescdescdesc',
@@ -90,13 +88,13 @@ export const defaultPassangers: Passenger[] = [
     country    : 'Argentina',
     gender     : newGender( {
       value: 'Female'
-    } ),
+    } ).unwrap(),
     preferences: [
       newPreferenceID( {
         value: 'a1'
-      } )
+      } ).unwrap()
     ]
-  } )
+  } ).unwrap()
 ]
 
 bootstrapApplication( AppComponent, {
@@ -113,13 +111,6 @@ bootstrapApplication( AppComponent, {
       // deps      : [Storage]
       useFactory: ( firebase: AngularFireDatabase ) => {
         return new AuthUserFirebase( firebase )
-      },
-      deps      : [ AngularFireDatabase ]
-    },
-    {
-      provide   : AuthPassengerRepository,
-      useFactory: ( firebase: AngularFireDatabase ) => {
-        return new AuthPassengerFirebase( firebase )
       },
       deps      : [ AngularFireDatabase ]
     },
@@ -143,13 +134,13 @@ bootstrapApplication( AppComponent, {
     },
     {
       provide   : PassengerDao,
-      useFactory: () => {
-        return new PassengerDaoMemory( [] )
+      useFactory: ( firebase: AngularFireDatabase ) => {
+        return new PassengerDaoFirebase( firebase )
       },
-      deps      : []
+      deps      : [ AngularFireDatabase ]
     },
     {
-      provide   : LocationRepository,
+      provide   : PositionRepository,
       useFactory: () => {
         return new Geolocation()
       },

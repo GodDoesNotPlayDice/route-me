@@ -5,7 +5,7 @@ import {
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
-import { RadioButtonData } from 'src/app/shared/models/radio-button-data'
+import { RadioButtonData } from 'src/package/shared/domain/components/radio-button-data'
 
 @Component( {
   standalone : true,

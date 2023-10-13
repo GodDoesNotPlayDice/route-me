@@ -12,7 +12,7 @@ import { DividerComponent } from 'src/app/shared/components/divider/divider.comp
 import {
 	SingleSelectorData,
 	newSingleSelectorData
-} from 'src/app/shared/models/single-selector-data'
+} from 'src/package/shared/domain/components/single-selector-data'
 
 @Component( {
 	standalone : true,

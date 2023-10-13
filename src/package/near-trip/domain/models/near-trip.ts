@@ -1,7 +1,16 @@
+import { CategoryProps } from 'src/package/category/domain/models/category'
 import {
   CategoryName,
   newCategoryName
 } from 'src/package/category/domain/models/category-name'
+import {
+  Location,
+  LocationProps
+} from 'src/package/location/domain/models/location'
+import {
+  Position,
+  PositionProps
+} from 'src/package/position-api/domain/models/position'
 import {
 	newValidDate,
 	ValidDate
@@ -10,39 +19,25 @@ import {
   newTripID,
   TripID
 } from 'src/package/trip/domain/models/trip-id'
-import {
-  Location,
-  newLocation
-} from 'src/package/shared/domain/models/location'
-import { z } from 'zod'
 
-export const NumberSchema = z.number()
-
-export const NearTripSchema = z.object( {
-  latitude : NumberSchema,
-  longitude: NumberSchema
-} )
-
-type NearTripType = z.infer<typeof NearTripSchema>
-
-export interface NearTrip extends NearTripType {
+export interface NearTrip {
   id: TripID
   startDate: ValidDate
   endDate: ValidDate
   startLocation: Location
   endLocation: Location
   categoryName: CategoryName
+  position : Position
 }
 
 export interface NearTripProps {
   id: string
   startDate: Date
   endDate: Date
-  startLocation: string
-  endLocation: string
-  categoryName: string
-  latitude: number
-  longitude: number
+  startLocation: LocationProps
+  endLocation: LocationProps
+  categoryName: CategoryProps
+  position: PositionProps
 }
 
 export const newNearTrip = ( props: NearTripProps ): NearTrip => {

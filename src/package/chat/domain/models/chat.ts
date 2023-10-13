@@ -1,4 +1,9 @@
 import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import {
   ChatID,
   newChatID
 } from 'src/package/chat/domain/models/chat-id'
@@ -14,11 +19,22 @@ export interface ChatProps {
   tripID: TripID
 }
 
-export const newChat = ( props: ChatProps ): Chat => {
-  return {
-    id    : newChatID( {
-      value: props.id
-    } ),
-    tripID: props.tripID
+/**
+ * Create chat instance
+ * @throws {ChatIdInvalidException} - if id is invalid
+ */
+export const newChat = ( props: ChatProps ): Result<Chat, Error> => {
+  const id = newChatID( {
+    value: props.id
+  } )
+
+  if ( id.isErr() ) {
+    return Err( id.unwrapErr())
   }
+
+  return Ok({
+      id    : id.unwrap(),
+      tripID: props.tripID
+    }
+  )
 }

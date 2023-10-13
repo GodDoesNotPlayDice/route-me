@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PassengerBirthDayInvalidException } from 'src/package/passenger/domain/exceptions/passenger-birth-day-invalid-exception'
 import { z } from 'zod'
 
 export const PassengerBirthDaySchema = z.object( {
@@ -26,8 +32,19 @@ export interface PassengerBirthDayProps {
   value : Date
 }
 
-export const newPassengerBirthDay = (props : PassengerBirthDayProps): PassengerBirthDay => {
-  return PassengerBirthDaySchema.parse( {
+/**
+ * Create a passenger birthday instance
+ * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
+ */
+export const newPassengerBirthDay = (props : PassengerBirthDayProps): Result<PassengerBirthDay, Error> => {
+  const result = PassengerBirthDaySchema.safeParse( {
     value : props.value
   } )
+
+  if ( !result.success ){
+    return Err( new PassengerBirthDayInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }

@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PreferenceIdInvalidException } from 'src/package/preference/domain/exceptions/preference-id-invalid-exception'
 import { z } from 'zod'
 
 export const PreferenceIDSchema = z.object( {
@@ -11,8 +17,19 @@ export interface PreferenceIDProps {
   value : string
 }
 
-export const newPreferenceID = (props : PreferenceIDProps): PreferenceID => {
-  return PreferenceIDSchema.parse( {
-    value : props.value
+/**
+ * Create a preference id instance
+ * @throws {PreferenceIdInvalidException} - if id is invalid
+ */
+export const newPreferenceID = (props : PreferenceIDProps): Result<PreferenceID, Error> => {
+  const result = PreferenceIDSchema.safeParse( {
+    value: props.value
   } )
+
+  if ( !result.success ) {
+    return Err( new PreferenceIdInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }

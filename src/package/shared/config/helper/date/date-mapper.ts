@@ -3,6 +3,8 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { DateDifferenteTextException } from 'src/package/shared/config/helper/date/date-differente-text-exception'
+import { DateRemainingUnitsException } from 'src/package/shared/config/helper/date/date-remaining-units-exception'
 import {
   RemainingUnits,
   Unit,
@@ -17,7 +19,7 @@ export const dateToJSON = ( date: Date ): string => {
   return date.toJSON()
 }
 
-export const dateRemainingUnits = ( utc: string ): Result<RemainingUnits, string> => {
+export const dateRemainingUnits = ( utc: string ): Result<RemainingUnits, Error> => {
   try {
     const currentDate = new Date()
     const otherDate   = new Date( utc )
@@ -26,13 +28,13 @@ export const dateRemainingUnits = ( utc: string ): Result<RemainingUnits, string
     return Ok( remainings )
   }
   catch ( e ) {
-    return Err( 'date remaining units error' )
+    return Err(new DateRemainingUnitsException())
   }
 }
 
 
 export const dateDifferenceText = ( utc: string,
-  unit: Set<Unit> ): Result<string, string> => {
+  unit: Set<Unit> ): Result<string, Error> => {
   const currentDate = new Date()
   const otherDate   = new Date( utc )
   const remainings  = remainingUnits( currentDate, otherDate )
@@ -53,7 +55,7 @@ export const dateDifferenceText = ( utc: string,
     } )
 
   if ( formatedArray.length === 0 ) {
-    return Err( 'date difference text parse error' )
+    return Err( new DateDifferenteTextException() )
   }
 
   let formatedText = formatUnitsText(

@@ -83,21 +83,19 @@ export class PublishPage implements ViewDidEnter {
           text   : 'Publicar',
           handler: async () => {
             const result = await this.tripService.create( {
-              startName    : this.salidaInput.mapLocationControl.value!.place_name,
-              endName      : this.salidaInput.mapLocationControl.value!.place_name,
+              startName    : this.salidaInput.mapLocationControl.value!.place.value,
+              endName      : this.salidaInput.mapLocationControl.value!.place.value,
               endPosition  : this.salidaInput.mapLocationControl.value!.center,
               startPosition: this.inicioInput.mapLocationControl.value!.center,
               startDate    : this.dateInput.dateControl.value!
             } )
 
             //TODO: no se puede agregar elementos a alert, por lo que usar loading y toast con mensaje
-            if ( result.isErr() ) {
+            if ( result ) {
               console.log( 'error publish' )
-              console.log( result.unwrapErr() )
             }
             else {
               console.log( 'ok publish' )
-              console.log( result.unwrap() )
             }
 
             //TODO: mandar post, dependiendo respuesta, resetear o mensaje error

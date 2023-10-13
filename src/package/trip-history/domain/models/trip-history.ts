@@ -1,4 +1,9 @@
 import {
+	Err,
+	Ok,
+	Result
+} from 'oxide.ts'
+import {
   newTripHistoryID,
   TripHistoryID
 } from 'src/package/trip-history/domain/models/trip-history-id'
@@ -17,13 +22,23 @@ export interface TripHistoryProps {
 	tripID: TripID
 }
 
-export const newTripHistory = ( props: TripHistoryProps ): TripHistory => {
-	return {
-		id    : newTripHistoryID({
-      value: props.id
-    }),
-		userID: props.userID,
-		tripID: props.tripID
+/**
+ * Create a trip history instance
+ * @throws {TripHistoryIdInvalidException} - if id is invalid
+ */
+export const newTripHistory = ( props: TripHistoryProps ): Result<TripHistory, Error> => {
+	const id = newTripHistoryID({
+		value: props.id
+	})
+
+	if ( id.isErr() ) {
+		return Err( id.unwrapErr())
 	}
-}
+
+	return Ok({
+			id    : id.unwrap(),
+			userID: props.userID,
+			tripID: props.tripID
+		}
+	)}
 

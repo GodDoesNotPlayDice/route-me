@@ -5,8 +5,8 @@ import {
   Observable,
   take
 } from 'rxjs'
-import { countryFromJson } from 'src/app/shared/models/country/application/country-mapper'
-import { Country } from 'src/app/shared/models/country/domain/country'
+import { countryFromJson } from 'src/package/country-api/application/country-mapper'
+import { Country } from 'src/package/country-api/domain/models/country'
 
 @Injectable( {
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class CountryPhoneCodeService {
           let list: Country[] = []
           for ( const value of Object.values(res) ) {
             const c = countryFromJson(value as Record<string, any>)
-            if (c.isNone()) continue
+            if (c.isErr()) continue
             list.push(c.unwrap())
           }
           list = list.sort( ( a, b ) => {

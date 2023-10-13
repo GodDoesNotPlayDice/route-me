@@ -1,3 +1,9 @@
+import {
+	Err,
+	Ok,
+	Result
+} from 'oxide.ts'
+import { GeometryInvalidException } from 'src/package/direction-api/domain/exceptions/geometry-invalid-exception'
 import { z } from 'zod'
 
 export const GeometrySchema = z.object( {
@@ -9,9 +15,20 @@ export interface GeometryProps {
 	values: Array<number[]>;
 }
 
-export const newGeometry = ( props: GeometryProps ): Geometry => {
-	return GeometrySchema.parse( {
+/**
+ * Create geometry instance
+ * @throws {GeometryInvalidException} - if geometry is invalid
+ */
+export const newGeometry = ( props: GeometryProps ): Result<Geometry, Error> => {
+	const result = GeometrySchema.safeParse( {
 		values: props.values,
 	} )
+
+if ( !result.success ) {
+		return Err(new GeometryInvalidException())
+	}
+	else {
+		return Ok(result.data)
+	}
 }
 

@@ -3,15 +3,15 @@ import {
   BehaviorSubject,
   Observable
 } from 'rxjs'
-import { Position } from 'src/package/location-api/domain/models/position'
-import { LocationRepository } from 'src/package/location-api/domain/repository/location-repository'
+import { Position } from 'src/package/position-api/domain/models/position'
+import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
 
 @Injectable( {
 	providedIn: 'root'
 } )
 export class LocationService {
 	constructor(
-    private locationRepository: LocationRepository
+    private locationRepository: PositionRepository
   ) {
 	this.locationRepository.requestPermissions()
     this.locationRepository.startWatch( ( position, err ) => {
