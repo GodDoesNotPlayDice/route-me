@@ -1,32 +1,43 @@
 import {
-  None,
-  Option,
-  Some
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import {
-  newPosition,
-  Position
+	newPosition,
+	Position
 } from 'src/package/position-api/domain/models/position'
+import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
-export const positionFromJson = ( json: Record<string, any> ): Option<Position> => {
-  try {
-    return Some(
-      newPosition({
-        lat: Number( json[ 'latitude' ] ),
-        lng: Number( json[ 'longitude' ] )
-      })
-    )
-  }
-  catch ( e ) {
-    console.log( 'error position from json' )
-    console.log( e )
-    return None
-  }
+/**
+ * Create a position instance from json
+ * @throws {PositionInvalidException} - if position is invalid
+ */
+// export const positionFromJson = ( json: Record<string, any> ): Option<Position> => {
+export const positionFromJson = ( json: Record<string, any> ): Result<Position, Error> => {
+	return newPosition( {
+		lat: Number( json['latitude'] ),
+		lng: Number( json['longitude'] )
+	} )
 }
 
-export const positionToJson = ( position: Position ): Record<string, any> => {
-  return {
-    latitude: position.lat,
-    longitude: position.lng,
-  }
+/**
+ * Create a json from position instance
+ * @throws {UnknowException} - if unknown error
+ */
+export const positionToJson = ( position: Position ): Result<Record<string, any>, Error> => {
+	try {
+		const json: Record<string, any> = {
+			latitude : position.lat,
+			longitude: position.lng
+		}
+
+		return Ok( json )
+	}
+	catch ( e ) {
+		const err = e instanceof Error
+			? new UnknownException( e.message )
+			: new UnknownException( 'error position to json' )
+		return Err( err )
+	}
 }

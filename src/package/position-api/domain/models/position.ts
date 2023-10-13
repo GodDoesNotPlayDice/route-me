@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
 import { z } from 'zod'
 
 export const PositionSchema = z.object( {
@@ -13,9 +19,20 @@ export interface PositionProps {
   lng: number
 }
 
-export const newPosition = (props : PositionProps): Position => {
-  return PositionSchema.parse( {
-    lat : props.lat,
+/**
+ * Create position instance
+ * @throws {PositionInvalidException} - if position is invalid
+ */
+export const newPosition = (props : PositionProps): Result<Position, Error> => {
+  const result = PositionSchema.safeParse( {
+    lat: props.lat,
     lng: props.lng
   } )
+
+  if ( !result.success ) {
+    return Err( new PositionInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }

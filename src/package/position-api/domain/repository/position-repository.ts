@@ -1,3 +1,4 @@
+import { Result } from 'oxide.ts'
 import { PermissionState } from 'src/package/position-api/domain/models/permission-state'
 import { Position } from 'src/package/position-api/domain/models/position'
 
@@ -8,5 +9,5 @@ export abstract class PositionRepository {
   abstract endWatch(id: string): Promise<void>
   abstract requestPermissions() : Promise<PermissionState>
   abstract checkPermissions() : Promise<PermissionState>
-  abstract getLastPosition() : Promise<Position>
+  abstract getLastPosition() : Promise<Result<Position, Error>>
 }

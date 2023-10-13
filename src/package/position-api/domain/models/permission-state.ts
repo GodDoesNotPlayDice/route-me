@@ -1,3 +1,10 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PermissionStateInvalidException } from 'src/package/position-api/domain/exceptions/permission-state-invalid-exception'
+import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
 import { z } from 'zod'
 
 export enum PermissionState {
@@ -15,6 +22,17 @@ export interface PermissionStateProps {
   value : string
 }
 
-export const newPermissionState = ( props: PermissionStateProps ): PermissionState => {
-  return TripEnumSchema.parse( props.value )
+/**
+ * Create permission state instance
+ * @throws {PermissionStateInvalidException} - if permission state is invalid
+ */
+export const newPermissionState = ( props: PermissionStateProps ): Result<PermissionState, Error> => {
+  const result = TripEnumSchema.safeParse(props.value)
+
+  if ( !result.success ) {
+    return Err( new PermissionStateInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }
