@@ -34,7 +34,7 @@ import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
-import { AuthUserRepository } from 'src/package/authentication/domain/auth-user-repository'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/infrastructure/auth-user-firebase'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
@@ -92,7 +92,7 @@ export const defaultPassangers: Passenger[] = [
     preferences: [
       newPreferenceID( {
         value: 'a1'
-      } )
+      } ).unwrap()
     ]
   } ).unwrap()
 ]

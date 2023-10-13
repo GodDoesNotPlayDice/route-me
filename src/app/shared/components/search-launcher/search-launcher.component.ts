@@ -43,7 +43,7 @@ export class SearchLauncherComponent {
       return
     }
     this.streetSearch     = data
-    this.value = this.streetSearch!.place_name
+    this.value = this.streetSearch!.place.value
     this.onStreetPosition.emit( this.streetSearch!)
   }
 }

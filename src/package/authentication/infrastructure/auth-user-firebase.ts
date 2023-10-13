@@ -4,7 +4,7 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import { AuthUserRepository } from 'src/package/authentication/domain/auth-user-repository'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { PasswordNotMatchException } from 'src/package/authentication/domain/exceptions/password-not-match-exception'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { userFromJson } from 'src/package/user/application/user-mapper'

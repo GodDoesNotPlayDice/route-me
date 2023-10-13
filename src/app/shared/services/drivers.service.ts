@@ -42,21 +42,25 @@ const driveInfoList: DriverCardInfo[] = [
       id: ulid(),
       name: 'viña',
       countryCode: 'CL',
-      latitude: 0,
-      longitude: 0
-    }),
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
       countryCode: 'CL',
-      latitude: 0,
-      longitude: 0
-    }),
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Open'
-    } )
+    } ).unwrap()
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -77,21 +81,25 @@ const driveInfoList: DriverCardInfo[] = [
       id: ulid(),
       name: 'viña',
       countryCode: 'CL',
-      latitude: 0,
-      longitude: 0
-    }),
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
       countryCode: 'CL',
-      latitude: 0,
-      longitude: 0
-    }),
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Completed'
-    } )
+    } ).unwrap()
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -112,21 +120,25 @@ const driveInfoList: DriverCardInfo[] = [
       id: ulid(),
       name: 'viña',
       countryCode: 'CL',
-      latitude: 0,
-      longitude: 0
-    }),
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
       countryCode: 'CL',
-      latitude: 0,
-      longitude: 0
-    }),
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Progress'
-    } )
+    } ).unwrap()
   } )
 ]
 

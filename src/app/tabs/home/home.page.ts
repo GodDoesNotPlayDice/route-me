@@ -14,13 +14,6 @@ import {
 } from 'src/package/shared/domain/components/filter-button-data'
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
-import { newMyUserC1 } from 'src/package/shared/config/helper/error-handling/case-1-vo'
-import {
-  newMyNewDateC2,
-  newValidDateC2
-} from 'src/package/shared/config/helper/error-handling/case-2-entity'
-import { InvalidDateUserException } from 'src/package/shared/config/helper/error-handling/exceptions'
-import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { TripStateEnum } from 'src/package/trip/domain/backend-models/trip-state'
 
 @Component( {
@@ -36,7 +29,7 @@ import { TripStateEnum } from 'src/package/trip/domain/backend-models/trip-state
     DriveCardComponent
   ]
 } )
-export class HomePage implements OnInit {
+export class HomePage {
 
   constructor( private driversService: DriversService,
     private tripService: TripService )
@@ -48,47 +41,6 @@ export class HomePage implements OnInit {
 
     if ( this.info.length === 0 ) {
       this.error = true
-    }
-  }
-
-  ngOnInit(): void {
-    // const result = newMyUserC1( {
-    //   date: new Date(),
-    //   // date: new Date( '2021-22-22' ),
-    //   num : 2,
-    //   user: 'pepe',
-    // } )
-
-    const d = newValidDateC2({
-      date: new Date()
-    })
-
-    if ( d.isErr() ) {
-      console.log( 'd error' )
-    }
-
-    const result = newMyNewDateC2( {
-      // date: new Date(),
-      date: new Date( '2021-22-22' ),
-      to: new Date( '2021-22-22' ),
-      // to: new Date(),
-      pass:d.unwrap()
-    } )
-
-    if ( result.isErr() ) {
-      console.log( 'error' )
-      const e = result.unwrapErr()
-      result.unwrapErr().map(e => {
-        // if ( e instanceof InvalidDateUserException) {
-        //   console.log('i err')
-        // }
-          console.log(e.name)
-          console.log(e.message)
-      })
-    }
-    else {
-      console.log( 'ok' )
-      console.log( result.unwrap() )
     }
   }
 

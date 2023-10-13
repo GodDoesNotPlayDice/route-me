@@ -19,7 +19,7 @@ import { FilledButtonComponent } from 'src/app/shared/components/filled-button/f
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { RadioInputComponent } from 'src/app/shared/components/radio-input/radio-input.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
-import { Country } from 'src/package/country-api/domain/country'
+import { Country } from 'src/package/country-api/domain/models/country'
 import {
   newRadioButtonData,
   RadioButtonData

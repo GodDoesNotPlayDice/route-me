@@ -25,8 +25,8 @@ import {
  * @throws {TripDescriptionInvalidException} - if description is invalid
  * @throws {PassengerIdInvalidException} - if id is invalid
  * @throws {DriverIdInvalidException} - if id is invalid
- * @throws category
- * @throws chat
+ * @throws {CategoryIdInvalidException} - if id is invalid
+ * @throws {ChatIdInvalidException} - if id is invalid
  * @throws {LocationIdInvalidException} - if id is invalid
  */
 export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]> => {
@@ -60,9 +60,17 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 		value: json['category']
 	} )
 
+	if ( categoryResult.isErr() ) {
+		err.push( categoryResult.unwrapErr() )
+	}
+
 	const chatResult = newChatID( {
 		value: json['chat']
 	} )
+
+	if ( chatResult.isErr() ) {
+		err.push( chatResult.unwrapErr() )
+	}
 
 	const locationStart = newLocationID( {
 		value: json['startLocationID']
@@ -86,8 +94,8 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 
 	const result = newTrip( {
 		driverID       : driverIDResult.unwrap(),
-		category       : categoryResult,
-		chat           : chatResult,
+		category       : categoryResult.unwrap(),
+		chat           : chatResult.unwrap(),
 		passengers     : passenger,
 		id             : json['id'],
 		description    : json['description'],
@@ -98,7 +106,8 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 	} )
 
 	if ( result.isErr() ) {
-		return Err( result.unwrapErr() )
+		err.push( ...result.unwrapErr() )
+		return Err( err )
 	}
 
 	return Ok( result.unwrap() )

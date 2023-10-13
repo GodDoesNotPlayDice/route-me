@@ -39,10 +39,10 @@ export const newDriverCardInfo = ( props: DriverCardInfoProps ): DriverCardInfo 
     driverAvatar    : props.driverAvatar,
     cost            : newMoney({
       value: props.cost
-    }),
+    }).unwrap(),
     date            : newValidDate({
       value: props.date
-    }),
+    }).unwrap(),
     state           : props.state,
     startLocation   : props.startLocation,
     endLocation     : props.endLocation,

@@ -3,7 +3,7 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import { AuthUserRepository } from 'src/package/authentication/domain/auth-user-repository'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { UserNotFoundException } from 'src/package/user/domain/exceptions/user-not-found-exception'
 import { User } from 'src/package/user/domain/models/user'
@@ -16,7 +16,7 @@ export class AuthUserMemory implements AuthUserRepository {
 
 	/**
 	 * Logout user
-	 * @throws {UnknowException} - if unknown error
+	 * @throws {UnknownException} - if unknown error
 	 */
 	async logout( id: UserID ): Promise<Result<boolean, Error>> {
 		return Err( new UnknownException( 'logout memory' ) )
