@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { MessageIdInvalidException } from 'src/package/chat/domain/exceptions/message-id-invalid-exception'
 import { z } from 'zod'
 
 export const MessageIDSchema = z.object( {
@@ -11,8 +17,19 @@ export interface MessageIDProps {
   value : string
 }
 
-export const newMessageID = (props : MessageIDProps): MessageID => {
-  return MessageIDSchema.parse( {
-    value : props.value
+/**
+ * Create message id instance
+ * @throws {MessageIdInvalidException} - if id is invalid
+ */
+export const newMessageID = (props : MessageIDProps): Result<MessageID, Error> => {
+  const result = MessageIDSchema.safeParse( {
+    value: props.value
   } )
+
+  if ( !result.success ) {
+    return Err( new MessageIdInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }
