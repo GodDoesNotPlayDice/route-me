@@ -3,7 +3,6 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { PasswordInvalidException } from 'src/package/user/domain/exceptions/password-invalid-exception'
 import { z } from 'zod'
 

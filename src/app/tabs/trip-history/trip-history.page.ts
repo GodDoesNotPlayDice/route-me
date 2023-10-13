@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { DriversService } from 'src/app/shared/services/drivers.service'
-import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
+import { TripStateEnum } from 'src/package/trip/domain/backend-models/trip-state'
 
 @Component( {
   standalone : true,

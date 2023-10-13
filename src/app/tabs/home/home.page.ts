@@ -21,7 +21,7 @@ import {
 } from 'src/package/shared/config/helper/error-handling/case-2-entity'
 import { InvalidDateUserException } from 'src/package/shared/config/helper/error-handling/exceptions'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
-import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
+import { TripStateEnum } from 'src/package/trip/domain/backend-models/trip-state'
 
 @Component( {
   standalone : true,

@@ -26,7 +26,6 @@ export interface UserProps {
  * Create a user instance
  * @throws {EmailInvalidException} - if email is invalid
  * @throws {UserIdInvalidException} - if id is invalid
- * @throws {UnknowException} - if unknown error
  */
 export const newUser = ( props: UserProps ): Result<User, Error[]> => {
   const err: Error[] = []

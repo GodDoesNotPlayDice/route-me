@@ -11,7 +11,7 @@ import {
 
 /**
  * Create a json from user instance
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const userToJson   = ( user: User ): Result<Record<string, any>, Error> => {
   try {
