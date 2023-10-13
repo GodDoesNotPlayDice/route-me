@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  ElementRef,
   Input,
   OnInit,
   ViewChild
@@ -15,8 +14,6 @@ import {
 import { MatInputModule } from '@angular/material/input'
 import {
   DatetimeCustomEvent,
-  IonDatetime,
-  IonDatetimeButton,
   IonicModule
 } from '@ionic/angular'
 
