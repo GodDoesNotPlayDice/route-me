@@ -36,7 +36,7 @@ export const locationFromJson = ( json: Record<string, any> ): Result<Location, 
 
 /**
  * Create a json from location instance
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const locationToJson = ( direction: Direction ): Result<Record<string, any>, Error> => {
 	try {
