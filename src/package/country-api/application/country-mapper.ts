@@ -4,9 +4,12 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  Country,
-  newCountryFromJson
+  Country
 } from 'src/package/country-api/domain/models/country'
+import { newCountryFlagUrl } from 'src/package/country-api/domain/models/country-flag-url'
+import { newCountryName } from 'src/package/country-api/domain/models/country-name'
+import { newCountryNameCode } from 'src/package/country-api/domain/models/country-name-code'
+import { newCountryNumberCode } from 'src/package/country-api/domain/models/country-number-code'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -17,7 +20,54 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {CountryNumberCodeInvalidException} - if number code is invalid
  */
 export const countryFromJson = ( json: Record<string, any> ): Result<Country, Error[]> => {
-  return newCountryFromJson( json )
+  const errors: Error[] = []
+
+  const flag = newCountryFlagUrl( {
+    png: json['flags']['png'] ?? ''
+  } )
+
+  if ( flag.isErr() ) {
+    errors.push( flag.unwrapErr() )
+  }
+
+  //TODO: ver si no es necesario verificar json undefined
+  const name = newCountryName( {
+    common  : json['name']['common'] ?? '',
+    official: json['name']['official'] ?? ''
+  } )
+
+  if ( name.isErr() ) {
+    errors.push( name.unwrapErr() )
+  }
+
+  const code = newCountryNameCode( {
+    value: json['cca2'] ?? ''
+  } )
+
+  if ( code.isErr() ) {
+    errors.push( code.unwrapErr() )
+  }
+
+  const number = newCountryNumberCode( {
+    root    : json['idd']['root'] ?? '',
+    suffixes: json['idd']['suffixes'] ?? []
+  } )
+
+  if ( number.isErr() ) {
+    errors.push( number.unwrapErr() )
+  }
+
+  if ( errors.length > 0 ) {
+    return Err( errors )
+  }
+
+  return Ok( {
+      flag  : flag.unwrap(),
+      name  : name.unwrap(),
+      code  : code.unwrap(),
+      number: number.unwrap()
+    }
+  )
 }
 
 /**

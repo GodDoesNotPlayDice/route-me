@@ -7,8 +7,8 @@ import { CountryNumberCodeInvalidException } from 'src/package/country-api/domai
 import { z } from 'zod'
 
 export const CountryNumberCodeSchema = z.object( {
-  root    : z.string(),
-  suffixes: z.array( z.string() )
+  root    : z.string().nonempty(),
+  suffixes: z.array( z.string() ).nonempty()
 } )
 
 type CountryNumberCodeType = z.infer<typeof CountryNumberCodeSchema>

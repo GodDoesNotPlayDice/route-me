@@ -7,7 +7,7 @@ import { CountryFlagInvalidException } from 'src/package/country-api/domain/exce
 import { z } from 'zod'
 
 export const CountryFlagUrlSchema = z.object( {
-  png: z.string()
+  png: z.string().nonempty()
 } )
 
 type CountryFlagUrlType = z.infer<typeof CountryFlagUrlSchema>
