@@ -48,7 +48,6 @@ export class SearchModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //TODO: dificil generalizar esto
     this.inputSearch.searchText$.pipe( debounceTime( 1000 ) )
         .subscribe(
           async ( searchText ) => {
@@ -71,6 +70,7 @@ export class SearchModalComponent implements OnInit {
             }
 
             this.streetData = result.unwrap()
+
             this.loading    = false
           } )
   }
