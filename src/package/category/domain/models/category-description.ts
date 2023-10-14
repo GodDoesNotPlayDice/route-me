@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const CategoryDescriptionSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type CategoryDescriptionType = z.infer<typeof CategoryDescriptionSchema>

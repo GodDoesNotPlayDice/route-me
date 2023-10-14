@@ -4,9 +4,10 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  Category,
-  newCategory
+  Category
 } from 'src/package/category/domain/models/category'
+import { newCategoryID } from 'src/package/category/domain/models/category-id'
+import { newCategoryName } from 'src/package/category/domain/models/category-name'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -35,15 +36,28 @@ export const categoryToJson = ( category: Category ): Result<Record<string, any>
  * @throws {CategoryNameInvalidException} - if name is invalid
  */
 export const categoryFromJson = ( json: Record<string, any> ): Result<Category, Error[]> => {
-
-  const result = newCategory( {
-    id  : json['id'],
-    name: json['name']
+  const errors: Error[] = []
+  const id              = newCategoryID( {
+    value: json['id'] ?? ''
   } )
 
-  if ( result.isErr() ) {
-    return Err( result.unwrapErr() )
+  if ( id.isErr() ) {
+    errors.push( id.unwrapErr() )
   }
 
-  return Ok( result.unwrap() )
+  const name = newCategoryName( {
+    value: json['name'] ?? ''
+  } )
+
+  if ( name.isErr() ) {
+    errors.push( name.unwrapErr() )
+  }
+
+  if ( errors.length > 0 ) {
+    return Err( errors )
+  }
+  return Ok( {
+    id  : id.unwrap(),
+    name: name.unwrap()
+  } )
 }
