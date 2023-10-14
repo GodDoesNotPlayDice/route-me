@@ -4,9 +4,9 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  Direction,
-  newDirectionFromJson
+  Direction
 } from 'src/package/direction-api/domain/models/direction'
+import { newGeometry } from 'src/package/direction-api/domain/models/geometry'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -14,7 +14,17 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {GeometryInvalidException} - if geometry is invalid
  */
 export const directionFromJson = ( json: Record<string, any> ): Result<Direction, Error> => {
-  return newDirectionFromJson( json )
+  const result = newGeometry( {
+    values: json['routes'][0]['geometry']['coordinates'] ?? []
+  } )
+
+  if ( result.isErr() ) {
+    return Err( result.unwrapErr() )
+  }
+
+  return Ok( {
+    coordinates: result.unwrap()
+  } )
 }
 
 /**
