@@ -21,9 +21,6 @@ export interface TripPrice {
 export interface TripPriceProps {
   amount: number,
   currency: string,
-//TODO: recordatorio para backend
-  // seat: TripSeat,
-  // pricing: PricingStrategy
 }
 
 /**

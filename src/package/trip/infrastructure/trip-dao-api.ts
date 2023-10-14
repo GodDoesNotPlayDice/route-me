@@ -5,11 +5,11 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
 import { tripToJSON } from 'src/package/trip/application/trip-mapper'
-import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
+import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { TripID } from '../domain/models/trip-id'
 
 export class TripDaoApi implements TripDao {
@@ -20,68 +20,83 @@ export class TripDaoApi implements TripDao {
 
 	/**
 	 * Get all trips by state
-	 * @throws {UnknownException} - if unknown error
+	 * @throws {ApiOperationException} - if api operation failed
 	 */
-	async getAllByState( state: TripState ): Promise<Result<Trip[], Error>> {
-		return Err( new UnknownException() )
+	async getAllByState( state: TripState ): Promise<Result<Trip[], Error[]>> {
+		return Err( [new ApiOperationException()] )
 	}
 
 	/**
 	 * Get by id trip
-	 * @throws {UnknownException} - if unknown error
+	 * @throws {ApiOperationException} - if api operation failed
 	 */
-	async getById( id: TripID ): Promise<Result<Trip, Error>> {
-		return Err( new UnknownException() )
+	async getById( id: TripID ): Promise<Result<Trip, Error[]>> {
+		return Err( [new ApiOperationException()] )
 	}
 
 	/**
 	 * Delete trip
-	 * @throws {UnknownException} - if unknown error
+	 * @throws {ApiOperationException} - if api operation failed
 	 */
 	async delete( id: TripID ): Promise<Result<boolean, Error>> {
-		return Err( new UnknownException() )
+		return Err( new ApiOperationException() )
 	}
 
 	/**
 	 * Update trip
-	 * @throws {UnknownException} - if unknown error
+	 * @throws {ApiOperationException} - if api operation failed
 	 */
 	async update( trip: Trip ): Promise<Result<boolean, Error>> {
-		return Err( new UnknownException() )
+		return Err( new ApiOperationException() )
 	}
 
 	/**
 	 * Create trip
-	 * @throws {UnknownException} - if unknown error
+	 * @throws {ApiOperationException} - if api operation failed
 	 */
 	async create( trip: Trip ): Promise<Result<boolean, Error>> {
 		try {
-			const j = tripToJSON( trip )
-			this.http.post( this.url, j )
+			const tripJsonResult = tripToJSON( trip )
+
+			if ( tripJsonResult.isErr() ) {
+				return Err( tripJsonResult.unwrapErr() )
+			}
+
+			this.http.post( this.url, tripJsonResult.unwrap() )
 			    .subscribe( ( data ) => {
 				    console.log( 'data', data )
 			    } )
+
+
 			return Ok( true )
 		}
 		catch ( e ) {
-			return Err( new UnknownException() )
+			return Err( new ApiOperationException( 'trip create firebase' ) )
 		}
 	}
 
 	/**
 	 * Get all trips
-	 * @throws {UnknownException} - if unknown error
+	 * @throws {ApiOperationException} - if api operation failed
 	 */
-	async getAll(): Promise<Result<Trip[], Error>> {
-		try {
-			this.http.get( this.url )
-			    .subscribe( ( data ) => {
-				    console.log( 'data', data )
-			    } )
-			return Ok( [] )
+	async getAll(): Promise<Result<Trip[], Error[]>> {
+
+		const response = await this.http.get( this.url ).toPromise()
+
+		if ( response === undefined ) {
+			return Err( [new ApiOperationException( 'trip get all firebase' )] )
 		}
-		catch ( e ) {
-			return Err( new UnknownException() )
-		}
+
+		//TODO: revisar que formato responde y envia a la api
+		console.log( 'response', response)
+
+		// const trip = tripFromJSON( response )
+		//
+		// if ( trip.isErr() ) {
+		// 	return Err( trip.unwrapErr() )
+		// }
+		//
+		// return Ok( trip.unwrap() )
+		return Ok( [] )
 	}
 }
