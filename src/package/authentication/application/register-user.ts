@@ -11,9 +11,13 @@ import { ulid } from 'ulidx'
 /**
  * Register user
  * @throws {EmailInvalidException} - if email is invalid
- * @throws {PasswordInvalidException} - if password is invalid
+ * @throws {PasswordInsufficientLengthException} - if password length is invalid
+ * @throws {PasswordInsufficientUppercaseException} - if password uppercase is invalid
+ * @throws {PasswordInsufficientLowercaseException} - if password lowercase is invalid
+ * @throws {PasswordInsufficientNumberException} - if password number is invalid
+ * @throws {PasswordInsufficientCharacterException} - if password character is invalid
  * @throws {UserIdInvalidException} - if id is invalid
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const registerUser = async ( repository: AuthUserRepository,
 	email: string,
@@ -35,7 +39,7 @@ export const registerUser = async ( repository: AuthUserRepository,
 	} )
 
 	if ( passwordResult.isErr() ) {
-		error.push( passwordResult.unwrapErr() )
+		error.push( ...passwordResult.unwrapErr() )
 	}
 
 	if ( error.length > 0 ) {

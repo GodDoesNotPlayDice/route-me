@@ -11,11 +11,15 @@ import { newUserPassword } from 'src/package/user/domain/models/user-password'
 /**
  * Login user
  * @throws {EmailInvalidException} - if email is invalid
- * @throws {PasswordInvalidException} - if password is invalid
+ * @throws {PasswordInsufficientLengthException} - if password length is invalid
+ * @throws {PasswordInsufficientUppercaseException} - if password uppercase is invalid
+ * @throws {PasswordInsufficientLowercaseException} - if password lowercase is invalid
+ * @throws {PasswordInsufficientNumberException} - if password number is invalid
+ * @throws {PasswordInsufficientCharacterException} - if password character is invalid
  * @throws {UserIdInvalidException} - if id is invalid
  * @throws {UserNotFoundException} - if user not found
  * @throws {PasswordNotMatchException} - if password not match
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const loginUser = async ( repository: AuthUserRepository,
 	email: string,
@@ -35,7 +39,7 @@ export const loginUser = async ( repository: AuthUserRepository,
 	} )
 
 	if ( passwordResult.isErr() ) {
-		error.push( passwordResult.unwrapErr() )
+		error.push( ...passwordResult.unwrapErr() )
 	}
 
 	if ( error.length > 0 ) {
