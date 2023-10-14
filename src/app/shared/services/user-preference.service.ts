@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core'
 import {
-  newPreference,
   Preference
 } from 'src/package/preference/domain/models/preference'
 
@@ -18,17 +17,27 @@ export class UserPreferenceService {
 
 function defaultPreference(): Preference[] {
   return [
-    newPreference( {
-      id  : '1',
-      icon: 'musical-notes-outline',
-      name: 'Con Musica'
-    } )
-      .unwrap(),
-    newPreference( {
-      id  : '2',
-      icon: 'logo-no-smoking',
-      name: 'Sin Fumar'
-    } )
-      .unwrap()
+    {
+      id  : {
+        value: '1'
+      },
+      icon: {
+        value: 'musical-notes-outline'
+      },
+      name: {
+        value: 'Con Musica'
+      }
+    },
+    {
+      id  : {
+        value: '2'
+      },
+      icon: {
+        value: 'logo-no-smoking'
+      },
+      name: {
+        value: 'Sin Fumar'
+      }
+    }
   ]
 }

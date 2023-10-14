@@ -4,9 +4,11 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  newPreference,
   Preference
 } from 'src/package/preference/domain/models/preference'
+import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
+import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
+import { newPreferenceName } from 'src/package/preference/domain/models/preference-name'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -16,17 +18,41 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {PreferenceIconInvalidException} - if icon is invalid
  */
 export const preferenceFromJson = ( json: Record<string, any> ): Result<Preference, Error[]> => {
-  const rating = newPreference( {
-    id  : json['id'],
-    name: json['name'],
-    icon: json['icon']
+  const errors: Error[] = []
+
+  const id = newPreferenceID( {
+    value: json[ 'id' ] ?? ''
   } )
 
-  if ( rating.isErr() ) {
-    return Err( rating.unwrapErr() )
+  if ( id.isErr() ) {
+    errors.push( id.unwrapErr() )
   }
 
-  return Ok( rating.unwrap() )
+  const name = newPreferenceName( {
+    value: json[ 'name' ] ?? ''
+  } )
+
+  if ( name.isErr() ) {
+    errors.push( name.unwrapErr() )
+  }
+
+  const icon = newPreferenceIcon( {
+    value: json[ 'icon' ] ?? ''
+  } )
+
+  if ( icon.isErr() ) {
+    errors.push( icon.unwrapErr() )
+  }
+
+  if ( errors.length > 0 ) {
+    return Err( errors )
+  }
+
+  return Ok( {
+    id  : id.unwrap(),
+    name: name.unwrap(),
+    icon: icon.unwrap()
+  } )
 }
 
 /**
