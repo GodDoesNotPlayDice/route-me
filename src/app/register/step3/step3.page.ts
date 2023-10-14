@@ -25,12 +25,7 @@ import {
   notifyStep
 } from 'src/app/shared/state/stepper/step.actions'
 import {
-  newPreferenceID,
-  PreferenceID
-} from 'src/package/preference/domain/models/preference-id'
-import {
-  MultipleSelectorData,
-  newMultipleSelectorData
+  MultipleSelectorData
 } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
@@ -57,7 +52,7 @@ export class Step3Page implements ViewDidEnter {
     //TODO: colocar con observable despues, como en country service
     this.preferences = this.userPreferenceService.getUserPreferences()
                            .map(
-                             ( preference ) => newMultipleSelectorData( {
+                             ( preference ): MultipleSelectorData => ( {
                                id      : preference.id.value,
                                name    : preference.name.value,
                                icon    : preference.icon.value,
@@ -89,26 +84,6 @@ export class Step3Page implements ViewDidEnter {
       return
     }
 
-    // const error: Error[]        = []
-    // const prefs: PreferenceID[] = []
-    // for ( const preference of this.preferenceInput.multipleSelectorControl.value! ) {
-    //   const result = newPreferenceID( {
-    //     value: preference
-    //   } )
-    //
-    //   if ( result.isErr() ) {
-    //     error.push( result.unwrapErr() )
-    //   }
-    //   else {
-    //     prefs.push( result.unwrap() )
-    //   }
-    // }
-
-    // if ( error.length > 0 ) {
-    //   console.log( 'error updating passenger step3' )
-    //   console.log( error )
-    //   return
-    // }
     const updated = await this.auth.updatePassenger( {
       description: this.areaInput.textControl.value!,
       preferences: this.preferenceInput.multipleSelectorControl.value!

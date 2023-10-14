@@ -11,8 +11,7 @@ import {
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { MultipleSelectorItemComponent } from 'src/app/shared/components/multiple-selector-item/multiple-selector-item.component'
 import {
-  MultipleSelectorData,
-  newMultipleSelectorData
+  MultipleSelectorData
 } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
@@ -33,16 +32,16 @@ export class MultipleSelectorModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataList = Array.from( this.databaseData.values() )
-                         .map( ( data ) => {
+                         .map( ( data ) : MultipleSelectorData => {
                            const isSelected = this.selectedData.get( data.id )
                            if ( isSelected !== undefined ) {
-                             return newMultipleSelectorData( {
+                             return ( {
                                ...data,
                                selected: true
                              } )
                            }
                            else {
-                             return newMultipleSelectorData( {
+                             return ( {
                                ...data,
                                selected: false
                              } )

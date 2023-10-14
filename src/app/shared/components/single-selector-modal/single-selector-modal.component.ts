@@ -10,7 +10,6 @@ import {
 } from '@ionic/angular'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import {
-  newSingleSelectorData,
   SingleSelectorData
 } from 'src/package/shared/domain/components/single-selector-data'
 
@@ -37,9 +36,9 @@ export class SingleSelectorModalComponent implements OnInit {
 
   ngOnInit() {
     const list: SingleSelectorData[] = this.databaseData.map(
-      ( data ) =>
+      ( data ) : SingleSelectorData=>
       {
-        const notSelected = newSingleSelectorData( {
+        const notSelected = ( {
           ...data,
           selected: false
         } )
@@ -52,7 +51,7 @@ export class SingleSelectorModalComponent implements OnInit {
           return notSelected
         }
         else {
-          return newSingleSelectorData( {
+          return ( {
             ...data,
             selected: true
           } )

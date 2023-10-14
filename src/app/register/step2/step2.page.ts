@@ -23,14 +23,8 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
-import {
-  newRadioButtonData,
-  RadioButtonData
-} from 'src/package/shared/domain/components/radio-button-data'
-import {
-  newSingleSelectorData,
-  SingleSelectorData
-} from 'src/package/shared/domain/components/single-selector-data'
+import { RadioButtonData } from 'src/package/shared/domain/components/radio-button-data'
+import { SingleSelectorData } from 'src/package/shared/domain/components/single-selector-data'
 
 @Component( {
   standalone : true,
@@ -58,8 +52,8 @@ export class Step2Page implements ViewDidEnter {
   {
     this.countryService.countriesList$.subscribe(
       ( countries ) => {
-        this.countries = countries.map( country =>
-          newSingleSelectorData( {
+        this.countries = countries.map( (country): SingleSelectorData =>
+          ( {
             id      : country.code.value,
             name    : country.name.common,
             image   : country.flag.png,
@@ -80,14 +74,14 @@ export class Step2Page implements ViewDidEnter {
 
   //TODO: esto podria venir de un servicio
   buttons: RadioButtonData[] = [
-    newRadioButtonData( {
+    {
       name: 'Male',
       icon: 'male-outline'
-    } ),
-    newRadioButtonData( {
+    },
+    {
       name: 'Female',
       icon: 'female-outline'
-    } )
+    }
   ]
 
   formGroup!: FormGroup

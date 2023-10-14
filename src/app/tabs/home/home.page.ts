@@ -10,10 +10,7 @@ import { SearchLauncherComponent } from 'src/app/shared/components/search-launch
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
-import {
-  FilterButtonData,
-  newFilterButtonData
-} from 'src/package/shared/domain/components/filter-button-data'
+import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
@@ -59,18 +56,18 @@ export class HomePage implements OnInit {
 }
 
 const filterButtonList: FilterButtonData[] = [
-  newFilterButtonData( {
+  {
     name : 'Comunidad',
     image: 'https://cdn.discordapp.com/attachments/982116594543099924/1148053857335787640/community_1.png'
-  } ),
-  newFilterButtonData( {
+  },
+  {
     name : 'Eventos',
     image: 'https://cdn.discordapp.com/attachments/982116594543099924/1148051128655814716/event.png'
-  } ),
-  newFilterButtonData( {
+  },
+  {
     name : 'Viajes',
     image: 'https://cdn.discordapp.com/attachments/982116594543099924/1148051316388679740/travel-bag.png'
-  } )
+  }
 ]
 
 
