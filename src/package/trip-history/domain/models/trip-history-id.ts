@@ -7,7 +7,7 @@ import { TripHistoryIdInvalidException } from 'src/package/trip-history/domain/e
 import { z } from 'zod'
 
 export const TripHistoryIDSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type TripHistoryIDType = z.infer<typeof TripHistoryIDSchema>

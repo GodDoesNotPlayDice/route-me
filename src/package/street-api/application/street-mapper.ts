@@ -3,10 +3,12 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { newPosition } from 'src/package/position-api/domain/models/position'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { Street } from 'src/package/street-api/domain/models/street'
+import { newStreetName } from 'src/package/street-api/domain/models/street-name'
+import { newStreetPlace } from 'src/package/street-api/domain/models/street-place'
 import {
-  newStreetsDataFromJson,
   StreetsData
 } from 'src/package/street-api/domain/models/streets-data'
 
@@ -17,7 +19,55 @@ import {
  * @throws {PositionInvalidException} - if some position is invalid
  */
 export const streetsDataFromJson = ( json: Record<string, any> ): Result<StreetsData, Error[]> => {
-  return newStreetsDataFromJson( json )
+  const err: Error[]   = []
+
+  const streets : Street[] = []
+  for ( const value of Object.values( json['features'] ) ) {
+    const entry = value as Record<string, any>
+
+    const positionResult = newPosition( {
+      lat: entry['center'][1],
+      lng: entry['center'][0]
+    } )
+
+    if ( positionResult.isErr() ) {
+      err.push( positionResult.unwrapErr() )
+    }
+
+    const place = newStreetPlace( {
+      value: entry['place_name'] ?? ''
+    } )
+
+    if ( place.isErr() ) {
+      err.push( place.unwrapErr() )
+    }
+
+    const name = newStreetName( {
+      value: entry['text'] ?? ''
+    } )
+
+    if ( name.isErr() ) {
+      err.push( name.unwrapErr() )
+    }
+
+    if ( err.length > 0 ) {
+      break
+    }
+
+    streets.push( {
+      center: positionResult.unwrap(),
+      place : place.unwrap(),
+      name  : name.unwrap()
+    } )
+  }
+
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
+
+  return Ok( {
+    streets: streets
+  } )
 }
 
 /**
