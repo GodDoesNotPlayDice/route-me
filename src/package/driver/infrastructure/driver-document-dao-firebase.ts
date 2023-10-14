@@ -12,7 +12,7 @@ export class DriverDocumentDaoFirebase implements DriverDocumentDao {
    * Create a driver document
    * @throws {UnknownException} - if unknown error
    */
-  async create( driver: DriverDocument ): Promise<Result<DriverDocument, Error>> {
+  async create( driver: DriverDocument ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException() )
   }
 
@@ -28,16 +28,16 @@ export class DriverDocumentDaoFirebase implements DriverDocumentDao {
    * Get all driver documents
    * @throws {UnknownException} - if unknown error
    */
-  async getAll(): Promise<Result<DriverDocument[], Error>> {
-    return Err( new UnknownException() )
+  async getAll(): Promise<Result<DriverDocument[], Error[]>> {
+    return Err( [new UnknownException()] )
   }
 
   /**
    * Get a driver document by id
    * @throws {UnknownException} - if unknown error
    */
-  async getById( id: DriverDocumentID ): Promise<Result<DriverDocument, Error>> {
-    return Err( new UnknownException() )
+  async getById( id: DriverDocumentID ): Promise<Result<DriverDocument, Error[]>> {
+    return Err( [new UnknownException()] )
   }
 
   /**

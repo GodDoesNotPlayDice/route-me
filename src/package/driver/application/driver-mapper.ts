@@ -3,11 +3,14 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { Driver } from 'src/package/driver/domain/models/driver'
 import {
-  Driver,
-  newDriver
-} from 'src/package/driver/domain/models/driver'
+  DriverDocumentID,
+  newDriverDocumentID
+} from 'src/package/driver/domain/models/driver-document-id'
+import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newUserID } from 'src/package/user/domain/models/user-id'
 
 /**
  * Create a json from driver instance
@@ -32,23 +35,55 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
 
 /**
  * Create a driver instance from json
- * @throws {DriverIdInvalidException} - if id is invalid
- * @throws {DriverDocumentIdInvalidException} - if id is invalid
+ * @throws {DriverIdInvalidException} - if driver id is invalid
+ * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
+ * @throws {UserIdInvalidException} - if user id is invalid
  */
 export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Error[]> => {
+  const err: Error[] = []
 
-  const documents = Object.values( json['documents'] )
-                          .map( ( document ) => document as string )
-
-  const result = newDriver( {
-    id       : json['id'],
-    userID   : json['userID'],
-    documents: documents
+  const driverID = newDriverID( {
+    value: json['id'] ?? ''
   } )
 
-  if ( result.isErr() ) {
-    return Err( result.unwrapErr() )
+  if ( driverID.isErr() ) {
+    err.push( driverID.unwrapErr() )
   }
 
-  return Ok( result.unwrap() )
+  const documents: DriverDocumentID[] = []
+
+  if ( json['documents'] !== undefined ) {
+    for ( const document of Object.values( json['documents'] ) ) {
+      const driverDocumentID = newDriverDocumentID( {
+        value: document as string
+      } )
+
+      if ( driverDocumentID.isErr() ) {
+        err.push( driverDocumentID.unwrapErr() )
+      }
+      else {
+        documents.push( driverDocumentID.unwrap() )
+      }
+    }
+  }
+
+  const userID = newUserID( {
+    value: json['userID'] ?? ''
+  } )
+
+  if ( userID.isErr() ) {
+    err.push( userID.unwrapErr() )
+  }
+
+  if ( err.length > 0 ) {
+    err.push( ...err )
+    return Err( err )
+  }
+
+  return Ok( {
+      id       : driverID.unwrap(),
+      userID   : userID.unwrap(),
+      documents: documents
+    }
+  )
 }

@@ -4,9 +4,12 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  DriverDocument,
-  newDriverDocument
+  DriverDocument
 } from 'src/package/driver/domain/models/driver-document'
+import { newDriverDocumentID } from 'src/package/driver/domain/models/driver-document-id'
+import { newDriverDocumentName } from 'src/package/driver/domain/models/driver-document-name'
+import { newDriverDocumentReference } from 'src/package/driver/domain/models/driver-document-reference'
+import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -33,22 +36,55 @@ export const driverDocumentToJson = ( driverDocument: DriverDocument ): Result<R
 
 /**
  * Create a driver document instance from json
- * @throws {DriverDocumentIdInvalidException} - if id is invalid
- * @throws {DriverIdInvalidException} - if id is invalid
- * @throws {DriverDocumentNameInvalidException} - if name is invalid
- * @throws {DriverDocumentReferenceInvalidException} - if document reference is invalid
+ * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
+ * @throws {DriverIdInvalidException} - if driver id is invalid
+ * @throws {DriverDocumentNameInvalidException} - if driver document name is invalid
+ * @throws {DriverDocumentReferenceInvalidException} - if driver document reference is invalid
  */
 export const driverDocumentFromJson = ( json: Record<string, any> ): Result<DriverDocument, Error[]> => {
-  const result = newDriverDocument( {
-    id       : json['id'],
-    driverID : json['driverID'],
-    name     : json['name'],
-    reference: json['reference']
+  const err: Error[] = []
+
+  const documentID = newDriverDocumentID( {
+    value: json['id'] ?? ''
   } )
 
-  if ( result.isErr() ) {
-    return Err( result.unwrapErr() )
+  if ( documentID.isErr() ) {
+    err.push( documentID.unwrapErr() )
   }
 
-  return Ok( result.unwrap() )
+  const driverID = newDriverID( {
+    value: json['driverID'] ?? ''
+  } )
+
+  if ( driverID.isErr() ) {
+    err.push( driverID.unwrapErr() )
+  }
+
+  const documentName = newDriverDocumentName( {
+    value: json['name'] ?? ''
+  } )
+
+  if ( documentName.isErr() ) {
+    err.push( documentName.unwrapErr() )
+  }
+
+  const documentReference = newDriverDocumentReference( {
+    value: json['reference'] ?? ''
+  } )
+
+  if ( documentReference.isErr() ) {
+    err.push( documentReference.unwrapErr() )
+  }
+
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
+
+  return Ok( {
+      id       : documentID.unwrap(),
+      driverID : driverID.unwrap(),
+      name     : documentName.unwrap(),
+      reference: documentReference.unwrap()
+    }
+  )
 }
