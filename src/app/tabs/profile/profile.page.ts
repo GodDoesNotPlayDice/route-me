@@ -7,7 +7,6 @@ import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/lab
 import { AuthService } from 'src/app/shared/services/auth.service'
 import {
   defaultPassangers,
-  defaultUsers
 } from 'src/main'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { User } from 'src/package/user/domain/models/user'
@@ -27,21 +26,18 @@ import { User } from 'src/package/user/domain/models/user'
 export class ProfilePage {
 
   constructor( private authService: AuthService ) {
-    if ( this.authService.currentUser.isNone() ) {
-      this.authService.currentUser = Some( defaultUsers[0] )
-    }
-
-    if ( this.authService.currentPassenger.isNone() ) {
-      this.authService.currentPassenger = Some( defaultPassangers[0] )
-    }
-
+    if ( this.authService.currentUser.isSome() ) {
     this.user      = this.authService.currentUser.unwrap()
     this.passenger = this.authService.currentPassenger.unwrap()
+    }
+
+    if ( this.authService.currentPassenger.isSome() ) {
     this.edad      =
-      new Date().getFullYear() - this.passenger.birthDay.value.getFullYear()
+      new Date().getFullYear() - this.passenger!.birthDay.value.getFullYear()
+    }
   }
 
-  edad: number
-  user: User
-  passenger: Passenger
+  edad: number | undefined
+  user: User | undefined
+  passenger: Passenger | undefined
 }
