@@ -27,11 +27,11 @@ import { MapService } from 'src/app/shared/services/map.service'
 export class SearchPage implements ViewDidEnter {
 
   constructor( private map: MapService ) {}
+
   @ViewChild( 'search' ) searchInput!: SearchInputComponent
   @ViewChild( 'smap' ) divElementElementRef!: ElementRef<HTMLDivElement>
 
-  ionViewDidEnter(): void {
-    // this.searchInput.inputSearch.nativeElement.focus()
-    	this.map.init('search', this.divElementElementRef.nativeElement)
+  async ionViewDidEnter(): Promise<void> {
+    await this.map.init( 'search', this.divElementElementRef.nativeElement )
   }
 }

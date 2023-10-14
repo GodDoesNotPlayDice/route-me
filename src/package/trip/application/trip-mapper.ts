@@ -204,7 +204,6 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error> => 
         passengers   : passengers,
         category     : trip.categoryID.value,
         chat         : trip.chatID.value,
-      
         startDate    : dateToJSON( trip.startDate.value ),
         endDate      : dateToJSON( trip.endDate.value ),
         startLocation: trip.startLocationID.value,
