@@ -4,9 +4,9 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  Chat,
-  newChat
+  Chat
 } from 'src/package/chat/domain/models/chat'
+import { newChatID } from 'src/package/chat/domain/models/chat-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 
@@ -32,34 +32,36 @@ export const chatToJson = ( chat: Chat ): Result<Record<string, any>, Error> => 
 
 /**
  * Create a chat instance from json
- * @throws {ChatIdInvalidException} - if id is invalid
- * @throws {TripIdInvalidException} - if id is invalid
+ * @throws {ChatIdInvalidException} - if chat id is invalid
+ * @throws {TripIdInvalidException} - if trip id is invalid
  */
 export const chatFromJson = ( json: Record<string, any> ): Result<Chat, Error[]> => {
 
-  const err: Error[] = []
+  const errors: Error[] = []
+
+  const id = newChatID( {
+    value: json['id'] ?? ''
+  } )
+
+  if ( id.isErr() ) {
+    errors.push( id.unwrapErr() )
+  }
 
   const tripID = newTripID( {
-    value: json['tripID']
+    value: json['tripID'] ?? ''
   } )
 
   if ( tripID.isErr() ) {
-    err.push( tripID.unwrapErr() )
+    errors.push( tripID.unwrapErr() )
   }
 
-  if ( err.length > 0 ) {
-    return Err( err )
+  if ( errors.length > 0 ) {
+    return Err( errors )
   }
 
-  const result = newChat( {
-    id    : json['id'],
-    tripID: tripID.unwrap()
-  } )
-
-  if ( result.isErr() ) {
-    err.push( result.unwrapErr() )
-    return Err( err )
-  }
-
-  return Ok( result.unwrap() )
+  return Ok( {
+      id    : id.unwrap(),
+      tripID: tripID.unwrap()
+    }
+  )
 }

@@ -7,7 +7,7 @@ import { MessageContentInvalidException } from 'src/package/chat/domain/exceptio
 import { z } from 'zod'
 
 export const MessageContentSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type MessageContentType = z.infer<typeof MessageContentSchema>
