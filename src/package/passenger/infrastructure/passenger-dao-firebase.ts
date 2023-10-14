@@ -111,7 +111,7 @@ export class PassengerDaoFirebase implements PassengerDao {
    * Create a passenger
    * @throws {FirebaseOperationException} - if operation failed
    */
-  async create( passenger: Passenger ): Promise<Result<Passenger, Error>> {
+  async create( passenger: Passenger ): Promise<Result<boolean, Error>> {
     let completed: string | null = null
     await this.firebase.database.ref( this.collectionKey )
               .push(
@@ -138,7 +138,7 @@ export class PassengerDaoFirebase implements PassengerDao {
       return Err( new FirebaseOperationException() )
     }
 
-    return Ok( passenger )
+    return Ok( true )
   }
 
   /**

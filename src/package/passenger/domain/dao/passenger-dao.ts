@@ -7,7 +7,7 @@ export abstract class PassengerDao {
 
   abstract getById( id: UserID ): Promise<Result<Passenger, Error[]>>
 
-  abstract create( passenger: Passenger ): Promise<Result<Passenger, Error>>
+  abstract create( passenger: Passenger ): Promise<Result<boolean, Error>>
 
   abstract delete( id: UserID ): Promise<Result<boolean, Error>>
 

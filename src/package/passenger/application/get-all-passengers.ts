@@ -11,8 +11,8 @@ export const getAllUsers = async ( repository: PassengerDao ): Promise<Result<Pa
   const response = result.unwrap()
 
   if ( result.isErr() ) {
-    return Promise.resolve( Err( result.unwrapErr() ) )
+    return Err( result.unwrapErr() )
   }
 
-  return Promise.resolve( Ok( response ) )
+  return Ok( response )
 }

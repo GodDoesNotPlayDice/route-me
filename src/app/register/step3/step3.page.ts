@@ -89,30 +89,29 @@ export class Step3Page implements ViewDidEnter {
       return
     }
 
-    const error: Error[]        = []
-    const prefs: PreferenceID[] = []
-    //TODO: revisar que funcione y quede claro
-    for ( const preference of this.preferenceInput.multipleSelectorControl.value! ) {
-      const result = newPreferenceID( {
-        value: preference
-      } )
+    // const error: Error[]        = []
+    // const prefs: PreferenceID[] = []
+    // for ( const preference of this.preferenceInput.multipleSelectorControl.value! ) {
+    //   const result = newPreferenceID( {
+    //     value: preference
+    //   } )
+    //
+    //   if ( result.isErr() ) {
+    //     error.push( result.unwrapErr() )
+    //   }
+    //   else {
+    //     prefs.push( result.unwrap() )
+    //   }
+    // }
 
-      if ( result.isErr() ) {
-        error.push( result.unwrapErr() )
-      }
-      else {
-        prefs.push( result.unwrap() )
-      }
-    }
-
-    if ( error.length > 0 ) {
-      console.log( 'error updating passenger step3' )
-      console.log( error )
-      return
-    }
+    // if ( error.length > 0 ) {
+    //   console.log( 'error updating passenger step3' )
+    //   console.log( error )
+    //   return
+    // }
     const updated = await this.auth.updatePassenger( {
       description: this.areaInput.textControl.value!,
-      preferences: prefs
+      preferences: this.preferenceInput.multipleSelectorControl.value!
     } )
 
     if ( !updated ) {

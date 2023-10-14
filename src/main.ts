@@ -40,21 +40,16 @@ import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
-import {
-  newPassenger,
-  Passenger
-} from 'src/package/passenger/domain/models/passenger'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
 import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
 import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
-import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
-import { newGender } from 'src/package/shared/domain/models/gender'
+import { GenderEnum } from 'src/package/shared/domain/models/gender'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
-import { newUserID } from 'src/package/user/domain/models/user-id'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
 import { environment } from './environments/environment'
 
@@ -64,30 +59,37 @@ if ( environment.production ) {
 }
 
 export const defaultPassangers: Passenger[] = [
-  newPassenger( {
-    id         : 'abc',
-    userID     : newUserID( {
+  {
+    id         : {
       value: 'abc'
-    } )
-      .unwrap(),
-    name       : 'hola',
-    lastName   : 'last',
-    description: 'descdescdescdesc',
-    phone      : '123456788',
-    birthDay   : new Date( '1990-03-25' ),
-    country    : 'Argentina',
-    gender     : newGender( {
-      value: 'Female'
-    } )
-      .unwrap(),
-    preferences: [
-      newPreferenceID( {
+    },
+    userID     : {
+      value: 'abc'
+    } ,
+    name       : {
+      value: 'hola'
+    },
+    lastName   : {
+      value: 'last'
+    },
+    description: {
+      value: 'descdescdescdesc'
+    },
+    phone      : {
+      value: '123456788'
+    },
+    birthDay   : {
+      value: new Date( '1990-03-25' )
+    },
+    country    : {
+      value: 'Argentina'
+    },
+    gender     : GenderEnum.Male,
+    preferences: [{
         value: 'a1'
-      } )
-        .unwrap()
+      }
     ]
-  } )
-    .unwrap()
+  }
 ]
 
 bootstrapApplication( AppComponent, {

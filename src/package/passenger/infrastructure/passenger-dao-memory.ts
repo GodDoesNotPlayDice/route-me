@@ -14,7 +14,7 @@ export class PassengerDaoMemory implements PassengerDao {
    * Create a passenger
    * @throws {UnknownException} - if unknown error
    */
-  async create( passenger: Passenger ): Promise<Result<Passenger, Error>> {
+  async create( passenger: Passenger ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException() )
   }
 
