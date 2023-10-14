@@ -7,7 +7,8 @@ import { DriverIdInvalidException } from 'src/package/driver/domain/exceptions/d
 import { z } from 'zod'
 
 export const DriverIDSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string()
+          .nonempty()
 } )
 
 type DriverIDType = z.infer<typeof DriverIDSchema>
@@ -28,9 +29,9 @@ export const newDriverID = ( props: DriverIDProps ): Result<DriverID, Error> => 
   } )
 
   if ( !result.success ) {
-    return Err(new DriverIdInvalidException())
+    return Err( new DriverIdInvalidException() )
   }
   else {
-    return Ok(result.data)
+    return Ok( result.data )
   }
-  }
+}

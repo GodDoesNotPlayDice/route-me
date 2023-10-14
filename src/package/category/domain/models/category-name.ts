@@ -7,21 +7,22 @@ import { CategoryNameInvalidException } from 'src/package/category/domain/except
 import { z } from 'zod'
 
 export const CategoryNameSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
 type CategoryNameType = z.infer<typeof CategoryNameSchema>
+
 export interface CategoryName extends CategoryNameType {}
 
 export interface CategoryNameProps {
-  value : string
+  value: string
 }
 
 /**
  * Create category name instance
  * @throws {CategoryNameInvalidException} - if name is invalid
  */
-export const newCategoryName = (props : CategoryNameProps): Result<CategoryName, Error> => {
+export const newCategoryName = ( props: CategoryNameProps ): Result<CategoryName, Error> => {
   const result = CategoryNameSchema.safeParse( {
     value: props.value
   } )

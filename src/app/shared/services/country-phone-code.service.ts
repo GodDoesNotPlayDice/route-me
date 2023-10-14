@@ -17,13 +17,15 @@ export class CountryPhoneCodeService {
 
   constructor( private http: HttpClient ) {
     this.http.get( this.url )
-        .pipe(take(1))
+        .pipe( take( 1 ) )
         .subscribe( ( res: any ) => {
           let list: Country[] = []
-          for ( const value of Object.values(res) ) {
-            const c = countryFromJson(value as Record<string, any>)
-            if (c.isErr()) continue
-            list.push(c.unwrap())
+          for ( const value of Object.values( res ) ) {
+            const c = countryFromJson( value as Record<string, any> )
+            if ( c.isErr() ) {
+              continue
+            }
+            list.push( c.unwrap() )
           }
           list = list.sort( ( a, b ) => {
             if ( a.name.common > b.name.common ) {
@@ -33,12 +35,13 @@ export class CountryPhoneCodeService {
               return -1
             }
             return 0
-          })
+          } )
           this.countriesList.next( list )
           console.log( 'countries ready' )
         } )
   }
 
-  private countriesList                                 = new BehaviorSubject<Country[]>([])
+  private countriesList                        = new BehaviorSubject<Country[]>(
+    [] )
   public countriesList$: Observable<Country[]> = this.countriesList.asObservable()
 }

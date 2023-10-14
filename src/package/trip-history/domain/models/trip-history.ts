@@ -1,7 +1,7 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
   newTripHistoryID,
@@ -12,14 +12,14 @@ import { UserID } from 'src/package/user/domain/models/user-id'
 
 export interface TripHistory {
   id: TripHistoryID
-	userID: UserID
-	tripID: TripID
+  userID: UserID
+  tripID: TripID
 }
 
 export interface TripHistoryProps {
-	id: string
-	userID: UserID
-	tripID: TripID
+  id: string
+  userID: UserID
+  tripID: TripID
 }
 
 /**
@@ -27,18 +27,19 @@ export interface TripHistoryProps {
  * @throws {TripHistoryIdInvalidException} - if id is invalid
  */
 export const newTripHistory = ( props: TripHistoryProps ): Result<TripHistory, Error> => {
-	const id = newTripHistoryID({
-		value: props.id
-	})
+  const id = newTripHistoryID( {
+    value: props.id
+  } )
 
-	if ( id.isErr() ) {
-		return Err( id.unwrapErr())
-	}
+  if ( id.isErr() ) {
+    return Err( id.unwrapErr() )
+  }
 
-	return Ok({
-			id    : id.unwrap(),
-			userID: props.userID,
-			tripID: props.tripID
-		}
-	)}
+  return Ok( {
+      id    : id.unwrap(),
+      userID: props.userID,
+      tripID: props.tripID
+    }
+  )
+}
 

@@ -1,3 +1,3 @@
 export abstract class PricingStrategy {
-	abstract calculate(): number;
+  abstract calculate(): number;
 }

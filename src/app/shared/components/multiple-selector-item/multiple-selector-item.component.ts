@@ -20,7 +20,7 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
 } )
 export class MultipleSelectorItemComponent {
   @Input() selected: boolean                   = false
-  @Input({required: true}) item : MultipleSelectorData
+  @Input( { required: true } ) item: MultipleSelectorData
   @Output() onSelected: EventEmitter<string>   = new EventEmitter<string>()
   @Output() onDeselected: EventEmitter<string> = new EventEmitter<string>()
 

@@ -7,21 +7,22 @@ import { RatingIdInvalidException } from 'src/package/rating/domain/exceptions/r
 import { z } from 'zod'
 
 export const RatingIDSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
 type RatingIDType = z.infer<typeof RatingIDSchema>
+
 export interface RatingID extends RatingIDType {}
 
 export interface RatingIDProps {
-  value : string
+  value: string
 }
 
 /**
  * Create a rating id instance
  * @throws {RatingIdInvalidException} - if id is invalid
  */
-export const newRatingID = (props : RatingIDProps): Result<RatingID, Error> => {
+export const newRatingID = ( props: RatingIDProps ): Result<RatingID, Error> => {
   const result = RatingIDSchema.safeParse( {
     value: props.value
   } )

@@ -1,7 +1,7 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
   newRatingID,
@@ -13,13 +13,13 @@ import {
 } from 'src/package/rating/domain/models/rating-value'
 
 export interface Rating {
-	id: RatingID,
-	value: RatingValue
+  id: RatingID,
+  value: RatingValue
 }
 
 export interface RatingProps {
-	id: string
-	value: string
+  id: string
+  value: string
 }
 
 /**
@@ -28,31 +28,31 @@ export interface RatingProps {
  * @throws {RatingValueInvalidException} - if value is invalid
  */
 export const newRating = ( props: RatingProps ): Result<Rating, Error[]> => {
-	const err : Error[] = []
+  const err: Error[] = []
 
-	const id = newRatingID( {
-		value: props.id
-	} )
+  const id = newRatingID( {
+    value: props.id
+  } )
 
-	if ( id.isErr() ) {
-		err.push( id.unwrapErr() )
-	}
+  if ( id.isErr() ) {
+    err.push( id.unwrapErr() )
+  }
 
-	const value = newRatingValue( {
-		value: props.value
-	} )
+  const value = newRatingValue( {
+    value: props.value
+  } )
 
-	if ( value.isErr() ) {
-		err.push( value.unwrapErr() )
-	}
+  if ( value.isErr() ) {
+    err.push( value.unwrapErr() )
+  }
 
-	if ( err.length > 0 ) {
-		return Err( err )
-	}
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
 
-	return Ok({
-			id   : id.unwrap(),
-			value: value.unwrap()
-		}
-	)
+  return Ok( {
+      id   : id.unwrap(),
+      value: value.unwrap()
+    }
+  )
 }

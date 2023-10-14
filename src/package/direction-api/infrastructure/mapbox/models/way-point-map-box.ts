@@ -1,5 +1,5 @@
 export interface Waypoint {
-	distance: number;
-	name:     string;
-	location: number[];
+  distance: number;
+  name: string;
+  location: number[];
 }

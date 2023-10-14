@@ -12,10 +12,7 @@ import {
   MatDatepickerModule
 } from '@angular/material/datepicker'
 import { MatInputModule } from '@angular/material/input'
-import {
-  DatetimeCustomEvent,
-  IonicModule
-} from '@ionic/angular'
+import { IonicModule } from '@ionic/angular'
 
 @Component( {
   standalone : true,
@@ -31,7 +28,7 @@ import {
   ]
 } )
 export class DateSelectorComponent implements OnInit {
-  @ViewChild( 'dateInput', {static: true} ) dateInput!: HTMLInputElement
+  @ViewChild( 'dateInput', { static: true } ) dateInput!: HTMLInputElement
   @Input( { required: true } ) label: string
   @Input() mustAdult: boolean = false
 
@@ -40,7 +37,7 @@ export class DateSelectorComponent implements OnInit {
 
   dateNowDesc: Date | null  = null
   dateNowAsc: Date | null   = null
-  dateSelected: Date | null   = null
+  dateSelected: Date | null = null
   readonly dateControl      = new FormControl<Date | null>( null, control => {
     if ( this.dateSelected === null ) {
       return { required: true }
@@ -64,7 +61,7 @@ export class DateSelectorComponent implements OnInit {
   }
 
   async reset(): Promise<void> {
-    this.dateSelected   = null
+    this.dateSelected = null
     this.dateControl.patchValue( this.dateSelected )
     this.dateControl.updateValueAndValidity()
   }

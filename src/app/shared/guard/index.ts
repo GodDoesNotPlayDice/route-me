@@ -1,1 +1,1 @@
-export * from './can-login.guard';
+export * from './can-login.guard'

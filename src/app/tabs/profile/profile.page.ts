@@ -9,9 +9,7 @@ import {
   defaultPassangers,
   defaultUsers
 } from 'src/main'
-import {
-  Passenger
-} from 'src/package/passenger/domain/models/passenger'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { User } from 'src/package/user/domain/models/user'
 
 @Component( {
@@ -34,16 +32,16 @@ export class ProfilePage {
     }
 
     if ( this.authService.currentPassenger.isNone() ) {
-      this.authService.currentPassenger = Some(defaultPassangers[0] )
+      this.authService.currentPassenger = Some( defaultPassangers[0] )
     }
 
-    this.user = this.authService.currentUser.unwrap()
+    this.user      = this.authService.currentUser.unwrap()
     this.passenger = this.authService.currentPassenger.unwrap()
-    this.edad =
+    this.edad      =
       new Date().getFullYear() - this.passenger.birthDay.value.getFullYear()
   }
 
   edad: number
   user: User
-  passenger : Passenger
+  passenger: Passenger
 }

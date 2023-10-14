@@ -10,7 +10,6 @@ import {
   ModalController
 } from '@ionic/angular'
 import { SearchModalComponent } from 'src/app/shared/components/search-modal/search-modal.component'
-import { Position } from 'src/package/position-api/domain/models/position'
 import { Street } from 'src/package/street-api/domain/models/street'
 
 @Component( {
@@ -27,8 +26,8 @@ import { Street } from 'src/package/street-api/domain/models/street'
 export class SearchLauncherComponent {
   constructor( private modalCtrl: ModalController ) {}
 
-  streetSearch: Street | undefined = undefined
-  @Input() value: string           = ''
+  streetSearch: Street | undefined                 = undefined
+  @Input() value: string                           = ''
   @Output() onStreetPosition: EventEmitter<Street> = new EventEmitter<Street>()
 
 
@@ -42,8 +41,8 @@ export class SearchLauncherComponent {
     if ( data === undefined ) {
       return
     }
-    this.streetSearch     = data
-    this.value = this.streetSearch!.place.value
-    this.onStreetPosition.emit( this.streetSearch!)
+    this.streetSearch = data
+    this.value        = this.streetSearch!.place.value
+    this.onStreetPosition.emit( this.streetSearch! )
   }
 }

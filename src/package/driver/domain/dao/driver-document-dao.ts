@@ -3,9 +3,13 @@ import { DriverDocument } from 'src/package/driver/domain/models/driver-document
 import { DriverDocumentID } from 'src/package/driver/domain/models/driver-document-id'
 
 export abstract class DriverDocumentDao {
-	abstract getAll(): Promise<Result<DriverDocument[], Error>>
-	abstract getById( id: DriverDocumentID ): Promise<Result<DriverDocument, Error>>
-	abstract create( driver: DriverDocument ): Promise<Result<DriverDocument, Error>>
-	abstract delete( id: DriverDocumentID ): Promise<Result<boolean, Error>>
-	abstract update( driver: DriverDocument ): Promise<Result<boolean, Error>>
+  abstract getAll(): Promise<Result<DriverDocument[], Error>>
+
+  abstract getById( id: DriverDocumentID ): Promise<Result<DriverDocument, Error>>
+
+  abstract create( driver: DriverDocument ): Promise<Result<DriverDocument, Error>>
+
+  abstract delete( id: DriverDocumentID ): Promise<Result<boolean, Error>>
+
+  abstract update( driver: DriverDocument ): Promise<Result<boolean, Error>>
 }

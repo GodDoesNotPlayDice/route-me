@@ -7,15 +7,16 @@ import { PositionInvalidException } from 'src/package/position-api/domain/except
 import { z } from 'zod'
 
 export const PositionSchema = z.object( {
-  lat : z.number(),
+  lat: z.number(),
   lng: z.number()
 } )
 
 type PositionType = z.infer<typeof PositionSchema>
+
 export interface Position extends PositionType {}
 
 export interface PositionProps {
-  lat : number,
+  lat: number,
   lng: number
 }
 
@@ -23,7 +24,7 @@ export interface PositionProps {
  * Create position instance
  * @throws {PositionInvalidException} - if position is invalid
  */
-export const newPosition = (props : PositionProps): Result<Position, Error> => {
+export const newPosition = ( props: PositionProps ): Result<Position, Error> => {
   const result = PositionSchema.safeParse( {
     lat: props.lat,
     lng: props.lng

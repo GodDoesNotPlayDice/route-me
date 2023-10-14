@@ -7,21 +7,23 @@ import { CategoryIdInvalidException } from 'src/package/category/domain/exceptio
 import { z } from 'zod'
 
 export const CategoryIDSchema = z.object( {
-  value : z.string().nonempty()
+  value: z.string()
+          .nonempty()
 } )
 
 type CategoryIDType = z.infer<typeof CategoryIDSchema>
+
 export interface CategoryID extends CategoryIDType {}
 
 export interface CategoryIDProps {
-  value : string
+  value: string
 }
 
 /**
  * Create category id instance
  * @throws {CategoryIdInvalidException} - if id is invalid
  */
-export const newCategoryID = (props : CategoryIDProps): Result<CategoryID, Error> => {
+export const newCategoryID = ( props: CategoryIDProps ): Result<CategoryID, Error> => {
   const result = CategoryIDSchema.safeParse( {
     value: props.value
   } )

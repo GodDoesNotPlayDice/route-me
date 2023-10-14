@@ -7,7 +7,8 @@ import { PassengerNameInvalidException } from 'src/package/passenger/domain/exce
 import { z } from 'zod'
 
 export const PassengerNameSchema = z.object( {
-  value : z.string().nonempty()
+  value: z.string()
+          .nonempty()
 } )
 
 type PassengerNameType = z.infer<typeof PassengerNameSchema>
@@ -15,16 +16,16 @@ type PassengerNameType = z.infer<typeof PassengerNameSchema>
 export interface PassengerName extends PassengerNameType {}
 
 export interface PassengerNameProps {
-  value : string
+  value: string
 }
 
 /**
  * Create a passenger name instance
  * @throws {PassengerNameInvalidException} - if name is invalid
  */
-export const newPassengerName = (props : PassengerNameProps): Result<PassengerName, Error> => {
+export const newPassengerName = ( props: PassengerNameProps ): Result<PassengerName, Error> => {
   const result = PassengerNameSchema.safeParse( {
-    value : props.value
+    value: props.value
   } )
 
   if ( !result.success ) {

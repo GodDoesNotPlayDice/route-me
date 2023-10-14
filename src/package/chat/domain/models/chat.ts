@@ -29,10 +29,10 @@ export const newChat = ( props: ChatProps ): Result<Chat, Error> => {
   } )
 
   if ( id.isErr() ) {
-    return Err( id.unwrapErr())
+    return Err( id.unwrapErr() )
   }
 
-  return Ok({
+  return Ok( {
       id    : id.unwrap(),
       tripID: props.tripID
     }

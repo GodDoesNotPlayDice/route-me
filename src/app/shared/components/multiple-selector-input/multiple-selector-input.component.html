@@ -3,7 +3,7 @@
   <div *ngIf="selectedData.length !== 0"
     class="flex flex-wrap w-80 gap-2">
     <ng-container *ngFor="let pref of selectedData">
-            <div class="inline bg-gray-200 rounded-full p-2 font-gotham">{{ pref.name }}</div>
+      <div class="inline bg-gray-200 rounded-full p-2 font-gotham">{{ pref.name }}</div>
     </ng-container>
   </div>
   <mat-form-field (click)="openModal()">

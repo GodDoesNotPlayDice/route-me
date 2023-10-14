@@ -1,11 +1,11 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
-	Chat,
-	newChat
+  Chat,
+  newChat
 } from 'src/package/chat/domain/models/chat'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
@@ -15,19 +15,19 @@ import { newTripID } from 'src/package/trip/domain/models/trip-id'
  * @throws {UnknownException} - if unknown error
  */
 export const chatToJson = ( chat: Chat ): Result<Record<string, any>, Error> => {
-	try {
-		const json: Record<string, any> = {
-			id    : chat.id.value,
-			tripID: chat.tripID.value
-		}
-		return Ok( json )
-	}
-	catch ( e ) {
-		const err = e instanceof Error
-			? new UnknownException( e.message )
-			: new UnknownException( 'error chat to json' )
-		return Err( err )
-	}
+  try {
+    const json: Record<string, any> = {
+      id    : chat.id.value,
+      tripID: chat.tripID.value
+    }
+    return Ok( json )
+  }
+  catch ( e ) {
+    const err = e instanceof Error
+      ? new UnknownException( e.message )
+      : new UnknownException( 'error chat to json' )
+    return Err( err )
+  }
 }
 
 /**
@@ -37,29 +37,29 @@ export const chatToJson = ( chat: Chat ): Result<Record<string, any>, Error> => 
  */
 export const chatFromJson = ( json: Record<string, any> ): Result<Chat, Error[]> => {
 
-	const err: Error[] = []
+  const err: Error[] = []
 
-	const tripID = newTripID( {
-		value: json['tripID']
-	} )
+  const tripID = newTripID( {
+    value: json['tripID']
+  } )
 
-	if ( tripID.isErr() ) {
-		err.push( tripID.unwrapErr() )
-	}
+  if ( tripID.isErr() ) {
+    err.push( tripID.unwrapErr() )
+  }
 
-	if ( err.length > 0 ) {
-		return Err( err )
-	}
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
 
-	const result = newChat( {
-		id    : json['id'],
-		tripID: tripID.unwrap()
-	} )
+  const result = newChat( {
+    id    : json['id'],
+    tripID: tripID.unwrap()
+  } )
 
-	if ( result.isErr() ) {
-		err.push( result.unwrapErr() )
-		return Err( err )
-	}
+  if ( result.isErr() ) {
+    err.push( result.unwrapErr() )
+    return Err( err )
+  }
 
-	return Ok( result.unwrap() )
+  return Ok( result.unwrap() )
 }

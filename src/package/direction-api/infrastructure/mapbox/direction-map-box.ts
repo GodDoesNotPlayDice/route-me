@@ -20,13 +20,15 @@ export class DirectionMapBox implements DirectionRepository {
    */
   async getDirection( inicio: Position,
     final: Position ): Promise<Result<Direction, Error>> {
-    const start    = `${ inicio.lng },${ inicio.lat }`
-    const end      = `${ final.lng },${ final.lat }`
+    const start = `${ inicio.lng },${ inicio.lat }`
+    const end   = `${ final.lng },${ final.lat }`
 
-    const response = await this.http.get( `https://api.mapbox.com/directions/v5/mapbox/driving/${ start };${ end }?alternatives=true&geometries=geojson&overview=simplified&steps=false&access_token=${ environment.mapBoxApiKey }` ).toPromise()
+    const response = await this.http.get(
+      `https://api.mapbox.com/directions/v5/mapbox/driving/${ start };${ end }?alternatives=true&geometries=geojson&overview=simplified&steps=false&access_token=${ environment.mapBoxApiKey }` )
+                               .toPromise()
 
     if ( response === undefined ) {
-      return Err(new DirectionNotFoundException())
+      return Err( new DirectionNotFoundException() )
     }
 
     const directionResult = directionFromJson( response )

@@ -22,7 +22,7 @@ import { TripService } from 'src/app/shared/services/trip.service'
   selector   : 'app-publish',
   templateUrl: './publish.page.html',
   styleUrls  : [ './publish.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     InputTextComponent,

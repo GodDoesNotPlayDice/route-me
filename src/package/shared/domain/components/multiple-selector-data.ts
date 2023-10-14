@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 export const MultipleSelectorDataSchema = z.object( {
-  id: z.string(),
-  name: z.string(),
-  icon: z.string(),
+  id      : z.string(),
+  name    : z.string(),
+  icon    : z.string(),
   selected: z.boolean()
 } )
 
@@ -20,9 +20,9 @@ export interface MultipleSelectorDataProps {
 
 export const newMultipleSelectorData = ( props: MultipleSelectorDataProps ): MultipleSelectorData => {
   return MultipleSelectorDataSchema.parse( {
-    id: props.id,
-    name: props.name,
-    icon: props.icon,
+    id      : props.id,
+    name    : props.name,
+    icon    : props.icon,
     selected: props.selected
   } )
 }

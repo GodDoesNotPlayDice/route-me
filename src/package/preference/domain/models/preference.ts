@@ -1,7 +1,7 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
   newPreferenceIcon,
@@ -17,15 +17,15 @@ import {
 } from 'src/package/preference/domain/models/preference-name'
 
 export interface Preference {
-	id: PreferenceID
-	name: PreferenceName
-	icon: PreferenceIcon
+  id: PreferenceID
+  name: PreferenceName
+  icon: PreferenceIcon
 }
 
 export interface PreferenceProps {
-	id: string
-	name: string
-	icon: string
+  id: string
+  name: string
+  icon: string
 }
 
 /**
@@ -34,40 +34,40 @@ export interface PreferenceProps {
  * @throws {PreferenceNameInvalidException} - if name is invalid
  * @throws {PreferenceIconInvalidException} - if icon is invalid
  */
-export const newPreference = (props : PreferenceProps): Result<Preference, Error[]> => {
-	const errors: Error[] = []
+export const newPreference = ( props: PreferenceProps ): Result<Preference, Error[]> => {
+  const errors: Error[] = []
 
-	const id = newPreferenceID({
-		value: props.id
-	})
+  const id = newPreferenceID( {
+    value: props.id
+  } )
 
-	if ( id.isErr() ) {
-		errors.push( id.unwrapErr() )
-	}
+  if ( id.isErr() ) {
+    errors.push( id.unwrapErr() )
+  }
 
-	const name = newPreferenceName({
-		value: props.name
-	})
+  const name = newPreferenceName( {
+    value: props.name
+  } )
 
-	if ( name.isErr() ) {
-		errors.push( name.unwrapErr() )
-	}
+  if ( name.isErr() ) {
+    errors.push( name.unwrapErr() )
+  }
 
-	const icon = newPreferenceIcon({
-		value: props.icon
-	})
+  const icon = newPreferenceIcon( {
+    value: props.icon
+  } )
 
-	if ( icon.isErr() ) {
-		errors.push( icon.unwrapErr() )
-	}
+  if ( icon.isErr() ) {
+    errors.push( icon.unwrapErr() )
+  }
 
-	if ( errors.length > 0 ) {
-		return Err(errors)
-	}
+  if ( errors.length > 0 ) {
+    return Err( errors )
+  }
 
-	return Ok({
-		id: id.unwrap(),
-		name: name.unwrap(),
-		icon: icon.unwrap()
-	})
+  return Ok( {
+    id  : id.unwrap(),
+    name: name.unwrap(),
+    icon: icon.unwrap()
+  } )
 }

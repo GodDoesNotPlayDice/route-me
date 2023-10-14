@@ -16,6 +16,10 @@ import {
   PassengerDescription
 } from 'src/package/passenger/domain/models/passenger-description'
 import {
+  newPassengerID,
+  PassengerID
+} from 'src/package/passenger/domain/models/passenger-id'
+import {
   newPassengerLastName,
   PassengerLastName
 } from 'src/package/passenger/domain/models/passenger-last-name'
@@ -27,17 +31,9 @@ import {
   newPassengerPhone,
   PassengerPhone
 } from 'src/package/passenger/domain/models/passenger-phone'
-import {
-  newPassengerID,
-  PassengerID
-} from 'src/package/passenger/domain/models/passenger-id'
 import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
-import {
-  Gender,
-} from 'src/package/shared/domain/models/gender'
-import {
-  UserID
-} from 'src/package/user/domain/models/user-id'
+import { Gender } from 'src/package/shared/domain/models/gender'
+import { UserID } from 'src/package/user/domain/models/user-id'
 
 export interface Passenger {
   id: PassengerID
@@ -78,7 +74,7 @@ export interface PassengerProps {
  * @throws {PassengerCountryInvalidException} - if country is invalid
  */
 export const newPassenger = ( props: PassengerProps ): Result<Passenger, Error[]> => {
-  const err : Error[] = []
+  const err: Error[] = []
 
   const id = newPassengerID( {
     value: props.id
@@ -140,7 +136,7 @@ export const newPassenger = ( props: PassengerProps ): Result<Passenger, Error[]
     return Err( err )
   }
 
-  return Ok({
+  return Ok( {
       id         : id.unwrap(),
       userID     : props.userID,
       name       : name.unwrap(),

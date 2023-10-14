@@ -28,16 +28,16 @@ import { SingleSelectorData } from 'src/package/shared/domain/components/single-
 } )
 export class SingleSelectorInputComponent {
 
-  constructor( private modalCtrl: ModalController) {}
+  constructor( private modalCtrl: ModalController ) {}
 
-  @Input({required:true}) databaseData : SingleSelectorData[]
-  @Input({required:true}) errorText : string
+  @Input( { required: true } ) databaseData: SingleSelectorData[]
+  @Input( { required: true } ) errorText: string
   lastSelected: SingleSelectorData | undefined
-  @Input({required:true}) label : string
+  @Input( { required: true } ) label: string
   @Input() required = false
 
   readonly singleSelectorControl = new FormControl( '', control => {
-    if (this.required && control.value === '' ) {
+    if ( this.required && control.value === '' ) {
       return { required: true }
     }
     return null

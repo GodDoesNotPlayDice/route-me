@@ -1,7 +1,7 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { User } from 'src/package/user/domain/models/user'
@@ -22,39 +22,39 @@ import { newUserPassword } from 'src/package/user/domain/models/user-password'
  * @throws {UnknownException} - if unknown error
  */
 export const loginUser = async ( repository: AuthUserRepository,
-	email: string,
-	password: string ): Promise<Result<User, Error[]>> => {
-	const error: Error[] = []
+  email: string,
+  password: string ): Promise<Result<User, Error[]>> => {
+  const error: Error[] = []
 
-	const emailResult = newUserEmail( {
-		value: email
-	} )
+  const emailResult = newUserEmail( {
+    value: email
+  } )
 
-	if ( emailResult.isErr() ) {
-		error.push( emailResult.unwrapErr() )
-	}
+  if ( emailResult.isErr() ) {
+    error.push( emailResult.unwrapErr() )
+  }
 
-	const passwordResult = newUserPassword( {
-		value: password
-	} )
+  const passwordResult = newUserPassword( {
+    value: password
+  } )
 
-	if ( passwordResult.isErr() ) {
-		error.push( ...passwordResult.unwrapErr() )
-	}
+  if ( passwordResult.isErr() ) {
+    error.push( ...passwordResult.unwrapErr() )
+  }
 
-	if ( error.length > 0 ) {
-		return Err( error )
-	}
+  if ( error.length > 0 ) {
+    return Err( error )
+  }
 
-	const result      = await repository.login(
-		emailResult.unwrap(),
-		passwordResult.unwrap()
-	)
+  const result = await repository.login(
+    emailResult.unwrap(),
+    passwordResult.unwrap()
+  )
 
-	if ( result.isErr() ) {
-		error.push( ...result.unwrapErr() )
-		return Err( error )
-	}
+  if ( result.isErr() ) {
+    error.push( ...result.unwrapErr() )
+    return Err( error )
+  }
 
-	return Ok( result.unwrap() )
+  return Ok( result.unwrap() )
 }

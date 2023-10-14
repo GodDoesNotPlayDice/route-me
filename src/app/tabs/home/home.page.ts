@@ -7,14 +7,13 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
-import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
+import { DriversService } from 'src/app/shared/services/drivers.service'
+import { TripService } from 'src/app/shared/services/trip.service'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import {
   FilterButtonData,
   newFilterButtonData
 } from 'src/package/shared/domain/components/filter-button-data'
-import { DriversService } from 'src/app/shared/services/drivers.service'
-import { TripService } from 'src/app/shared/services/trip.service'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
@@ -31,7 +30,7 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
     DriveCardComponent
   ]
 } )
-export class HomePage implements OnInit{
+export class HomePage implements OnInit {
 
   constructor( private driversService: DriversService,
     private trip: TripDao,
@@ -49,7 +48,7 @@ export class HomePage implements OnInit{
 
   async ngOnInit() {
     const result = await this.trip.getAll()
-    console.log( 'result', result)
+    console.log( 'result', result )
   }
 
   info: DriverCardInfo[] = []

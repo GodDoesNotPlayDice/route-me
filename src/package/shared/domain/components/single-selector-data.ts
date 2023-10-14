@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 export const SingleSelectorDataSchema = z.object( {
-  id: z.string(),
-  name: z.string(),
-  image: z.string(),
+  id      : z.string(),
+  name    : z.string(),
+  image   : z.string(),
   selected: z.boolean()
 } )
 
@@ -20,9 +20,9 @@ export interface SingleSelectorDataProps {
 
 export const newSingleSelectorData = ( props: SingleSelectorDataProps ): SingleSelectorData => {
   return SingleSelectorDataSchema.parse( {
-    id: props.id,
-    name: props.name,
-    image: props.image,
+    id      : props.id,
+    name    : props.name,
+    image   : props.image,
     selected: props.selected
   } )
 }

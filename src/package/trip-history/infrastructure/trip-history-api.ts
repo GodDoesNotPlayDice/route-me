@@ -7,13 +7,13 @@ import { TripHistoryDao } from 'src/package/trip-history/domain/dao/trip-history
 import { TripHistory } from 'src/package/trip-history/domain/models/trip-history'
 import { TripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
 
-export class TripHistoryApi implements TripHistoryDao{
+export class TripHistoryApi implements TripHistoryDao {
   /**
    * Create trip history
    * @throws {ApiOperationException} - if api operation failed
    */
   async create( trip: TripHistory ): Promise<Result<TripHistory, Error>> {
-    return Err(new ApiOperationException())
+    return Err( new ApiOperationException() )
   }
 
   /**
@@ -21,7 +21,7 @@ export class TripHistoryApi implements TripHistoryDao{
    @throws {ApiOperationException} - if api operation failed
    */
   async delete( id: TripHistoryID ): Promise<Result<boolean, Error>> {
-    return Err(new ApiOperationException())
+    return Err( new ApiOperationException() )
   }
 
   /**
@@ -29,7 +29,7 @@ export class TripHistoryApi implements TripHistoryDao{
    @throws {ApiOperationException} - if api operation failed
    */
   async getAll(): Promise<Result<TripHistory[], Error[]>> {
-    return Err([new ApiOperationException()])
+    return Err( [ new ApiOperationException() ] )
   }
 
   /**
@@ -37,7 +37,7 @@ export class TripHistoryApi implements TripHistoryDao{
    @throws {ApiOperationException} - if api operation failed
    */
   async getById( id: TripHistoryID ): Promise<Result<TripHistory, Error[]>> {
-    return Err([new ApiOperationException()])
+    return Err( [ new ApiOperationException() ] )
   }
 
   /**
@@ -45,7 +45,7 @@ export class TripHistoryApi implements TripHistoryDao{
    @throws {ApiOperationException} - if api operation failed
    */
   async update( trip: TripHistory ): Promise<Result<boolean, Error>> {
-    return Err(new ApiOperationException())
+    return Err( new ApiOperationException() )
   }
 
 }

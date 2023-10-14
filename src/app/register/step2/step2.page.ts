@@ -13,12 +13,16 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import { SingleSelectorInputComponent } from 'src/app/shared/components/single-selector-input/single-selector-input.component'
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { RadioInputComponent } from 'src/app/shared/components/radio-input/radio-input.component'
+import { SingleSelectorInputComponent } from 'src/app/shared/components/single-selector-input/single-selector-input.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
+import { AuthService } from 'src/app/shared/services/auth.service'
+import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
+import { AppState } from 'src/app/shared/state/app.state'
+import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 import {
   newRadioButtonData,
   RadioButtonData
@@ -27,10 +31,6 @@ import {
   newSingleSelectorData,
   SingleSelectorData
 } from 'src/package/shared/domain/components/single-selector-data'
-import { AuthService } from 'src/app/shared/services/auth.service'
-import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
-import { AppState } from 'src/app/shared/state/app.state'
-import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 
 @Component( {
   standalone : true,
@@ -52,19 +52,19 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 export class Step2Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
-    private countryService : CountryPhoneCodeService,
-    private auth : AuthService,
+    private countryService: CountryPhoneCodeService,
+    private auth: AuthService,
     private router: Router )
   {
     this.countryService.countriesList$.subscribe(
       ( countries ) => {
-        this.countries = countries.map(country =>
+        this.countries = countries.map( country =>
           newSingleSelectorData( {
             id      : country.code.value,
             name    : country.name.common,
             image   : country.flag.png,
             selected: false
-          } ))
+          } ) )
       }
     )
   }
@@ -76,7 +76,7 @@ export class Step2Page implements ViewDidEnter {
   @ViewChild( 'date' ) dateSelectorInput !: DateSelectorComponent
   @ViewChild( 'radio' ) radioButtonInput !: RadioInputComponent
 
-  countries : SingleSelectorData[] = []
+  countries: SingleSelectorData[] = []
 
   //TODO: esto podria venir de un servicio
   buttons: RadioButtonData[] = [
@@ -117,14 +117,14 @@ export class Step2Page implements ViewDidEnter {
     }
 
     this.store.dispatch( notifyStep() )
-    await this.auth.registerPassenger({
-      name: this.userInput.textControl.value!,
+    await this.auth.registerPassenger( {
+      name    : this.userInput.textControl.value!,
       lastName: this.lastNameInput.textControl.value!,
-      phone: this.phoneInput.textControl.value!,
-      country: this.countryInput.singleSelectorControl.value!,
+      phone   : this.phoneInput.textControl.value!,
+      country : this.countryInput.singleSelectorControl.value!,
       birthDay: this.dateSelectorInput.dateControl.value!,
-      gender: this.radioButtonInput.radioControl.value!
-    })
+      gender  : this.radioButtonInput.radioControl.value!
+    } )
     await this.router.navigate( [ '/register/step3' ] )
   }
 }

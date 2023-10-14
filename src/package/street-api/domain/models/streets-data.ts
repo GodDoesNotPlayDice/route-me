@@ -1,21 +1,21 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
-	newStreet,
-	Street,
-	StreetProps
+  newStreet,
+  Street,
+  StreetProps
 } from 'src/package/street-api/domain/models/street'
 import { newStreetsDataMapBox } from 'src/package/street-api/infrastructure/map-box/models/street-map-box'
 
 export interface StreetsData {
-	streets: Street[]
+  streets: Street[]
 }
 
 export interface StreetsDataProps {
-	streets: StreetProps[]
+  streets: StreetProps[]
 }
 
 /**
@@ -25,35 +25,35 @@ export interface StreetsDataProps {
  * @throws {PositionInvalidException} - if some position is invalid
  */
 export const newStreetsData = ( props: StreetsDataProps ): Result<StreetsData, Error[]> => {
-	const err: Error[] = []
+  const err: Error[] = []
 
-	const streetsList: Street[] = []
+  const streetsList: Street[] = []
 
-	for ( const street of props.streets ) {
-		const streetResult = newStreet( {
-			center: street.center,
-			place : street.place,
-			name  : street.name
-		} )
+  for ( const street of props.streets ) {
+    const streetResult = newStreet( {
+      center: street.center,
+      place : street.place,
+      name  : street.name
+    } )
 
-		if ( streetResult.isErr() ) {
-			err.push( ...streetResult.unwrapErr() )
-			break
-		}
-		else {
-			streetsList.push( streetResult.unwrap() )
-		}
-	}
+    if ( streetResult.isErr() ) {
+      err.push( ...streetResult.unwrapErr() )
+      break
+    }
+    else {
+      streetsList.push( streetResult.unwrap() )
+    }
+  }
 
-	if ( err.length > 0 ) {
-		return Err( err )
-	}
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
 
-	return Ok( {
-		streets: streetsList
-	} )
+  return Ok( {
+    streets: streetsList
+  } )
 }
 
 export const newStreetsDataFromJson = ( json: Record<string, any> ): Result<StreetsData, Error[]> => {
-	return newStreetsDataMapBox( json )
+  return newStreetsDataMapBox( json )
 }

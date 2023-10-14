@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  Input,
-  OnInit
+  Input
 } from '@angular/core'
 import {
   FormControl,
@@ -42,7 +41,7 @@ export class MultipleSelectorInputComponent {
 
   selectedData: MultipleSelectorData[] = []
 
-  @Input( { required: true } ) databaseList : MultipleSelectorData[]
+  @Input( { required: true } ) databaseList: MultipleSelectorData[]
 
   readonly multipleSelectorControl = new FormControl<string[]>( [],
     control => {
@@ -71,9 +70,9 @@ export class MultipleSelectorInputComponent {
 
     this.selectedData = data
     // if ( role1 === 'confirm' ) {}
-    this.multipleSelectorControl.patchValue( this.selectedData.map(value => {
+    this.multipleSelectorControl.patchValue( this.selectedData.map( value => {
       return value.id
-    }) )
+    } ) )
     this.multipleSelectorControl.updateValueAndValidity()
   }
 }

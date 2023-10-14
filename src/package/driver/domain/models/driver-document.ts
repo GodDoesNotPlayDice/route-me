@@ -45,46 +45,46 @@ export const newDriverDocument = ( props: DriverDocumentProps ): Result<DriverDo
 
   const err: Error[] = []
 
-  const documentID = newDriverDocumentID({
+  const documentID = newDriverDocumentID( {
     value: props.id
-  })
+  } )
 
-  if (documentID.isErr()) {
-    err.push(documentID.unwrapErr())
+  if ( documentID.isErr() ) {
+    err.push( documentID.unwrapErr() )
   }
 
-  const driverID = newDriverID({
+  const driverID = newDriverID( {
     value: props.driverID
-  })
+  } )
 
-  if (driverID.isErr()) {
-    err.push(driverID.unwrapErr())
+  if ( driverID.isErr() ) {
+    err.push( driverID.unwrapErr() )
   }
 
-  const documentName = newDriverDocumentName({
+  const documentName = newDriverDocumentName( {
     value: props.name
-  })
+  } )
 
-  if (documentName.isErr()) {
-    err.push(documentName.unwrapErr())
+  if ( documentName.isErr() ) {
+    err.push( documentName.unwrapErr() )
   }
 
-  const documentReference = newDriverDocumentReference({
+  const documentReference = newDriverDocumentReference( {
     value: props.reference
-  })
+  } )
 
-  if (documentReference.isErr()) {
-    err.push(documentReference.unwrapErr())
+  if ( documentReference.isErr() ) {
+    err.push( documentReference.unwrapErr() )
   }
 
-  if (err.length > 0) {
-    return Err(err)
+  if ( err.length > 0 ) {
+    return Err( err )
   }
 
-  return Ok({
-      id: documentID.unwrap(),
-      driverID: driverID.unwrap(),
-      name: documentName.unwrap(),
+  return Ok( {
+      id       : documentID.unwrap(),
+      driverID : driverID.unwrap(),
+      name     : documentName.unwrap(),
       reference: documentReference.unwrap()
     }
   )

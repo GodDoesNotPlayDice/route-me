@@ -1,11 +1,11 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
-	Direction,
-	newDirectionFromJson
+  Direction,
+  newDirectionFromJson
 } from 'src/package/direction-api/domain/models/direction'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
@@ -14,7 +14,7 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {GeometryInvalidException} - if geometry is invalid
  */
 export const directionFromJson = ( json: Record<string, any> ): Result<Direction, Error> => {
-	return newDirectionFromJson( json )
+  return newDirectionFromJson( json )
 }
 
 /**
@@ -22,17 +22,17 @@ export const directionFromJson = ( json: Record<string, any> ): Result<Direction
  * @throws {UnknownException} - if unknown error
  */
 export const directionToJson = ( direction: Direction ): Result<Record<string, any>, Error> => {
-	try {
-		const json: Record<string, any> = {
-			coordinates: direction.coordinates.values
-		}
+  try {
+    const json: Record<string, any> = {
+      coordinates: direction.coordinates.values
+    }
 
-		return Ok( json )
-	}
-	catch ( e ) {
-		const err = e instanceof Error
-			? new UnknownException( e.message )
-			: new UnknownException( 'error direction to json' )
-		return Err( err )
-	}
+    return Ok( json )
+  }
+  catch ( e ) {
+    const err = e instanceof Error
+      ? new UnknownException( e.message )
+      : new UnknownException( 'error direction to json' )
+    return Err( err )
+  }
 }

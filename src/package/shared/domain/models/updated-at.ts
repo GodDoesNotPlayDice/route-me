@@ -7,25 +7,27 @@ import { DateInvalidException } from 'src/package/shared/domain/exceptions/date-
 import { z } from 'zod'
 
 export const UpdatedAtSchema = z.object( {
-  value : z.date(),
+  value    : z.date(),
   createdAt: z.date()
-} ).superRefine( ( val, ctx ) => {
-  if ( val.value < val.createdAt ) {
-    ctx.addIssue( {
-      code   : z.ZodIssueCode.custom,
-      message: "Not a valid date",
-    } );
-    return z.NEVER;
-  }
-  return val
-})
+} )
+                                .superRefine( ( val, ctx ) => {
+                                  if ( val.value < val.createdAt ) {
+                                    ctx.addIssue( {
+                                      code   : z.ZodIssueCode.custom,
+                                      message: 'Not a valid date'
+                                    } )
+                                    return z.NEVER
+                                  }
+                                  return val
+                                } )
 
 type UpdatedAtType = z.infer<typeof UpdatedAtSchema>
-export interface UpdatedAt extends UpdatedAtType{}
+
+export interface UpdatedAt extends UpdatedAtType {}
 
 interface UpdatedAtProps {
-	value: Date,
-	createdAt: Date
+  value: Date,
+  createdAt: Date
 }
 
 /**
@@ -34,7 +36,7 @@ interface UpdatedAtProps {
  */
 export const newUpdatedAt = ( props: UpdatedAtProps ): Result<UpdatedAt, Error> => {
   const result = UpdatedAtSchema.safeParse( {
-    value: props.value,
+    value    : props.value,
     createdAt: props.createdAt
   } )
 
@@ -42,6 +44,6 @@ export const newUpdatedAt = ( props: UpdatedAtProps ): Result<UpdatedAt, Error> 
     return Err( new DateInvalidException() )
   }
   else {
-    return Ok(result.data)
+    return Ok( result.data )
   }
-	}
+}

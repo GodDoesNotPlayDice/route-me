@@ -1,4 +1,4 @@
-  <mat-icon
+<mat-icon
   (click)="onClick()"
   [id]="id"
   [ngClass]="{
@@ -6,4 +6,7 @@
   'text-red-500' : !isActive && isRed,
   'text-yellow-500' :  !isActive && !isRed
   }"
-    aria-hidden="false" class="scale-150 fill-current" aria-label="icon" [fontIcon]="iconName"></mat-icon>
+  aria-hidden="false"
+  class="scale-150 fill-current"
+  aria-label="icon"
+  [fontIcon]="iconName"></mat-icon>

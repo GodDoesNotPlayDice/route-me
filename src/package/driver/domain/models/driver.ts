@@ -57,7 +57,7 @@ export const newDriver = ( props: DriverProps ): Result<Driver, Error[]> => {
 
   if ( err.length > 0 ) {
     err.push( ...err )
-    return Err( err)
+    return Err( err )
   }
 
   return Ok( {

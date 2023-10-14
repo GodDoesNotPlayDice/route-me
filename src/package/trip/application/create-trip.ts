@@ -1,11 +1,10 @@
-import {
-  Result
-} from 'oxide.ts'
+import { Result } from 'oxide.ts'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
 
-export const createTrip = async ( dao: TripDao, trip: Trip): Promise<Result<boolean, Error>> => {
-  return await dao.create(trip)
+export const createTrip = async ( dao: TripDao,
+  trip: Trip ): Promise<Result<boolean, Error>> => {
+  return await dao.create( trip )
 }
 
 // const startDateInRange = newLimitDate( {

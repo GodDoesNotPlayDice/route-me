@@ -12,7 +12,7 @@ export const PassengerPhoneSchema = z.object( {
   value: z.string()
           .min( 8 )
           .max( 9 )
-  .regex(RegExp(/^[0-9]+$/))
+          .regex( RegExp( /^[0-9]+$/ ) )
   // z.string().regex(RegExp('^\\(\\+\\d+\\)\\s\\d{4}-\\d{4}')).parse(value);
 } )
 
@@ -38,14 +38,16 @@ export const newPassengerPhone = ( props: PassengerPhoneProps ): Result<Passenge
   if ( !result.success ) {
     const error: Error[] = []
     for ( const e of result.error.errors ) {
-      if(e.code === 'too_small'){
-        error.push(new PhoneInsufficientLengthException(String(e.minimum)) )
+      if ( e.code === 'too_small' ) {
+        error.push(
+          new PhoneInsufficientLengthException( String( e.minimum ) ) )
       }
-      else if(e.code === 'too_big'){
-        error.push(new PhoneExceedsMaximumLengthException(String(e.maximum)) )
+      else if ( e.code === 'too_big' ) {
+        error.push(
+          new PhoneExceedsMaximumLengthException( String( e.maximum ) ) )
       }
       else {
-        error.push(new PhoneInvalidFormatException() )
+        error.push( new PhoneInvalidFormatException() )
       }
     }
     return Err( error )

@@ -6,10 +6,7 @@ import {
 import { Trip } from 'src/app/shared/models/trip/trip'
 import { newCategoryID } from 'src/package/category/domain/models/category-id'
 import { newChatID } from 'src/package/chat/domain/models/chat-id'
-import {
-  DriverID,
-  newDriverID
-} from 'src/package/driver/domain/models/driver-id'
+import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { newLocationID } from 'src/package/location/domain/models/location-id'
 import {
   newPassengerID,
@@ -102,8 +99,10 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   }
 
   const price = newTripPrice( {
-    amount  : json['price'] === undefined ? '' : json['price']['amount'] === undefined ? '' : json['price']['amount'],
-    currency: json['price'] === undefined ? '' : json['price']['currency'] === undefined ? '' : json['price']['currency']
+    amount  : json['price'] === undefined ? '' : json['price']['amount'] ===
+    undefined ? '' : json['price']['amount'],
+    currency: json['price'] === undefined ? '' : json['price']['currency'] ===
+    undefined ? '' : json['price']['currency']
   } )
 
   if ( price.isErr() ) {

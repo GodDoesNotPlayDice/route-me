@@ -1,25 +1,25 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
-	CategoryID,
-	newCategoryID
+  CategoryID,
+  newCategoryID
 } from 'src/package/category/domain/models/category-id'
 import {
-	CategoryName,
-	newCategoryName
+  CategoryName,
+  newCategoryName
 } from 'src/package/category/domain/models/category-name'
 
 export interface Category {
-	id: CategoryID
-	name: CategoryName
+  id: CategoryID
+  name: CategoryName
 }
 
 export interface CategoryProps {
-	id: string
-	name: string
+  id: string
+  name: string
 }
 
 /**
@@ -28,28 +28,28 @@ export interface CategoryProps {
  * @throws {CategoryNameInvalidException} - if name is invalid
  */
 export const newCategory = ( props: CategoryProps ): Result<Category, Error[]> => {
-	const errors: Error[] = []
-	const id              = newCategoryID( {
-		value: props.id
-	} )
+  const errors: Error[] = []
+  const id              = newCategoryID( {
+    value: props.id
+  } )
 
-	if ( id.isErr() ) {
-		errors.push( id.unwrapErr() )
-	}
+  if ( id.isErr() ) {
+    errors.push( id.unwrapErr() )
+  }
 
-	const name = newCategoryName( {
-		value: props.name
-	} )
+  const name = newCategoryName( {
+    value: props.name
+  } )
 
-	if ( name.isErr() ) {
-		errors.push( name.unwrapErr() )
-	}
+  if ( name.isErr() ) {
+    errors.push( name.unwrapErr() )
+  }
 
-	if ( errors.length > 0 ) {
-		return Err( errors )
-	}
-	return Ok( {
-		id  : id.unwrap(),
-		name: name.unwrap()
-	} )
+  if ( errors.length > 0 ) {
+    return Err( errors )
+  }
+  return Ok( {
+    id  : id.unwrap(),
+    name: name.unwrap()
+  } )
 }

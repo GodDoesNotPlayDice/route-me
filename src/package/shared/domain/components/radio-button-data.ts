@@ -6,7 +6,9 @@ export const RadioButtonDataSchema = z.object( {
 } )
 
 type RadioButtonDataType = z.infer<typeof RadioButtonDataSchema>
+
 export interface RadioButtonData extends RadioButtonDataType {}
+
 export interface RadioButtonDataProps {
   icon: string,
   name: string

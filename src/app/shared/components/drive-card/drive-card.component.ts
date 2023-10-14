@@ -23,7 +23,7 @@ export class DriveCardComponent {
 
   constructor( private router: Router ) { }
 
-  @Input({required: true}) info: DriverCardInfo
+  @Input( { required: true } ) info: DriverCardInfo
 
   async buttonClick( $event: MouseEvent ) {
     $event.preventDefault()

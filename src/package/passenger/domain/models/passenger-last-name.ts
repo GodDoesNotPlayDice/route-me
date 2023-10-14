@@ -29,9 +29,9 @@ export const newPassengerLastName = ( props: PassengerLastNameProps ): Result<Pa
   } )
 
   if ( !result.success ) {
-    return Err(new PassengerLastNameInvalidException())
+    return Err( new PassengerLastNameInvalidException() )
   }
   else {
-    return Ok(result.data)
+    return Ok( result.data )
   }
 }

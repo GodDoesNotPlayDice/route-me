@@ -7,23 +7,24 @@ import { DriverDocumentIdInvalidException } from 'src/package/driver/domain/exce
 import { z } from 'zod'
 
 export const DriverDocumentIDSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
 type DriverDocumentIDType = z.infer<typeof DriverDocumentIDSchema>
-export interface DriverDocumentID extends DriverDocumentIDType{}
+
+export interface DriverDocumentID extends DriverDocumentIDType {}
 
 interface DriverDocumentIDProps {
-  value : string
+  value: string
 }
 
 /**
  * Create driver document id instance
  * @throws {DriverDocumentIdInvalidException} - if id is invalid
  */
-export const newDriverDocumentID = (props : DriverDocumentIDProps): Result<DriverDocumentID, Error> => {
+export const newDriverDocumentID = ( props: DriverDocumentIDProps ): Result<DriverDocumentID, Error> => {
   const result = DriverDocumentIDSchema.safeParse( {
-    value : props.value
+    value: props.value
   } )
 
   if ( !result.success ) {

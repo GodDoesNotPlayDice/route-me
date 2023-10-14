@@ -2,10 +2,11 @@ import { z } from 'zod'
 
 export const FilterButtonDataSchema = z.object( {
   image: z.string(),
-  name  : z.string()
+  name : z.string()
 } )
 
 type FilterButtonDataType = z.infer<typeof FilterButtonDataSchema>
+
 export interface FilterButtonData extends FilterButtonDataType {}
 
 export interface FilterButtonDataProps {
@@ -16,6 +17,6 @@ export interface FilterButtonDataProps {
 export const newFilterButtonData = ( props: FilterButtonDataProps ): FilterButtonData => {
   return FilterButtonDataSchema.parse( {
     image: props.image,
-    name  : props.name
+    name : props.name
   } )
 }

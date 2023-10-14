@@ -14,7 +14,7 @@ type LocationCountryCodeType = z.infer<typeof LocationCountryCodeSchema>
 
 export interface LocationCountryCode extends LocationCountryCodeType {}
 
-export interface LocationCountryCodeProps{
+export interface LocationCountryCodeProps {
   value: string
 }
 

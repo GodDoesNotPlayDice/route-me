@@ -33,13 +33,10 @@ import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
-import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/infrastructure/auth-user-firebase'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
-import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
-import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
@@ -47,18 +44,21 @@ import {
   newPassenger,
   Passenger
 } from 'src/package/passenger/domain/models/passenger'
+import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
+import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
+import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
+import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import {
   newUser,
   User
 } from 'src/package/user/domain/models/user'
 import { newUserID } from 'src/package/user/domain/models/user-id'
-import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
 import { environment } from './environments/environment'
 
@@ -71,7 +71,8 @@ export const defaultUsers: User[] = [
   newUser( {
     id   : 'abc',
     email: 'hola@gmail.com'
-  } ).unwrap()
+  } )
+    .unwrap()
 ]
 
 export const defaultPassangers: Passenger[] = [
@@ -79,7 +80,8 @@ export const defaultPassangers: Passenger[] = [
     id         : 'abc',
     userID     : newUserID( {
       value: 'abc'
-    } ).unwrap(),
+    } )
+      .unwrap(),
     name       : 'hola',
     lastName   : 'last',
     description: 'descdescdescdesc',
@@ -88,13 +90,16 @@ export const defaultPassangers: Passenger[] = [
     country    : 'Argentina',
     gender     : newGender( {
       value: 'Female'
-    } ).unwrap(),
+    } )
+      .unwrap(),
     preferences: [
       newPreferenceID( {
         value: 'a1'
-      } ).unwrap()
+      } )
+        .unwrap()
     ]
-  } ).unwrap()
+  } )
+    .unwrap()
 ]
 
 bootstrapApplication( AppComponent, {

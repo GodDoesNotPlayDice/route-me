@@ -12,8 +12,8 @@ import {
   PositionProps
 } from 'src/package/position-api/domain/models/position'
 import {
-	newValidDate,
-	ValidDate
+  newValidDate,
+  ValidDate
 } from 'src/package/shared/domain/models/valid-date'
 import {
   newTripID,
@@ -27,7 +27,7 @@ export interface NearTrip {
   startLocation: Location
   endLocation: Location
   categoryName: CategoryName
-  position : Position
+  position: Position
 }
 
 export interface NearTripProps {
@@ -42,25 +42,25 @@ export interface NearTripProps {
 
 export const newNearTrip = ( props: NearTripProps ): NearTrip => {
   return {
-    id           : newTripID({
+    id           : newTripID( {
       value: props.id
-    }),
-    startDate    : newValidDate({
+    } ),
+    startDate    : newValidDate( {
       value: props.startDate
-    }),
-    endDate      : newValidDate({
+    } ),
+    endDate      : newValidDate( {
       value: props.endDate
-    }),
-    endLocation  : newLocation({
+    } ),
+    endLocation  : newLocation( {
       value: props.endLocation
-    }),
-    startLocation: newLocation({
+    } ),
+    startLocation: newLocation( {
       value: props.startLocation
-    }),
-    categoryName : newCategoryName({
+    } ),
+    categoryName : newCategoryName( {
       value: props.categoryName
-    }),
-    latitude     : NumberSchema.parse(props.latitude),
-    longitude     : NumberSchema.parse(props.longitude),
+    } ),
+    latitude     : NumberSchema.parse( props.latitude ),
+    longitude    : NumberSchema.parse( props.longitude )
   }
 }

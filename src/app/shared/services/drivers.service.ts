@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
+import { newLocation } from 'src/package/location/domain/models/location'
 import { newAvatar } from 'src/package/shared/domain/components/avatar'
 import {
   DriverCardInfo,
   newDriverCardInfo
 } from 'src/package/shared/domain/components/driver-card-info'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
-import { newLocation } from 'src/package/location/domain/models/location'
 import { ulid } from 'ulidx'
 
 @Injectable( {
@@ -38,29 +38,32 @@ const driveInfoList: DriverCardInfo[] = [
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } )
     ],
-    startLocation   : newLocation({
-      id: ulid(),
-      name: 'viña',
+    startLocation   : newLocation( {
+      id         : ulid(),
+      name       : 'viña',
       countryCode: 'CL',
-      position: {
+      position   : {
         lat: 0,
         lng: 0
       }
-    }).unwrap(),
-    endLocation     : newLocation({
-      id: ulid(),
-      name: 'santiago',
+    } )
+      .unwrap(),
+    endLocation     : newLocation( {
+      id         : ulid(),
+      name       : 'santiago',
       countryCode: 'CL',
-      position: {
+      position   : {
         lat: 0,
         lng: 0
       }
-    }).unwrap(),
+    } )
+      .unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Open'
-    } ).unwrap()
+    } )
+      .unwrap()
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -77,29 +80,32 @@ const driveInfoList: DriverCardInfo[] = [
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } )
     ],
-    startLocation   : newLocation({
-      id: ulid(),
-      name: 'viña',
+    startLocation   : newLocation( {
+      id         : ulid(),
+      name       : 'viña',
       countryCode: 'CL',
-      position: {
+      position   : {
         lat: 0,
         lng: 0
       }
-    }).unwrap(),
-    endLocation     : newLocation({
-      id: ulid(),
-      name: 'santiago',
+    } )
+      .unwrap(),
+    endLocation     : newLocation( {
+      id         : ulid(),
+      name       : 'santiago',
       countryCode: 'CL',
-      position: {
+      position   : {
         lat: 0,
         lng: 0
       }
-    }).unwrap(),
+    } )
+      .unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Completed'
-    } ).unwrap()
+    } )
+      .unwrap()
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -116,29 +122,32 @@ const driveInfoList: DriverCardInfo[] = [
         url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
       } )
     ],
-    startLocation   : newLocation({
-      id: ulid(),
-      name: 'viña',
+    startLocation   : newLocation( {
+      id         : ulid(),
+      name       : 'viña',
       countryCode: 'CL',
-      position: {
+      position   : {
         lat: 0,
         lng: 0
       }
-    }).unwrap(),
-    endLocation     : newLocation({
-      id: ulid(),
-      name: 'santiago',
+    } )
+      .unwrap(),
+    endLocation     : newLocation( {
+      id         : ulid(),
+      name       : 'santiago',
       countryCode: 'CL',
-      position: {
+      position   : {
         lat: 0,
         lng: 0
       }
-    }).unwrap(),
+    } )
+      .unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Progress'
-    } ).unwrap()
+    } )
+      .unwrap()
   } )
 ]
 

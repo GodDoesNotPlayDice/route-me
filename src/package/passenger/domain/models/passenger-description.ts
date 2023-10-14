@@ -7,23 +7,24 @@ import { PassengerDescriptionInvalidException } from 'src/package/passenger/doma
 import { z } from 'zod'
 
 export const PassengerDescriptionSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
 type PassengerDescriptionType = z.infer<typeof PassengerDescriptionSchema>
-export interface PassengerDescription extends PassengerDescriptionType{}
+
+export interface PassengerDescription extends PassengerDescriptionType {}
 
 export interface PassengerDescriptionProps {
-  value : string
+  value: string
 }
 
 /**
  * Create a passenger description instance
  * @throws {PassengerDescriptionInvalidException} - if description is invalid
  */
-export const newPassengerDescription = (props : PassengerDescriptionProps): Result<PassengerDescription, Error> => {
+export const newPassengerDescription = ( props: PassengerDescriptionProps ): Result<PassengerDescription, Error> => {
   const result = PassengerDescriptionSchema.safeParse( {
-    value : props.value
+    value: props.value
   } )
 
   if ( !result.success ) {
@@ -33,4 +34,4 @@ export const newPassengerDescription = (props : PassengerDescriptionProps): Resu
     return Ok( result.data )
   }
 
-  }
+}

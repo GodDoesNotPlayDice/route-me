@@ -1,8 +1,8 @@
 export enum UnitEnum {
-  Days   = 'Days',
-  Hours = 'Hours',
-  Minutes   = 'Minutes',
-  Seconds   = 'Seconds'
+  Days    = 'Days',
+  Hours   = 'Hours',
+  Minutes = 'Minutes',
+  Seconds = 'Seconds'
 }
 
 export type Unit = UnitEnum

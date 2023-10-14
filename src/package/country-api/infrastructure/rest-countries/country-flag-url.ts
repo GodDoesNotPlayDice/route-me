@@ -1,5 +1,5 @@
 export interface Flags {
-	png: string;
-	svg: string;
-	alt: string;
+  png: string;
+  svg: string;
+  alt: string;
 }

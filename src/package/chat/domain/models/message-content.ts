@@ -7,22 +7,23 @@ import { MessageContentInvalidException } from 'src/package/chat/domain/exceptio
 import { z } from 'zod'
 
 export const MessageContentSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
 type MessageContentType = z.infer<typeof MessageContentSchema>
+
 export interface MessageContent extends MessageContentType {}
 
 export interface MessageContentProps {
-  value : string
+  value: string
 }
 
 /**
  * Create message content instance
  * @throws {MessageContentInvalidException} - if content is invalid
  */
-export const newMessageContent = (props : MessageContentProps): Result<MessageContent, Error> => {
-const result = MessageContentSchema.safeParse( {
+export const newMessageContent = ( props: MessageContentProps ): Result<MessageContent, Error> => {
+  const result = MessageContentSchema.safeParse( {
     value: props.value
   } )
 

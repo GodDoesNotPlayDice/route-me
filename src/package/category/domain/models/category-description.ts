@@ -1,18 +1,19 @@
 import { z } from 'zod'
 
 export const CategoryDescriptionSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
 type CategoryDescriptionType = z.infer<typeof CategoryDescriptionSchema>
+
 export interface CategoryDescription extends CategoryDescriptionType {}
 
 export interface CategoryDescriptionProps {
-  value : string
+  value: string
 }
 
-export const newCategoryDescription = (props : CategoryDescriptionProps): CategoryDescription => {
+export const newCategoryDescription = ( props: CategoryDescriptionProps ): CategoryDescription => {
   return CategoryDescriptionSchema.parse( {
-    value : props.value
+    value: props.value
   } )
 }

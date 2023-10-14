@@ -28,7 +28,7 @@ export const dateRemainingUnits = ( utc: string ): Result<RemainingUnits, Error>
     return Ok( remainings )
   }
   catch ( e ) {
-    return Err(new DateRemainingUnitsException())
+    return Err( new DateRemainingUnitsException() )
   }
 }
 

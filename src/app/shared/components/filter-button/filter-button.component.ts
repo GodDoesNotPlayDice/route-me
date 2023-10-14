@@ -17,5 +17,5 @@ import { FilterButtonData } from 'src/package/shared/domain/components/filter-bu
   ]
 } )
 export class FilterButtonComponent {
-  @Input({required: true}) data: FilterButtonData
+  @Input( { required: true } ) data: FilterButtonData
 }

@@ -7,21 +7,22 @@ import { PreferenceIconInvalidException } from 'src/package/preference/domain/ex
 import { z } from 'zod'
 
 export const PreferenceIconSchema = z.object( {
-  value : z.string()
+  value: z.string()
 } )
 
 type PreferenceIconType = z.infer<typeof PreferenceIconSchema>
+
 export interface PreferenceIcon extends PreferenceIconType {}
 
 export interface PreferenceIconProps {
-  value : string
+  value: string
 }
 
 /**
  * Create a preference icon instance
  * @throws {PreferenceIconInvalidException} - if icon is invalid
  */
-export const newPreferenceIcon = (props : PreferenceIconProps): Result<PreferenceIcon, Error> => {
+export const newPreferenceIcon = ( props: PreferenceIconProps ): Result<PreferenceIcon, Error> => {
   const result = PreferenceIconSchema.safeParse( {
     value: props.value
   } )

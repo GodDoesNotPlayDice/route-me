@@ -1,12 +1,12 @@
 import {
-	Injectable,
-	OnDestroy
+  Injectable,
+  OnDestroy
 } from '@angular/core'
 import * as mapboxgl from 'mapbox-gl'
 import {
-	BehaviorSubject,
-	Observable,
-	Subscription
+  BehaviorSubject,
+  Observable,
+  Subscription
 } from 'rxjs'
 import { DirectionService } from 'src/app/shared/services/direction.service'
 import { LocationService } from 'src/app/shared/services/location.service'
@@ -14,138 +14,138 @@ import { MapRepository } from 'src/package/map-api/domain/repository/map-reposit
 import { Position } from 'src/package/position-api/domain/models/position'
 
 @Injectable( {
-	providedIn: 'root'
+  providedIn: 'root'
 } )
 export class MapService implements OnDestroy {
-	constructor( private location: LocationService,
-		private mapRepository: MapRepository<mapboxgl.Map, mapboxgl.Marker>,
-		private directionService: DirectionService )
-	{
-		this.location$ =
-			this.location.newPosition$.subscribe( async ( value ) => {
-				if ( value === null ) {
-					return
-				}
-				this.lastPosition = value
-				await this.autoFollow( { lat: value.lat, lng: value.lng } )
-			} )
-	}
+  constructor( private location: LocationService,
+    private mapRepository: MapRepository<mapboxgl.Map, mapboxgl.Marker>,
+    private directionService: DirectionService )
+  {
+    this.location$ =
+      this.location.newPosition$.subscribe( async ( value ) => {
+        if ( value === null ) {
+          return
+        }
+        this.lastPosition = value
+        await this.autoFollow( { lat: value.lat, lng: value.lng } )
+      } )
+  }
 
-	ngOnDestroy(): void {
-		this.location$.unsubscribe()
-	}
+  ngOnDestroy(): void {
+    this.location$.unsubscribe()
+  }
 
-	private lastPosition: Position | null = null
-	location$: Subscription
+  private lastPosition: Position | null = null
+  location$: Subscription
 
-	private markerClick = new BehaviorSubject<Position | null>( null )
+  private markerClick = new BehaviorSubject<Position | null>( null )
 
-	public markerClick$: Observable<Position | null> = this.markerClick.asObservable()
+  public markerClick$: Observable<Position | null> = this.markerClick.asObservable()
 
 
-	async removeRouteMarker( pageKey: string,
-		locationKey: string ): Promise<boolean> {
-		const result = await this.mapRepository.removeRouteMarker( pageKey,
-			locationKey )
-		if ( result.isErr() ) {
-			console.log( 'remove route marker. map service' )
-			console.log( result.unwrapErr() )
-			return false
-		}
-		return true
-	}
+  async removeRouteMarker( pageKey: string,
+    locationKey: string ): Promise<boolean> {
+    const result = await this.mapRepository.removeRouteMarker( pageKey,
+      locationKey )
+    if ( result.isErr() ) {
+      console.log( 'remove route marker. map service' )
+      console.log( result.unwrapErr() )
+      return false
+    }
+    return true
+  }
 
-	async addRouteMarker( pageKey: string, locationKey: string,
-		center: Position, color: string ): Promise<boolean>
-	{
-		const result = await this.mapRepository.addRouteMarker( pageKey,
-			locationKey,
-			center, color )
-		if ( result.isErr() ) {
-			console.log( 'add route marker. map service' )
-			console.log( result.unwrapErr() )
-			return false
-		}
-		return true
-	}
+  async addRouteMarker( pageKey: string, locationKey: string,
+    center: Position, color: string ): Promise<boolean>
+  {
+    const result = await this.mapRepository.addRouteMarker( pageKey,
+      locationKey,
+      center, color )
+    if ( result.isErr() ) {
+      console.log( 'add route marker. map service' )
+      console.log( result.unwrapErr() )
+      return false
+    }
+    return true
+  }
 
-	async init( key: string, divElement: HTMLDivElement ): Promise<boolean> {
-		const mapEntry = await this.mapRepository.init( key, divElement,
-			this.lastPosition )
+  async init( key: string, divElement: HTMLDivElement ): Promise<boolean> {
+    const mapEntry = await this.mapRepository.init( key, divElement,
+      this.lastPosition )
 
-		if ( mapEntry.isErr() ) {
-			console.log( 'init. map service' )
-			console.log( mapEntry.unwrapErr() )
-			return false
-		}
+    if ( mapEntry.isErr() ) {
+      console.log( 'init. map service' )
+      console.log( mapEntry.unwrapErr() )
+      return false
+    }
 
-		if ( this.lastPosition !== null ) {
-			await this.autoFollow( this.lastPosition )
-			await this.addUserMarker( key, this.lastPosition, mapEntry.unwrap() )
-		}
+    if ( this.lastPosition !== null ) {
+      await this.autoFollow( this.lastPosition )
+      await this.addUserMarker( key, this.lastPosition, mapEntry.unwrap() )
+    }
 
-		mapEntry.unwrap()
-		        .on( 'click', ( e ) => {
-			        const { lat, lng } = e.lngLat
-			        this.markerClick.next( { lat: lat, lng: lng } )
-		        } )
+    mapEntry.unwrap()
+            .on( 'click', ( e ) => {
+              const { lat, lng } = e.lngLat
+              this.markerClick.next( { lat: lat, lng: lng } )
+            } )
 
-		return true
-	}
+    return true
+  }
 
-	async autoFollow( center: Position ): Promise<boolean> {
-		const result = await this.mapRepository.autoFollow( center )
-		if ( result.isErr() ) {
-			console.log( 'auto follow. map service' )
-			console.log( result.unwrapErr() )
-			return false
-		}
-		return true
-	}
+  async autoFollow( center: Position ): Promise<boolean> {
+    const result = await this.mapRepository.autoFollow( center )
+    if ( result.isErr() ) {
+      console.log( 'auto follow. map service' )
+      console.log( result.unwrapErr() )
+      return false
+    }
+    return true
+  }
 
-	private async addUserMarker( pageKey: string, center: Position,
-		map: mapboxgl.Map ): Promise<boolean> {
-		const result = await this.mapRepository.addUserMarker( pageKey, center,
-			map )
+  private async addUserMarker( pageKey: string, center: Position,
+    map: mapboxgl.Map ): Promise<boolean> {
+    const result = await this.mapRepository.addUserMarker( pageKey, center,
+      map )
 
-		if ( result.isErr() ) {
-			console.log( 'add user marker. map service' )
-			console.log( result.unwrapErr() )
-			return false
-		}
-		return true
-	}
+    if ( result.isErr() ) {
+      console.log( 'add user marker. map service' )
+      console.log( result.unwrapErr() )
+      return false
+    }
+    return true
+  }
 
-	async removeRouteMap( pageKey: string ): Promise<boolean> {
-		const result = await this.mapRepository.removeRouteMap( pageKey )
+  async removeRouteMap( pageKey: string ): Promise<boolean> {
+    const result = await this.mapRepository.removeRouteMap( pageKey )
 
-		if ( result.isErr() ) {
-			console.log( 'remove route map. map service' )
-			console.log( result.unwrapErr() )
-			return false
-		}
-		return true
-	}
+    if ( result.isErr() ) {
+      console.log( 'remove route map. map service' )
+      console.log( result.unwrapErr() )
+      return false
+    }
+    return true
+  }
 
-	async addRouteMap( pageKey: string, inicio: Position,
-		final: Position ): Promise<boolean>
-	{
-		const directionResult = await this.directionService.getDirection( inicio,
-			final )
+  async addRouteMap( pageKey: string, inicio: Position,
+    final: Position ): Promise<boolean>
+  {
+    const directionResult = await this.directionService.getDirection( inicio,
+      final )
 
-		if ( directionResult.isErr() ) {
-			console.log( 'get direction. map service' )
-			console.log( directionResult.unwrapErr() )
-			return false
-		}
-		const result = await this.mapRepository.addRouteMap( pageKey,
-			directionResult.unwrap().coordinates )
+    if ( directionResult.isErr() ) {
+      console.log( 'get direction. map service' )
+      console.log( directionResult.unwrapErr() )
+      return false
+    }
+    const result = await this.mapRepository.addRouteMap( pageKey,
+      directionResult.unwrap().coordinates )
 
-		if ( result.isErr() ) {
-			console.log( 'add route map. map service' )
-			console.log( result.unwrapErr() )
-			return false
-		}
-		return true
-	}
+    if ( result.isErr() ) {
+      console.log( 'add route map. map service' )
+      console.log( result.unwrapErr() )
+      return false
+    }
+    return true
+  }
 }

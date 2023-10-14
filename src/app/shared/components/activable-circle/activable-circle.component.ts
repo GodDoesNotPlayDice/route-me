@@ -18,24 +18,26 @@ import { ulid } from 'ulidx'
   selector   : 'app-activable-circle',
   templateUrl: './activable-circle.component.html',
   styleUrls  : [ './activable-circle.component.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     MatIconModule
   ]
 } )
-export class ActivableCircleComponent implements OnInit, OnChanges{
+export class ActivableCircleComponent implements OnInit, OnChanges {
   constructor() {}
 
   public ngOnChanges( changes: SimpleChanges ): void {
-    this.iconName = changes['isActive'].currentValue ? this.iconNameEnabled : this.iconNameDisabled
+    this.iconName = changes['isActive'].currentValue
+      ? this.iconNameEnabled
+      : this.iconNameDisabled
   }
 
-  id = ulid()
-  iconName : string = ''
-  @Input({required:true}) iconNameEnabled : string
-  @Input({required:true}) iconNameDisabled : string
-  @Input({required:true}) isRed : boolean
+  id                         = ulid()
+  iconName: string           = ''
+  @Input( { required: true } ) iconNameEnabled: string
+  @Input( { required: true } ) iconNameDisabled: string
+  @Input( { required: true } ) isRed: boolean
   @Input() isActive: boolean = false
 
   @Output() isActiveChange: EventEmitter<boolean> = new EventEmitter<boolean>()
@@ -52,7 +54,8 @@ export class ActivableCircleComponent implements OnInit, OnChanges{
     if ( event.target instanceof Element ) {
       if ( event.target.id === this.id ) {
         this.isActive = !this.isActive
-        this.iconName = this.isActive ? this.iconNameEnabled : this.iconNameDisabled
+        this.iconName =
+          this.isActive ? this.iconNameEnabled : this.iconNameDisabled
         this.isActiveChange.emit( this.isActive )
         return
       }

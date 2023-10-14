@@ -22,11 +22,13 @@ function defaultPreference(): Preference[] {
       id  : '1',
       icon: 'musical-notes-outline',
       name: 'Con Musica'
-    } ).unwrap(),
+    } )
+      .unwrap(),
     newPreference( {
       id  : '2',
       icon: 'logo-no-smoking',
       name: 'Sin Fumar'
-    } ).unwrap()
+    } )
+      .unwrap()
   ]
 }
