@@ -4,9 +4,10 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  newRating,
   Rating
 } from 'src/package/rating/domain/models/rating'
+import { newRatingID } from 'src/package/rating/domain/models/rating-id'
+import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -15,16 +16,33 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {RatingValueInvalidException} - if value is invalid
  */
 export const ratingFromJson = ( json: Record<string, any> ): Result<Rating, Error[]> => {
-  const rating = newRating( {
-    id   : json['id'],
+  const err: Error[] = []
+
+  const id = newRatingID( {
+    value: json['id']
+  } )
+
+  if ( id.isErr() ) {
+    err.push( id.unwrapErr() )
+  }
+
+  const value = newRatingValue( {
     value: json['value']
   } )
 
-  if ( rating.isErr() ) {
-    return Err( rating.unwrapErr() )
+  if ( value.isErr() ) {
+    err.push( value.unwrapErr() )
   }
 
-  return Ok( rating.unwrap() )
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
+
+  return Ok( {
+      id   : id.unwrap(),
+      value: value.unwrap()
+    }
+  )
 }
 
 /**
