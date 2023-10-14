@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
-import { newAvatar } from 'src/app/shared/models/avatar'
+import { newAvatar } from 'src/package/shared/domain/components/avatar'
 import {
   DriverCardInfo,
   newDriverCardInfo
-} from 'src/app/shared/models/driver-card-info'
+} from 'src/package/shared/domain/components/driver-card-info'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
-import { newLocation } from 'src/package/shared/domain/models/location/location'
+import { newLocation } from 'src/package/location/domain/models/location'
 import { ulid } from 'ulidx'
 
 @Injectable( {
@@ -41,20 +41,26 @@ const driveInfoList: DriverCardInfo[] = [
     startLocation   : newLocation({
       id: ulid(),
       name: 'viña',
-      latitude: 0,
-      longitude: 0
-    }),
+      countryCode: 'CL',
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
-      latitude: 0,
-      longitude: 0
-    }),
+      countryCode: 'CL',
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Open'
-    } )
+    } ).unwrap()
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -74,20 +80,26 @@ const driveInfoList: DriverCardInfo[] = [
     startLocation   : newLocation({
       id: ulid(),
       name: 'viña',
-      latitude: 0,
-      longitude: 0
-    }),
+      countryCode: 'CL',
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
-      latitude: 0,
-      longitude: 0
-    }),
+      countryCode: 'CL',
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Completed'
-    } )
+    } ).unwrap()
   } ),
   newDriverCardInfo( {
     driverAvatar    : newAvatar( {
@@ -107,20 +119,26 @@ const driveInfoList: DriverCardInfo[] = [
     startLocation   : newLocation({
       id: ulid(),
       name: 'viña',
-      latitude: 0,
-      longitude: 0
-    }),
+      countryCode: 'CL',
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     endLocation     : newLocation({
       id: ulid(),
       name: 'santiago',
-      latitude: 0,
-      longitude: 0
-    }),
+      countryCode: 'CL',
+      position: {
+        lat: 0,
+        lng: 0
+      }
+    }).unwrap(),
     date            : new Date(),
     cost            : 50,
     state           : newTripState( {
       value: 'Progress'
-    } )
+    } ).unwrap()
   } )
 ]
 

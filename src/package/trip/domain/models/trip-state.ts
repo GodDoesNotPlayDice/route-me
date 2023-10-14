@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { TripStateInvalidException } from 'src/package/trip/domain/exceptions/trip-state-invalid-exception'
 import { z } from 'zod'
 
 export enum TripStateEnum {
@@ -16,6 +22,17 @@ export interface TripStateProps {
   value : string
 }
 
-export const newTripState = ( props: TripStateProps ): TripState => {
-  return TripEnumSchema.parse( props.value )
+/**
+ * Create a trip state instance
+ * @throws {TripStateInvalidException} - if state is invalid
+ */
+export const newTripState = ( props: TripStateProps ): Result<TripState, Error> => {
+  const result = TripEnumSchema.safeParse(props.value)
+
+  if ( !result.success ) {
+    return Err(new TripStateInvalidException())
+  }
+  else {
+    return Ok(result.data)
+  }
 }

@@ -1,7 +1,14 @@
+import {
+	Err,
+	Ok,
+	Result
+} from 'oxide.ts'
+import { PassengerIdInvalidException } from 'src/package/passenger/domain/exceptions/passenger-id-invalid-exception'
 import { z } from 'zod'
 
 export const PassengerIDSchema = z.object( {
-  value: z.string().nonempty()
+	value: z.string()
+	        .nonempty()
 } )
 
 type PassengerIDType = z.infer<typeof PassengerIDSchema>
@@ -9,11 +16,23 @@ type PassengerIDType = z.infer<typeof PassengerIDSchema>
 export interface PassengerID extends PassengerIDType {}
 
 export interface PassengerIDProps {
-  value: string
+	value: string
 }
 
-export const newPassengerID = ( props: PassengerIDProps ): PassengerID => {
-  return PassengerIDSchema.parse( {
-    value: props.value
-  } )
+/**
+ * Create a passenger id instance
+ * @throws {PassengerIdInvalidException} - if id is invalid
+ */
+//TODO: pasar creators a async
+export const newPassengerID = ( props: PassengerIDProps ): Result<PassengerID, Error> => {
+	const result = PassengerIDSchema.safeParse( {
+		value: props.value
+	} )
+
+	if ( !result.success ) {
+		return Err( new PassengerIdInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

@@ -1,3 +1,4 @@
+import { Result } from 'oxide.ts'
 import {
   Direction,
   newDirection
@@ -12,7 +13,7 @@ export interface DirectionMapBox {
 	uuid:      string;
 }
 
-export const newDirectionMapBox = ( json: Record<string, any> ): Direction => {
+export const newDirectionMapBox = ( json: Record<string, any> ): Result<Direction, Error> => {
 	return newDirection({
     coordinates: {
       values: json[ 'routes' ][0][ 'geometry' ][ 'coordinates' ]

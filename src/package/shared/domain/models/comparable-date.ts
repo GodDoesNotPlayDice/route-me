@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { DateInvalidException } from 'src/package/shared/domain/exceptions/date-invalid-exception'
 import { LimitDateSchema } from 'src/package/shared/domain/models/limit-date'
 import { z } from 'zod'
 
@@ -55,10 +61,21 @@ interface ComparableDateProps {
 	comparator : Comparator,
 }
 
-export const newComparableDate = (props : ComparableDateProps): ComparableDate => {
-	return ComparableDateSchema.parse( {
-		value : props.value,
-		otherDate : props.otherDate,
-		comparator : props.comparator,
-	} )
-}
+/**
+ * Create a comparable date instance
+ * @throws {DateInvalidException} - if date is invalid
+ */
+export const newComparableDate = (props : ComparableDateProps): Result<ComparableDate, Error> => {
+  const result = ComparableDateSchema.safeParse( {
+    value : props.value,
+    otherDate : props.otherDate,
+    comparator : props.comparator,
+  } )
+
+  if ( !result.success ) {
+    return Err(new DateInvalidException())
+  }
+  else {
+    return Ok( result.data )
+  }
+	}

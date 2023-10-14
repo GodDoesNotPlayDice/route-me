@@ -2,19 +2,22 @@ import { AngularFireDatabase } from '@angular/fire/compat/database'
 import {
   Err,
   Ok,
-  Option,
   Result
 } from 'oxide.ts'
-import { userFromJson } from 'src/package/user/application/user-mapper'
+import { UserNotFoundException } from 'src/package/user/domain/exceptions/user-not-found-exception'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
-import { UserDao } from 'src/package/user/domain/repository/user-dao'
+import { UserDao } from 'src/package/user/domain/dao/user-dao'
 
 export class UserDaoFirebase implements UserDao {
   constructor( private firebase: AngularFireDatabase ) {
   }
 
-  public getAll(): Promise<Result<User[], string>> {
+  /**
+   * Get all users
+   * @throws {UserNotFoundException} - if users not found
+   */
+  async getAll(): Promise<Result<User[], Error>> {
     console.log( 'firebaseinit' )
 
     // this.firebase.database.ref( 'users/abc' )
@@ -27,7 +30,6 @@ export class UserDaoFirebase implements UserDao {
     //         }
     //         console.log( s.unwrap() )
     //     } )
-
             // for ( const snapshotElement of Object.values( snapshot.val() ) ) {
             //   console.log('snapshotElement', snapshotElement)
             //   const s = userFromJson(
@@ -40,11 +42,14 @@ export class UserDaoFirebase implements UserDao {
             // }
     console.log( 'firebaseend' )
 
-    return Promise.resolve( Ok( [] ) )
-    // return Promise.resolve( Err("err") )
+    return Err(new UserNotFoundException('firebase'))
   }
 
-  public getById( id: UserID ): Promise<Result<User, string>> {
-    return Promise.resolve( Err('') )
+  /**
+   * Get user by id
+   * @throws {UserNotFoundException} - if user not found
+   */
+  async getById( id: UserID ): Promise<Result<User, Error>> {
+    return Err(new UserNotFoundException('firebase'))
   }
 }

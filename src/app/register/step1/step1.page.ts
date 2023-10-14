@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  OnInit,
   ViewChild
 } from '@angular/core'
 import {

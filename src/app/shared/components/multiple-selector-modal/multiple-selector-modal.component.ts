@@ -13,7 +13,7 @@ import { MultipleSelectorItemComponent } from 'src/app/shared/components/multipl
 import {
   newMultipleSelectorData,
   MultipleSelectorData
-} from 'src/app/shared/models/multiple-selector-data'
+} from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,

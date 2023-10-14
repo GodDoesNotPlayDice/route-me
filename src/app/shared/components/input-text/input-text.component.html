@@ -24,13 +24,25 @@
       {{placeholder}}
     </label>
   </div>
-  <div class="mt-2 text-xs text-threateningRed-500 h-8 font-gotham">
+  <div class="mt-2 text-xs text-threateningRed-500 font-gotham">
     <div *ngIf="textControl.invalid && (textControl.dirty || textControl.touched)">
+      <div *ngIf="textControl.errors?.['required']">
+        {{placeholder}} es requerido
+      </div>
       <div *ngIf="textControl.errors?.['email']">
         El email no es correcto
       </div>
-      <div *ngIf="textControl.errors?.['required']">
-        {{placeholder}} es requerido
+      <div *ngIf="textControl.errors?.['uppercase']">
+        Debe contener almenos una letra mayuscula
+      </div>
+      <div *ngIf="textControl.errors?.['lowercase']">
+        Debe contener almenos una letra minuscula
+      </div>
+      <div *ngIf="textControl.errors?.['number']">
+        Debe contener almenos un numero
+      </div>
+      <div *ngIf="textControl.errors?.['character']">
+        Debe contener almenos un caracter especial
       </div>
       <div *ngIf="textControl.errors?.['minlength']">
         Debe contener
@@ -40,7 +52,7 @@
         Debe tener como
         maximo {{textControl.errors?.['maxlength']?.['requiredLength']}} letras
       </div>
-      <div *ngIf="textControl.errors?.['number']">
+      <div *ngIf="textControl.errors?.['int']">
         Debe contener unicamente numeros
       </div>
     </div>

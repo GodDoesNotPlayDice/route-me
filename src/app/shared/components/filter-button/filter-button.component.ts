@@ -4,7 +4,7 @@ import {
   Input
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { FilterButtonData } from 'src/app/shared/models/filter-button-data'
+import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
 
 @Component( {
   standalone : true,

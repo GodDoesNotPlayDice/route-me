@@ -1,3 +1,9 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { TripSeatInvalidException } from 'src/package/trip/domain/exceptions/trip-seat-invalid-exception'
 import { z } from 'zod'
 
 export const TripSeatSchema = z.object( {
@@ -11,8 +17,19 @@ export interface TripSeatProps {
   value : number
 }
 
-export const newTripSeat = (props : TripSeatProps): TripSeat => {
-  return TripSeatSchema.parse( {
+/**
+ * Create a trip seat instance
+ * @throws {TripSeatInvalidException} - if seat is invalid
+ */
+export const newTripSeat = (props : TripSeatProps): Result<TripSeat, Error> => {
+  const result = TripSeatSchema.safeParse( {
     value : props.value
   } )
+
+  if ( !result.success ) {
+    return Err( new TripSeatInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }

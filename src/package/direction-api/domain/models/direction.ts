@@ -1,4 +1,9 @@
 import {
+	Err,
+	Ok,
+	Result
+} from 'oxide.ts'
+import {
 	Geometry,
 	GeometryProps,
 	newGeometry
@@ -13,14 +18,28 @@ export interface DirectionProps {
 	coordinates: GeometryProps
 }
 
-export const newDirectionFromJson = ( json: Record<string, any> ): Direction => {
-	return newDirectionMapBox( json)
+/**
+ * Create direction instance
+ * @throws {GeometryInvalidException} - if geometry is invalid
+ */
+export const newDirectionFromJson = ( json: Record<string, any> ): Result<Direction, Error> => {
+	return newDirectionMapBox( json )
 }
 
-export const newDirection = ( props: DirectionProps ): Direction => {
-	return {
-		coordinates: newGeometry( {
-			values: props.coordinates.values
-		} )
+/**
+ * Create direction instance
+ * @throws {GeometryInvalidException} - if geometry is invalid
+ */
+export const newDirection = ( props: DirectionProps ): Result<Direction, Error> => {
+	const result = newGeometry( {
+		values: props.coordinates.values
+	} )
+
+	if ( result.isErr() ) {
+		return Err( result.unwrapErr() )
 	}
+
+	return Ok( {
+		coordinates: result.unwrap()
+	} )
 }
