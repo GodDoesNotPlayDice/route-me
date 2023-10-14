@@ -5,9 +5,9 @@ import {
 } from 'oxide.ts'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import {
-  newTripHistory,
   TripHistory
 } from 'src/package/trip-history/domain/models/trip-history'
+import { newTripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { newUserID } from 'src/package/user/domain/models/user-id'
 
@@ -41,8 +41,16 @@ export const tripHistoryToJson = ( tripHistory: TripHistory ): Result<Record<str
 export const tripHistoryFromJson = ( json: Record<string, any> ): Result<TripHistory, Error[]> => {
   const error: Error[] = []
 
+  const id = newTripHistoryID( {
+    value: json['id'] ?? ''
+  })
+
+  if ( id.isErr() ) {
+    error.push( id.unwrapErr() )
+  }
+
   const userID = newUserID( {
-    value: json['userID']
+    value: json['userID'] ?? ''
   } )
 
   if ( userID.isErr() ) {
@@ -50,7 +58,7 @@ export const tripHistoryFromJson = ( json: Record<string, any> ): Result<TripHis
   }
 
   const tripID = newTripID( {
-    value: json['tripID']
+    value: json['tripID'] ?? ''
   } )
 
   if ( tripID.isErr() ) {
@@ -61,16 +69,9 @@ export const tripHistoryFromJson = ( json: Record<string, any> ): Result<TripHis
     return Err( error )
   }
 
-  const result = newTripHistory( {
-    id    : json['id'],
+  return Ok( {
+    id    : id.unwrap(),
     userID: userID.unwrap(),
     tripID: tripID.unwrap()
   } )
-
-  if ( result.isErr() ) {
-    error.push( result.unwrapErr() )
-    return Err( error )
-  }
-
-  return Ok( result.unwrap() )
 }
