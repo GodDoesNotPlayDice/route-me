@@ -12,7 +12,7 @@ export class TripHistoryApi implements TripHistoryDao {
    * Create trip history
    * @throws {ApiOperationException} - if api operation failed
    */
-  async create( trip: TripHistory ): Promise<Result<TripHistory, Error>> {
+  async create( trip: TripHistory ): Promise<Result<boolean, Error>> {
     return Err( new ApiOperationException() )
   }
 

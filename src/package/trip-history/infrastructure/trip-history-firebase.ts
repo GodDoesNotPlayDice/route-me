@@ -22,7 +22,7 @@ export class TripHistoryFirebase implements TripHistoryDao {
    * Create trip history
    * @throws {FirebaseOperationException} - if operation failed
    */
-  async create( trip: TripHistory ): Promise<Result<TripHistory, Error>> {
+  async create( trip: TripHistory ): Promise<Result<boolean, Error>> {
     let completed: string | null = null
     await this.firebase.database.ref( this.collectionKey )
               .push(
@@ -40,7 +40,7 @@ export class TripHistoryFirebase implements TripHistoryDao {
     if ( completed === null ) {
       return Err( new FirebaseOperationException() )
     }
-    return Ok( trip )
+    return Ok( true )
   }
 
   /**
