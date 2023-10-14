@@ -29,16 +29,16 @@ export class LocationDaoApi implements LocationDao {
    * Get all location
    * @throws {UnknownException} - if unknown error
    */
-  async getAll(): Promise<Result<Location[], Error>> {
-    return Err( new UnknownException() )
+  async getAll(): Promise<Result<Location[], Error[]>> {
+    return Err( [new UnknownException()] )
   }
 
   /**
    * Get by id location
    * @throws {UnknownException} - if unknown error
    */
-  async getById( id: LocationID ): Promise<Result<Location, Error>> {
-    return Err( new UnknownException() )
+  async getById( id: LocationID ): Promise<Result<Location, Error[]>> {
+    return Err( [new UnknownException()] )
   }
 
   /**
