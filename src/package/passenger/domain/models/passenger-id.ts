@@ -23,7 +23,6 @@ export interface PassengerIDProps {
  * Create a passenger id instance
  * @throws {PassengerIdInvalidException} - if id is invalid
  */
-             //TODO: pasar creators a async
 export const newPassengerID = ( props: PassengerIDProps ): Result<PassengerID, Error> => {
   const result = PassengerIDSchema.safeParse( {
     value: props.value

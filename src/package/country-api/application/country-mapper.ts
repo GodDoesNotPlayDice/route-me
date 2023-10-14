@@ -23,17 +23,16 @@ export const countryFromJson = ( json: Record<string, any> ): Result<Country, Er
   const errors: Error[] = []
 
   const flag = newCountryFlagUrl( {
-    png: json['flags']['png'] ?? ''
+    png: json['flags'] === undefined ? '' : json['flags']['png'] ?? ''
   } )
 
   if ( flag.isErr() ) {
     errors.push( flag.unwrapErr() )
   }
 
-  //TODO: ver si no es necesario verificar json undefined
   const name = newCountryName( {
-    common  : json['name']['common'] ?? '',
-    official: json['name']['official'] ?? ''
+    common  : json['name'] === undefined ? '' : json['name']['common'] ?? '',
+    official  : json['name'] === undefined ? '' : json['name']['official'] ?? ''
   } )
 
   if ( name.isErr() ) {
@@ -49,8 +48,8 @@ export const countryFromJson = ( json: Record<string, any> ): Result<Country, Er
   }
 
   const number = newCountryNumberCode( {
-    root    : json['idd']['root'] ?? '',
-    suffixes: json['idd']['suffixes'] ?? []
+    root: json['idd'] === undefined ? '' : json['idd']['root'] ?? '',
+    suffixes: json['idd'] === undefined ? '' : json['idd']['suffixes'] ?? ''
   } )
 
   if ( number.isErr() ) {

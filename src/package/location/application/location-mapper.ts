@@ -44,10 +44,9 @@ export const locationFromJson = ( json: Record<string, any> ): Result<Location, 
     err.push( countryCode.unwrapErr() )
   }
 
-  //TODO: revisar si pasa json sin verificar undefined
   const position = newPosition( {
-    lat: json['position']['latitude'] ?? '',
-    lng: json['position']['longitude'] ?? ''
+    lat  : json['position'] === undefined ? '' : json['position']['latitude'] ?? '',
+    lng  : json['position'] === undefined ? '' : json['position']['longitude'] ?? '',
   } )
 
   if ( position.isErr() ) {

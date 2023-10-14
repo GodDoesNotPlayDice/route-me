@@ -89,10 +89,8 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   }
 
   const price = newTripPrice( {
-    amount  : json['price'] === undefined ? '' : json['price']['amount'] ===
-    undefined ? '' : json['price']['amount'],
-    currency: json['price'] === undefined ? '' : json['price']['currency'] ===
-    undefined ? '' : json['price']['currency']
+    amount  : json['price'] === undefined ? '' : json['price']['amount'] ?? '',
+    currency: json['price'] === undefined ? '' : json['price']['currency'] ?? ''
   } )
 
   if ( price.isErr() ) {

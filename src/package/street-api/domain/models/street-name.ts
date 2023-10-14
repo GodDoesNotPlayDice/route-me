@@ -30,7 +30,6 @@ export const newStreetName = ( props: StreetNameProps ): Result<StreetName, Erro
     return Err( new StreetNameInvalidException() )
   }
   else {
-    //TODO: revisar si llega value o manda mas de lo que deberia
     return Ok( result.data )
   }
 }

@@ -9,6 +9,8 @@ import { FilterButtonComponent } from 'src/app/shared/components/filter-button/f
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
+import { locationFromJson } from 'src/package/location/application/location-mapper'
+import { nearTripFromJson } from 'src/package/near-trip/application/near-trip-mapper'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'

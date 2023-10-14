@@ -6,7 +6,6 @@ import {
 import { PassengerCountryInvalidException } from 'src/package/passenger/domain/exceptions/passenger-country-invalid-exception'
 import { z } from 'zod'
 
-//TODO: reemplazar por entidad country
 export const PassengerCountrySchema = z.object( {
   value: z.string().nonempty()
 } )
