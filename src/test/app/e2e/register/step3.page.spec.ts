@@ -2,14 +2,14 @@ import {
   ComponentFixture,
   TestBed
 } from '@angular/core/testing'
-import { Step4Page } from 'src/app/register/step4/step4.page'
+import { Step3Page } from 'src/app/register/step3/step3.page'
 
 describe( 'Step4Page', () => {
-  let component: Step4Page
-  let fixture: ComponentFixture<Step4Page>
+  let component: Step3Page
+  let fixture: ComponentFixture<Step3Page>
 
   beforeEach( async () => {
-    fixture   = TestBed.createComponent( Step4Page )
+    fixture   = TestBed.createComponent( Step3Page )
     component = fixture.componentInstance
     fixture.detectChanges()
   } )

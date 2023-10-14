@@ -54,10 +54,6 @@ import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/stre
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
-import {
-  newUser,
-  User
-} from 'src/package/user/domain/models/user'
 import { newUserID } from 'src/package/user/domain/models/user-id'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
 import { environment } from './environments/environment'
@@ -66,14 +62,6 @@ import { environment } from './environments/environment'
 if ( environment.production ) {
   enableProdMode()
 }
-
-export const defaultUsers: User[] = [
-  newUser( {
-    id   : 'abc',
-    email: 'hola@gmail.com'
-  } )
-    .unwrap()
-]
 
 export const defaultPassangers: Passenger[] = [
   newPassenger( {
