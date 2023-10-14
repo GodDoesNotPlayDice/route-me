@@ -61,8 +61,9 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
 	const preferences: PreferenceID[] = []
 
 	for ( const preference of Object.values( json['preferences'] ) ) {
+		const value = preference as Record<string, any>
 		const result = newPreferenceID( {
-			value: preference as string
+			value: value['id']
 		} )
 		if ( result.isErr() ) {
 			error.push( result.unwrapErr() )

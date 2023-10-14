@@ -71,13 +71,14 @@ export interface PassengerProps {
  * @throws {PassengerNameInvalidException} - if name is invalid
  * @throws {PassengerLastNameInvalidException} - if last name is invalid
  * @throws {PassengerDescriptionInvalidException} - if description is invalid
- * @throws {PassengerPhoneInvalidException} - if phone is invalid
+ * @throws {PhoneInvalidFormatException} - if phone format is invalid
+ * @throws {PhoneInsufficientLengthException} - if phone length is insufficient
+ * @throws {PhoneExceedsMaximumLengthException} - if phone length exceeds maximum
  * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
  * @throws {PassengerCountryInvalidException} - if country is invalid
  */
 export const newPassenger = ( props: PassengerProps ): Result<Passenger, Error[]> => {
   const err : Error[] = []
-  //TODO: se podria hacer algo generico que tome el array y lo inserte para repetir menos
 
   const id = newPassengerID( {
     value: props.id
@@ -116,7 +117,7 @@ export const newPassenger = ( props: PassengerProps ): Result<Passenger, Error[]
   } )
 
   if ( phone.isErr() ) {
-    err.push( phone.unwrapErr() )
+    err.push( ...phone.unwrapErr() )
   }
 
   const birthDay = newPassengerBirthDay( {

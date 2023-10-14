@@ -3,7 +3,9 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { PassengerPhoneInvalidException } from 'src/package/passenger/domain/exceptions/passenger-phone-invalid-exception'
+import { PhoneExceedsMaximumLengthException } from 'src/package/passenger/domain/exceptions/phone-exceeds-maximum-length-exception'
+import { PhoneInsufficientLengthException } from 'src/package/passenger/domain/exceptions/phone-insufficient-length-exception'
+import { PhoneInvalidFormatException } from 'src/package/passenger/domain/exceptions/phone-invalid-format-exception'
 import { z } from 'zod'
 
 export const PassengerPhoneSchema = z.object( {
@@ -24,15 +26,29 @@ export interface PassengerPhoneProps {
 
 /**
  * Create a passenger phone instance
- * @throws {PassengerPhoneInvalidException} - if phone is invalid
+ * @throws {PhoneInvalidFormatException} - if phone format is invalid
+ * @throws {PhoneInsufficientLengthException} - if length is insufficient
+ * @throws {PhoneExceedsMaximumLengthException} - if length exceeds maximum
  */
-export const newPassengerPhone = ( props: PassengerPhoneProps ): Result<PassengerPhone, Error> => {
+export const newPassengerPhone = ( props: PassengerPhoneProps ): Result<PassengerPhone, Error[]> => {
   const result = PassengerPhoneSchema.safeParse( {
     value: props.value
   } )
 
   if ( !result.success ) {
-    return Err( new PassengerPhoneInvalidException() )
+    const error: Error[] = []
+    for ( const e of result.error.errors ) {
+      if(e.code === 'too_small'){
+        error.push(new PhoneInsufficientLengthException(String(e.minimum)) )
+      }
+      else if(e.code === 'too_big'){
+        error.push(new PhoneExceedsMaximumLengthException(String(e.maximum)) )
+      }
+      else {
+        error.push(new PhoneInvalidFormatException() )
+      }
+    }
+    return Err( error )
   }
   else {
     return Ok( result.data )

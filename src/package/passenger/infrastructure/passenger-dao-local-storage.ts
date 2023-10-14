@@ -30,7 +30,7 @@ export class PassengerDaoLocalStorage implements PassengerDao {
 	 * Delete a passenger
 	 * @throws {UnknownException} - if unknown error
 	 */
-	async delete( id: PassengerID ): Promise<Result<boolean, Error>> {
+	async delete( id: UserID ): Promise<Result<boolean, Error>> {
 		return Err( new UnknownException() )
 	}
 
