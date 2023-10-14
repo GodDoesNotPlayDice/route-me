@@ -4,7 +4,8 @@ import {
   Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
-import { newUser } from 'src/package/user/domain/models/user'
+import { newUserEmail } from 'src/package/user/domain/models/user-email'
+import { newUserID } from 'src/package/user/domain/models/user-id'
 import { newUserPassword } from 'src/package/user/domain/models/user-password'
 import { ulid } from 'ulidx'
 
@@ -25,13 +26,20 @@ export const registerUser = async ( repository: AuthUserRepository,
 ): Promise<Result<string, Error[]>> => {
   const error: Error[] = []
 
-  const userResult = newUser( {
-    id   : ulid(),
-    email: email
-  } )
+  const idResult = newUserID({
+    value: ulid()
+  })
 
-  if ( userResult.isErr() ) {
-    error.push( ...userResult.unwrapErr() )
+  if ( idResult.isErr() ) {
+    error.push( idResult.unwrapErr() )
+  }
+
+  const emailResult = newUserEmail({
+    value: email ?? ''
+  })
+
+  if ( emailResult.isErr() ) {
+    error.push( emailResult.unwrapErr() )
   }
 
   const passwordResult = newUserPassword( {
@@ -47,7 +55,10 @@ export const registerUser = async ( repository: AuthUserRepository,
   }
 
   const result = await repository.register(
-    userResult.unwrap(),
+    {
+      id: idResult.unwrap(),
+      email: emailResult.unwrap(),
+    },
     passwordResult.unwrap()
   )
 
