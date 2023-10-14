@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
+import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import {
   FilterButtonData,
