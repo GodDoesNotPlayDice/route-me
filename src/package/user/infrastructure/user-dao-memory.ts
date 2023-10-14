@@ -1,12 +1,11 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Result
 } from 'oxide.ts'
+import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { UserNotFoundException } from 'src/package/user/domain/exceptions/user-not-found-exception'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
-import { UserDao } from 'src/package/user/domain/dao/user-dao'
 
 export class UserDaoMemory implements UserDao {
 
@@ -14,16 +13,16 @@ export class UserDaoMemory implements UserDao {
    * Get all users
    * @throws {UserNotFoundException} - if users not found
    */
-	async getAll(): Promise<Result<User[], Error>> {
-    return Err(new UserNotFoundException('memory'))
+  async getAll(): Promise<Result<User[], Error>> {
+    return Err( new UserNotFoundException( 'memory' ) )
   }
 
   /**
    * Get user by id
    * @throws {UserNotFoundException} - if user not found
    */
-	async getById( id: UserID ): Promise<Result<User, Error>> {
-    return Err(new UserNotFoundException('memory'))
+  async getById( id: UserID ): Promise<Result<User, Error>> {
+    return Err( new UserNotFoundException( 'memory' ) )
 
   }
 }

@@ -1,7 +1,7 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { PasswordInsufficientCharacterException } from 'src/package/user/domain/exceptions/password-insufficient-character-exception'
@@ -12,13 +12,13 @@ import { PasswordInsufficientUppercaseException } from 'src/package/user/domain/
 import { z } from 'zod'
 
 export const UserPasswordSchema = z.object( {
-	value: z.string()
-	        .min( 8 )
-	        .regex( RegExp( /^(?=.*[a-z]).*$/ ), { message: 'lowercase' } )
-	        .regex( RegExp( /^(?=.*[A-Z]).*$/ ), { message: 'uppercase' } )
-	        .regex( RegExp( /^(?=.*\d).*$/ ), { message: 'number' } )
-	        .regex( RegExp( /^(?=.*[$@!*?&]).*$/ ), { message: 'character' } )
-	// .regex(RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@!*?&]).{8,}.*$/))
+  value: z.string()
+          .min( 8 )
+          .regex( RegExp( /^(?=.*[a-z]).*$/ ), { message: 'lowercase' } )
+          .regex( RegExp( /^(?=.*[A-Z]).*$/ ), { message: 'uppercase' } )
+          .regex( RegExp( /^(?=.*\d).*$/ ), { message: 'number' } )
+          .regex( RegExp( /^(?=.*[$@!*?&]).*$/ ), { message: 'character' } )
+  // .regex(RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@!*?&]).{8,}.*$/))
 } )
 
 type UserPasswordType = z.infer<typeof UserPasswordSchema>
@@ -26,7 +26,7 @@ type UserPasswordType = z.infer<typeof UserPasswordSchema>
 export interface UserPassword extends UserPasswordType {}
 
 interface UserPasswordProps {
-	value: string
+  value: string
 }
 
 /**
@@ -38,35 +38,36 @@ interface UserPasswordProps {
  * @throws {PasswordInsufficientCharacterException} - if password character is invalid
  */
 export const newUserPassword = ( props: UserPasswordProps ): Result<UserPassword, Error[]> => {
-	const result = UserPasswordSchema.safeParse( {
-		value: props.value
-	} )
+  const result = UserPasswordSchema.safeParse( {
+    value: props.value
+  } )
 
-	if ( !result.success ) {
-		const err: Error[] = []
-		for ( let e of result.error.errors ) {
-			if ( e.message === 'lowercase' ) {
-				err.push( new PasswordInsufficientLowercaseException() )
-			}
-			else if ( e.message === 'uppercase' ) {
-				err.push( new PasswordInsufficientUppercaseException() )
-			}
-			else if ( e.message === 'number' ) {
-				err.push( new PasswordInsufficientNumberException() )
-			}
-			else if ( e.message === 'character' ) {
-				err.push( new PasswordInsufficientCharacterException() )
-			}
-			else if ( e.code ==='too_small' ) {
-				err.push( new PasswordInsufficientLengthException(String(e.minimum)) )
-			}
-			else {
-				err.push( new UnknownException('password creation') )
-			}
-		}
-		return Err( err )
-	}
-	else {
-		return Ok( result.data )
-	}
+  if ( !result.success ) {
+    const err: Error[] = []
+    for ( let e of result.error.errors ) {
+      if ( e.message === 'lowercase' ) {
+        err.push( new PasswordInsufficientLowercaseException() )
+      }
+      else if ( e.message === 'uppercase' ) {
+        err.push( new PasswordInsufficientUppercaseException() )
+      }
+      else if ( e.message === 'number' ) {
+        err.push( new PasswordInsufficientNumberException() )
+      }
+      else if ( e.message === 'character' ) {
+        err.push( new PasswordInsufficientCharacterException() )
+      }
+      else if ( e.code === 'too_small' ) {
+        err.push(
+          new PasswordInsufficientLengthException( String( e.minimum ) ) )
+      }
+      else {
+        err.push( new UnknownException( 'password creation' ) )
+      }
+    }
+    return Err( err )
+  }
+  else {
+    return Ok( result.data )
+  }
 }
