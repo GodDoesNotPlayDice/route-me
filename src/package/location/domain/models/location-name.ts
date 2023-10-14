@@ -7,7 +7,7 @@ import { LocationNameInvalidException } from 'src/package/location/domain/except
 import { z } from 'zod'
 
 export const LocationNameSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type LocationNameType = z.infer<typeof LocationNameSchema>

@@ -7,7 +7,7 @@ import { StreetPlaceInvalidException } from 'src/package/street-api/domain/excep
 import { z } from 'zod'
 
 export const StreetPlaceSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 type StreetPlaceType = z.infer<typeof StreetPlaceSchema>
 

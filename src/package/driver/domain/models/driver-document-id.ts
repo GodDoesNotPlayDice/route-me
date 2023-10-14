@@ -7,7 +7,7 @@ import { DriverDocumentIdInvalidException } from 'src/package/driver/domain/exce
 import { z } from 'zod'
 
 export const DriverDocumentIDSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type DriverDocumentIDType = z.infer<typeof DriverDocumentIDSchema>

@@ -7,7 +7,7 @@ import { PassengerLastNameInvalidException } from 'src/package/passenger/domain/
 import { z } from 'zod'
 
 export const PassengerLastNameSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type PassengerLastNameType = z.infer<typeof PassengerLastNameSchema>

@@ -7,7 +7,7 @@ import { RatingIdInvalidException } from 'src/package/rating/domain/exceptions/r
 import { z } from 'zod'
 
 export const RatingIDSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type RatingIDType = z.infer<typeof RatingIDSchema>
