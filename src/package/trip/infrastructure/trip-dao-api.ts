@@ -6,7 +6,10 @@ import {
 	Result
 } from 'oxide.ts'
 import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
-import { tripToJSON } from 'src/package/trip/application/trip-mapper'
+import {
+  tripFromJSON,
+  tripToJSON
+} from 'src/package/trip/application/trip-mapper'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
@@ -84,11 +87,11 @@ export class TripDaoApi implements TripDao {
 		const response = await this.http.get( this.url ).toPromise()
 
 		if ( response === undefined ) {
-			return Err( [new ApiOperationException( 'trip get all firebase' )] )
+			return Err( [new ApiOperationException( 'trip get all api' )] )
 		}
 
-		//TODO: revisar que formato responde y envia a la api
-		console.log( 'response', response)
+    const result = tripFromJSON( response as Record<string, any>)
+    console.log( 'result', result)
 
 		// const trip = tripFromJSON( response )
 		//

@@ -7,7 +7,7 @@ import { ChatIdInvalidException } from 'src/package/chat/domain/exceptions/chat-
 import { z } from 'zod'
 
 export const ChatIDSchema = z.object( {
-  value : z.string()
+  value : z.string().nonempty()
 } )
 
 type ChatIDType = z.infer<typeof ChatIDSchema>

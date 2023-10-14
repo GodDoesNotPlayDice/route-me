@@ -7,7 +7,7 @@ import { CategoryIdInvalidException } from 'src/package/category/domain/exceptio
 import { z } from 'zod'
 
 export const CategoryIDSchema = z.object( {
-  value : z.string()
+  value : z.string().nonempty()
 } )
 
 type CategoryIDType = z.infer<typeof CategoryIDSchema>

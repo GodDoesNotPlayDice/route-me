@@ -15,6 +15,7 @@ import {
 } from 'src/package/shared/domain/components/filter-button-data'
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
+import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
@@ -30,9 +31,10 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
     DriveCardComponent
   ]
 } )
-export class HomePage {
+export class HomePage implements OnInit{
 
   constructor( private driversService: DriversService,
+    private trip: TripDao,
     private tripService: TripService )
   {
     this.info = this.driversService.getDrivers()
@@ -43,6 +45,11 @@ export class HomePage {
     if ( this.info.length === 0 ) {
       this.error = true
     }
+  }
+
+  async ngOnInit() {
+    const result = await this.trip.getAll()
+    console.log( 'result', result)
   }
 
   info: DriverCardInfo[] = []

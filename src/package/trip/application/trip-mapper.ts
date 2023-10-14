@@ -13,10 +13,14 @@ import {
 } from 'src/package/passenger/domain/models/passenger-id'
 import { dateToJSON } from 'src/package/shared/config/helper/date/date-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
-import {
-  newTrip,
-  Trip
-} from 'src/package/trip/domain/models/trip'
+import { newValidDate } from 'src/package/shared/domain/models/valid-date'
+import { Trip } from 'src/package/trip/domain/models/trip'
+import { newTripDescription } from '../domain/models/trip-description'
+import { newTripFeeMethod } from '../domain/models/trip-fee-method'
+import { newTripID } from '../domain/models/trip-id'
+import { newTripPrice } from '../domain/models/trip-price'
+import { newTripSeat } from '../domain/models/trip-seat'
+import { newTripState } from '../domain/models/trip-state'
 
 /**
  * Create a trip instance from json
@@ -38,47 +42,113 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   const err: Error[] = []
 
   const passenger: PassengerID[] = []
-  for ( const id of Object.values( json['passengers'] ) ) {
-    const passengerIDResult = newPassengerID( {
-      value: id as string
-    } )
-    if ( passengerIDResult.isErr() ) {
-      err.push( passengerIDResult.unwrapErr() )
+  if ( json['passengers'] ) {
+    for ( const id of Object.values( json['passengers'] ) ) {
+      const passengerIDResult = newPassengerID( {
+        value: id as string
+      } )
+      if ( passengerIDResult.isErr() ) {
+        err.push( passengerIDResult.unwrapErr() )
+      }
+      else {
+        passenger.push( passengerIDResult.unwrap() )
+      }
     }
-    else {
-      passenger.push( passengerIDResult.unwrap() )
-    }
   }
 
-  if ( err.length > 0 ) {
-    return Err( err )
-  }
-  const driverIDResult = newDriverID( {
-    value: json['driverID']
+  const endDate = newValidDate( {
+    value: json['endDate'] ?? ''
   } )
 
-  if ( driverIDResult.isErr() ) {
-    err.push( driverIDResult.unwrapErr() )
+  if ( endDate.isErr() ) {
+    err.push( endDate.unwrapErr() )
   }
 
-  const categoryResult = newCategoryID( {
-    value: json['category']
+  const startDate = newValidDate( {
+    value: json['startDate'] ?? ''
   } )
 
-  if ( categoryResult.isErr() ) {
-    err.push( categoryResult.unwrapErr() )
+  if ( startDate.isErr() ) {
+    err.push( startDate.unwrapErr() )
   }
 
-  const chatResult = newChatID( {
-    value: json['chat']
+  const id = newTripID( {
+    value: json['id'] ?? ''
   } )
 
-  if ( chatResult.isErr() ) {
-    err.push( chatResult.unwrapErr() )
+  if ( id.isErr() ) {
+    err.push( id.unwrapErr() )
+  }
+
+  const description = newTripDescription( {
+    value: json['description'] ?? ''
+  } )
+
+  if ( description.isErr() ) {
+    err.push( description.unwrapErr() )
+  }
+
+  const price = newTripPrice( {
+    amount  : json['price'] === undefined ? '' : json['price']['amount'] ===
+    undefined ? '' : json['price']['amount'],
+    currency: json['price'] === undefined ? '' : json['price']['currency'] ===
+    undefined ? '' : json['price']['currency']
+  } )
+
+  if ( price.isErr() ) {
+    err.push( ...price.unwrapErr() )
+  }
+
+  const seat = newTripSeat( {
+    value: json['seat'] ?? ''
+  } )
+
+  if ( seat.isErr() ) {
+    err.push( seat.unwrapErr() )
+  }
+
+  const fee = newTripFeeMethod( {
+    value: json['fee'] ?? ''
+  } )
+
+  if ( fee.isErr() ) {
+    err.push( fee.unwrapErr() )
+  }
+
+  const state = newTripState( {
+    value: json['state'] ?? ''
+  } )
+
+  if ( state.isErr() ) {
+    err.push( state.unwrapErr() )
+  }
+
+  const driverID = newDriverID( {
+    value: json['driverID'] ?? ''
+  } )
+
+  if ( driverID.isErr() ) {
+    err.push( driverID.unwrapErr() )
+  }
+
+  const categoryID = newCategoryID( {
+    value: json['category'] ?? ''
+  } )
+
+  if ( categoryID.isErr() ) {
+    err.push( categoryID.unwrapErr() )
+  }
+
+  const chatID = newChatID( {
+    value: json['chat'] ?? ''
+  } )
+
+  if ( chatID.isErr() ) {
+    err.push( chatID.unwrapErr() )
   }
 
   const locationStart = newLocationID( {
-    value: json['startLocationID']
+    value: json['startLocationID'] ?? ''
   } )
 
   if ( locationStart.isErr() ) {
@@ -86,7 +156,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   }
 
   const locationEnd = newLocationID( {
-    value: json['endLocationID']
+    value: json['endLocationID'] ?? ''
   } )
 
   if ( locationEnd.isErr() ) {
@@ -97,32 +167,22 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
     return Err( err )
   }
 
-  const result = newTrip( {
-    price          : {
-      amount  : json['price']['amount'],
-      currency: json['price']['currency']
-    },
-    seat           : json['seat'],
-    fee            : json['fee'],
-    state          : json['state'],
-    driverID       : driverIDResult.unwrap(),
-    category       : categoryResult.unwrap(),
-    chat           : chatResult.unwrap(),
-    passengers     : passenger,
-    id             : json['id'],
-    description    : json['description'],
-    startDate      : new Date( json['startDate'] ),
-    endDate        : new Date( json['endDate'] ),
-    startLocationID: locationStart.unwrap(),
+  return Ok( {
+    price          : price.unwrap(),
+    seat           : seat.unwrap(),
+    fee            : fee.unwrap(),
+    state          : state.unwrap(),
+    driverID       : driverID.unwrap(),
+    categoryID     : categoryID.unwrap(),
+    chatID         : chatID.unwrap(),
+    passengersIDs  : passenger,
+    id             : id.unwrap(),
+    description    : description.unwrap(),
+    startDate      : startDate.unwrap(),
+    endDate        : endDate.unwrap(),
+    startLocationID: locationEnd.unwrap(),
     endLocationID  : locationEnd.unwrap()
   } )
-
-  if ( result.isErr() ) {
-    err.push( ...result.unwrapErr() )
-    return Err( err )
-  }
-
-  return Ok( result.unwrap() )
 }
 
 /**
@@ -132,7 +192,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error> => {
 
   try {
-    const passengers = trip.passengersID.map(
+    const passengers = trip.passengersIDs.map(
       ( passengers: PassengerID ) => {
         return passengers.value
       } )
@@ -144,10 +204,11 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error> => 
         passengers   : passengers,
         category     : trip.categoryID.value,
         chat         : trip.chatID.value,
-        startDate    : dateToJSON( trip.startDate ),
-        endDate      : dateToJSON( trip.endDate ),
-        startLocation: trip.startLocation.value,
-        endLocation  : trip.endLocation.value,
+      
+        startDate    : dateToJSON( trip.startDate.value ),
+        endDate      : dateToJSON( trip.endDate.value ),
+        startLocation: trip.startLocationID.value,
+        endLocation  : trip.endLocationID.value,
         price        : {
           amount  : trip.price.amount,
           currency: trip.price.currency

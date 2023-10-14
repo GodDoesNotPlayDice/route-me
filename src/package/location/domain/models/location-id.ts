@@ -7,7 +7,7 @@ import { LocationIdInvalidException } from 'src/package/location/domain/exceptio
 import { z } from 'zod'
 
 export const LocationIDSchema = z.object( {
-  value: z.string()
+  value: z.string().nonempty()
 } )
 
 type LocationIDType = z.infer<typeof LocationIDSchema>
