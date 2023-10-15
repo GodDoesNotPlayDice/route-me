@@ -90,10 +90,10 @@ export class PublishPage implements ViewDidEnter {
 
             //TODO: no se puede agregar elementos a alert, por lo que usar loading y toast con mensaje
             if ( result ) {
-              console.log( 'error publish' )
+              console.log( 'ok publish' )
             }
             else {
-              console.log( 'ok publish' )
+              console.log( 'error publish' )
             }
 
             //TODO: mandar post, dependiendo respuesta, resetear o mensaje error

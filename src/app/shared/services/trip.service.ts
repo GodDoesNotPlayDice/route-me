@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core'
+import { Some } from 'oxide.ts'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { LocationService } from 'src/app/shared/services/location.service'
-import { PositionService } from 'src/app/shared/services/position.service'
-import { Location } from 'src/package/location/domain/models/location'
-import { Position } from 'src/package/position-api/domain/models/position'
+import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { Street } from 'src/package/street-api/domain/models/street'
 import { createTrip } from 'src/package/trip/application/create-trip'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
@@ -26,11 +25,14 @@ export class TripService {
     endLocation: Street,
     startDate: Date
   } ): Promise<boolean> {
-    const driver = this.authService.currentDriver
+    // const driver = this.authService.currentDriver
+    const driver = newDriverID({
+      value: '01F2ZQZJZJZJZJZJZJZJZJZJZJ'
+    })
 
-    if ( driver.isNone() ) {
-      return false
-    }
+    // if ( driver.isNone() ) {
+    //   return false
+    // }
 
     const id = newTripID({
       value: ulid()
@@ -50,8 +52,7 @@ export class TripService {
 
     const startLocation = await this.locationService.createLocation({
       name: props.startLocation.place.value,
-      // countryCode: props.startLocation.,
-      countryCode: '',
+      countryCode: props.startLocation.shortCode.value,
       position: props.startLocation.center
     })
 
@@ -61,8 +62,7 @@ export class TripService {
 
     const endLocation = await this.locationService.createLocation({
       name: props.endLocation.place.value,
-      // countryCode: props.endLocation.,
-      countryCode: '',
+      countryCode: props.endLocation.shortCode.value,
       position: props.endLocation.center
     })
 
@@ -76,12 +76,12 @@ export class TripService {
       chatID: chat.unwrap(),
       endLocationID: endLocation.unwrap(),
       startLocationID: startLocation.unwrap(),
-      driverID: driver.unwrap().id
+      driverID: driver.unwrap()
     })
 
     if ( result.isErr() ) {
       return false
     }
-    return false
+    return true
   }
 }

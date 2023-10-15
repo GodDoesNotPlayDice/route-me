@@ -1,6 +1,7 @@
 import {
   Err,
   None,
+  Ok,
   Result
 } from 'oxide.ts'
 import { Trip } from 'src/app/shared/models/trip/trip'
@@ -11,10 +12,8 @@ import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import {
-  newTripID,
   TripID
 } from 'src/package/trip/domain/models/trip-id'
-import { ulid } from 'ulidx'
 
 export const createTrip = async ( dao: TripDao,
   props: {
@@ -58,15 +57,13 @@ export const createTrip = async ( dao: TripDao,
     seat         : None,
     state        : None,
   }
-  console.log('creator', result)
 
-  return Err( err )
-  // const response =  await dao.create( result )
-  //
-  // if ( response.isErr() ) {
-  //   err.push( response.unwrapErr() )
-  //   return Err( err )
-  // }
-  //
-  // return Ok(result)
+  const response =  await dao.create( result )
+
+  if ( response.isErr() ) {
+    err.push( response.unwrapErr() )
+    return Err( err )
+  }
+
+  return Ok(result)
 }

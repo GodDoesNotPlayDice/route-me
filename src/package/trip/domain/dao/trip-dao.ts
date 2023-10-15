@@ -1,5 +1,5 @@
 import { Result } from 'oxide.ts'
-import { Trip } from 'src/package/trip/domain/models/trip'
+import { Trip } from 'src/app/shared/models/trip/trip'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 

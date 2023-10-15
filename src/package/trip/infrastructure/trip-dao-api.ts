@@ -5,15 +5,15 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
+import { Trip } from 'src/app/shared/models/trip/trip'
 import {
   tripFromJSON,
   tripToJSON
-} from 'src/package/trip/application/trip-mapper'
+} from 'src/app/shared/models/trip/trip-mapper'
+import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
-import { Trip } from 'src/package/trip/domain/models/trip'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
-import { TripID } from '../domain/models/trip-id'
 
 export class TripDaoApi implements TripDao {
 
