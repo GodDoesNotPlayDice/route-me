@@ -15,7 +15,9 @@ import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-
 import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-selector/date-time-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
+import { AlertService } from 'src/app/shared/services/alert.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 
 @Component( {
@@ -35,20 +37,10 @@ import { TripService } from 'src/app/shared/services/trip.service'
 export class PublishPage implements ViewDidEnter {
 
   constructor( private map: MapService,
-    private toastController: ToastController,
+    private toastService: ToastService,
     private tripService: TripService,
-    private alertController: AlertController )
+    private alertService: AlertService )
   {}
-
-  async presentToast(msg : string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 1500,
-      position: 'bottom',
-    });
-
-    await toast.present();
-  }
 
   @ViewChild( 'pmap' ) divElementElementRef!: ElementRef<HTMLDivElement>
   @ViewChild( 'date' ) dateInput!: DateTimeSelectorComponent
@@ -81,9 +73,13 @@ export class PublishPage implements ViewDidEnter {
       end.center )
   }
 
-  //TODO: agregar alert service
-  async presentAlert() {
-    const alert = await this.alertController.create( {
+  async onPublish(): Promise<void> {
+    this.formGroup.updateValueAndValidity()
+    this.formGroup.markAllAsTouched()
+
+    if ( !this.formGroup.valid ) { return }
+
+    await this.alertService.presentAlert( {
       header: 'Confirma que deseas publicar el viaje',
       // subHeader: '',
       message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
@@ -100,27 +96,24 @@ export class PublishPage implements ViewDidEnter {
               startDate    : this.dateInput.dateControl.value!
             } )
             if ( result ) {
-              await this.presentToast('Viaje creado con exito')
+              await this.toastService.presentToast({
+                message: 'Viaje creado con exito',
+                duration: 1500,
+                position: 'bottom',
+              })
               await this.reset()
             }
             else {
-              await this.presentToast('Hubo un problema en la creacion del viaje')
+              await this.toastService.presentToast({
+                message: 'Hubo un problema en la creacion del viaje',
+                duration: 1500,
+                position: 'bottom',
+              })
             }
           }
         }
       ]
     } )
-
-    await alert.present()
-  }
-
-  async onPublish(): Promise<void> {
-    this.formGroup.updateValueAndValidity()
-    this.formGroup.markAllAsTouched()
-
-    if ( !this.formGroup.valid ) { return }
-
-    await this.presentAlert()
   }
 
   private async reset(): Promise<void> {

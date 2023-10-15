@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LocationService } from './location.service';
+import { ChatService } from 'src/app/shared/services/chat.service';
 
-describe('LocationService', () => {
-  let service: LocationService;
+describe('ChatService', () => {
+  let service: ChatService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LocationService);
+    service = TestBed.inject(ChatService);
   });
 
   it('should be created', () => {

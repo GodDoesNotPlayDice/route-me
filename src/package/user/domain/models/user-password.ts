@@ -3,7 +3,6 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { PasswordInsufficientCharacterException } from 'src/package/user/domain/exceptions/password-insufficient-character-exception'
 import { PasswordInsufficientLengthException } from 'src/package/user/domain/exceptions/password-insufficient-length-exception'
 import { PasswordInsufficientLowercaseException } from 'src/package/user/domain/exceptions/password-insufficient-lowercase-exception'
@@ -57,12 +56,10 @@ export const newUserPassword = ( props: UserPasswordProps ): Result<UserPassword
       else if ( e.message === 'character' ) {
         err.push( new PasswordInsufficientCharacterException() )
       }
-      else if ( e.code === 'too_small' ) {
-        err.push(
-          new PasswordInsufficientLengthException( String( e.minimum ) ) )
-      }
+      // else if ( e.code === 'too_small' ) {
       else {
-        err.push( new UnknownException( 'password creation' ) )
+        // err.push( new PasswordInsufficientLengthException( String( e.minimum ) ) )
+        err.push( new PasswordInsufficientLengthException( '8' ) )
       }
     }
     return Err( err )

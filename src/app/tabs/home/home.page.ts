@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
+import { AuthService } from 'src/app/shared/services/auth.service'
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { LocationDao } from 'src/package/location/domain/dao/location-dao'
@@ -29,9 +30,7 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 } )
 export class HomePage implements OnInit {
 
-  constructor( private driversService: DriversService,
-    private loc : LocationDao,
-    private tripService: TripService )
+  constructor( private driversService: DriversService)
   {
     this.info = this.driversService.getDrivers()
                     .filter( ( driver ) => {

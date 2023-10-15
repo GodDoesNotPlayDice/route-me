@@ -13,7 +13,6 @@ import {
   RouterLink
 } from '@angular/router'
 import {
-  AlertController,
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
@@ -22,6 +21,7 @@ import { FilledButtonComponent } from 'src/app/shared/components/filled-button/f
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
+import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 
 @Component( {
@@ -46,7 +46,7 @@ export class LoginPage implements ViewDidEnter {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private alertController: AlertController
+    private alertService: AlertService
   )
   {}
 
@@ -55,17 +55,6 @@ export class LoginPage implements ViewDidEnter {
   @ViewChild( 'check' ) checkbox!: CheckboxInputComponent
 
   formGroup!: FormGroup
-
-  async presentAlert() {
-    const alert = await this.alertController.create( {
-      header   : 'Error',
-      subHeader: 'Credenciales no existen',
-      message  : '',
-      buttons  : [ 'OK' ]
-    } )
-
-    await alert.present()
-  }
 
   async ionViewDidEnter() {
     //TODO: ver si colocar div dentro de backButton u manual, responde click
@@ -100,7 +89,13 @@ export class LoginPage implements ViewDidEnter {
       await this.router.navigate( [ '/tabs' ] )
     }
     else {
-      await this.presentAlert()
+
+      await this.alertService.presentAlert( {
+        header   : 'Error',
+        subHeader: 'Credenciales no existen',
+        message  : '',
+        buttons  : [ 'OK' ]
+      } )
     }
   }
 }
