@@ -8,6 +8,7 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 import { Street } from 'src/package/street-api/domain/models/street'
 import { newStreetName } from 'src/package/street-api/domain/models/street-name'
 import { newStreetPlace } from 'src/package/street-api/domain/models/street-place'
+import { newStreetShortCode } from 'src/package/street-api/domain/models/street-short-code'
 import {
   StreetsData
 } from 'src/package/street-api/domain/models/streets-data'
@@ -50,12 +51,18 @@ export const streetsDataFromJson = ( json: Record<string, any> ): Result<Streets
       err.push( name.unwrapErr() )
     }
 
+    const contextLength = Object.values(entry['context']).length
+    const shortCode = newStreetShortCode({
+      value: entry['context'][contextLength - 1]['short_code']
+    })
+
     if ( err.length > 0 ) {
       break
     }
 
     streets.push( {
       center: positionResult.unwrap(),
+      shortCode: shortCode.unwrap(),
       place : place.unwrap(),
       name  : name.unwrap()
     } )
@@ -77,6 +84,7 @@ export const streetsDataFromJson = ( json: Record<string, any> ): Result<Streets
 export const streetToJson = ( street: Street ): Result<Record<string, any>, Error> => {
   try {
     const json: Record<string, any> = {
+      shortCode: street.shortCode.value,
       center: {
         lat: street.center.lat,
         lng: street.center.lng
