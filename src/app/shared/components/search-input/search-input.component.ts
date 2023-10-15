@@ -35,7 +35,6 @@ export class SearchInputComponent {
   public searchText$: Observable<string> = this.searchText.asObservable()
 
   onInput( $event: Event ): void {
-    console.log( 'send' )
     this.searchText.next( this.inputSearch.nativeElement.value )
   }
 }

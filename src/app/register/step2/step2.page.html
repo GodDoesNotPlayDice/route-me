@@ -1,47 +1,48 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/login"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registrarse</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col">
-    <app-stepper></app-stepper>
-    <form (ngSubmit)="submit($event)"
-      class="flex flex-col gap-5">
-      <app-input-text #user
-        placeholder="Nombre"
-        [type]="'text'"></app-input-text>
-      <app-input-text #lastName
-        placeholder="Apellido"
-        [type]="'text'"></app-input-text>
-      <app-input-text #phone
-        placeholder="Telefono"
-        [type]="'phone'"></app-input-text>
-      <app-single-selector-input
-        label="Ingresar Pais"
-        [databaseData]="countries"
-        [required]="true"
-        errorText="Debes ingresar un pais de procedencia"
-        #country></app-single-selector-input>
-      <app-date-selector
-        [mustAdult]="true"
-        label="Fecha de nacimiento"
-        #date></app-date-selector>
-      <div class="flex justify-center items-center gap-2">
-        <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-        <div class="text-sm font-gotham text-indigoBlack-500">Genero</div>
-        <div class="w-1/4 h-px bg-indigoBlack-500"></div>
-      </div>
-      <app-radio-input #radio
-        name="genero"
-        [radioButtons]="genderButtonsInfo"></app-radio-input>
-      <app-filled-button
-        class="my-5"
-        contentText="Registrarse"></app-filled-button>
-    </form>
+  <app-app-bar-clone
+    href="/login"
+    #appBar
+    label="Registrarse"
+    (leadClicked)="leadClick()"
+  >
+  </app-app-bar-clone>
+  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col justify-between">
+    <div class="flex flex-col">
+      <app-stepper></app-stepper>
+      <form
+        class="flex flex-col gap-5">
+        <app-input-text #user
+          placeholder="Nombre"
+          [type]="'text'"></app-input-text>
+        <app-input-text #lastName
+          placeholder="Apellido"
+          [type]="'text'"></app-input-text>
+        <app-input-text #phone
+          placeholder="Telefono"
+          [type]="'phone'"></app-input-text>
+        <app-single-selector-input
+          label="Ingresar Pais"
+          [databaseData]="countries"
+          [required]="true"
+          errorText="Debes ingresar un pais de procedencia"
+          #country></app-single-selector-input>
+        <app-date-selector
+          [mustAdult]="true"
+          label="Fecha de nacimiento"
+          #date></app-date-selector>
+        <div class="flex justify-center items-center gap-2">
+          <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+          <div class="text-sm font-gotham text-indigoBlack-500">Genero</div>
+          <div class="w-1/4 h-px bg-indigoBlack-500"></div>
+        </div>
+        <app-radio-input #radio
+          name="genero"
+          [radioButtons]="genderButtonsInfo"></app-radio-input>
+      </form>
+    </div>
+        <app-filled-button
+          (onClick)="buttonClick()"
+          class="my-5"
+          contentText="Registrarse"></app-filled-button>
   </div>
 </ion-content>

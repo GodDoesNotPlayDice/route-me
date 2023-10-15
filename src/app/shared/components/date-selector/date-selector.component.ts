@@ -60,7 +60,7 @@ export class DateSelectorComponent implements OnInit {
     this.dateControl.updateValueAndValidity()
   }
 
-  async reset(): Promise<void> {
+  reset(): void {
     this.dateSelected = null
     this.dateControl.patchValue( this.dateSelected )
     this.dateControl.updateValueAndValidity()

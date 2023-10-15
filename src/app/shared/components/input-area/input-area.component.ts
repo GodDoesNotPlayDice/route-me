@@ -25,6 +25,7 @@ export class InputAreaComponent {
   @Input() title: string       = 'Sobre Mi'
   @Input() placeholder: string = ''
   @Input() label: string       = ''
+  value: string       = ''
 
   readonly textControl = new FormControl( '', control => {
     // control.addValidators( Validators.required )
@@ -34,5 +35,10 @@ export class InputAreaComponent {
 
   onChange() {
     this.textControl.updateValueAndValidity()
+  }
+
+  reset(): void {
+    this.value = ''
+    this.textControl.reset()
   }
 }

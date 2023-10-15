@@ -9,18 +9,19 @@ import {
 } from '@angular/forms'
 import { Router } from '@angular/router'
 import {
-  AlertController,
   IonicModule,
-  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { CheckboxInputComponent } from 'src/app/shared/components/checkbox-input/checkbox-input.component'
+import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
+import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 
@@ -32,6 +33,7 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
   imports    : [
     IonicModule,
     StepperComponent,
+    AppBarCloneComponent,
     OutlinedButtonComponent,
     InputTextComponent,
     CheckboxInputComponent,
@@ -43,8 +45,8 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 export class Step1Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
-    private alertController: AlertController,
-    private toastController: ToastController,
+    private alertService: AlertService,
+    private toastService: ToastService,
     private router: Router,
     private auth: AuthService )
   {}
@@ -53,12 +55,12 @@ export class Step1Page implements ViewDidEnter {
   @ViewChild( 'password' ) passwordInput!: InputTextComponent
   @ViewChild( 'confirmpassword' ) passwordConfirmInput!: InputTextComponent
   @ViewChild( 'check' ) checkbox!: CheckboxInputComponent
+  @ViewChild( 'appBar' ) appBar !: AppBarCloneComponent
 
   formGroup!: FormGroup
   checkerGroup!: FormGroup
 
   async submit(): Promise<void> {
-
     if ( this.userInput.textControl.valid ) {
       const emailExist = await this.auth.checkUserEmail(
         this.userInput.textControl.value! )
@@ -67,7 +69,15 @@ export class Step1Page implements ViewDidEnter {
         this.userInput.textControl.setErrors( {
           duplicate: true
         } )
-        await this.presentAlert()
+        await this.alertService.presentAlert( {
+          header : 'Advertencia',
+          message: 'El correo que ingresaste ya existe',
+          buttons: [
+            {
+              text: 'Aceptar'
+            }
+          ]
+        } )
       }
     }
 
@@ -84,30 +94,21 @@ export class Step1Page implements ViewDidEnter {
     }
 
     //TODO: si esta el check de mantener sesion, guardar en localstorage
-    this.store.dispatch( notifyStep() )
     const email    = this.userInput.textControl.value!
     const password = this.passwordInput.textControl.value!
     const result   = await this.auth.userRegister( email, password )
+
     if ( result ) {
+      this.store.dispatch( notifyStep() )
       await this.router.navigate( [ '/register/step2' ] )
     }
     else {
-      await this.presentToast( 'Hubo un problema. Intente denuevo' )
+      await this.toastService.presentToast( {
+        message : 'Hubo un problema. Intente denuevo',
+        duration: 1500,
+        position: 'bottom'
+      } )
     }
-  }
-
-  async presentAlert() {
-    const alert = await this.alertController.create( {
-      header : 'Advertencia',
-      message: 'El correo que ingresaste ya existe',
-      buttons: [
-        {
-          text: 'Aceptar'
-        }
-      ]
-    } )
-
-    await alert.present()
   }
 
   ionViewDidEnter() {
@@ -128,18 +129,20 @@ export class Step1Page implements ViewDidEnter {
     ] )
   }
 
-  //TODO: posiblemente podria ser mejor un toast service
-  async presentToast( msg: string ) {
-    const toast = await this.toastController.create( {
-      message : msg,
-      duration: 1500,
-      position: 'bottom'
-    } )
-
-    await toast.present()
-  }
-
   async buttonClick(): Promise<void> {
     await this.submit()
+    this.reset()
+  }
+
+  async leadClick(): Promise<void> {
+    this.reset()
+    await this.appBar.backPage()
+  }
+
+  private reset(): void {
+    this.userInput.reset()
+    this.passwordInput.reset()
+    this.passwordConfirmInput.reset()
+    this.checkbox.reset()
   }
 }

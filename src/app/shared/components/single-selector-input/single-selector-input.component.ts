@@ -36,6 +36,7 @@ export class SingleSelectorInputComponent implements OnInit{
   lastSelected: SingleSelectorData | undefined
   @Input( { required: true } ) label: string
   @Input() required = false
+  initialLabel = ''
 
   readonly singleSelectorControl = new FormControl( '', control => {
     if ( this.required && control.value === '' ) {
@@ -45,6 +46,7 @@ export class SingleSelectorInputComponent implements OnInit{
   } )
 
   ngOnInit(): void {
+    this.initialLabel = this.label
     this.singleSelectorControl.updateValueAndValidity()
   }
 
@@ -68,5 +70,10 @@ export class SingleSelectorInputComponent implements OnInit{
       this.singleSelectorControl.patchValue( this.lastSelected.id )
       this.singleSelectorControl.updateValueAndValidity()
     }
+  }
+
+  reset(): void {
+    this.label = this.initialLabel
+    this.singleSelectorControl.reset()
   }
 }

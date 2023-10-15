@@ -10,11 +10,11 @@ import {
 import { Router } from '@angular/router'
 import {
   IonicModule,
-  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
+import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { RadioInputComponent } from 'src/app/shared/components/radio-input/radio-input.component'
@@ -22,6 +22,7 @@ import { SingleSelectorInputComponent } from 'src/app/shared/components/single-s
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 import { RadioButtonData } from 'src/package/shared/domain/components/radio-button-data'
@@ -41,13 +42,14 @@ import { SingleSelectorData } from 'src/package/shared/domain/components/single-
     RadioInputComponent,
     FilledButtonComponent,
     FormsModule,
-    CommonModule
+    CommonModule,
+    AppBarCloneComponent
   ]
 } )
 export class Step2Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
-    private toastController: ToastController,
+    private toastService: ToastService,
     private countryService: CountryPhoneCodeService,
     private auth: AuthService,
     private router: Router )
@@ -71,6 +73,7 @@ export class Step2Page implements ViewDidEnter {
   @ViewChild( 'country' ) countryInput !: SingleSelectorInputComponent
   @ViewChild( 'date' ) dateSelectorInput !: DateSelectorComponent
   @ViewChild( 'radio' ) radioButtonInput !: RadioInputComponent
+  @ViewChild( 'appBar' ) appBar !: AppBarCloneComponent
 
   countries: SingleSelectorData[] = []
 
@@ -102,9 +105,7 @@ export class Step2Page implements ViewDidEnter {
     ] )
   }
 
-  async submit( $event: SubmitEvent ) {
-    $event.preventDefault()
-
+  async submit( ) {
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
@@ -115,7 +116,6 @@ export class Step2Page implements ViewDidEnter {
       return
     }
 
-    this.store.dispatch( notifyStep() )
     const result = await this.auth.registerPassenger( {
       name    : this.userInput.textControl.value!,
       lastName: this.lastNameInput.textControl.value!,
@@ -126,20 +126,43 @@ export class Step2Page implements ViewDidEnter {
     } )
 
     if ( result ) {
+      this.store.dispatch( notifyStep() )
       await this.router.navigate( [ '/register/step3' ] )
     }
     else {
-      await this.presentToast('Hubo un problema. Intente denuevo')
+      await this.toastService.presentToast( {
+        message : 'Hubo un problema. Intente denuevo',
+        duration: 1500,
+        position: 'bottom'
+      } )
     }
   }
 
-  async presentToast(msg : string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 1500,
-      position: 'bottom',
-    });
+  async leadClick(): Promise<void> {
+    const isDelete = await this.auth.deleteAccount()
+    if ( isDelete ) {
+      await this.appBar.backPage()
+    }
+    else {
+      await this.toastService.presentToast( {
+        message : 'Hubo un problema. Intente denuevo',
+        duration: 1500,
+        position: 'bottom'
+      } )
+    }
+  }
 
-    await toast.present();
+  private reset(): void {
+    this.userInput.reset()
+    this.lastNameInput.reset()
+    this.phoneInput.reset()
+    this.dateSelectorInput.reset()
+    this.countryInput.reset()
+    this.radioButtonInput.reset()
+  }
+
+  async buttonClick(): Promise<void> {
+    await this.submit()
+    this.reset()
   }
 }

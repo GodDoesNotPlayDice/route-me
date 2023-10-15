@@ -49,4 +49,9 @@ export class CheckboxInputComponent implements OnInit {
   public ngOnInit(): void {
     this.checkboxControl.updateValueAndValidity()
   }
+
+  reset(): void {
+    this.isChecked = false
+    this.checkboxControl.reset()
+  }
 }

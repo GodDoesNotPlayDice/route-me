@@ -80,9 +80,6 @@ export class InputTextComponent {
                 requiredLength: error.message
               }
             }
-            else {
-              console.log( 'unknown password input error' )
-            }
           }
           return map
         }
@@ -135,5 +132,10 @@ export class InputTextComponent {
 
   public input( $event: Event ): void {
     this.textControl.updateValueAndValidity()
+  }
+
+  reset(): void {
+    this.value = ''
+    this.textControl.reset()
   }
 }
