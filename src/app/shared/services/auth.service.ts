@@ -4,6 +4,7 @@ import {
   Option,
   Some
 } from 'oxide.ts'
+import { deleteUser } from 'src/package/authentication/application/delete-user'
 import { getUserByEmail } from 'src/package/authentication/application/get-user-by-email'
 import { loginUser } from 'src/package/authentication/application/login-user'
 import { logoutUser } from 'src/package/authentication/application/logout-user'
@@ -11,6 +12,7 @@ import { registerUser } from 'src/package/authentication/application/register-us
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { createPassenger } from 'src/package/passenger/application/create-passenger'
+import { deletePassenger } from 'src/package/passenger/application/delete-passenger'
 import { updatePassenger } from 'src/package/passenger/application/update-passenger'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
@@ -143,11 +145,10 @@ export class AuthService {
     const resultUser = await logoutUser( this.authRepository, id )
 
     if ( resultUser.isErr() ) {
-      console.log( 'user authLogout error' )
+      console.log( 'user authLogout response error' )
       console.log( resultUser.unwrapErr() )
-      return false
     }
-
+    //TODO: quitar token
     this.currentUser      = None
     this.currentPassenger = None
 
@@ -155,11 +156,23 @@ export class AuthService {
   }
 
   async checkUserEmail( email: string ): Promise<boolean> {
-    const existResult = await getUserByEmail(this.authRepository, email)
-    if ( existResult.isErr() ){
+    const existResult = await getUserByEmail( this.authRepository, email )
+    if ( existResult.isErr() ) {
       return false
     }
     return true
   }
 
+  async deleteAccount(): Promise<boolean> {
+    if ( this.currentUser.isNone() ) {
+      return false
+    }
+    deleteUser( this.authRepository, this.currentUser.unwrap().email )
+
+    if ( this.currentPassenger.isSome() ) {
+      deletePassenger( this.passengerDao, this.currentUser.unwrap().id )
+    }
+
+    return true
+  }
 }

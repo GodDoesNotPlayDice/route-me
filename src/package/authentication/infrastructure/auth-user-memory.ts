@@ -58,7 +58,7 @@ export class AuthUserMemory implements AuthUserRepository {
    * Delete user
    * @throws {UnknownException} - if unknown error
    */
-  async delete( id: UserID ): Promise<Result<boolean, Error>> {
+  async delete( email : UserEmail ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException( 'delete memory' ) )
   }
 

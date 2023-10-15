@@ -7,6 +7,7 @@ import {
 import { passengerFromJson } from 'src/package/passenger/application/passenger-mapper'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { dateToJSON } from 'src/package/shared/config/helper/date/date-mapper'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { UserID } from 'src/package/user/domain/models/user-id'
 
@@ -122,7 +123,7 @@ export class PassengerDaoFirebase implements PassengerDao {
                   lastName   : passenger.lastName.value,
                   description: passenger.description.value,
                   phone      : passenger.phone.value,
-                  birthDay   : passenger.birthDay.value.toJSON(),
+                  birthDay   : dateToJSON(passenger.birthDay.value),
                   country    : passenger.country.value,
                   gender     : passenger.gender,
                   preferences: 'none'
@@ -153,6 +154,12 @@ export class PassengerDaoFirebase implements PassengerDao {
     }
     let completed: string | null = null
 
+    const preferences = passenger.preferences.map( ( preference ) => {
+      return {
+        id: preference.value
+      }
+    } )
+
     await this.firebase.database.ref( this.collectionKey )
               .child( keySaved.unwrap() )
               .set( {
@@ -162,14 +169,10 @@ export class PassengerDaoFirebase implements PassengerDao {
                   lastName   : passenger.lastName.value,
                   description: passenger.description.value,
                   phone      : passenger.phone.value,
-                  birthDay   : passenger.birthDay.value,
+                  birthDay   : dateToJSON(passenger.birthDay.value),
                   country    : passenger.country.value,
                   gender     : passenger.gender,
-                  preferences: passenger.preferences.map( ( preference ) => {
-                    return {
-                      id: preference.value
-                    }
-                  } )
+                  preferences: preferences.length === 0 ? 'none' : preferences
                 },
                 ( error ) => {
                   if ( !error ) {

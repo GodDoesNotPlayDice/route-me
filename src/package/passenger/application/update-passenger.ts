@@ -40,6 +40,7 @@ export const updatePassenger = async ( repository: PassengerDao,
     country?: string,
     gender?: string
   } ): Promise<Result<Passenger, Error[]>> => {
+
   const err: Error[] = []
 
   let preferences: PreferenceID[] = []

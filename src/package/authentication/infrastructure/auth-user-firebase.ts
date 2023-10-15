@@ -32,11 +32,32 @@ export class AuthUserFirebase implements AuthUserRepository {
 
   /**
    * Delete user
-   * @throws {UnknownException} - if unknown error
+   * @throws {FirebaseOperationException} - if operation failed
    */
-  async delete( id: UserID ): Promise<Result<boolean, Error>> {
-    return Err( new UnknownException( 'delete firebase' ) )
+  async delete( email : UserEmail ): Promise<Result<boolean, Error>> {
+    const keySaved = await this.getKey( email)
 
+    if ( keySaved.isErr() ) {
+      return Err( keySaved.unwrapErr() )
+    }
+
+    let completed: string | null = null
+
+    await this.firebase.database.ref( this.collectionKey )
+              .child( keySaved.unwrap() )
+              .remove(
+                ( error ) => {
+                  if ( !error ) {
+                    completed = 'completed'
+                  }
+                }
+              )
+
+    if ( completed === null ) {
+      return Err( new FirebaseOperationException('delete') )
+    }
+
+    return Ok( true )
   }
 
   /**
@@ -145,5 +166,26 @@ export class AuthUserFirebase implements AuthUserRepository {
                      .catch( ( error ) => {
                        return Err( [new FirebaseOperationException()] )
                      } )
+  }
+
+  private async getKey( email: UserEmail ): Promise<Result<string, Error>> {
+    return await this.firebase.database.ref( this.collectionKey )
+                     .orderByChild( 'email' )
+                     .equalTo( email.value )
+                     .get()
+                     .then(
+                       async ( snapshot ) => {
+
+                         let key: string | null = null
+
+                         snapshot.forEach( ( childSnapshot ) => {
+                           key = childSnapshot.key
+                         } )
+
+                         if ( key === null ) {
+                           return Err( new FirebaseOperationException('key') )
+                         }
+                         return Ok( key )
+                       } )
   }
 }
