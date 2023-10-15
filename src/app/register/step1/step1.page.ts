@@ -9,6 +9,7 @@ import {
 } from '@angular/forms'
 import { Router } from '@angular/router'
 import {
+  AlertController,
   IonicModule,
   ToastController,
   ViewDidEnter
@@ -42,6 +43,7 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 export class Step1Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
+    private alertController: AlertController,
     private toastController: ToastController,
     private router: Router,
     private auth: AuthService )
@@ -55,8 +57,20 @@ export class Step1Page implements ViewDidEnter {
   formGroup!: FormGroup
   checkerGroup!: FormGroup
 
-  async submit( $event: SubmitEvent ): Promise<void> {
-    $event.preventDefault()
+  async submit(): Promise<void> {
+
+    if ( this.userInput.textControl.valid ) {
+      const emailExist = await this.auth.checkUserEmail(
+        this.userInput.textControl.value! )
+
+      if ( emailExist ) {
+        this.userInput.textControl.setErrors( {
+          duplicate: true
+        } )
+        await this.presentAlert()
+      }
+    }
+
     this.checkerGroup.updateValueAndValidity()
     this.checkerGroup.markAllAsTouched()
     this.formGroup.updateValueAndValidity()
@@ -80,6 +94,20 @@ export class Step1Page implements ViewDidEnter {
     else {
       await this.presentToast( 'Hubo un problema. Intente denuevo' )
     }
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create( {
+      header : 'Advertencia',
+      message: 'El correo que ingresaste ya existe',
+      buttons: [
+        {
+          text: 'Aceptar'
+        }
+      ]
+    } )
+
+    await alert.present()
   }
 
   ionViewDidEnter() {
@@ -109,5 +137,9 @@ export class Step1Page implements ViewDidEnter {
     } )
 
     await toast.present()
+  }
+
+  async buttonClick(): Promise<void> {
+    await this.submit()
   }
 }

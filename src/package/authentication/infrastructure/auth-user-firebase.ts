@@ -7,7 +7,9 @@ import {
 import { PasswordNotMatchException } from 'src/package/authentication/domain/exceptions/password-not-match-exception'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { userFromJson } from 'src/package/user/application/user-mapper'
+import { UserEmailNotFoundException } from 'src/package/user/domain/exceptions/user-email-not-found-exception'
 import { UserNotFoundException } from 'src/package/user/domain/exceptions/user-not-found-exception'
 import { User } from 'src/package/user/domain/models/user'
 import { UserEmail } from 'src/package/user/domain/models/user-email'
@@ -17,6 +19,8 @@ import { UserPassword } from 'src/package/user/domain/models/user-password'
 export class AuthUserFirebase implements AuthUserRepository {
   constructor( private firebase: AngularFireDatabase ) {
   }
+
+  collectionKey = 'users'
 
   /**
    * Logout user
@@ -51,7 +55,7 @@ export class AuthUserFirebase implements AuthUserRepository {
   async login( email: UserEmail,
     password: UserPassword ): Promise<Result<User, Error[]>> {
     const errors: Error[] = []
-    return await this.firebase.database.ref( 'users' )
+    return await this.firebase.database.ref( this.collectionKey )
                      .orderByChild( 'email' )
                      .equalTo( email.value )
                      .get()
@@ -91,7 +95,7 @@ export class AuthUserFirebase implements AuthUserRepository {
   async register( user: User,
     password: UserPassword ): Promise<Result<string, Error>> {
     try {
-      const path = await this.firebase.database.ref( 'users' )
+      const path = await this.firebase.database.ref( this.collectionKey )
                              .push(
                                {
                                  id      : user.id.value,
@@ -104,5 +108,42 @@ export class AuthUserFirebase implements AuthUserRepository {
     catch ( e ) {
       return Err( new UnknownException( 'register firebase' ) )
     }
+  }
+
+  /**
+   * Get user by email
+   * @throws {UserEmailNotFoundException} - if user email not found
+   * @throws {FirebaseOperationException} - if operation failed
+   * @throws {EmailInvalidException} - if email is invalid
+   * @throws {UserIdInvalidException} - if id is invalid
+   */
+  async getByEmail( email: UserEmail ): Promise<Result<boolean, Error[]>> {
+    // return Err( new UserEmailNotFoundException( 'firebase' ) )
+    return await this.firebase.database.ref( this.collectionKey )
+                     .orderByChild( 'email' )
+                     .equalTo( email.value )
+                     .get()
+                     .then( async ( snapshot ) => {
+                       if ( snapshot.val() === null ) {
+                         return Err( [new UserEmailNotFoundException()] )
+                       }
+
+                       const snapshotValue = Object.values(
+                         snapshot.val() )[0] as Record<string, any>
+
+                       const user = userFromJson( snapshotValue )
+
+                       if ( user.isErr() ) {
+                         return Err( user.unwrapErr() )
+                       }
+
+                       if ( email.value === user.unwrap().email.value ) {
+                         return Ok( true )
+                       }
+                       return Err( [new UserEmailNotFoundException()] )
+                     } )
+                     .catch( ( error ) => {
+                       return Err( [new FirebaseOperationException()] )
+                     } )
   }
 }

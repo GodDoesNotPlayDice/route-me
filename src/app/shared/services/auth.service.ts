@@ -4,6 +4,7 @@ import {
   Option,
   Some
 } from 'oxide.ts'
+import { getUserByEmail } from 'src/package/authentication/application/get-user-by-email'
 import { loginUser } from 'src/package/authentication/application/login-user'
 import { logoutUser } from 'src/package/authentication/application/logout-user'
 import { registerUser } from 'src/package/authentication/application/register-user'
@@ -28,7 +29,7 @@ export class AuthService {
   { }
 
   currentUser: Option<User>           = None
-  currentDriver: Option<Driver>           = None
+  currentDriver: Option<Driver>       = None
   currentPassenger: Option<Passenger> = None
 
   async userLogin( email: string,
@@ -92,7 +93,7 @@ export class AuthService {
     country?: string,
     gender?: string
   } ): Promise<boolean> {
-    if ( this.currentPassenger.isNone() ){
+    if ( this.currentPassenger.isNone() ) {
       return false
     }
     const result = await updatePassenger( this.passengerDao,
@@ -150,6 +151,14 @@ export class AuthService {
     this.currentUser      = None
     this.currentPassenger = None
 
+    return true
+  }
+
+  async checkUserEmail( email: string ): Promise<boolean> {
+    const existResult = await getUserByEmail(this.authRepository, email)
+    if ( existResult.isErr() ){
+      return false
+    }
     return true
   }
 

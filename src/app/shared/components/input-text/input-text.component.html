@@ -32,6 +32,9 @@
       <div *ngIf="textControl.errors?.['email']">
         El email no es correcto
       </div>
+      <div *ngIf="textControl.errors?.['duplicate']">
+        El {{ placeholder | lowercase }} ya existe
+      </div>
       <div *ngIf="textControl.errors?.['uppercase']">
         Debe contener almenos una letra mayuscula
       </div>

@@ -69,4 +69,12 @@ export class AuthUserMemory implements AuthUserRepository {
   async update( user: User ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException( 'update memory' ) )
   }
+
+  /**
+   * Get user by email
+   * @throws {UnknownException} - if unknown error
+   */
+  async getByEmail( email: UserEmail ): Promise<Result<boolean, Error[]>> {
+    return Err( [new UnknownException( 'get by email memory' )] )
+  }
 }

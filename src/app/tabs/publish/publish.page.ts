@@ -81,7 +81,7 @@ export class PublishPage implements ViewDidEnter {
       end.center )
   }
 
-  //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
+  //TODO: agregar alert service
   async presentAlert() {
     const alert = await this.alertController.create( {
       header: 'Confirma que deseas publicar el viaje',

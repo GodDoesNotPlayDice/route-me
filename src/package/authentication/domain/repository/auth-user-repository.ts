@@ -14,6 +14,7 @@ export abstract class AuthUserRepository {
   ): Promise<Result<string, Error>>
 
   abstract logout( id: UserID ): Promise<Result<boolean, Error>>
+  abstract getByEmail( email: UserEmail ): Promise<Result<boolean, Error[]>>
 
   abstract delete( id: UserID ): Promise<Result<boolean, Error>>
 

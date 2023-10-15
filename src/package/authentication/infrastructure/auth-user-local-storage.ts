@@ -65,4 +65,12 @@ export class AuthUserLocalStorage implements AuthUserRepository {
   async update( user: User ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException( 'update local storage' ) )
   }
+
+  /**
+   * Get user by email
+   * @throws {UnknownException} - if unknown error
+   */
+  async getByEmail( email: UserEmail ): Promise<Result<boolean, Error[]>> {
+    return Err( [new UnknownException( 'get by email memory' )] )
+  }
 }
