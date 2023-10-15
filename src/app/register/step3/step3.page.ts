@@ -49,8 +49,7 @@ export class Step3Page implements ViewDidEnter {
     private userPreferenceService: UserPreferenceService,
     private auth: AuthService )
   {
-    //TODO: colocar con observable despues, como en country service
-    this.preferences = this.userPreferenceService.getUserPreferences()
+    this.preferences = this.userPreferenceService.getPreferences()
                            .map(
                              ( preference ): MultipleSelectorData => ( {
                                id      : preference.id.value,

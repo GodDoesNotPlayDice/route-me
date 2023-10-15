@@ -1,4 +1,12 @@
-import { Injectable } from '@angular/core'
+import {
+  Injectable,
+  OnInit
+} from '@angular/core'
+import { ViewDidEnter } from '@ionic/angular'
+import {
+  BehaviorSubject,
+  Observable
+} from 'rxjs'
 import {
   Preference
 } from 'src/package/preference/domain/models/preference'
@@ -8,9 +16,9 @@ import {
 } )
 export class UserPreferenceService {
 
-  private userPreferences: Preference[] = defaultPreference()
+  readonly userPreferences: Preference[] = defaultPreference()
 
-  getUserPreferences(): Preference[] {
+  getPreferences(): Preference[] {
     return this.userPreferences
   }
 }
