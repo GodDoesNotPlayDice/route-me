@@ -67,7 +67,7 @@ export class Step1Page implements ViewDidEnter {
       return
     }
 
-    //TODO: enviar datos al servidor
+    //TODO: si esta el check de mantener sesion, guardar en localstorage
     this.store.dispatch( notifyStep() )
     const email    = this.userInput.textControl.value!
     const password = this.passwordInput.textControl.value!

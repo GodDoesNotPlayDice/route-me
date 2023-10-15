@@ -72,8 +72,7 @@ export class Step2Page implements ViewDidEnter {
 
   countries: SingleSelectorData[] = []
 
-  //TODO: esto podria venir de un servicio
-  buttons: RadioButtonData[] = [
+  genderButtonsInfo: RadioButtonData[] = [
     {
       name: 'Male',
       icon: 'male-outline'
@@ -81,6 +80,10 @@ export class Step2Page implements ViewDidEnter {
     {
       name: 'Female',
       icon: 'female-outline'
+    },
+    {
+      name: 'None',
+      icon: 'male-female-outline'
     }
   ]
 

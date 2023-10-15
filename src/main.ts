@@ -35,6 +35,8 @@ import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/infrastructure/auth-user-firebase'
+import { CountryDao } from 'src/package/country-api/domain/dao/country-dao'
+import { CountryDaoRestCountries } from 'src/package/country-api/infrastructure/rest-countries/country-dao-rest-countries'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
@@ -124,6 +126,13 @@ bootstrapApplication( AppComponent, {
       provide   : TripDao,
       useFactory: ( http: HttpClient ) => {
         return new TripDaoApi( http )
+      },
+      deps      : [ HttpClient ]
+    },
+    {
+      provide   : CountryDao,
+      useFactory: ( http: HttpClient ) => {
+        return new CountryDaoRestCountries( http )
       },
       deps      : [ HttpClient ]
     },
