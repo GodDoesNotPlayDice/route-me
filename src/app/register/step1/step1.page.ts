@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router'
 import {
   IonicModule,
+  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
@@ -41,6 +42,7 @@ import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
 export class Step1Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
+    private toastController: ToastController,
     private router: Router,
     private auth: AuthService )
   {}
@@ -71,8 +73,13 @@ export class Step1Page implements ViewDidEnter {
     this.store.dispatch( notifyStep() )
     const email    = this.userInput.textControl.value!
     const password = this.passwordInput.textControl.value!
-    await this.auth.userRegister( email, password )
-    await this.router.navigate( [ '/register/step2' ] )
+    const result   = await this.auth.userRegister( email, password )
+    if ( result ) {
+      await this.router.navigate( [ '/register/step2' ] )
+    }
+    else {
+      await this.presentToast( 'Hubo un problema. Intente denuevo' )
+    }
   }
 
   ionViewDidEnter() {
@@ -91,5 +98,16 @@ export class Step1Page implements ViewDidEnter {
       this.checkerGroup,
       this.checkbox.checkboxControl
     ] )
+  }
+
+  //TODO: posiblemente podria ser mejor un toast service
+  async presentToast( msg: string ) {
+    const toast = await this.toastController.create( {
+      message : msg,
+      duration: 1500,
+      position: 'bottom'
+    } )
+
+    await toast.present()
   }
 }

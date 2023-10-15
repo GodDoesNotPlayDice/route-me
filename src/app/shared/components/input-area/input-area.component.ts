@@ -27,8 +27,8 @@ export class InputAreaComponent {
   @Input() label: string       = ''
 
   readonly textControl = new FormControl( '', control => {
-    control.addValidators( Validators.required )
-    control.addValidators( Validators.minLength( 5 ) )
+    // control.addValidators( Validators.required )
+    // control.addValidators( Validators.minLength( 5 ) )
     return null
   } )
 

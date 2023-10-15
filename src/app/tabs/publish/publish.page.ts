@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms'
 import {
   AlertController,
   IonicModule,
+  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
@@ -34,9 +35,20 @@ import { TripService } from 'src/app/shared/services/trip.service'
 export class PublishPage implements ViewDidEnter {
 
   constructor( private map: MapService,
+    private toastController: ToastController,
     private tripService: TripService,
     private alertController: AlertController )
   {}
+
+  async presentToast(msg : string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 1500,
+      position: 'bottom',
+    });
+
+    await toast.present();
+  }
 
   @ViewChild( 'pmap' ) divElementElementRef!: ElementRef<HTMLDivElement>
   @ViewChild( 'date' ) dateInput!: DateTimeSelectorComponent
@@ -87,17 +99,13 @@ export class PublishPage implements ViewDidEnter {
               startLocation: this.inicioInput.mapLocationControl.value!,
               startDate    : this.dateInput.dateControl.value!
             } )
-
-            //TODO: no se puede agregar elementos a alert, por lo que usar loading y toast con mensaje
             if ( result ) {
-              console.log( 'ok publish' )
+              await this.presentToast('Viaje creado con exito')
+              await this.reset()
             }
             else {
-              console.log( 'error publish' )
+              await this.presentToast('Hubo un problema en la creacion del viaje')
             }
-
-            //TODO: mandar post, dependiendo respuesta, resetear o mensaje error
-            await this.reset()
           }
         }
       ]

@@ -2,7 +2,7 @@
   <div class="flex justify-between">
     <div *ngFor="let radio of radioButtons">
       <div class="mb-[0.125rem] min-h-[1.5rem] pl-[1.5rem] flex justify-between items-center flex-col gap-3">
-        <ion-icon class="w-16 h-16"
+        <ion-icon class="w-12 h-12"
           [name]="radio.icon"></ion-icon>
         <div class="flex items-center">
           <input
@@ -12,12 +12,12 @@
             [value]="radio.name"
             (change)="onRadioChange($event)"
           />
-          <div class="mx-2 font-gotham text-xl">{{radio.name}}</div>
+          <div class="mx-2 font-gotham text-base">{{radio.name}}</div>
         </div>
       </div>
     </div>
   </div>
-  <div class="mt-2 text-xs text-threateningRed-500 h-8 font-gotham">
+  <div class="mt-2 text-xs text-threateningRed-500 font-gotham">
     <div *ngIf="radioControl.invalid && (radioControl.dirty || radioControl.touched)">
       <div *ngIf="radioControl.errors?.['required']">
         {{ name | titlecase }} es requerido

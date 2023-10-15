@@ -24,6 +24,7 @@
       <app-single-selector-input
         label="Ingresar Pais"
         [databaseData]="countries"
+        [required]="true"
         errorText="Debes ingresar un pais de procedencia"
         #country></app-single-selector-input>
       <app-date-selector
@@ -38,7 +39,9 @@
       <app-radio-input #radio
         name="genero"
         [radioButtons]="genderButtonsInfo"></app-radio-input>
-      <app-filled-button contentText="Registrarse"></app-filled-button>
+      <app-filled-button
+        class="my-5"
+        contentText="Registrarse"></app-filled-button>
     </form>
   </div>
 </ion-content>

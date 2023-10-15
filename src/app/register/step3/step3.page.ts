@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router'
 import {
   IonicModule,
+  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
@@ -46,6 +47,7 @@ import {
 export class Step3Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>, private router: Router,
+    private toastController: ToastController,
     private userPreferenceService: UserPreferenceService,
     private auth: AuthService )
   {
@@ -74,8 +76,17 @@ export class Step3Page implements ViewDidEnter {
     ] )
   }
 
-  async submit( $event: SubmitEvent ) {
-    $event.preventDefault()
+  async presentToast(msg : string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 1500,
+      position: 'bottom',
+    });
+
+    await toast.present();
+  }
+
+  async submit() {
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
@@ -89,7 +100,7 @@ export class Step3Page implements ViewDidEnter {
     } )
 
     if ( !updated ) {
-      console.log( 'error updating passenger step3' )
+      await this.presentToast('Hubo un problema. Intente denuevo')
       return
     }
 
@@ -97,5 +108,9 @@ export class Step3Page implements ViewDidEnter {
     this.store.dispatch( clearStep() )
 
     await this.router.navigate( [ '/tabs/home' ] )
+  }
+
+  async buttonClick(): Promise<void> {
+    await this.submit()
   }
 }

@@ -7,7 +7,7 @@ import { PassengerDescriptionInvalidException } from 'src/package/passenger/doma
 import { z } from 'zod'
 
 export const PassengerDescriptionSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string()
 } )
 
 type PassengerDescriptionType = z.infer<typeof PassengerDescriptionSchema>

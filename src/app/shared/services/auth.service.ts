@@ -86,15 +86,18 @@ export class AuthService {
     name?: string,
     lastName?: string,
     description?: string,
-    // preferences?: PreferenceID[],
     preferences?: string[],
     phone?: string,
     birthDay?: Date,
     country?: string,
     gender?: string
   } ): Promise<boolean> {
+    if ( this.currentPassenger.isNone() ){
+      return false
+    }
     const result = await updatePassenger( this.passengerDao,
       this.currentPassenger.unwrap(), partialProps )
+
     if ( result.isErr() ) {
       console.log( 'update passenger error' )
       console.log( result.unwrapErr() )

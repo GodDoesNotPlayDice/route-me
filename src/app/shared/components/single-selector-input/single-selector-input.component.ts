@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  Input
+  Input,
+  OnInit
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { MatInputModule } from '@angular/material/input'
@@ -26,7 +27,7 @@ import { SingleSelectorData } from 'src/package/shared/domain/components/single-
     SingleSelectorModalComponent
   ]
 } )
-export class SingleSelectorInputComponent {
+export class SingleSelectorInputComponent implements OnInit{
 
   constructor( private modalCtrl: ModalController ) {}
 
@@ -42,6 +43,10 @@ export class SingleSelectorInputComponent {
     }
     return null
   } )
+
+  ngOnInit(): void {
+    this.singleSelectorControl.updateValueAndValidity()
+  }
 
   async openModal() {
     const modal = await this.modalCtrl.create( {

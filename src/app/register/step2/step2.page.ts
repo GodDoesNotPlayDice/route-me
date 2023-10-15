@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router'
 import {
   IonicModule,
+  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
@@ -46,13 +47,14 @@ import { SingleSelectorData } from 'src/package/shared/domain/components/single-
 export class Step2Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>,
+    private toastController: ToastController,
     private countryService: CountryPhoneCodeService,
     private auth: AuthService,
     private router: Router )
   {
     this.countryService.countriesList$.subscribe(
       ( countries ) => {
-        this.countries = countries.map( (country): SingleSelectorData =>
+        this.countries = countries.map( ( country ): SingleSelectorData =>
           ( {
             id      : country.code.value,
             name    : country.name.common,
@@ -114,7 +116,7 @@ export class Step2Page implements ViewDidEnter {
     }
 
     this.store.dispatch( notifyStep() )
-    await this.auth.registerPassenger( {
+    const result = await this.auth.registerPassenger( {
       name    : this.userInput.textControl.value!,
       lastName: this.lastNameInput.textControl.value!,
       phone   : this.phoneInput.textControl.value!,
@@ -122,6 +124,22 @@ export class Step2Page implements ViewDidEnter {
       birthDay: this.dateSelectorInput.dateControl.value!,
       gender  : this.radioButtonInput.radioControl.value!
     } )
-    await this.router.navigate( [ '/register/step3' ] )
+
+    if ( result ) {
+      await this.router.navigate( [ '/register/step3' ] )
+    }
+    else {
+      await this.presentToast('Hubo un problema. Intente denuevo')
+    }
+  }
+
+  async presentToast(msg : string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 1500,
+      position: 'bottom',
+    });
+
+    await toast.present();
   }
 }
