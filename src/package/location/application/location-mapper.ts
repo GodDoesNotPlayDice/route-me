@@ -3,7 +3,10 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { Location } from 'src/package/location/domain/models/location'
+import {
+  Location,
+  newLocation
+} from 'src/package/location/domain/models/location'
 import { newLocationCountryCode } from 'src/package/location/domain/models/location-country-code'
 import { newLocationID } from 'src/package/location/domain/models/location-id'
 import { newLocationName } from 'src/package/location/domain/models/location-name'
@@ -20,49 +23,21 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 export const locationFromJson = ( json: Record<string, any> ): Result<Location, Error[]> => {
   const err: Error[] = []
 
-  const id = newLocationID( {
-    value: json['id'] ?? ''
-  } )
+  const result = newLocation({
+    id: json['id'] ?? '',
+    name: json['name'] ?? '',
+    countryCode: json['countryCode'] ?? '',
+    position: {
+      lat: json['position'] === undefined ? '' : json['position']['latitude'] ?? '',
+      lng: json['position'] === undefined ? '' : json['position']['longitude'] ?? ''
+    }
+  })
 
-  if ( id.isErr() ) {
-    err.push( id.unwrapErr() )
+  if ( result.isErr() ){
+    return Err(result.unwrapErr())
   }
 
-  const name = newLocationName( {
-    value: json['name'] ?? ''
-  } )
-
-  if ( name.isErr() ) {
-    err.push( name.unwrapErr() )
-  }
-
-  const countryCode = newLocationCountryCode( {
-    value: json['countryCode'] ?? ''
-  } )
-
-  if ( countryCode.isErr() ) {
-    err.push( countryCode.unwrapErr() )
-  }
-
-  const position = newPosition( {
-    lat  : json['position'] === undefined ? '' : json['position']['latitude'] ?? '',
-    lng  : json['position'] === undefined ? '' : json['position']['longitude'] ?? '',
-  } )
-
-  if ( position.isErr() ) {
-    err.push( position.unwrapErr() )
-  }
-
-  if ( err.length > 0 ) {
-    return Err( err )
-  }
-
-  return Ok( {
-    id         : id.unwrap(),
-    name       : name.unwrap(),
-    countryCode: countryCode.unwrap(),
-    position   : position.unwrap()
-  } )
+  return Ok(result.unwrap())
 }
 
 /**

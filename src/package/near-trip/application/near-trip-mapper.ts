@@ -4,12 +4,8 @@ import {
   Result
 } from 'oxide.ts'
 import { newCategoryName } from 'src/package/category/domain/models/category-name'
-import { Location } from 'src/package/location/domain/models/location'
-import { newLocationCountryCode } from 'src/package/location/domain/models/location-country-code'
-import { newLocationID } from 'src/package/location/domain/models/location-id'
-import { newLocationName } from 'src/package/location/domain/models/location-name'
+import { newLocation } from 'src/package/location/domain/models/location'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
-import { newPosition } from 'src/package/position-api/domain/models/position'
 import {
   dateFromJSON,
   dateToJSON
@@ -99,13 +95,29 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
     err.push( endDate.unwrapErr() )
   }
 
-  const startLocation = createLocation( json['startLocation']  ?? '' )
+  const startLocation = newLocation( {
+    id         : json['startLocation']?.id ?? '',
+    name       : json['startLocation']?.name ?? '',
+    countryCode: json['startLocation']?.countryCode ?? '',
+    position   : {
+      lat: json['startLocation']?.position?.latitude ?? '',
+      lng: json['startLocation']?.position?.longitude ?? ''
+    }
+  } )
 
   if ( startLocation.isErr() ) {
     err.push( ...startLocation.unwrapErr() )
   }
 
-  const endLocation = createLocation( json['endLocation'] ?? '')
+  const endLocation = newLocation( {
+    id         : json['endLocation']?.id ?? '',
+    name       : json['endLocation']?.name ?? '',
+    countryCode: json['endLocation']?.countryCode ?? '',
+    position   : {
+      lat: json['endLocation']?.position?.latitude ?? '',
+      lng: json['endLocation']?.position?.longitude ?? ''
+    }
+  } )
 
   if ( endLocation.isErr() ) {
     err.push( ...endLocation.unwrapErr() )
@@ -126,49 +138,3 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
   )
 }
 
-const createLocation = ( json: Record<string, any> ): Result<Location, Error[]> =>{
-  const err: Error[] = []
-  const locationID = newLocationID({
-    value: json['id'] ?? ''
-  })
-
-  if ( locationID.isErr() ) {
-    err.push( locationID.unwrapErr() )
-  }
-
-  const locationName = newLocationName({
-    value: json['name'] ?? ''
-  })
-
-  if ( locationName.isErr() ) {
-    err.push( locationName.unwrapErr() )
-  }
-
-  const locationCountryCode = newLocationCountryCode({
-    value: json['countryCode'] ?? ''
-  })
-
-  if ( locationCountryCode.isErr() ) {
-    err.push( locationCountryCode.unwrapErr() )
-  }
-
-  const position = newPosition({
-    lat  : json['position'] === undefined ? '' : json['position']['latitude'] ?? '',
-    lng  : json['position'] === undefined ? '' : json['position']['longitude'] ?? '',
-  })
-
-  if ( position.isErr() ) {
-    err.push( position.unwrapErr() )
-  }
-
-  if ( err.length > 0 ) {
-    return Err( err )
-  }
-
-  return Ok({
-    id: locationID.unwrap(),
-    name: locationName.unwrap(),
-    countryCode: locationCountryCode.unwrap(),
-    position: position.unwrap()
-  })
-}
