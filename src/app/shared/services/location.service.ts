@@ -1,36 +1,31 @@
 import { Injectable } from '@angular/core'
 import {
-  BehaviorSubject,
-  Observable
-} from 'rxjs'
+  None,
+  Option,
+  Some
+} from 'oxide.ts'
+import { createLocation } from 'src/package/location/application/create-location'
+import { LocationDao } from 'src/package/location/domain/dao/location-dao'
+import { LocationID } from 'src/package/location/domain/models/location-id'
 import { Position } from 'src/package/position-api/domain/models/position'
-import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
 
 @Injectable( {
   providedIn: 'root'
 } )
 export class LocationService {
-  constructor(
-    private locationRepository: PositionRepository
-  )
-  {
-    this.locationRepository.requestPermissions()
-    this.locationRepository.startWatch( ( position, err ) => {
-      console.log( 'location service', position )
-      if ( err !== undefined ) {
-        return
-      }
-      if ( !position ) {
-        return
-      }
-      this.lastPosition = position
-      this.newPosition.next( this.lastPosition )
-    } )
+
+  constructor( private locationDao: LocationDao ) { }
+
+  async createLocation( props: {
+    name: string,
+    countryCode: string,
+    position: Position
+  } ): Promise<Option<LocationID>> {
+    const result = await createLocation( this.locationDao, props )
+
+    if ( result.isErr() ){
+      return None
+    }
+    return Some( result.unwrap().id )
   }
-
-  lastPosition: Position | null
-
-  private newPosition                              = new BehaviorSubject<Position | null>(
-    null )
-  public newPosition$: Observable<Position | null> = this.newPosition.asObservable()
 }

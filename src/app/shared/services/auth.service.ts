@@ -8,11 +8,11 @@ import { loginUser } from 'src/package/authentication/application/login-user'
 import { logoutUser } from 'src/package/authentication/application/logout-user'
 import { registerUser } from 'src/package/authentication/application/register-user'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
+import { Driver } from 'src/package/driver/domain/models/driver'
 import { createPassenger } from 'src/package/passenger/application/create-passenger'
 import { updatePassenger } from 'src/package/passenger/application/update-passenger'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
 
@@ -28,6 +28,7 @@ export class AuthService {
   { }
 
   currentUser: Option<User>           = None
+  currentDriver: Option<Driver>           = None
   currentPassenger: Option<Passenger> = None
 
   async userLogin( email: string,

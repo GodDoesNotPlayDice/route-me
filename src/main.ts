@@ -35,10 +35,14 @@ import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/infrastructure/auth-user-firebase'
+import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
+import { ChatDaoApi } from 'src/package/chat/infrastructure/chat-dao-api'
 import { CountryDao } from 'src/package/country-api/domain/dao/country-dao'
 import { CountryDaoRestCountries } from 'src/package/country-api/infrastructure/rest-countries/country-dao-rest-countries'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
+import { LocationDao } from 'src/package/location/domain/dao/location-dao'
+import { LocationDaoApi } from 'src/package/location/infrastructure/location-dao-api'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
@@ -133,6 +137,20 @@ bootstrapApplication( AppComponent, {
       provide   : CountryDao,
       useFactory: ( http: HttpClient ) => {
         return new CountryDaoRestCountries( http )
+      },
+      deps      : [ HttpClient ]
+    },
+    {
+      provide   : LocationDao,
+      useFactory: ( http: HttpClient ) => {
+        return new LocationDaoApi( http )
+      },
+      deps      : [ HttpClient ]
+    },
+    {
+      provide   : ChatDao,
+      useFactory: ( http: HttpClient ) => {
+        return new ChatDaoApi( http )
       },
       deps      : [ HttpClient ]
     },

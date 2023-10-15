@@ -9,7 +9,7 @@ import {
   Subscription
 } from 'rxjs'
 import { DirectionService } from 'src/app/shared/services/direction.service'
-import { LocationService } from 'src/app/shared/services/location.service'
+import { PositionService } from 'src/app/shared/services/position.service'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { Position } from 'src/package/position-api/domain/models/position'
 
@@ -17,7 +17,7 @@ import { Position } from 'src/package/position-api/domain/models/position'
   providedIn: 'root'
 } )
 export class MapService implements OnDestroy {
-  constructor( private location: LocationService,
+  constructor( private location: PositionService,
     private mapRepository: MapRepository<mapboxgl.Map, mapboxgl.Marker>,
     private directionService: DirectionService )
   {

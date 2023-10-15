@@ -83,10 +83,8 @@ export class PublishPage implements ViewDidEnter {
           text   : 'Publicar',
           handler: async () => {
             const result = await this.tripService.create( {
-              startName    : this.salidaInput.mapLocationControl.value!.place.value,
-              endName      : this.salidaInput.mapLocationControl.value!.place.value,
-              endPosition  : this.salidaInput.mapLocationControl.value!.center,
-              startPosition: this.inicioInput.mapLocationControl.value!.center,
+              endLocation  : this.salidaInput.mapLocationControl.value!,
+              startLocation: this.inicioInput.mapLocationControl.value!,
               startDate    : this.dateInput.dateControl.value!
             } )
 

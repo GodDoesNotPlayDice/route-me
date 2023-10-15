@@ -9,11 +9,9 @@ import { FilterButtonComponent } from 'src/app/shared/components/filter-button/f
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 import { DriversService } from 'src/app/shared/services/drivers.service'
 import { TripService } from 'src/app/shared/services/trip.service'
-import { CountryDao } from 'src/package/country-api/domain/dao/country-dao'
-import { nearTripFromJson } from 'src/package/near-trip/application/near-trip-mapper'
+import { LocationDao } from 'src/package/location/domain/dao/location-dao'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
-import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
@@ -32,6 +30,7 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 export class HomePage implements OnInit {
 
   constructor( private driversService: DriversService,
+    private loc : LocationDao,
     private tripService: TripService )
   {
     this.info = this.driversService.getDrivers()

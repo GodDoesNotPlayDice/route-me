@@ -10,7 +10,7 @@ import {
 } from '@ionic/angular'
 import { debounceTime } from 'rxjs'
 import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
-import { LocationService } from 'src/app/shared/services/location.service'
+import { PositionService } from 'src/app/shared/services/position.service'
 import { StreetService } from 'src/app/shared/services/street.service'
 import { Street } from 'src/package/street-api/domain/models/street'
 import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
@@ -30,7 +30,7 @@ export class SearchModalComponent implements OnInit {
 
   constructor( private modalCtrl: ModalController,
     private streetService: StreetService,
-    private locationService: LocationService )
+    private locationService: PositionService )
   {}
 
   @ViewChild( 'search', { static: true } ) inputSearch!: SearchInputComponent
