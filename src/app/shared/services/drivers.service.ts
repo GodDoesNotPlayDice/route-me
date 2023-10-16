@@ -24,7 +24,7 @@ const driveInfoList: DriverCardInfo[] = [
     ],
     startLocationName   : 'viña',
     endLocationName     : 'santiago',
-    date            : new Date(),
+    date            : new Date().toLocaleString(),
     cost            : 50,
     state           : 'Open'
   },
@@ -39,7 +39,7 @@ const driveInfoList: DriverCardInfo[] = [
     ],
     startLocationName   : 'viña',
     endLocationName     : 'santiago',
-    date            : new Date(),
+    date            : new Date().toLocaleString(),
     cost            : 50,
     state           : 'Completed',
   },
@@ -54,7 +54,7 @@ const driveInfoList: DriverCardInfo[] = [
     ],
     startLocationName   : 'viña',
     endLocationName     : 'santiago',
-    date            : new Date(),
+    date            : new Date().toLocaleString(),
     cost            : 50,
     state           : 'Progress'
   }

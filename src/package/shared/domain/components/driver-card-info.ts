@@ -2,7 +2,7 @@ import { Avatar } from 'src/package/shared/domain/components/avatar'
 
 export interface DriverCardInfo {
   cost: number
-  date: Date
+  date: string
   startLocationName: string
   endLocationName: string
   driverAvatar: Avatar

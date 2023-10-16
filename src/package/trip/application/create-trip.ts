@@ -11,9 +11,11 @@ import { LocationID } from 'src/package/location/domain/models/location-id'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
+import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
 import {
   TripID
 } from 'src/package/trip/domain/models/trip-id'
+import { newTripState } from 'src/package/trip/domain/models/trip-state'
 
 export const createTrip = async ( dao: TripDao,
   props: {
@@ -42,20 +44,40 @@ export const createTrip = async ( dao: TripDao,
     err.push( startDate.unwrapErr() )
   }
 
+  const description = newTripDescription({
+    value: ''
+  })
+
+  if ( description.isErr() ) {
+    err.push( description.unwrapErr() )
+  }
+
+  const state = newTripState({
+    value: 'Open'
+  })
+
+  if ( state.isErr() ) {
+    err.push( state.unwrapErr() )
+  }
+
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
+
   const result: Trip = {
     id           : props.id,
     driverID     : props.driverID,
     chatID       : props.chatID,
-    startDate    : startDate.unwrap().value,
-    endDate      : end.unwrap().value,
     endLocation  : props.endLocationID,
     startLocation: props.startLocationID,
+    startDate    : startDate.unwrap().value,
+    endDate      : end.unwrap().value,
+    description  : description.unwrap(),
+    state        : state.unwrap(),
     passengersID : [],
     categoryID   : None,
-    description  : None,
     price        : None,
     seat         : None,
-    state        : None,
   }
 
   const response =  await dao.create( result )

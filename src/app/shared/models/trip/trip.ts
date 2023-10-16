@@ -19,9 +19,9 @@ export interface Trip {
   endDate: Date
   startLocation: LocationID
   endLocation: LocationID
+  description: TripDescription
+  state: TripState
   categoryID: Option<CategoryID>
-  description: Option<TripDescription>
   price: Option<TripPrice>
   seat: Option<TripSeat>
-  state: Option<TripState>
 }
