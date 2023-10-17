@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
-import { IonicModule } from '@ionic/angular'
+import {
+  IonicModule,
+  ViewDidEnter
+} from '@ionic/angular'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
@@ -19,9 +22,12 @@ import { User } from 'src/package/user/domain/models/user'
     LabeledIconComponent
   ]
 } )
-export class ProfilePage {
+export class ProfilePage implements ViewDidEnter{
 
   constructor( private authService: AuthService ) {
+  }
+
+  public ionViewDidEnter(): void {
     if ( this.authService.currentUser.isSome() ) {
     this.user      = this.authService.currentUser.unwrap()
     this.passenger = this.authService.currentPassenger.unwrap()
@@ -31,6 +37,7 @@ export class ProfilePage {
     this.edad      =
       new Date().getFullYear() - this.passenger!.birthDay.value.getFullYear()
     }
+
   }
 
   edad: number | undefined

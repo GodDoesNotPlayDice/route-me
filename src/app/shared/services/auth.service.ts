@@ -46,6 +46,15 @@ export class AuthService {
 
     this.currentUser = Some( result.unwrap() )
 
+    const pass = await this.getPassenger()
+
+    if ( pass ){
+    this.currentUser = None
+      return false
+    }
+
+    console.log('this.currentPassenger')
+    console.log(this.currentPassenger)
     return true
   }
 
