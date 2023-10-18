@@ -3,7 +3,10 @@ import {
   Component,
   OnInit
 } from '@angular/core'
-import { IonicModule } from '@ionic/angular'
+import {
+  IonicModule,
+  ViewDidEnter
+} from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
@@ -26,13 +29,13 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
     DriveCardComponent
   ]
 } )
-export class HomePage implements OnInit {
+export class HomePage implements ViewDidEnter {
 
   constructor( private driversService: DriversService,
     private trip: TripService )
   {}
 
-  async ngOnInit() {
+ async ionViewDidEnter(): Promise<void> {
     // this.info = this.driversService.getDrivers()
     //                 .filter( ( driver ) => {
     //                   return driver.state === TripStateEnum.Open
@@ -67,6 +70,7 @@ export class HomePage implements OnInit {
       this.error = true
     }
   }
+
 
   info: DriverCardInfo[] = []
 
