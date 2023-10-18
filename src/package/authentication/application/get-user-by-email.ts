@@ -4,7 +4,7 @@ import {
   Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
-import { newUserEmail } from 'src/package/user/domain/models/user-email'
+import { newUserEmail } from 'src/package/shared/domain/models/email'
 
 /**
  * Get user by email

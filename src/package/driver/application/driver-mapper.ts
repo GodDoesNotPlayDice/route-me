@@ -3,14 +3,14 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { Driver } from 'src/package/driver/domain/models/driver'
 import {
-  DriverDocumentID,
-  newDriverDocumentID
-} from 'src/package/driver/domain/models/driver-document-id'
+  driverDocumentFromJson,
+  driverDocumentToJson
+} from 'src/package/driver/application/driver-document-mapper'
+import { Driver } from 'src/package/driver/domain/models/driver'
+import { DriverDocument } from 'src/package/driver/domain/models/driver-document'
 import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
-import { newUserID } from 'src/package/user/domain/models/user-id'
 
 /**
  * Create a json from driver instance
@@ -20,8 +20,7 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
   try {
     const json: Record<string, any> = {
       id       : driver.id.value,
-      userID   : driver.userID.value,
-      documents: driver.documents.map( ( document ) => document.value )
+      documents: driver.documents.map( ( document ) => driverDocumentToJson(document) )
     }
     return Ok( json )
   }
@@ -37,7 +36,8 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
  * Create a driver instance from json
  * @throws {DriverIdInvalidException} - if driver id is invalid
  * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
- * @throws {UserIdInvalidException} - if user id is invalid
+ * @throws {DriverDocumentNameInvalidException} - if driver document name is invalid
+ * @throws {DriverDocumentReferenceInvalidException} - if driver document reference is invalid
  */
 export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Error[]> => {
   const err: Error[] = []
@@ -50,29 +50,19 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
     err.push( driverID.unwrapErr() )
   }
 
-  const documents: DriverDocumentID[] = []
+  const documents: DriverDocument[] = []
 
   if ( json['documents'] !== undefined ) {
     for ( const document of Object.values( json['documents'] ) ) {
-      const driverDocumentID = newDriverDocumentID( {
-        value: document as string
-      } )
+      const driverDocument = driverDocumentFromJson( document as Record<string, any>)
 
-      if ( driverDocumentID.isErr() ) {
-        err.push( driverDocumentID.unwrapErr() )
+      if ( driverDocument.isErr() ) {
+        err.push( ...driverDocument.unwrapErr() )
       }
       else {
-        documents.push( driverDocumentID.unwrap() )
+        documents.push( driverDocument.unwrap() )
       }
     }
-  }
-
-  const userID = newUserID( {
-    value: json['userID'] ?? ''
-  } )
-
-  if ( userID.isErr() ) {
-    err.push( userID.unwrapErr() )
   }
 
   if ( err.length > 0 ) {
@@ -82,7 +72,6 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 
   return Ok( {
       id       : driverID.unwrap(),
-      userID   : userID.unwrap(),
       documents: documents
     }
   )

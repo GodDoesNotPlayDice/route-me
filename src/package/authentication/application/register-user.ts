@@ -4,9 +4,7 @@ import {
   Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
-import { newUserEmail } from 'src/package/user/domain/models/user-email'
 import { newUserID } from 'src/package/user/domain/models/user-id'
-import { newUserPassword } from 'src/package/user/domain/models/user-password'
 import { ulid } from 'ulidx'
 
 /**

@@ -13,13 +13,13 @@ import { newUserID } from 'src/package/user/domain/models/user-id'
  * @throws {UserIdInvalidException} - if id is invalid
  */
 export const getUserById = async ( repository: UserDao,
-  id: string ): Promise<Result<User, Error>> => {
+  id: string ): Promise<Result<User, Error[]>> => {
   const idResult = newUserID( {
     value: id
   } )
 
   if ( idResult.isErr() ) {
-    return Err( idResult.unwrapErr() )
+    return Err( [ idResult.unwrapErr() ] )
   }
 
   const result = await repository.getById( idResult.unwrap() )

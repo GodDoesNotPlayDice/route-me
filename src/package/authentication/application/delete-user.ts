@@ -4,7 +4,7 @@ import {
   Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
-import { UserEmail } from 'src/package/user/domain/models/user-email'
+import { Email } from 'src/package/shared/domain/models/email'
 
 /**
  * Get user by email
@@ -12,7 +12,7 @@ import { UserEmail } from 'src/package/user/domain/models/user-email'
  */
 export const deleteUser = async (
   repository: AuthUserRepository,
-  email : UserEmail
+  email : Email
 ): Promise<Result<boolean, Error>> => {
   // const userIDResult = newUserID({
   //   value: userID

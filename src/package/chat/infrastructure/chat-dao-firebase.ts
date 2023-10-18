@@ -14,7 +14,7 @@ export class ChatDaoFirebase implements  ChatDao{
 	constructor( private firebase: AngularFireDatabase ) {
 	}
 
-	collectionKey = 'chats'
+	collectionKey = 'chatsv2'
 
   async create( chat: Chat ): Promise<Result<boolean, Error>> {
     let completed: string | null = null

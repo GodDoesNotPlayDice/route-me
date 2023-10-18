@@ -3,10 +3,10 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { PassengerBirthDayInvalidException } from 'src/package/passenger/domain/exceptions/passenger-birth-day-invalid-exception'
+import { UserBirthDayInvalidException } from 'src/package/user/domain/exceptions/user-birth-day-invalid-exception'
 import { z } from 'zod'
 
-export const PassengerBirthDaySchema = z.object( {
+export const UserBirthDaySchema = z.object( {
   value: z.date()
 } )
                                         .superRefine( ( val, ctx ) => {
@@ -26,25 +26,25 @@ export const PassengerBirthDaySchema = z.object( {
                                           return val
                                         } )
 
-type PassengerBirthDayType = z.infer<typeof PassengerBirthDaySchema>
+type UserBirthDayType = z.infer<typeof UserBirthDaySchema>
 
-export interface PassengerBirthDay extends PassengerBirthDayType {}
+export interface UserBirthDay extends UserBirthDayType {}
 
-export interface PassengerBirthDayProps {
+export interface UserBirthDayProps {
   value: Date
 }
 
 /**
  * Create a passenger birthday instance
- * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
+ * @throws {UserBirthDayInvalidException} - if birthday is invalid
  */
-export const newPassengerBirthDay = ( props: PassengerBirthDayProps ): Result<PassengerBirthDay, Error> => {
-  const result = PassengerBirthDaySchema.safeParse( {
+export const newUserBirthDay = ( props: UserBirthDayProps ): Result<UserBirthDay, Error> => {
+  const result = UserBirthDaySchema.safeParse( {
     value: props.value
   } )
 
   if ( !result.success ) {
-    return Err( new PassengerBirthDayInvalidException() )
+    return Err( new UserBirthDayInvalidException() )
   }
   else {
     return Ok( result.data )

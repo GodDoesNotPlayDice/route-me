@@ -12,9 +12,9 @@ import { userFromJson } from 'src/package/user/application/user-mapper'
 import { UserEmailNotFoundException } from 'src/package/user/domain/exceptions/user-email-not-found-exception'
 import { UserNotFoundException } from 'src/package/user/domain/exceptions/user-not-found-exception'
 import { User } from 'src/package/user/domain/models/user'
-import { UserEmail } from 'src/package/user/domain/models/user-email'
+import { Email } from 'src/package/shared/domain/models/email'
 import { UserID } from 'src/package/user/domain/models/user-id'
-import { UserPassword } from 'src/package/user/domain/models/user-password'
+import { Password } from 'src/package/shared/domain/models/password'
 
 export class AuthUserFirebase implements AuthUserRepository {
   constructor( private firebase: AngularFireDatabase ) {
@@ -34,7 +34,7 @@ export class AuthUserFirebase implements AuthUserRepository {
    * Delete user
    * @throws {FirebaseOperationException} - if operation failed
    */
-  async delete( email : UserEmail ): Promise<Result<boolean, Error>> {
+  async delete( email : Email ): Promise<Result<boolean, Error>> {
     const keySaved = await this.getKey( email)
 
     if ( keySaved.isErr() ) {
@@ -73,8 +73,8 @@ export class AuthUserFirebase implements AuthUserRepository {
    * @throws {UserNotFoundException} - if user not found
    * @throws {PasswordNotMatchException} - if password not match
    */
-  async login( email: UserEmail,
-    password: UserPassword ): Promise<Result<User, Error[]>> {
+  async login( email: Email,
+    password: Password ): Promise<Result<User, Error[]>> {
     const errors: Error[] = []
     return await this.firebase.database.ref( this.collectionKey )
                      .orderByChild( 'email' )
@@ -114,7 +114,7 @@ export class AuthUserFirebase implements AuthUserRepository {
    * @throws {UnknownException} - if unknown error
    */
   async register( user: User,
-    password: UserPassword ): Promise<Result<string, Error>> {
+    password: Password ): Promise<Result<string, Error>> {
     try {
       const path = await this.firebase.database.ref( this.collectionKey )
                              .push(
@@ -138,7 +138,7 @@ export class AuthUserFirebase implements AuthUserRepository {
    * @throws {EmailInvalidException} - if email is invalid
    * @throws {UserIdInvalidException} - if id is invalid
    */
-  async getByEmail( email: UserEmail ): Promise<Result<boolean, Error[]>> {
+  async getByEmail( email: Email ): Promise<Result<boolean, Error[]>> {
     // return Err( new UserEmailNotFoundException( 'firebase' ) )
     return await this.firebase.database.ref( this.collectionKey )
                      .orderByChild( 'email' )
@@ -168,7 +168,7 @@ export class AuthUserFirebase implements AuthUserRepository {
                      } )
   }
 
-  private async getKey( email: UserEmail ): Promise<Result<string, Error>> {
+  private async getKey( email: Email ): Promise<Result<string, Error>> {
     return await this.firebase.database.ref( this.collectionKey )
                      .orderByChild( 'email' )
                      .equalTo( email.value )

@@ -7,7 +7,7 @@ import { DriverDocumentReferenceInvalidException } from 'src/package/driver/doma
 import { z } from 'zod'
 
 export const DriverDocumentReferenceSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
 
 type DriverDocumentReferenceType = z.infer<typeof DriverDocumentReferenceSchema>

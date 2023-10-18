@@ -1,225 +1,304 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	None,
+	Ok,
+	Option,
+	Result,
+	Some
 } from 'oxide.ts'
-import { newCategoryID } from 'src/package/category/domain/models/category-id'
-import { newChatID } from 'src/package/chat/domain/models/chat-id'
-import { newDriverID } from 'src/package/driver/domain/models/driver-id'
-import { newLocationID } from 'src/package/location/domain/models/location-id'
 import {
-  newPassengerID,
-  PassengerID
-} from 'src/package/passenger/domain/models/passenger-id'
-import { dateToJSON } from 'src/package/shared/config/helper/date/date-mapper'
+	categoryFromJson,
+	categoryToJson
+} from 'src/package/category/application/category-mapper'
+import { Category } from 'src/package/category/domain/models/category'
+import { newChatID } from 'src/package/chat/domain/models/chat-id'
+import {
+	driverFromJson,
+	driverToJson
+} from 'src/package/driver/application/driver-mapper'
+import {
+	locationFromJson,
+	locationToJson
+} from 'src/package/location/application/location-mapper'
+import {
+	dateFromJSON,
+	dateToJSON
+} from 'src/package/shared/config/helper/date/date-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
-import { newTripDescription } from '../domain/models/trip-description'
-import { newTripFeeMethod } from '../domain/models/trip-fee-method'
-import { newTripID } from '../domain/models/trip-id'
-import { newTripPrice } from '../domain/models/trip-price'
-import { newTripSeat } from '../domain/models/trip-seat'
-import { newTripState } from '../domain/models/trip-state'
+import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
+import { newTripID } from 'src/package/trip/domain/models/trip-id'
+import {
+	newTripPrice,
+	TripPrice
+} from 'src/package/trip/domain/models/trip-price'
+import {
+	newTripSeat,
+	TripSeat
+} from 'src/package/trip/domain/models/trip-seat'
+import { newTripState } from 'src/package/trip/domain/models/trip-state'
+import {
+	userFromJson,
+	userToJson
+} from 'src/package/user/application/user-mapper'
+import { User } from 'src/package/user/domain/models/user'
 
 /**
  * Create a trip instance from json
- * @throws {DateInvalidException} - if date is invalid
- * @throws {TripIdInvalidException} - if trip id is invalid
- * @throws {TripDescriptionInvalidException} - if description is invalid
- * @throws {PassengerIdInvalidException} - if passenger id is invalid
  * @throws {DriverIdInvalidException} - if driver id is invalid
  * @throws {CategoryIdInvalidException} - if category id is invalid
  * @throws {ChatIdInvalidException} - if chat id is invalid
  * @throws {LocationIdInvalidException} - if location id is invalid
  * @throws {MoneyInvalidException} - if money is invalid
- * @throws {CurrencyInvalidException} - if currency is invalid
  * @throws {TripSeatInvalidException} - if seat is invalid
- * @throws {TripFeeInvalidException} - if trip fee is invalid
  * @throws {TripStateInvalidException} - if state is invalid
+ * @throws {TripIdInvalidException} - if trip id is invalid
+ * @throws {DateInvalidException} - if date is invalid
+ * @throws {TripDescriptionInvalidException} - if description is invalid
+ * @throws {UserIdInvalidException} - if passenger id is invalid
+ * @throws {CurrencyInvalidException} - if currency is invalid
  */
 export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]> => {
-  const err: Error[] = []
+	const err: Error[] = []
 
-  const passenger: PassengerID[] = []
-  if ( json['passengers'] ) {
-    for ( const id of Object.values( json['passengers'] ) ) {
-      const passengerIDResult = newPassengerID( {
-        value: id as string
-      } )
-      if ( passengerIDResult.isErr() ) {
-        err.push( passengerIDResult.unwrapErr() )
-      }
-      else {
-        passenger.push( passengerIDResult.unwrap() )
-      }
-    }
-  }
+	const passenger: User[] = []
+	if ( json['passengers'] ) {
+		for ( const user of Object.values( json['passengers'] ) ) {
+			const userResult = userFromJson( user as Record<string, any> )
+			if ( userResult.isErr() ) {
+				err.push( ...userResult.unwrapErr() )
+			}
+			else {
+				passenger.push( userResult.unwrap() )
+			}
+		}
+	}
 
-  const endDate = newValidDate( {
-    value: json['endDate'] ?? ''
-  } )
+	if ( err.length > 0 ) {
+		return Err( err )
+	}
 
-  if ( endDate.isErr() ) {
-    err.push( endDate.unwrapErr() )
-  }
+	const driver = driverFromJson( json['driver'] )
 
-  const startDate = newValidDate( {
-    value: json['startDate'] ?? ''
-  } )
+	if ( driver.isErr() ) {
+		err.push( ...driver.unwrapErr() )
+	}
 
-  if ( startDate.isErr() ) {
-    err.push( startDate.unwrapErr() )
-  }
+	let category: Option<Category> = None
+	if ( json['category'] !== '' ) {
+		const categoryResult = categoryFromJson( {
+			value: json['category'] ?? ''
+		} )
 
-  const id = newTripID( {
-    value: json['id'] ?? ''
-  } )
+		if ( categoryResult.isErr() ) {
+			err.push( ...categoryResult.unwrapErr() )
+		}
+		else {
+			category = Some( categoryResult.unwrap() )
+		}
+	}
 
-  if ( id.isErr() ) {
-    err.push( id.unwrapErr() )
-  }
+	const chatID = newChatID( {
+		value: json['chatID'] ?? ''
+	} )
 
-  const description = newTripDescription( {
-    value: json['description'] ?? ''
-  } )
+	if ( chatID.isErr() ) {
+		err.push( chatID.unwrapErr() )
+	}
 
-  if ( description.isErr() ) {
-    err.push( description.unwrapErr() )
-  }
+	const locationStart = locationFromJson( json['startLocation'] )
 
-  const price = newTripPrice( {
-    amount  : json['price'] === undefined ? '' : json['price']['amount'] ?? '',
-    currency: json['price'] === undefined ? '' : json['price']['currency'] ?? ''
-  } )
+	if ( locationStart.isErr() ) {
+		err.push( ...locationStart.unwrapErr() )
+	}
 
-  if ( price.isErr() ) {
-    err.push( ...price.unwrapErr() )
-  }
+	const locationEnd = locationFromJson( json['endLocation'] )
 
-  const seat = newTripSeat( {
-    value: json['seat'] ?? ''
-  } )
+	if ( locationEnd.isErr() ) {
+		err.push( ...locationEnd.unwrapErr() )
+	}
 
-  if ( seat.isErr() ) {
-    err.push( seat.unwrapErr() )
-  }
+	let price: Option<TripPrice> = None
+	if ( json['price'] !== '' ) {
+		const priceResult = newTripPrice( {
+			amount  : json['price']?.amount ?? '',
+			currency: json['price']?.currency ?? ''
+		} )
+		if ( priceResult.isErr() ) {
+			err.push( ...priceResult.unwrapErr() )
+		}
+		else {
+			price = Some( priceResult.unwrap() )
+		}
+	}
 
-  const fee = newTripFeeMethod( {
-    value: json['fee'] ?? ''
-  } )
+	let seat: Option<TripSeat> = None
+	if ( json['seat'] !== '' ) {
+		const seatResult = newTripSeat( {
+			value: json['seat'] ?? ''
+		} )
+		if ( seatResult.isErr() ) {
+			err.push( seatResult.unwrapErr() )
+		}
+		else {
+			seat = Some( seatResult.unwrap() )
+		}
+	}
 
-  if ( fee.isErr() ) {
-    err.push( fee.unwrapErr() )
-  }
+	const state = newTripState( {
+		value: json['state'] ?? ''
+	} )
 
-  const state = newTripState( {
-    value: json['state'] ?? ''
-  } )
+	if ( state.isErr() ) {
+		err.push( state.unwrapErr() )
+	}
 
-  if ( state.isErr() ) {
-    err.push( state.unwrapErr() )
-  }
+	const id = newTripID( {
+		value: json['id'] ?? ''
+	} )
 
-  const driverID = newDriverID( {
-    value: json['driverID'] ?? ''
-  } )
+	if ( id.isErr() ) {
+		err.push( id.unwrapErr() )
+	}
 
-  if ( driverID.isErr() ) {
-    err.push( driverID.unwrapErr() )
-  }
+	const description = newTripDescription( {
+		value: json['description'] ?? ''
+	} )
 
-  const categoryID = newCategoryID( {
-    value: json['category'] ?? ''
-  } )
+	if ( description.isErr() ) {
+		err.push( description.unwrapErr() )
+	}
 
-  if ( categoryID.isErr() ) {
-    err.push( categoryID.unwrapErr() )
-  }
+	const endDate = newValidDate( {
+		value: dateFromJSON( json['endDate'] ?? '' )
+	} )
 
-  const chatID = newChatID( {
-    value: json['chat'] ?? ''
-  } )
+	if ( endDate.isErr() ) {
+		err.push( endDate.unwrapErr() )
+	}
 
-  if ( chatID.isErr() ) {
-    err.push( chatID.unwrapErr() )
-  }
+	const startDate = newValidDate( {
+		value: dateFromJSON( json['startDate'] ?? '' )
+	} )
 
-  const locationStart = newLocationID( {
-    value: json['startLocationID'] ?? ''
-  } )
+	if ( startDate.isErr() ) {
+		err.push( startDate.unwrapErr() )
+	}
 
-  if ( locationStart.isErr() ) {
-    err.push( locationStart.unwrapErr() )
-  }
+	if ( err.length > 0 ) {
+		return Err( err )
+	}
 
-  const locationEnd = newLocationID( {
-    value: json['endLocationID'] ?? ''
-  } )
-
-  if ( locationEnd.isErr() ) {
-    err.push( locationEnd.unwrapErr() )
-  }
-
-  if ( err.length > 0 ) {
-    return Err( err )
-  }
-
-  return Ok( {
-    price          : price.unwrap(),
-    seat           : seat.unwrap(),
-    fee            : fee.unwrap(),
-    state          : state.unwrap(),
-    driverID       : driverID.unwrap(),
-    categoryID     : categoryID.unwrap(),
-    chatID         : chatID.unwrap(),
-    passengersIDs  : passenger,
-    id             : id.unwrap(),
-    description    : description.unwrap(),
-    startDate      : startDate.unwrap(),
-    endDate        : endDate.unwrap(),
-    startLocationID: locationEnd.unwrap(),
-    endLocationID  : locationEnd.unwrap()
-  } )
+	//TODO: verificar parse date
+	return Ok( {
+		price        : price,
+		seat         : seat,
+		description  : description.unwrap(),
+		category     : category,
+		state        : state.unwrap(),
+		id           : id.unwrap(),
+		startDate    : startDate.unwrap().value,
+		endDate      : endDate.unwrap().value,
+		driver       : driver.unwrap(),
+		chatID       : chatID.unwrap(),
+		passengers   : passenger,
+		startLocation: locationStart.unwrap(),
+		endLocation  : locationEnd.unwrap()
+	} )
 }
 
 /**
  * Create a trip instance from json
  * @throws {UnknownException} - if unknown error
  */
-export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error> => {
+export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> => {
 
-  try {
-    const passengers = trip.passengersIDs.map(
-      ( passengers: PassengerID ) => {
-        return passengers.value
-      } )
+	try {
+		const err: Error[] = []
 
-    return Ok( {
-        id           : trip.id.value,
-        description  : trip.description.value,
-        driverID     : trip.driverID.value,
-        passengers   : passengers,
-        category     : trip.categoryID.value,
-        chat         : trip.chatID.value,
-        startDate    : dateToJSON( trip.startDate.value ),
-        endDate      : dateToJSON( trip.endDate.value ),
-        startLocation: trip.startLocationID.value,
-        endLocation  : trip.endLocationID.value,
-        price        : {
-          amount  : trip.price.amount,
-          currency: trip.price.currency
-        },
-        seat         : trip.seat.value,
-        fee          : trip.fee,
-        state        : trip.state
-      }
-    )
-  }
-  catch ( e ) {
-    const err = e instanceof Error
-      ? new UnknownException( e.message )
-      : new UnknownException( 'error trip to json' )
-    return Err( err )
-  }
+		const json: Record<string, any> = {
+			id         : trip.id.value,
+			chat_id    : trip.chatID.value,
+			start_date : dateToJSON( trip.startDate ),
+			end_date   : dateToJSON( trip.endDate ),
+			description: trip.description.value,
+			state      : trip.state
+		}
+
+		const driver = driverToJson( trip.driver )
+
+		if ( driver.isErr() ) {
+			err.push( driver.unwrapErr() )
+		}
+		else {
+			json['driver'] = driver.unwrap()
+		}
+		if ( trip.seat.isSome() ){
+			json['seat'] = trip.seat.unwrap().value
+		}
+
+		if ( trip.category ){
+			const  categoryResult = categoryToJson(trip.category.unwrap())
+
+			if ( categoryResult.isErr() ){
+				err.push(categoryResult.unwrapErr())
+			}
+			else {
+				json['category'] = categoryResult.unwrap()
+			}
+		}
+
+		if ( trip.price.isSome() ){
+			const price = trip.price.unwrap()
+			json['price'] = {
+				amount  : price.amount,
+				currency: price.currency
+			}
+		}
+
+		const startLocation = locationToJson( trip.startLocation )
+
+		if ( startLocation.isErr() ) {
+			err.push( startLocation.unwrapErr() )
+		}
+		else {
+			json['start_location'] = startLocation.unwrap()
+		}
+
+		const endLocation = locationToJson( trip.endLocation )
+
+		if ( endLocation.isErr() ) {
+			err.push( endLocation.unwrapErr() )
+		}
+		else {
+			json['end_location'] = endLocation.unwrap()
+		}
+
+		const passengers: Record<string, any>[] = []
+		for ( const passenger of trip.passengers ) {
+			const userResult = userToJson( passenger )
+
+			if ( userResult.isErr() ) {
+				err.push()
+			}
+			else {
+				passengers.push( userResult.unwrap() )
+			}
+		}
+
+		json['passengers'] = passengers
+
+		if ( err.length > 0 ) {
+			return Err( err )
+		}
+
+		return Ok( json )
+	}
+	catch ( e ) {
+		const err = e instanceof Error
+			? new UnknownException( e.message )
+			: new UnknownException( 'error trip to json' )
+		return Err( [err] )
+	}
 }

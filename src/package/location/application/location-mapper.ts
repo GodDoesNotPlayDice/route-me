@@ -7,10 +7,6 @@ import {
   Location,
   newLocation
 } from 'src/package/location/domain/models/location'
-import { newLocationCountryCode } from 'src/package/location/domain/models/location-country-code'
-import { newLocationID } from 'src/package/location/domain/models/location-id'
-import { newLocationName } from 'src/package/location/domain/models/location-name'
-import { newPosition } from 'src/package/position-api/domain/models/position'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**

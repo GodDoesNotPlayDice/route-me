@@ -4,13 +4,13 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { Trip } from 'src/app/shared/models/trip/trip'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
 import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { LocationID } from 'src/package/location/domain/models/location-id'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
+import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
 import {
   TripID

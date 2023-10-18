@@ -7,7 +7,7 @@ import { PreferenceNameInvalidException } from 'src/package/preference/domain/ex
 import { z } from 'zod'
 
 export const PreferenceNameSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
 
 type PreferenceNameType = z.infer<typeof PreferenceNameSchema>

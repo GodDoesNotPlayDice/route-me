@@ -3,6 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { ComparatorInvalidException } from 'src/package/shared/domain/exceptions/comparator-invalid-exception'
 import { DateInvalidException } from 'src/package/shared/domain/exceptions/date-invalid-exception'
 import { z } from 'zod'
 
@@ -19,8 +20,15 @@ interface ComparatorProps {
   value: string
 }
 
-export const newComparator = ( props: ComparatorProps ): Comparator => {
-  return ComparatorEnumSchema.parse( props.value )
+export const newComparator = ( props: ComparatorProps ): Result<Comparator, Error> => {
+  const result =  ComparatorEnumSchema.safeParse( props.value )
+
+  if ( !result.success ) {
+    return Err( new ComparatorInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }
 
 export const ComparableDateSchema = z.object( {

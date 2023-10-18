@@ -7,7 +7,7 @@ import { CategoryNameInvalidException } from 'src/package/category/domain/except
 import { z } from 'zod'
 
 export const CategoryNameSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
 
 type CategoryNameType = z.infer<typeof CategoryNameSchema>

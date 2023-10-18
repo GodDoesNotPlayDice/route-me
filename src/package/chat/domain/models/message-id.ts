@@ -7,7 +7,7 @@ import { MessageIdInvalidException } from 'src/package/chat/domain/exceptions/me
 import { z } from 'zod'
 
 export const MessageIDSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
 
 type MessageIDType = z.infer<typeof MessageIDSchema>

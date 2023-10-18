@@ -7,7 +7,7 @@ import { PreferenceIdInvalidException } from 'src/package/preference/domain/exce
 import { z } from 'zod'
 
 export const PreferenceIDSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
 
 type PreferenceIDType = z.infer<typeof PreferenceIDSchema>

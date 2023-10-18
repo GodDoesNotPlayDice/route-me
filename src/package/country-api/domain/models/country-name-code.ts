@@ -7,7 +7,7 @@ import { CountryNameCodeInvalidException } from 'src/package/country-api/domain/
 import { z } from 'zod'
 
 export const CountryNameCodeSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
 
 type CountryNameCodeType = z.infer<typeof CountryNameCodeSchema>

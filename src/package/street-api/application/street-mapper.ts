@@ -84,7 +84,7 @@ export const streetsDataFromJson = ( json: Record<string, any> ): Result<Streets
 export const streetToJson = ( street: Street ): Result<Record<string, any>, Error> => {
   try {
     const json: Record<string, any> = {
-      shortCode: street.shortCode.value,
+      short_code: street.shortCode.value,
       center: {
         lat: street.center.lat,
         lng: street.center.lng

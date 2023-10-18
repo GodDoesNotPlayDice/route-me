@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const DriverIDSchema = z.object( {
   value: z.string()
-          .nonempty()
+          .min(1)
 } )
 
 type DriverIDType = z.infer<typeof DriverIDSchema>

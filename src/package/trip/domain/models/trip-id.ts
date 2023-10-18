@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const TripIDSchema = z.object( {
   value: z.string()
-          .nonempty()
+          .min(1)
 } )
 
 type TripIDType = z.infer<typeof TripIDSchema>

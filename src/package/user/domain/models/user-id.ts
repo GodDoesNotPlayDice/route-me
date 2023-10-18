@@ -7,8 +7,9 @@ import { UserIdInvalidException } from 'src/package/user/domain/exceptions/user-
 import { z } from 'zod'
 
 export const UserIDSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
+//TODO: ver zod brand
 
 type UserIDType = z.infer<typeof UserIDSchema>
 

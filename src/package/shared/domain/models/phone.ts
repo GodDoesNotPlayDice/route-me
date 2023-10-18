@@ -3,12 +3,12 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { PhoneExceedsMaximumLengthException } from 'src/package/passenger/domain/exceptions/phone-exceeds-maximum-length-exception'
-import { PhoneInsufficientLengthException } from 'src/package/passenger/domain/exceptions/phone-insufficient-length-exception'
-import { PhoneInvalidFormatException } from 'src/package/passenger/domain/exceptions/phone-invalid-format-exception'
+import { PhoneExceedsMaximumLengthException } from 'src/package/shared/domain/exceptions/phone-exceeds-maximum-length-exception'
+import { PhoneInsufficientLengthException } from 'src/package/shared/domain/exceptions/phone-insufficient-length-exception'
+import { PhoneInvalidFormatException } from 'src/package/shared/domain/exceptions/phone-invalid-format-exception'
 import { z } from 'zod'
 
-export const PassengerPhoneSchema = z.object( {
+export const PhoneSchema = z.object( {
   value: z.string()
           .min( 8 )
           .max( 9 )
@@ -16,11 +16,11 @@ export const PassengerPhoneSchema = z.object( {
   // z.string().regex(RegExp('^\\(\\+\\d+\\)\\s\\d{4}-\\d{4}')).parse(value);
 } )
 
-type PassengerPhoneType = z.infer<typeof PassengerPhoneSchema>
+type PhoneType = z.infer<typeof PhoneSchema>
 
-export interface PassengerPhone extends PassengerPhoneType {}
+export interface Phone extends PhoneType {}
 
-export interface PassengerPhoneProps {
+export interface PhoneProps {
   value: string
 }
 
@@ -30,8 +30,8 @@ export interface PassengerPhoneProps {
  * @throws {PhoneInsufficientLengthException} - if length is insufficient
  * @throws {PhoneExceedsMaximumLengthException} - if length exceeds maximum
  */
-export const newPassengerPhone = ( props: PassengerPhoneProps ): Result<PassengerPhone, Error[]> => {
-  const result = PassengerPhoneSchema.safeParse( {
+export const newPhone = ( props: PhoneProps ): Result<Phone, Error[]> => {
+  const result = PhoneSchema.safeParse( {
     value: props.value
   } )
 

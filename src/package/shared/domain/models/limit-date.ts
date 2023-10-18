@@ -6,11 +6,6 @@ import {
 import { DateInvalidException } from 'src/package/shared/domain/exceptions/date-invalid-exception'
 import { z } from 'zod'
 
-// 4/10
-// 12096e5
-// camino bueno: input: 10/10 --- (4/10 - 18/10) -> 10/10
-// camino malo: input: 24/12 --- hoy*(4/10 - 18/10) -> error
-// camino bueno: input: 24/12 --- (24/12 - 8/01) -> 10/10
 export const LimitDateSchema = z.object( {
   value   : z.date(),
   numTimes: z.number()

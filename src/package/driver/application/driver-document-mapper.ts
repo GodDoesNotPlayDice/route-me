@@ -9,7 +9,6 @@ import {
 import { newDriverDocumentID } from 'src/package/driver/domain/models/driver-document-id'
 import { newDriverDocumentName } from 'src/package/driver/domain/models/driver-document-name'
 import { newDriverDocumentReference } from 'src/package/driver/domain/models/driver-document-reference'
-import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -20,7 +19,6 @@ export const driverDocumentToJson = ( driverDocument: DriverDocument ): Result<R
   try {
     const json: Record<string, any> = {
       id       : driverDocument.id.value,
-      driverID : driverDocument.driverID.value,
       name     : driverDocument.name.value,
       reference: driverDocument.reference.value
     }
@@ -37,7 +35,6 @@ export const driverDocumentToJson = ( driverDocument: DriverDocument ): Result<R
 /**
  * Create a driver document instance from json
  * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
- * @throws {DriverIdInvalidException} - if driver id is invalid
  * @throws {DriverDocumentNameInvalidException} - if driver document name is invalid
  * @throws {DriverDocumentReferenceInvalidException} - if driver document reference is invalid
  */
@@ -50,14 +47,6 @@ export const driverDocumentFromJson = ( json: Record<string, any> ): Result<Driv
 
   if ( documentID.isErr() ) {
     err.push( documentID.unwrapErr() )
-  }
-
-  const driverID = newDriverID( {
-    value: json['driverID'] ?? ''
-  } )
-
-  if ( driverID.isErr() ) {
-    err.push( driverID.unwrapErr() )
   }
 
   const documentName = newDriverDocumentName( {
@@ -82,7 +71,6 @@ export const driverDocumentFromJson = ( json: Record<string, any> ): Result<Driv
 
   return Ok( {
       id       : documentID.unwrap(),
-      driverID : driverID.unwrap(),
       name     : documentName.unwrap(),
       reference: documentReference.unwrap()
     }

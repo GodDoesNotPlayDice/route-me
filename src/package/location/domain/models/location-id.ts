@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const LocationIDSchema = z.object( {
   value: z.string()
-          .nonempty()
+          .min(1)
 } )
 
 type LocationIDType = z.infer<typeof LocationIDSchema>

@@ -8,6 +8,7 @@ import {
   TripHistory
 } from 'src/package/trip-history/domain/models/trip-history'
 import { newTripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
+import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { newUserID } from 'src/package/user/domain/models/user-id'
 
@@ -17,10 +18,16 @@ import { newUserID } from 'src/package/user/domain/models/user-id'
  */
 export const tripHistoryToJson = ( tripHistory: TripHistory ): Result<Record<string, any>, Error> => {
   try {
+    const trips : Trip[] = []
+
+    for ( let trip of tripHistory.trips ) {
+      //TODO: add trip to json
+      trips.push( trip )
+    }
+
     const json: Record<string, any> = {
       id    : tripHistory.id.value,
-      userID: tripHistory.userID.value,
-      tripID: tripHistory.tripID.value
+      trips: trips
     }
     return Ok( json )
   }

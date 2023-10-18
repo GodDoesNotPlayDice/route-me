@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const CategoryIDSchema = z.object( {
   value: z.string()
-          .nonempty()
+          .min(1)
 } )
 
 type CategoryIDType = z.infer<typeof CategoryIDSchema>

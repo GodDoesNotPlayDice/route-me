@@ -7,7 +7,7 @@ import { LocationCountryCodeInvalidException } from 'src/package/location/domain
 import { z } from 'zod'
 
 export const LocationCountryCodeSchema = z.object( {
-  value: z.string().nonempty()
+  value: z.string().min(1)
 } )
 
 type LocationCountryCodeType = z.infer<typeof LocationCountryCodeSchema>
