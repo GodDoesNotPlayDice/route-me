@@ -7,9 +7,9 @@ export abstract class PassengerDao {
 
   abstract create(
     passenger: Passenger
-  ): Promise<Result<string, Error>>
+  ): Promise<Result<boolean, Error[]>>
 
-  abstract update( user: Passenger ): Promise<Result<boolean, Error>>
+  abstract update( user: Passenger ): Promise<Result<boolean, Error[]>>
 
   abstract getByEmail( email: Email ): Promise<Result<Passenger, Error[]>>
 

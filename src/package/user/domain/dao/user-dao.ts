@@ -9,7 +9,7 @@ export abstract class UserDao {
   abstract create(
     user: User,
     password: Password
-  ): Promise<Result<string, Error>>
+  ): Promise<Result<string, Error[]>>
 
   abstract getByEmail( email: Email ): Promise<Result<User, Error[]>>
 

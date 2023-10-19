@@ -28,7 +28,7 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 } )
 export class HomePage implements ViewDidEnter {
 
-  constructor( private driversService: DriverService,
+  constructor( private driverService: DriverService,
     private trip: TripService )
   {}
 
@@ -45,9 +45,9 @@ export class HomePage implements ViewDidEnter {
           endLocationName  : trip.endLocation.name.value,
           startLocationName: trip.startLocation.name.value,
           driverAvatar     : {
-            name: trip.driver.name.value,
+            name: trip.driver.passenger.name.value,
             // url : 'https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png'
-            url: trip.driver.image.value
+            url: trip.driver.passenger.image.value
           },
           passengerUrls    : trip.passengers.map( ( passenger ) => {
             return passenger.image.value

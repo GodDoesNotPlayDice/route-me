@@ -5,6 +5,7 @@ import { PassengerID } from 'src/package/passenger/domain/models/passenger-id'
 import { PassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { PassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import { Preference } from 'src/package/preference/domain/models/preference'
+import { Rating } from 'src/package/rating/domain/models/rating'
 import { Email } from 'src/package/shared/domain/models/email'
 import { Gender } from 'src/package/shared/domain/models/gender'
 import { ImageUrl } from 'src/package/shared/domain/models/image-url'
@@ -22,4 +23,5 @@ export interface Passenger {
   birthDay: PassengerBirthDay
   phone: Phone
   preferences: Preference[]
+  rating: Rating
 }

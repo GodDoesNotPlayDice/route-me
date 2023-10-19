@@ -18,7 +18,7 @@ export class CanLoginGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if ( this.auth.currentUser.isSome() ) {
+    if ( this.auth.currentUser.isSome() && this.auth.currentPassenger.isSome()) {
       return true
     }
     else {

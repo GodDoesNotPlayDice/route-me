@@ -8,7 +8,10 @@ import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/ema
 import { Email } from 'src/package/shared/domain/models/email'
 import { Password } from 'src/package/shared/domain/models/password'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
-import { userFromJson } from 'src/package/user/application/user-mapper'
+import {
+  userFromJson,
+  userToJson
+} from 'src/package/user/application/user-mapper'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { User } from 'src/package/user/domain/models/user'
 
@@ -19,24 +22,44 @@ export class UserDaoFirebase implements UserDao {
 
   collectionKey = 'usersv2'
 
+  /**
+   * Create user
+   * @throws {FirebaseOperationException} - if operation failed
+   * @throws {UnknownException} - if unknown error
+   */
   async create( user: User,
-    password: Password ): Promise<Result<string, Error>> {
-    try {
-      const path = await this.firebase.database.ref( this.collectionKey )
-                             .push(
-                               {
-                                 id      : user.id.value,
-                                 email   : user.email.value,
-                                 password: password.value
-                               }
-                             )
-      return Ok( 'user reg' )
+    password: Password ): Promise<Result<string, Error[]>> {
+    let completed: string | null = null
+
+    const json = userToJson( user )
+
+    if ( json.isErr() ) {
+      return Err( json.unwrapErr() )
     }
-    catch ( e ) {
-      return Err( new FirebaseOperationException() )
+
+    await this.firebase.database.ref( this.collectionKey )
+              .push( {
+                  password: password.value,
+                  ...json
+                },
+                ( error ) => {
+                  if ( !error ) {
+                    completed = 'completed'
+                  }
+                }
+              )
+
+    if ( completed === null ) {
+      return Err( [ new FirebaseOperationException() ] )
     }
+
+    return Ok( 'tk' )
   }
 
+  /**
+   * Delete user by email
+   * @throws {FirebaseOperationException} - if operation failed
+   */
   async delete( email: Email ): Promise<Result<boolean, Error>> {
     const keySaved = await this.getKey( email )
 
@@ -63,10 +86,40 @@ export class UserDaoFirebase implements UserDao {
     return Ok( true )
   }
 
+  /**
+   * Get all users
+   * @throws {FirebaseOperationException} - if operation failed
+   */
   async getAll(): Promise<Result<User[], Error[]>> {
-    return Err( [ new FirebaseOperationException() ] )
+    return await this.firebase.database.ref( this.collectionKey )
+                     .get()
+                     .then( async ( snapshot ) => {
+                       const error: Error[] = []
+                       const users: User[]  = []
+                       for ( let value of Object.values( snapshot.val() ) ) {
+                         const user = userFromJson(
+                           value as Record<string, any> )
+                         if ( user.isErr() ) {
+                           error.push( ...user.unwrapErr() )
+                           break
+                         }
+                         users.push( user.unwrap() )
+                       }
+                       if ( error.length > 0 ) {
+                         return Err( error )
+                       }
+                       return Ok( users )
+                     } )
+                     .catch( ( error ) => {
+                       return Err( [ new FirebaseOperationException() ] )
+                     } )
   }
 
+  /**
+   * Get user by email
+   * @throws {EmailInvalidException} - if email is invalid
+   * @throws {UserIdInvalidException} - if id is invalid
+   */
   async getByEmail( email: Email ): Promise<Result<User, Error[]>> {
     return await this.firebase.database.ref( this.collectionKey )
                      .orderByChild( 'email' )

@@ -22,4 +22,7 @@ export class ChatDaoFirebase implements ChatDao {
     return Err( [ new FirebaseOperationException() ] )
   }
 
+  async create( chat: Chat ): Promise<Result<boolean, Error[]>> {
+    return Err( [ new FirebaseOperationException() ] )
+  }
 }

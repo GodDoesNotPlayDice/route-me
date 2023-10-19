@@ -9,14 +9,14 @@
       <img class="rounded-full w-32"
         src="https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png">
     </div>
-    <div *ngIf="user"
+    <div *ngIf="passenger"
       class="flex flex-col gap-2 font-gotham text-center text-xl">
       <div class="flex justify-center gap-2">
-        <div>{{user.name.value | titlecase}}</div>
-        <div>{{user.lastName.value | titlecase}}</div>
+        <div>{{passenger.name.value | titlecase}}</div>
+        <div>{{passenger.lastName.value | titlecase}}</div>
       </div>
       <div>{{edad}} años</div>
-      <div>{{user.phone.value}}</div>
+      <div>{{passenger.phone.value}}</div>
     </div>
   </div>
   <app-divider></app-divider>
@@ -34,13 +34,13 @@
     </div>
   </div>
   <app-divider></app-divider>
-  <div *ngIf="user"
+  <div *ngIf="passenger"
     class="px-2 flex flex-col gap-7">
     <div class="font-gotham text-xl">
       Sobre Mi
     </div>
     <div class="text-gray-700 text-base font-normal">
-      {{user.description.value}}
+      {{passenger.description.value}}
     </div>
     <div class="font-gotham text-xl">
       Preferencias

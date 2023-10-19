@@ -26,6 +26,10 @@ import {
   clearStep,
   notifyStep
 } from 'src/app/shared/state/stepper/step.actions'
+import { Preference } from 'src/package/preference/domain/models/preference'
+import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
+import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
+import { newPreferenceName } from 'src/package/preference/domain/models/preference-name'
 import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {

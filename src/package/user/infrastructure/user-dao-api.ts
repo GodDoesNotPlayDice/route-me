@@ -29,8 +29,8 @@ export class UserDaoApi implements UserDao {
   }
 
   async create( user: User,
-    password: Password ): Promise<Result<string, Error>> {
-    return Err( new ApiOperationException() )
+    password: Password ): Promise<Result<string, Error[]>> {
+    return Err( [new ApiOperationException()] )
   }
 
 }

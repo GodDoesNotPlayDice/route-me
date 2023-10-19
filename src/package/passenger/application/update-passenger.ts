@@ -9,7 +9,10 @@ import { newPassengerCountry } from 'src/package/passenger/domain/models/passeng
 import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 import { newpassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
-import { Preference } from 'src/package/preference/domain/models/preference'
+import {
+  newPreference,
+  Preference
+} from 'src/package/preference/domain/models/preference'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { newImageUrl } from 'src/package/shared/domain/models/image-url'
@@ -40,7 +43,11 @@ export const updatePassenger = async (
     phone?: string,
     country?: string,
     gender?: string
-    preferences?: Preference[],
+    preferences?: {
+      id: string
+      name: string
+      icon: string
+    }[],
   }
 ): Promise<Result<Passenger, Error[]>> => {
 
@@ -110,6 +117,24 @@ export const updatePassenger = async (
     err.push( gender.unwrapErr() )
   }
 
+  let preferences: Preference[] = []
+  if ( partialProps.preferences !== undefined &&
+    partialProps.preferences.length > 0 )
+  {
+    for ( const preference of partialProps.preferences ) {
+      const pref = newPreference( preference )
+
+      if ( pref.isErr() ) {
+        err.push( ...pref.unwrapErr() )
+        break
+      }
+      preferences.push( pref.unwrap() )
+    }
+  }
+  else {
+    preferences = passenger.preferences
+  }
+
   if ( err.length > 0 ) {
     return Err( err )
   }
@@ -123,7 +148,8 @@ export const updatePassenger = async (
     country    : country.unwrap(),
     email      : email.unwrap(),
     gender     : gender.unwrap(),
-    preferences: partialProps.preferences ?? passenger.preferences,
+    rating     : passenger.rating,
+    preferences: preferences,
     id         : passenger.id,
     birthDay   : passenger.birthDay
   }
@@ -131,7 +157,8 @@ export const updatePassenger = async (
   const result = await dao.update( newPassenger )
 
   if ( result.isErr() ) {
-    return Err( [ result.unwrapErr() ] )
+    err.push( ...result.unwrapErr() )
+    return Err( err )
   }
 
   return Ok( newPassenger )

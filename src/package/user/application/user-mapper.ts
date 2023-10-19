@@ -3,10 +3,6 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import {
-  ratingFromJson,
-  ratingToJson
-} from 'src/package/rating/application/rating-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { User } from 'src/package/user/domain/models/user'
@@ -25,15 +21,6 @@ export const userToJson = ( user: User ): Result<Record<string, any>, Error[]> =
       email: user.email.value
     }
 
-    const rating = ratingToJson( user.rating )
-
-    if ( rating.isErr() ) {
-      err.push( rating.unwrapErr() )
-    }
-    else {
-      json['rating'] = rating.unwrap()
-    }
-
     return Ok( json )
   }
   catch ( e ) {
@@ -48,8 +35,6 @@ export const userToJson = ( user: User ): Result<Record<string, any>, Error[]> =
  * Create a user instance from json
  * @throws {EmailInvalidException} - if email is invalid
  * @throws {UserIdInvalidException} - if id is invalid
- * @throws {RatingIdInvalidException} - if rating id is invalid
- * @throws {RatingValueInvalidException} - if value rating is invalid
  */
 export const userFromJson = ( json: Record<string, any> ): Result<User, Error[]> => {
 
@@ -71,13 +56,6 @@ export const userFromJson = ( json: Record<string, any> ): Result<User, Error[]>
     err.push( email.unwrapErr() )
   }
 
-  //TODO: verificar como se comporta null
-  const rating = ratingFromJson( json['rating'] )
-
-  if ( rating.isErr() ) {
-    err.push( ...rating.unwrapErr() )
-  }
-
   if ( err.length > 0 ) {
     return Err( err )
   }
@@ -85,6 +63,5 @@ export const userFromJson = ( json: Record<string, any> ): Result<User, Error[]>
   return Ok( {
     id    : id.unwrap(),
     email : email.unwrap(),
-    rating: rating.unwrap()
   } )
 }

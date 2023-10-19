@@ -10,7 +10,6 @@ import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/ema
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { Email } from 'src/package/shared/domain/models/email'
 import { Password } from 'src/package/shared/domain/models/password'
-import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { userFromJson } from 'src/package/user/application/user-mapper'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
@@ -68,27 +67,5 @@ export class AuthUserFirebase implements AuthUserRepository {
                          new EmailNotFoundException( 'login firebase' ) )
                        return Err( errors )
                      } )
-  }
-
-
-  private async getKey( email: Email ): Promise<Result<string, Error>> {
-    return await this.firebase.database.ref( this.collectionKey )
-                     .orderByChild( 'email' )
-                     .equalTo( email.value )
-                     .get()
-                     .then(
-                       async ( snapshot ) => {
-
-                         let key: string | null = null
-
-                         snapshot.forEach( ( childSnapshot ) => {
-                           key = childSnapshot.key
-                         } )
-
-                         if ( key === null ) {
-                           return Err( new FirebaseOperationException( 'key' ) )
-                         }
-                         return Ok( key )
-                       } )
   }
 }

@@ -12,13 +12,15 @@ import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
-import { TripID } from 'src/package/trip/domain/models/trip-id'
+import {
+  newTripID,
+} from 'src/package/trip/domain/models/trip-id'
 import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
+import { ulid } from 'ulidx'
 
 export const createTrip = async ( dao: TripDao,
   props: {
-    id: TripID,
     driver: Driver,
     chatID: ChatID,
     startDate: Date,
@@ -27,6 +29,14 @@ export const createTrip = async ( dao: TripDao,
     price: TripPrice,
   } ): Promise<Result<Trip, Error[]>> => {
   const err: Error[] = []
+
+  const id = newTripID({
+    value: ulid()
+  })
+
+  if ( id.isErr() ){
+    err.push(id.unwrapErr())
+  }
 
   const end = newEndTripDate( {
     value: props.startDate
@@ -65,7 +75,7 @@ export const createTrip = async ( dao: TripDao,
   }
 
   const result: Trip = {
-    id           : props.id,
+    id           : id.unwrap(),
     driver       : props.driver,
     chatID       : props.chatID,
     endLocation  : props.endLocation,

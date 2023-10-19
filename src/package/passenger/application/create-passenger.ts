@@ -4,13 +4,17 @@ import {
   Result
 } from 'oxide.ts'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
 import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
 import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 import { newPassengerID } from 'src/package/passenger/domain/models/passenger-id'
 import { newpassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
-import { newEmail } from 'src/package/shared/domain/models/email'
+import { Rating } from 'src/package/rating/domain/models/rating'
+import { newRatingID } from 'src/package/rating/domain/models/rating-id'
+import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
+import { Email } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { newImageUrl } from 'src/package/shared/domain/models/image-url'
 import { newPhone } from 'src/package/shared/domain/models/phone'
@@ -33,8 +37,7 @@ import { ulid } from 'ulidx'
  */
 export const createPassenger = async ( dao: PassengerDao,
   props: {
-    email: string,
-    password: string,
+    email: Email,
     name: string,
     lastName: string,
     phone: string,
@@ -42,7 +45,7 @@ export const createPassenger = async ( dao: PassengerDao,
     country: string,
     gender: string
   }
-): Promise<Result<string, Error[]>> => {
+): Promise<Result<Passenger, Error[]>> => {
   const error: Error[] = []
 
   const id = newPassengerID( {
@@ -51,14 +54,6 @@ export const createPassenger = async ( dao: PassengerDao,
 
   if ( id.isErr() ) {
     error.push( id.unwrapErr() )
-  }
-
-  const email = newEmail( {
-    value: props.email ?? ''
-  } )
-
-  if ( email.isErr() ) {
-    error.push( email.unwrapErr() )
   }
 
   const name = newPassengerName( {
@@ -125,30 +120,52 @@ export const createPassenger = async ( dao: PassengerDao,
     error.push( image.unwrapErr() )
   }
 
+  const ratingID = newRatingID( {
+    value: ulid()
+  } )
+
+  if ( ratingID.isErr() ) {
+    error.push( ratingID.unwrapErr() )
+  }
+
+  const ratingValue = newRatingValue( {
+    value: 0
+  } )
+
+  if ( ratingValue.isErr() ) {
+    error.push( ratingValue.unwrapErr() )
+  }
+
+  const rating: Rating = {
+    id   : ratingID.unwrap(),
+    value: ratingValue.unwrap()
+  }
+
   if ( error.length > 0 ) {
     return Err( error )
   }
 
-  const result = await dao.create(
-    {
-      id         : id.unwrap(),
-      image      : image.unwrap(),
-      email      : email.unwrap(),
-      lastName   : lastName.unwrap(),
-      name       : name.unwrap(),
-      phone      : phone.unwrap(),
-      gender     : gender.unwrap(),
-      birthDay   : birthDay.unwrap(),
-      country    : country.unwrap(),
-      preferences: [],
-      description: description.unwrap()
-    }
-  )
+  const passenger: Passenger = {
+    id         : id.unwrap(),
+    image      : image.unwrap(),
+    email      : props.email,
+    lastName   : lastName.unwrap(),
+    name       : name.unwrap(),
+    phone      : phone.unwrap(),
+    gender     : gender.unwrap(),
+    birthDay   : birthDay.unwrap(),
+    country    : country.unwrap(),
+    rating     : rating,
+    preferences: [],
+    description: description.unwrap()
+  }
+
+  const result = await dao.create( passenger )
 
   if ( result.isErr() ) {
-    error.push( result.unwrapErr() )
+    error.push( ...result.unwrapErr() )
     return Err( error )
   }
 
-  return Ok( result.unwrap() )
+  return Ok( passenger )
 }

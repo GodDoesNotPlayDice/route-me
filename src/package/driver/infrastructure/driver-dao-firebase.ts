@@ -42,7 +42,7 @@ export class DriverDaoFirebase implements DriverDao {
    * Get a driver by id
    * @throws {UnknownException} - if unknown error
    */
-  async getById( id: DriverID ): Promise<Result<Driver, Error[]>> {
+  async getByEmail( id: DriverID ): Promise<Result<Driver, Error[]>> {
     return Err( [ new UnknownException() ] )
   }
 

@@ -23,4 +23,7 @@ export class ChatDaoApi implements ChatDao {
     return Err( [ new ApiOperationException( 'chat get by id api' ) ] )
   }
 
+  async create( chat: Chat ): Promise<Result<boolean, Error[]>> {
+    return Err( [ new ApiOperationException( 'chat get by id api' ) ] )
+  }
 }

@@ -15,6 +15,11 @@ import {
   preferenceToJson
 } from 'src/package/preference/application/preference-mapper'
 import { Preference } from 'src/package/preference/domain/models/preference'
+import {
+  ratingFromJson,
+  ratingToJson
+} from 'src/package/rating/application/rating-mapper'
+import { dateToJSON } from 'src/package/shared/config/helper/date/date-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
@@ -38,7 +43,7 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
       description: passenger.description.value,
       gender     : passenger.gender,
       country    : passenger.country,
-      birth_day  : passenger.birthDay,
+      birth_day  : dateToJSON(passenger.birthDay.value),
       phone      : passenger.phone
     }
 
@@ -56,6 +61,18 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
 
     if ( preferences.length > 0 ) {
       json['preferences'] = preferences
+    }
+    else {
+      json['preferences'] = null
+    }
+
+    const rating = ratingToJson( passenger.rating )
+
+    if ( rating.isErr() ) {
+      err.push( rating.unwrapErr() )
+    }
+    else {
+      json['rating'] = rating.unwrap()
     }
 
     if ( err.length > 0 ) {
@@ -87,6 +104,8 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
  * @throws {PreferenceIdInvalidException} - if preference id is invalid
  * @throws {GenderInvalidException} - if gender is invalid
  * @throws {ImageUrlInvalidException} - if image is invalid
+ * @throws {RatingIdInvalidException} - if id is invalid
+ * @throws {RatingValueInvalidException} - if value is invalid
  */
 export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger, Error[]> => {
 
@@ -165,7 +184,7 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
   }
 
   const preferences: Preference[] = []
-  if ( json['preferences'] !== undefined ) {
+  if ( json['preferences'] !== null ) {
     for ( const preference of Object.values( json['preferences'] ) ) {
       const preferenceResult = preferenceFromJson(
         preference as Record<string, any> )
@@ -177,6 +196,13 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
         preferences.push( preferenceResult.unwrap() )
       }
     }
+  }
+
+  //TODO: verificar como se comporta null
+  const rating = ratingFromJson( json['rating'] )
+
+  if ( rating.isErr() ) {
+    err.push( ...rating.unwrapErr() )
   }
 
   const image = newImageUrl( {
@@ -202,6 +228,7 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
     phone      : phone.unwrap(),
     country    : country.unwrap(),
     birthDay   : birthDay.unwrap(),
+    rating: rating.unwrap(),
     preferences: preferences
   } )
 }

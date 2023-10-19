@@ -39,18 +39,41 @@ import { newTripState } from 'src/package/trip/domain/models/trip-state'
 
 /**
  * Create a trip instance from json
+ * @throws {EmailInvalidException} - if email is invalid
+ * @throws {PassengerIdInvalidException} - if id is invalid
+ * @throws {PassengerNameInvalidException} - if name is invalid
+ * @throws {PassengerLastNameInvalidException} - if last name is invalid
+ * @throws {PassengerDescriptionInvalidException} - if description is invalid
+ * @throws {PhoneInvalidFormatException} - if phone format is invalid
+ * @throws {PhoneInsufficientLengthException} - if phone length is insufficient
+ * @throws {PhoneExceedsMaximumLengthException} - if phone length exceeds maximum
+ * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
+ * @throws {PassengerCountryInvalidException} - if country is invalid
+ * @throws {PreferenceIdInvalidException} - if preference id is invalid
+ * @throws {GenderInvalidException} - if gender is invalid
+ * @throws {ImageUrlInvalidException} - if image is invalid
+ * @throws {RatingIdInvalidException} - if id is invalid
+ * @throws {RatingValueInvalidException} - if value is invalid
  * @throws {DriverIdInvalidException} - if driver id is invalid
- * @throws {CategoryIdInvalidException} - if category id is invalid
- * @throws {ChatIdInvalidException} - if chat id is invalid
- * @throws {LocationIdInvalidException} - if location id is invalid
+ * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
+ * @throws {DriverDocumentNameInvalidException} - if driver document name is invalid
+ * @throws {DriverDocumentReferenceInvalidException} - if driver document reference is invalid
+ * @throws {DriverCarIDInvalidException} - if id is invalid
+ * @throws {DriverCarModelInvalidException} - if model is invalid
+ * @throws {DriverCarSeatInvalidException} - if seat is invalid
+ * @throws {CategoryIdInvalidException} - if id is invalid
+ * @throws {CategoryNameInvalidException} - if name is invalid
+ * @throws {ChatIdInvalidException} - if id is invalid
+ * @throws {LocationIdInvalidException} - if id is invalid
+ * @throws {LocationNameInvalidException} - if name is invalid
+ * @throws {LocationCountryCodeInvalidException} - if country code is invalid
+ * @throws {PositionInvalidException} - if position is invalid
  * @throws {MoneyInvalidException} - if money is invalid
- * @throws {TripSeatInvalidException} - if seat is invalid
- * @throws {TripStateInvalidException} - if state is invalid
- * @throws {TripIdInvalidException} - if trip id is invalid
- * @throws {DateInvalidException} - if date is invalid
- * @throws {TripDescriptionInvalidException} - if description is invalid
- * @throws {UserIdInvalidException} - if passenger id is invalid
  * @throws {CurrencyInvalidException} - if currency is invalid
+ * @throws {TripStateInvalidException} - if state is invalid
+ * @throws {TripIdInvalidException} - if id is invalid
+ * @throws {TripDescriptionInvalidException} - if description is invalid
+ * @throws {DateInvalidException} - if date is invalid
  */
 export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]> => {
   const err: Error[] = []
@@ -190,7 +213,6 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
   try {
     const err: Error[] = []
 
-
     const json: Record<string, any> = {
       id         : trip.id.value,
       chat_id    : trip.chatID.value,
@@ -250,7 +272,7 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
       const passengerResult = passengerToJson( passenger )
 
       if ( passengerResult.isErr() ) {
-        err.push()
+        err.push(...passengerResult.unwrapErr())
       }
       else {
         passengers.push( passengerResult.unwrap() )
@@ -259,6 +281,9 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 
     if ( passengers.length > 0 ) {
       json['passengers'] = passengers
+    }
+    else {
+      json['passengers'] = null
     }
 
     if ( err.length > 0 ) {

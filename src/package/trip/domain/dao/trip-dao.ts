@@ -14,5 +14,5 @@ export abstract class TripDao {
 
   abstract delete( id: TripID ): Promise<Result<boolean, Error>>
 
-  abstract update( trip: Trip ): Promise<Result<boolean, Error>>
+  abstract update( trip: Trip ): Promise<Result<boolean, Error[]>>
 }
