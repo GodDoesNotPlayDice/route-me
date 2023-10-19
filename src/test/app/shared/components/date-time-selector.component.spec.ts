@@ -18,7 +18,7 @@ describe( 'DateTimeSelectorComponent', () => {
     } )
            .compileComponents()
 
-    fixture = TestBed.createComponent( DateTimeSelectorComponent )
+    fixture   = TestBed.createComponent( DateTimeSelectorComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

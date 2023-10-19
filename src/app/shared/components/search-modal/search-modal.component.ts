@@ -71,7 +71,7 @@ export class SearchModalComponent implements OnInit {
 
             this.streetData = result.unwrap()
 
-            this.loading    = false
+            this.loading = false
           } )
   }
 

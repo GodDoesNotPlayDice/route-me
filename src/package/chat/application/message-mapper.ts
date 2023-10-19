@@ -7,6 +7,8 @@ import { Message } from 'src/package/chat/domain/models/message'
 import { newMessageContent } from 'src/package/chat/domain/models/message-content'
 import { newMessageID } from 'src/package/chat/domain/models/message-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newUserID } from 'src/package/user/domain/models/user-id'
+import { newUserName } from 'src/package/user/domain/models/user-name'
 
 /**
  * Create a json from message instance
@@ -15,8 +17,10 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 export const messageToJson = ( message: Message ): Result<Record<string, any>, Error> => {
   try {
     const json: Record<string, any> = {
-      id     : message.id.value,
-      content: message.content.value
+      id       : message.id.value,
+      user_id  : message.userID.value,
+      user_name: message.userName.value,
+      content  : message.content.value
     }
     return Ok( json )
   }
@@ -36,7 +40,7 @@ export const messageToJson = ( message: Message ): Result<Record<string, any>, E
 export const messageFromJson = ( json: Record<string, any> ): Result<Message, Error[]> => {
   const errors: Error[] = []
 
-  const id              = newMessageID( {
+  const id = newMessageID( {
     value: json['id'] ?? ''
   } )
 
@@ -52,12 +56,30 @@ export const messageFromJson = ( json: Record<string, any> ): Result<Message, Er
     errors.push( content.unwrapErr() )
   }
 
+  const userID = newUserID( {
+    value: json['user_id'] ?? ''
+  } )
+
+  if ( userID.isErr() ) {
+    errors.push( userID.unwrapErr() )
+  }
+
+  const userName = newUserName( {
+    value: json['user_name'] ?? ''
+  } )
+
+  if ( userName.isErr() ) {
+    errors.push( userName.unwrapErr() )
+  }
+
   if ( errors.length > 0 ) {
     return Err( errors )
   }
 
   return Ok( {
-    id     : id.unwrap(),
-    content: content.unwrap()
+    id      : id.unwrap(),
+    userID  : userID.unwrap(),
+    userName: userName.unwrap(),
+    content : content.unwrap()
   } )
 }

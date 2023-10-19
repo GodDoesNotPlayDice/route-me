@@ -21,7 +21,7 @@ interface ComparatorProps {
 }
 
 export const newComparator = ( props: ComparatorProps ): Result<Comparator, Error> => {
-  const result =  ComparatorEnumSchema.safeParse( props.value )
+  const result = ComparatorEnumSchema.safeParse( props.value )
 
   if ( !result.success ) {
     return Err( new ComparatorInvalidException() )

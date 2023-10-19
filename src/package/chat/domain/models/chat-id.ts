@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const ChatIDSchema = z.object( {
   value: z.string()
-          .min(1)
+          .min( 1 )
 } )
 
 type ChatIDType = z.infer<typeof ChatIDSchema>

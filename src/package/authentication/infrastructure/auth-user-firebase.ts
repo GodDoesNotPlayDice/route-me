@@ -7,14 +7,14 @@ import {
 import { PasswordNotMatchException } from 'src/package/authentication/domain/exceptions/password-not-match-exception'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { Email } from 'src/package/shared/domain/models/email'
+import { Password } from 'src/package/shared/domain/models/password'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { userFromJson } from 'src/package/user/application/user-mapper'
 import { UserEmailNotFoundException } from 'src/package/user/domain/exceptions/user-email-not-found-exception'
 import { UserNotFoundException } from 'src/package/user/domain/exceptions/user-not-found-exception'
 import { User } from 'src/package/user/domain/models/user'
-import { Email } from 'src/package/shared/domain/models/email'
 import { UserID } from 'src/package/user/domain/models/user-id'
-import { Password } from 'src/package/shared/domain/models/password'
 
 export class AuthUserFirebase implements AuthUserRepository {
   constructor( private firebase: AngularFireDatabase ) {
@@ -34,8 +34,8 @@ export class AuthUserFirebase implements AuthUserRepository {
    * Delete user
    * @throws {FirebaseOperationException} - if operation failed
    */
-  async delete( email : Email ): Promise<Result<boolean, Error>> {
-    const keySaved = await this.getKey( email)
+  async delete( email: Email ): Promise<Result<boolean, Error>> {
+    const keySaved = await this.getKey( email )
 
     if ( keySaved.isErr() ) {
       return Err( keySaved.unwrapErr() )
@@ -54,7 +54,7 @@ export class AuthUserFirebase implements AuthUserRepository {
               )
 
     if ( completed === null ) {
-      return Err( new FirebaseOperationException('delete') )
+      return Err( new FirebaseOperationException( 'delete' ) )
     }
 
     return Ok( true )
@@ -146,7 +146,7 @@ export class AuthUserFirebase implements AuthUserRepository {
                      .get()
                      .then( async ( snapshot ) => {
                        if ( snapshot.val() === null ) {
-                         return Err( [new UserEmailNotFoundException()] )
+                         return Err( [ new UserEmailNotFoundException() ] )
                        }
 
                        const snapshotValue = Object.values(
@@ -161,10 +161,10 @@ export class AuthUserFirebase implements AuthUserRepository {
                        if ( email.value === user.unwrap().email.value ) {
                          return Ok( true )
                        }
-                       return Err( [new UserEmailNotFoundException()] )
+                       return Err( [ new UserEmailNotFoundException() ] )
                      } )
                      .catch( ( error ) => {
-                       return Err( [new FirebaseOperationException()] )
+                       return Err( [ new FirebaseOperationException() ] )
                      } )
   }
 
@@ -183,7 +183,7 @@ export class AuthUserFirebase implements AuthUserRepository {
                          } )
 
                          if ( key === null ) {
-                           return Err( new FirebaseOperationException('key') )
+                           return Err( new FirebaseOperationException( 'key' ) )
                          }
                          return Ok( key )
                        } )

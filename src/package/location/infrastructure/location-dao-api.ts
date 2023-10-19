@@ -30,9 +30,11 @@ export class LocationDaoApi implements LocationDao {
         return Err( locationJsonResult.unwrapErr() )
       }
 
-      const response = await this.http.post( this.url, locationJsonResult.unwrap() ).toPromise()
+      const response = await this.http.post( this.url,
+        locationJsonResult.unwrap() )
+                                 .toPromise()
 
-      console.log( 'response', response)
+      console.log( 'response', response )
       return Ok( true )
     }
     catch ( e ) {
@@ -53,7 +55,7 @@ export class LocationDaoApi implements LocationDao {
    * @throws {UnknownException} - if unknown error
    */
   async getAll(): Promise<Result<Location[], Error[]>> {
-    return Err( [new UnknownException()] )
+    return Err( [ new UnknownException() ] )
   }
 
   /**
@@ -61,7 +63,7 @@ export class LocationDaoApi implements LocationDao {
    * @throws {UnknownException} - if unknown error
    */
   async getById( id: LocationID ): Promise<Result<Location, Error[]>> {
-    return Err( [new UnknownException()] )
+    return Err( [ new UnknownException() ] )
   }
 
   /**

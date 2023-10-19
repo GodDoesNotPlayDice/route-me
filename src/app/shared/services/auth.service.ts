@@ -48,13 +48,13 @@ export class AuthService {
 
     const pass = await this.getPassenger()
 
-    if ( pass ){
-    this.currentUser = None
+    if ( pass ) {
+      this.currentUser = None
       return false
     }
 
-    console.log('this.currentPassenger')
-    console.log(this.currentPassenger)
+    console.log( 'this.currentPassenger' )
+    console.log( this.currentPassenger )
     return true
   }
 

@@ -4,9 +4,9 @@ import {
   Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
+import { newEmail } from 'src/package/shared/domain/models/email'
+import { newPassword } from 'src/package/shared/domain/models/password'
 import { User } from 'src/package/user/domain/models/user'
-import { newUserEmail } from 'src/package/shared/domain/models/email'
-import { newUserPassword } from 'src/package/shared/domain/models/password'
 
 /**
  * Login user
@@ -16,7 +16,6 @@ import { newUserPassword } from 'src/package/shared/domain/models/password'
  * @throws {PasswordInsufficientLowercaseException} - if password lowercase is invalid
  * @throws {PasswordInsufficientNumberException} - if password number is invalid
  * @throws {PasswordInsufficientCharacterException} - if password character is invalid
- * @throws {UserIdInvalidException} - if id is invalid
  * @throws {UserNotFoundException} - if user not found
  * @throws {PasswordNotMatchException} - if password not match
  * @throws {UnknownException} - if unknown error
@@ -26,7 +25,7 @@ export const loginUser = async ( repository: AuthUserRepository,
   password: string ): Promise<Result<User, Error[]>> => {
   const error: Error[] = []
 
-  const emailResult = newUserEmail( {
+  const emailResult = newEmail( {
     value: email
   } )
 
@@ -34,7 +33,7 @@ export const loginUser = async ( repository: AuthUserRepository,
     error.push( emailResult.unwrapErr() )
   }
 
-  const passwordResult = newUserPassword( {
+  const passwordResult = newPassword( {
     value: password
   } )
 

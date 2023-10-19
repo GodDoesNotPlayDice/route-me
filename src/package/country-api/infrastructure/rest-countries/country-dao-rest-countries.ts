@@ -39,6 +39,6 @@ export class CountryDaoRestCountries implements CountryDao {
       return Err( errors )
     }
 
-    return Ok(resultList)
+    return Ok( resultList )
   }
 }

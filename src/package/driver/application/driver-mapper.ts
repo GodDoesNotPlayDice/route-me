@@ -16,19 +16,42 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * Create a json from driver instance
  * @throws {UnknownException} - if unknown error
  */
-export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Error> => {
+export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Error[]> => {
   try {
     const json: Record<string, any> = {
-      id       : driver.id.value,
-      documents: driver.documents.map( ( document ) => driverDocumentToJson(document) )
+      id: driver.id.value
     }
+
+    const err: Error[] = []
+
+    const documents: Record<string, any>[] = []
+
+    for ( const document of driver.documents ) {
+      const documentResult = driverDocumentToJson( document )
+
+      if ( documentResult.isErr() ) {
+        err.push( documentResult.unwrapErr() )
+      }
+      else {
+        documents.push( documentResult.unwrap() )
+      }
+    }
+
+    if ( documents.length > 0 ) {
+      json['documents'] = documents
+    }
+
+    if ( err.length > 0 ) {
+      return Err( err )
+    }
+
     return Ok( json )
   }
   catch ( e ) {
     const err = e instanceof Error
       ? new UnknownException( e.message )
       : new UnknownException( 'error driver to json' )
-    return Err( err )
+    return Err( [ err ] )
   }
 }
 
@@ -54,7 +77,8 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 
   if ( json['documents'] !== undefined ) {
     for ( const document of Object.values( json['documents'] ) ) {
-      const driverDocument = driverDocumentFromJson( document as Record<string, any>)
+      const driverDocument = driverDocumentFromJson(
+        document as Record<string, any> )
 
       if ( driverDocument.isErr() ) {
         err.push( ...driverDocument.unwrapErr() )

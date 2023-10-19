@@ -7,8 +7,10 @@ import { CountryNameInvalidException } from 'src/package/country-api/domain/exce
 import { z } from 'zod'
 
 export const CountryNameSchema = z.object( {
-  common  : z.string().min(1),
-  official: z.string().min(1)
+  common  : z.string()
+             .min( 1 ),
+  official: z.string()
+             .min( 1 )
 } )
 type CountryNameType = z.infer<typeof CountryNameSchema>
 

@@ -27,17 +27,17 @@ export class TripService {
     const result = await getAllTrips( this.tripDao )
 
     if ( result.isErr() ) {
-      console.log('error. get all trip service', result.unwrapErr())
+      console.log( 'error. get all trip service', result.unwrapErr() )
       return []
     }
     return result.unwrap()
   }
 
-  async getAllByState(state: TripState ): Promise<Trip[]>{
-    const result = await this.tripDao.getAllByState(state)
+  async getAllByState( state: TripState ): Promise<Trip[]> {
+    const result = await this.tripDao.getAllByState( state )
 
     if ( result.isErr() ) {
-      console.log('error. get all by state trip service', result.unwrapErr())
+      console.log( 'error. get all by state trip service', result.unwrapErr() )
       return []
     }
     return result.unwrap()
@@ -95,12 +95,12 @@ export class TripService {
     }
 
     const result = await createTrip( this.tripDao, {
-      id             : id.unwrap(),
-      startDate      : props.startDate,
-      chatID         : chat.unwrap(),
-      endLocationID  : endLocation.unwrap(),
-      startLocationID: startLocation.unwrap(),
-      driverID       : driver.unwrap()
+      id           : id.unwrap(),
+      startDate    : props.startDate,
+      chatID       : chat.unwrap(),
+      endLocation  : endLocation.unwrap(),
+      startLocation: startLocation.unwrap(),
+      driver       : driver.unwrap()
     } )
 
     if ( result.isErr() ) {

@@ -9,7 +9,7 @@ export interface NearTrip {
   id: TripID
   startLocationName: LocationName
   endLocationName: LocationName
-  price : TripPrice
+  price: TripPrice
   startDate: ValidDate
   startPosition: Position
 }

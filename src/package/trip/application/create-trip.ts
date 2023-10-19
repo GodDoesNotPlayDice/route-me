@@ -5,30 +5,28 @@ import {
   Result
 } from 'oxide.ts'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
-import { DriverID } from 'src/package/driver/domain/models/driver-id'
-import { LocationID } from 'src/package/location/domain/models/location-id'
+import { Driver } from 'src/package/driver/domain/models/driver'
+import { Location } from 'src/package/location/domain/models/location'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
-import {
-  TripID
-} from 'src/package/trip/domain/models/trip-id'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
 
 export const createTrip = async ( dao: TripDao,
   props: {
-    id : TripID,
-    driverID: DriverID,
+    id: TripID,
+    driver: Driver,
     chatID: ChatID,
     startDate: Date,
-    startLocationID: LocationID
-    endLocationID: LocationID
+    startLocation: Location
+    endLocation: Location
   } ): Promise<Result<Trip, Error[]>> => {
   const err: Error[] = []
 
-  const end          = newEndTripDate( {
+  const end = newEndTripDate( {
     value: props.startDate
   } )
 
@@ -44,17 +42,17 @@ export const createTrip = async ( dao: TripDao,
     err.push( startDate.unwrapErr() )
   }
 
-  const description = newTripDescription({
+  const description = newTripDescription( {
     value: ''
-  })
+  } )
 
   if ( description.isErr() ) {
     err.push( description.unwrapErr() )
   }
 
-  const state = newTripState({
+  const state = newTripState( {
     value: 'Open'
-  })
+  } )
 
   if ( state.isErr() ) {
     err.push( state.unwrapErr() )
@@ -66,26 +64,26 @@ export const createTrip = async ( dao: TripDao,
 
   const result: Trip = {
     id           : props.id,
-    driverID     : props.driverID,
+    driver       : props.driver,
     chatID       : props.chatID,
-    endLocation  : props.endLocationID,
-    startLocation: props.startLocationID,
+    endLocation  : props.endLocation,
+    startLocation: props.startLocation,
     startDate    : startDate.unwrap().value,
     endDate      : end.unwrap().value,
     description  : description.unwrap(),
     state        : state.unwrap(),
-    passengersID : [],
-    categoryID   : None,
+    passengers   : [],
+    category     : None,
     price        : None,
-    seat         : None,
+    seat         : None
   }
 
-  const response =  await dao.create( result )
+  const response = await dao.create( result )
 
   if ( response.isErr() ) {
     err.push( response.unwrapErr() )
     return Err( err )
   }
 
-  return Ok(result)
+  return Ok( result )
 }

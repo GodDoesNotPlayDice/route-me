@@ -1,5 +1,3 @@
-
-
 import { Result } from 'oxide.ts'
 import { Location } from 'src/package/location/domain/models/location'
 import { LocationID } from 'src/package/location/domain/models/location-id'

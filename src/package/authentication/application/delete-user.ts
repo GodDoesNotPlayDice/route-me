@@ -12,17 +12,9 @@ import { Email } from 'src/package/shared/domain/models/email'
  */
 export const deleteUser = async (
   repository: AuthUserRepository,
-  email : Email
+  email: Email
 ): Promise<Result<boolean, Error>> => {
-  // const userIDResult = newUserID({
-  //   value: userID
-  // })
-  //
-  // if ( userIDResult.isErr() ){
-  //   return Err(userIDResult.unwrapErr())
-  // }
-
-  const result = await repository.delete(email)
+  const result = await repository.delete( email )
 
   if ( result.isErr() ) {
     return Err( result.unwrapErr() )

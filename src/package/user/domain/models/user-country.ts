@@ -7,7 +7,8 @@ import { UserCountryInvalidException } from 'src/package/user/domain/exceptions/
 import { z } from 'zod'
 
 export const UserCountrySchema = z.object( {
-  value: z.string().min(1)
+  value: z.string()
+          .min( 1 )
 } )
 
 type UserCountryType = z.infer<typeof UserCountrySchema>

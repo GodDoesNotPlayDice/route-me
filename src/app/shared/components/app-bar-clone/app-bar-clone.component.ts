@@ -20,7 +20,7 @@ import { UrlService } from 'src/app/shared/services/url.service'
     CommonModule
   ]
 } )
-export class AppBarCloneComponent implements OnInit{
+export class AppBarCloneComponent implements OnInit {
 
   constructor( private urlService: UrlService,
     private router: Router )

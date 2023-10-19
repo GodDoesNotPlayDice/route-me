@@ -3,9 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import {
-  Preference
-} from 'src/package/preference/domain/models/preference'
+import { Preference } from 'src/package/preference/domain/models/preference'
 import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { newPreferenceName } from 'src/package/preference/domain/models/preference-name'
@@ -21,7 +19,7 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
   const errors: Error[] = []
 
   const id = newPreferenceID( {
-    value: json[ 'id' ] ?? ''
+    value: json['id'] ?? ''
   } )
 
   if ( id.isErr() ) {
@@ -29,7 +27,7 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
   }
 
   const name = newPreferenceName( {
-    value: json[ 'name' ] ?? ''
+    value: json['name'] ?? ''
   } )
 
   if ( name.isErr() ) {
@@ -37,7 +35,7 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
   }
 
   const icon = newPreferenceIcon( {
-    value: json[ 'icon' ] ?? ''
+    value: json['icon'] ?? ''
   } )
 
   if ( icon.isErr() ) {

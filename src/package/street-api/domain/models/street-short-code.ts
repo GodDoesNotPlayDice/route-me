@@ -8,7 +8,9 @@ import { StreetShortCodeInvalidException } from 'src/package/street-api/domain/e
 import { z } from 'zod'
 
 export const StreetShortCodeSchema = z.object( {
-  value: z.string().min(2).max(2)
+  value: z.string()
+          .min( 2 )
+          .max( 2 )
 } )
 type StreetShortCodeType = z.infer<typeof StreetShortCodeSchema>
 

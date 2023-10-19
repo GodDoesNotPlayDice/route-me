@@ -1,15 +1,5 @@
-import {
-  Injectable,
-  OnInit
-} from '@angular/core'
-import { ViewDidEnter } from '@ionic/angular'
-import {
-  BehaviorSubject,
-  Observable
-} from 'rxjs'
-import {
-  Preference
-} from 'src/package/preference/domain/models/preference'
+import { Injectable } from '@angular/core'
+import { Preference } from 'src/package/preference/domain/models/preference'
 
 @Injectable( {
   providedIn: 'root'

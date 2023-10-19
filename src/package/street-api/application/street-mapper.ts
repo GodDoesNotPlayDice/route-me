@@ -9,9 +9,7 @@ import { Street } from 'src/package/street-api/domain/models/street'
 import { newStreetName } from 'src/package/street-api/domain/models/street-name'
 import { newStreetPlace } from 'src/package/street-api/domain/models/street-place'
 import { newStreetShortCode } from 'src/package/street-api/domain/models/street-short-code'
-import {
-  StreetsData
-} from 'src/package/street-api/domain/models/streets-data'
+import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
 
 /**
  * Create a street instance from json
@@ -20,9 +18,9 @@ import {
  * @throws {PositionInvalidException} - if some position is invalid
  */
 export const streetsDataFromJson = ( json: Record<string, any> ): Result<StreetsData, Error[]> => {
-  const err: Error[]   = []
+  const err: Error[] = []
 
-  const streets : Street[] = []
+  const streets: Street[] = []
   for ( const value of Object.values( json['features'] ) ) {
     const entry = value as Record<string, any>
 
@@ -51,20 +49,20 @@ export const streetsDataFromJson = ( json: Record<string, any> ): Result<Streets
       err.push( name.unwrapErr() )
     }
 
-    const contextLength = Object.values(entry['context']).length
-    const shortCode = newStreetShortCode({
+    const contextLength = Object.values( entry['context'] ).length
+    const shortCode     = newStreetShortCode( {
       value: entry['context'][contextLength - 1]['short_code']
-    })
+    } )
 
     if ( err.length > 0 ) {
       break
     }
 
     streets.push( {
-      center: positionResult.unwrap(),
+      center   : positionResult.unwrap(),
       shortCode: shortCode.unwrap(),
-      place : place.unwrap(),
-      name  : name.unwrap()
+      place    : place.unwrap(),
+      name     : name.unwrap()
     } )
   }
 
@@ -85,12 +83,12 @@ export const streetToJson = ( street: Street ): Result<Record<string, any>, Erro
   try {
     const json: Record<string, any> = {
       short_code: street.shortCode.value,
-      center: {
+      center    : {
         lat: street.center.lat,
         lng: street.center.lng
       },
-      place : street.place.value,
-      name  : street.name.value
+      place     : street.place.value,
+      name      : street.name.value
     }
     return Ok( json )
   }

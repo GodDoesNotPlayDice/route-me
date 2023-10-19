@@ -23,7 +23,7 @@ export class LocationService {
   } ): Promise<Option<LocationID>> {
     const result = await createLocation( this.locationDao, props )
 
-    if ( result.isErr() ){
+    if ( result.isErr() ) {
       return None
     }
     return Some( result.unwrap().id )

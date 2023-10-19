@@ -1,8 +1,5 @@
 import { CommonModule } from '@angular/common'
-import {
-  Component,
-  OnInit
-} from '@angular/core'
+import { Component } from '@angular/core'
 import {
   IonicModule,
   ViewDidEnter
@@ -35,7 +32,7 @@ export class HomePage implements ViewDidEnter {
     private trip: TripService )
   {}
 
- async ionViewDidEnter(): Promise<void> {
+  async ionViewDidEnter(): Promise<void> {
     // this.info = this.driversService.getDrivers()
     //                 .filter( ( driver ) => {
     //                   return driver.state === TripStateEnum.Open
@@ -44,7 +41,7 @@ export class HomePage implements ViewDidEnter {
     const result = await this.trip.getAllByState( TripStateEnum.Open )
 
     if ( result.length > 0 ) {
-      this.info = result.map( ( trip ): DriverCardInfo => {
+      this.info    = result.map( ( trip ): DriverCardInfo => {
         return {
           cost             : trip.price.isNone()
             ? 0

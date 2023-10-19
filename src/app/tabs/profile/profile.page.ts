@@ -22,20 +22,20 @@ import { User } from 'src/package/user/domain/models/user'
     LabeledIconComponent
   ]
 } )
-export class ProfilePage implements ViewDidEnter{
+export class ProfilePage implements ViewDidEnter {
 
   constructor( private authService: AuthService ) {
   }
 
   public ionViewDidEnter(): void {
     if ( this.authService.currentUser.isSome() ) {
-    this.user      = this.authService.currentUser.unwrap()
-    this.passenger = this.authService.currentPassenger.unwrap()
+      this.user      = this.authService.currentUser.unwrap()
+      this.passenger = this.authService.currentPassenger.unwrap()
     }
 
     if ( this.authService.currentPassenger.isSome() ) {
-    this.edad      =
-      new Date().getFullYear() - this.passenger!.birthDay.value.getFullYear()
+      this.edad =
+        new Date().getFullYear() - this.passenger!.birthDay.value.getFullYear()
     }
 
   }

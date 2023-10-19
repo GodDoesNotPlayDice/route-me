@@ -17,23 +17,21 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {PositionInvalidException} - if position is invalid
  */
 export const locationFromJson = ( json: Record<string, any> ): Result<Location, Error[]> => {
-  const err: Error[] = []
-
-  const result = newLocation({
-    id: json['id'] ?? '',
-    name: json['name'] ?? '',
-    countryCode: json['countryCode'] ?? '',
-    position: {
-      lat: json['position'] === undefined ? '' : json['position']['latitude'] ?? '',
-      lng: json['position'] === undefined ? '' : json['position']['longitude'] ?? ''
+  const result = newLocation( {
+    id         : json['id'] ?? '',
+    name       : json['name'] ?? '',
+    countryCode: json['country_code'] ?? '',
+    position   : {
+      lat: json['position']?.latitude ?? '',
+      lng: json['position']?.longitude ?? ''
     }
-  })
+  } )
 
-  if ( result.isErr() ){
-    return Err(result.unwrapErr())
+  if ( result.isErr() ) {
+    return Err( result.unwrapErr() )
   }
 
-  return Ok(result.unwrap())
+  return Ok( result.unwrap() )
 }
 
 /**
@@ -43,10 +41,10 @@ export const locationFromJson = ( json: Record<string, any> ): Result<Location, 
 export const locationToJson = ( location: Location ): Result<Record<string, any>, Error> => {
   try {
     return Ok( {
-      id         : location.id.value,
-      name       : location.name.value,
-      countryCode: location.countryCode.value,
-      position   : {
+      id          : location.id.value,
+      name        : location.name.value,
+      country_code: location.countryCode.value,
+      position    : {
         latitude : location.position.lat,
         longitude: location.position.lng
       }

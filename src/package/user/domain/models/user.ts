@@ -15,14 +15,14 @@ import { UserName } from 'src/package/user/domain/models/user-name'
 export interface User {
   id: UserID
   email: Email,
-  name : UserName
-  lastName : UserLastName
-  description : UserDescription
-  gender : Gender
-  country : UserCountry
-  birthDay : UserBirthDay
-  phone : Phone
-  preferences : Preference[]
-  rating : Rating
-  driver : Option<Driver>
+  name: UserName
+  lastName: UserLastName
+  description: UserDescription
+  gender: Gender
+  country: UserCountry
+  birthDay: UserBirthDay
+  phone: Phone
+  preferences: Preference[]
+  rating: Rating
+  driver: Option<Driver>
 }

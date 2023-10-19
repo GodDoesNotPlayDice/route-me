@@ -9,22 +9,22 @@ import { z } from 'zod'
 export const UserBirthDaySchema = z.object( {
   value: z.date()
 } )
-                                        .superRefine( ( val, ctx ) => {
-                                          const currentDate = new Date()
-                                          const date18years = new Date(
-                                            currentDate.getFullYear() - 18,
-                                            currentDate.getMonth(),
-                                            currentDate.getDay()
-                                          )
-                                          if ( val.value >= date18years ) {
-                                            ctx.addIssue( {
-                                              code   : z.ZodIssueCode.custom,
-                                              message: 'Not a valid date'
-                                            } )
-                                            return z.NEVER
-                                          }
-                                          return val
-                                        } )
+                                   .superRefine( ( val, ctx ) => {
+                                     const currentDate = new Date()
+                                     const date18years = new Date(
+                                       currentDate.getFullYear() - 18,
+                                       currentDate.getMonth(),
+                                       currentDate.getDay()
+                                     )
+                                     if ( val.value >= date18years ) {
+                                       ctx.addIssue( {
+                                         code   : z.ZodIssueCode.custom,
+                                         message: 'Not a valid date'
+                                       } )
+                                       return z.NEVER
+                                     }
+                                     return val
+                                   } )
 
 type UserBirthDayType = z.infer<typeof UserBirthDaySchema>
 

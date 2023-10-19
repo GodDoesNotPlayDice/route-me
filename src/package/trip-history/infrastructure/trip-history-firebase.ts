@@ -6,11 +6,13 @@ import {
 } from 'oxide.ts'
 import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
-import { tripHistoryFromJson } from 'src/package/trip-history/application/trip-history-mapper'
+import {
+  tripHistoryFromJson,
+  tripHistoryToJson
+} from 'src/package/trip-history/application/trip-history-mapper'
 import { TripHistoryDao } from 'src/package/trip-history/domain/dao/trip-history-dao'
 import { TripHistory } from 'src/package/trip-history/domain/models/trip-history'
 import { TripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
-import { UserID } from 'src/package/user/domain/models/user-id'
 
 export class TripHistoryFirebase implements TripHistoryDao {
   constructor( private firebase: AngularFireDatabase ) {
@@ -22,15 +24,15 @@ export class TripHistoryFirebase implements TripHistoryDao {
    * Create trip history
    * @throws {FirebaseOperationException} - if operation failed
    */
-  async create( trip: TripHistory ): Promise<Result<boolean, Error>> {
+  async create( trip: TripHistory ): Promise<Result<boolean, Error[]>> {
     let completed: string | null = null
+    const json                   = tripHistoryToJson( trip )
+
+    if ( json.isErr() ) {
+      return Err( json.unwrapErr() )
+    }
     await this.firebase.database.ref( this.collectionKey )
-              .push(
-                {
-                  id    : trip.id.value,
-                  userID: trip.userID.value,
-                  tripID: trip.tripID.value
-                },
+              .push( json,
                 ( error ) => {
                   if ( !error ) {
                     completed = 'completed'
@@ -38,35 +40,7 @@ export class TripHistoryFirebase implements TripHistoryDao {
                 }
               )
     if ( completed === null ) {
-      return Err( new FirebaseOperationException() )
-    }
-    return Ok( true )
-  }
-
-  /**
-   * Delete trip history
-   * @throws {FirebaseOperationException} - if operation failed
-   * @throws {FirebaseKeyNotFoundException} - if key not found
-   */
-  async delete( id: TripHistoryID ): Promise<Result<boolean, Error>> {
-    const keySaved = await this.getKey( id )
-
-    if ( keySaved.isErr() ) {
-      return Err( keySaved.unwrapErr() )
-    }
-    let completed: string | null = null
-
-    await this.firebase.database.ref( this.collectionKey )
-              .child( keySaved.unwrap() )
-              .remove(
-                ( error ) => {
-                  if ( !error ) {
-                    completed = 'completed'
-                  }
-                }
-              )
-    if ( completed === null ) {
-      return Err( new FirebaseOperationException() )
+      return Err( [ new FirebaseOperationException() ] )
     }
     return Ok( true )
   }
@@ -112,7 +86,7 @@ export class TripHistoryFirebase implements TripHistoryDao {
    */
   async getById( id: TripHistoryID ): Promise<Result<TripHistory, Error[]>> {
     return await this.firebase.database.ref( this.collectionKey )
-                     .orderByChild( 'userID' )
+                     .orderByChild( 'id' )
                      .equalTo( id.value )
                      .get()
                      .then( async ( snapshot ) => {
@@ -133,42 +107,12 @@ export class TripHistoryFirebase implements TripHistoryDao {
   }
 
   /**
-   * Update trip history
-   * @throws {FirebaseOperationException} - if operation failed
-   */
-  async update( trip: TripHistory ): Promise<Result<boolean, Error>> {
-    const keySaved = await this.getKey( trip.userID )
-
-    if ( keySaved.isErr() ) {
-      return Err( keySaved.unwrapErr() )
-    }
-    let completed: string | null = null
-
-    await this.firebase.database.ref( this.collectionKey )
-              .child( keySaved.unwrap() )
-              .set( {
-                  id    : trip.id.value,
-                  userID: trip.userID.value,
-                  tripID: trip.tripID.value
-                },
-                ( error ) => {
-                  if ( !error ) {
-                    completed = 'completed'
-                  }
-                } )
-    if ( completed === null ) {
-      return Err( new FirebaseOperationException() )
-    }
-    return Ok( true )
-  }
-
-  /**
    * Get firebase key by id
    * @throws {FirebaseKeyNotFoundException} - if key not found
    */
-  private async getKey( id: UserID ): Promise<Result<string, Error>> {
+  private async getKey( id: TripHistoryID ): Promise<Result<string, Error>> {
     return await this.firebase.database.ref( this.collectionKey )
-                     .orderByChild( 'userID' )
+                     .orderByChild( 'id' )
                      .equalTo( id.value )
                      .get()
                      .then(

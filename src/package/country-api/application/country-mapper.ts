@@ -3,9 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import {
-  Country
-} from 'src/package/country-api/domain/models/country'
+import { Country } from 'src/package/country-api/domain/models/country'
 import { newCountryFlagUrl } from 'src/package/country-api/domain/models/country-flag-url'
 import { newCountryName } from 'src/package/country-api/domain/models/country-name'
 import { newCountryNameCode } from 'src/package/country-api/domain/models/country-name-code'
@@ -31,8 +29,8 @@ export const countryFromJson = ( json: Record<string, any> ): Result<Country, Er
   }
 
   const name = newCountryName( {
-    common  : json['name'] === undefined ? '' : json['name']['common'] ?? '',
-    official  : json['name'] === undefined ? '' : json['name']['official'] ?? ''
+    common  : json['name']?.common ?? '',
+    official: json['name']?.official ?? ''
   } )
 
   if ( name.isErr() ) {
@@ -48,8 +46,8 @@ export const countryFromJson = ( json: Record<string, any> ): Result<Country, Er
   }
 
   const number = newCountryNumberCode( {
-    root: json['idd'] === undefined ? '' : json['idd']['root'] ?? '',
-    suffixes: json['idd'] === undefined ? '' : json['idd']['suffixes'] ?? ''
+    root    : json['idd']?.root ?? '',
+    suffixes: json['idd']?.suffixes ?? ''
   } )
 
   if ( number.isErr() ) {

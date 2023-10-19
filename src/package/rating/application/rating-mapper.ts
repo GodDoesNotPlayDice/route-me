@@ -3,9 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import {
-  Rating
-} from 'src/package/rating/domain/models/rating'
+import { Rating } from 'src/package/rating/domain/models/rating'
 import { newRatingID } from 'src/package/rating/domain/models/rating-id'
 import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'

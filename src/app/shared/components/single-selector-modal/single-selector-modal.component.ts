@@ -9,9 +9,7 @@ import {
   ModalController
 } from '@ionic/angular'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
-import {
-  SingleSelectorData
-} from 'src/package/shared/domain/components/single-selector-data'
+import { SingleSelectorData } from 'src/package/shared/domain/components/single-selector-data'
 
 @Component( {
   standalone : true,
@@ -36,7 +34,7 @@ export class SingleSelectorModalComponent implements OnInit {
 
   ngOnInit() {
     const list: SingleSelectorData[] = this.databaseData.map(
-      ( data ) : SingleSelectorData=>
+      ( data ): SingleSelectorData =>
       {
         const notSelected = ( {
           ...data,

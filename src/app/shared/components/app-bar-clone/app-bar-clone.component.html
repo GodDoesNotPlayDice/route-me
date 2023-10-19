@@ -1,8 +1,10 @@
 <div class="h-14 w-full flex shadow-md shadow-neutral-400 items-center">
-  <div *ngIf="leadNameIcon !== ''" class="basis-2/12 flex justify-center">
+  <div *ngIf="leadNameIcon !== ''"
+    class="basis-2/12 flex justify-center">
     <ion-icon
       (click)="leadClick()"
-      class="w-6 h-6" [name]="leadNameIcon"></ion-icon>
+      class="w-6 h-6"
+      [name]="leadNameIcon"></ion-icon>
   </div>
   <div
     [ngClass]="{
@@ -16,6 +18,6 @@
     'basis-4/12' : leadNameIcon !== '',
     }"
     class="flex justify-end pr-4">
-  <ng-content></ng-content>
+    <ng-content></ng-content>
   </div>
 </div>

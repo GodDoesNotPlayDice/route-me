@@ -9,10 +9,10 @@ import { Country } from 'src/package/country-api/domain/models/country'
 @Injectable( {
   providedIn: 'root'
 } )
-export class CountryPhoneCodeService{
+export class CountryPhoneCodeService {
 
 
-  constructor( private countryDao : CountryDao ) {}
+  constructor( private countryDao: CountryDao ) {}
 
   private countriesList                        = new BehaviorSubject<Country[]>(
     [] )
@@ -22,17 +22,18 @@ export class CountryPhoneCodeService{
     const countriesResult = await this.countryDao.getAll()
 
     if ( countriesResult.isOk() ) {
-      const list = countriesResult.unwrap().sort( ( a, b ) => {
-        if ( a.name.common > b.name.common ) {
-          return 1
-        }
-        if ( a.name.common < b.name.common ) {
-          return -1
-        }
-        return 0
-      } )
+      const list = countriesResult.unwrap()
+                                  .sort( ( a, b ) => {
+                                    if ( a.name.common > b.name.common ) {
+                                      return 1
+                                    }
+                                    if ( a.name.common < b.name.common ) {
+                                      return -1
+                                    }
+                                    return 0
+                                  } )
       this.countriesList.next( list )
-      console.log('country ready')
+      console.log( 'country ready' )
     }
   }
 }

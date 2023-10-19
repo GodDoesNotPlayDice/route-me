@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const UserNameSchema = z.object( {
   value: z.string()
-          .min(1)
+          .min( 1 )
 } )
 
 type UserNameType = z.infer<typeof UserNameSchema>

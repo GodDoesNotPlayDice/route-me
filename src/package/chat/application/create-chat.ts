@@ -6,11 +6,9 @@ import {
 import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { Chat } from 'src/package/chat/domain/models/chat'
 import { newChatID } from 'src/package/chat/domain/models/chat-id'
-import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { ulid } from 'ulidx'
 
-export const createChat = async ( dao: ChatDao,
-  props: { tripID: TripID } ): Promise<Result<Chat, Error>> => {
+export const createChat = async ( dao: ChatDao ): Promise<Result<Chat, Error>> => {
 
   const id = newChatID( {
     value: ulid()
@@ -21,8 +19,8 @@ export const createChat = async ( dao: ChatDao,
   }
 
   const chat: Chat = {
-    id    : id.unwrap(),
-    tripID: props.tripID
+    id      : id.unwrap(),
+    messages: []
   }
   const result     = await dao.create( chat )
 

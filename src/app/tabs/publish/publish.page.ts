@@ -6,9 +6,7 @@ import {
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
 import {
-  AlertController,
   IonicModule,
-  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
@@ -96,19 +94,19 @@ export class PublishPage implements ViewDidEnter {
               startDate    : this.dateInput.dateControl.value!
             } )
             if ( result ) {
-              await this.toastService.presentToast({
-                message: 'Viaje creado con exito',
+              await this.toastService.presentToast( {
+                message : 'Viaje creado con exito',
                 duration: 1500,
-                position: 'bottom',
-              })
+                position: 'bottom'
+              } )
               await this.reset()
             }
             else {
-              await this.toastService.presentToast({
-                message: 'Hubo un problema en la creacion del viaje',
+              await this.toastService.presentToast( {
+                message : 'Hubo un problema en la creacion del viaje',
                 duration: 1500,
-                position: 'bottom',
-              })
+                position: 'bottom'
+              } )
             }
           }
         }

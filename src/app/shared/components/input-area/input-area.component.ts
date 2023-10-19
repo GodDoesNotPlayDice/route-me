@@ -5,8 +5,7 @@ import {
 } from '@angular/core'
 import {
   FormControl,
-  ReactiveFormsModule,
-  Validators
+  ReactiveFormsModule
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 
@@ -25,7 +24,7 @@ export class InputAreaComponent {
   @Input() title: string       = 'Sobre Mi'
   @Input() placeholder: string = ''
   @Input() label: string       = ''
-  value: string       = ''
+  value: string                = ''
 
   readonly textControl = new FormControl( '', control => {
     // control.addValidators( Validators.required )

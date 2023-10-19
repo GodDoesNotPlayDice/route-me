@@ -18,7 +18,7 @@ describe( 'ActivableCircleComponent', () => {
     } )
            .compileComponents()
 
-    fixture = TestBed.createComponent( ActivableCircleComponent )
+    fixture   = TestBed.createComponent( ActivableCircleComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

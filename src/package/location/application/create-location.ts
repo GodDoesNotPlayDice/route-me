@@ -8,9 +8,7 @@ import { Location } from 'src/package/location/domain/models/location'
 import { newLocationCountryCode } from 'src/package/location/domain/models/location-country-code'
 import { newLocationID } from 'src/package/location/domain/models/location-id'
 import { newLocationName } from 'src/package/location/domain/models/location-name'
-import {
-  Position,
-} from 'src/package/position-api/domain/models/position'
+import { Position } from 'src/package/position-api/domain/models/position'
 import { ulid } from 'ulidx'
 
 export const createLocation = async ( repository: LocationDao, props: {
@@ -18,27 +16,27 @@ export const createLocation = async ( repository: LocationDao, props: {
   countryCode: string,
   position: Position
 } ): Promise<Result<Location, Error[]>> => {
-  const err : Error[] = []
+  const err: Error[] = []
 
-  const id = newLocationID({
+  const id = newLocationID( {
     value: ulid()
-  })
+  } )
 
   if ( id.isErr() ) {
     err.push( id.unwrapErr() )
   }
 
-  const name = newLocationName({
+  const name = newLocationName( {
     value: props.name
-  })
+  } )
 
   if ( name.isErr() ) {
     err.push( name.unwrapErr() )
   }
 
-  const code = newLocationCountryCode({
+  const code = newLocationCountryCode( {
     value: props.countryCode
-  })
+  } )
 
   if ( code.isErr() ) {
     err.push( code.unwrapErr() )
@@ -48,19 +46,19 @@ export const createLocation = async ( repository: LocationDao, props: {
     return Err( err )
   }
 
-  const location : Location = {
+  const location: Location = {
     id         : id.unwrap(),
     name       : name.unwrap(),
     countryCode: code.unwrap(),
     position   : props.position
   }
 
-  const result = await repository.create(location)
+  const result = await repository.create( location )
 
-  if ( result.isErr() ){
-    err.push( result.unwrapErr())
+  if ( result.isErr() ) {
+    err.push( result.unwrapErr() )
     return Err( err )
   }
 
-  return Ok(location)
+  return Ok( location )
 }

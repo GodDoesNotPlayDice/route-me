@@ -7,7 +7,8 @@ import { UserLastNameInvalidException } from 'src/package/user/domain/exceptions
 import { z } from 'zod'
 
 export const UserLastNameSchema = z.object( {
-  value: z.string().min(1)
+  value: z.string()
+          .min( 1 )
 } )
 
 type UserLastNameType = z.infer<typeof UserLastNameSchema>

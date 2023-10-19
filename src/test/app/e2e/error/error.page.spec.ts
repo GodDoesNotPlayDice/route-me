@@ -9,7 +9,7 @@ describe( 'ErrorPage', () => {
   let fixture: ComponentFixture<ErrorPage>
 
   beforeEach( async () => {
-    fixture = TestBed.createComponent( ErrorPage )
+    fixture   = TestBed.createComponent( ErrorPage )
     component = fixture.componentInstance
     fixture.detectChanges()
   } )

@@ -48,7 +48,8 @@ export class PreferenceDaoApi implements PreferenceDao {
       params: {
         id: id.value
       }
-    } ).toPromise()
+    } )
+                               .toPromise()
 
     if ( response === undefined ) {
       return Err( [ new ApiOperationException( 'preference api. get by id' ) ] )
@@ -57,10 +58,10 @@ export class PreferenceDaoApi implements PreferenceDao {
     const result = preferenceFromJson( response )
 
     if ( result.isErr() ) {
-      return Err(result.unwrapErr())
+      return Err( result.unwrapErr() )
     }
 
-    return Ok( result.unwrap())
+    return Ok( result.unwrap() )
   }
 
 }

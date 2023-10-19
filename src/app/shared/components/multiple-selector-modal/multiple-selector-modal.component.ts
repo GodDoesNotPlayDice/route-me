@@ -10,9 +10,7 @@ import {
 } from '@ionic/angular'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { MultipleSelectorItemComponent } from 'src/app/shared/components/multiple-selector-item/multiple-selector-item.component'
-import {
-  MultipleSelectorData
-} from 'src/package/shared/domain/components/multiple-selector-data'
+import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,
@@ -32,7 +30,7 @@ export class MultipleSelectorModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataList = Array.from( this.databaseData.values() )
-                         .map( ( data ) : MultipleSelectorData => {
+                         .map( ( data ): MultipleSelectorData => {
                            const isSelected = this.selectedData.get( data.id )
                            if ( isSelected !== undefined ) {
                              return ( {

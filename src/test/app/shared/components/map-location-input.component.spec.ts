@@ -18,7 +18,7 @@ describe( 'MapLocationInputComponent', () => {
     } )
            .compileComponents()
 
-    fixture = TestBed.createComponent( MapLocationInputComponent )
+    fixture   = TestBed.createComponent( MapLocationInputComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

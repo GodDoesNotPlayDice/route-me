@@ -12,16 +12,8 @@ export class TripHistoryApi implements TripHistoryDao {
    * Create trip history
    * @throws {ApiOperationException} - if api operation failed
    */
-  async create( trip: TripHistory ): Promise<Result<boolean, Error>> {
-    return Err( new ApiOperationException() )
-  }
-
-  /**
-   * Delete trip history
-   @throws {ApiOperationException} - if api operation failed
-   */
-  async delete( id: TripHistoryID ): Promise<Result<boolean, Error>> {
-    return Err( new ApiOperationException() )
+  async create( trip: TripHistory ): Promise<Result<boolean, Error[]>> {
+    return Err( [new ApiOperationException()] )
   }
 
   /**
@@ -39,13 +31,4 @@ export class TripHistoryApi implements TripHistoryDao {
   async getById( id: TripHistoryID ): Promise<Result<TripHistory, Error[]>> {
     return Err( [ new ApiOperationException() ] )
   }
-
-  /**
-   * Update trip history
-   @throws {ApiOperationException} - if api operation failed
-   */
-  async update( trip: TripHistory ): Promise<Result<boolean, Error>> {
-    return Err( new ApiOperationException() )
-  }
-
 }

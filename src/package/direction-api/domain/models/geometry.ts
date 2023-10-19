@@ -7,7 +7,8 @@ import { GeometryInvalidException } from 'src/package/direction-api/domain/excep
 import { z } from 'zod'
 
 export const GeometrySchema = z.object( {
-  values: z.array( z.array( z.number() ) ).min(1)
+  values: z.array( z.array( z.number() ) )
+           .min( 1 )
 } )
 type GeometryType = z.infer<typeof GeometrySchema>
 

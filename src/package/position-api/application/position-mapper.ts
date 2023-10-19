@@ -13,7 +13,6 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * Create a position instance from json
  * @throws {PositionInvalidException} - if position is invalid
  */
-// export const positionFromJson = ( json: Record<string, any> ): Option<Position> => {
 export const positionFromJson = ( json: Record<string, any> ): Result<Position, Error> => {
   return newPosition( {
     lat: Number( json['latitude'] ),
@@ -23,7 +22,7 @@ export const positionFromJson = ( json: Record<string, any> ): Result<Position, 
 
 /**
  * Create a json from position instance
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const positionToJson = ( position: Position ): Result<Record<string, any>, Error> => {
   try {

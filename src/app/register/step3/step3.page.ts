@@ -10,7 +10,6 @@ import {
 import { Router } from '@angular/router'
 import {
   IonicModule,
-  ToastController,
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'

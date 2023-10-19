@@ -13,8 +13,8 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
-import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
 import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
+import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { RadioInputComponent } from 'src/app/shared/components/radio-input/radio-input.component'
@@ -105,7 +105,7 @@ export class Step2Page implements ViewDidEnter {
     ] )
   }
 
-  async submit( ) {
+  async submit() {
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 

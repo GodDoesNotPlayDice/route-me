@@ -9,7 +9,7 @@ import { UserID } from 'src/package/user/domain/models/user-id'
 
 /**
  * Logout user
- * @throws {UnknowException} - if unknown error
+ * @throws {UnknownException} - if unknown error
  */
 export const logoutUser = async (
   repository: AuthUserRepository,

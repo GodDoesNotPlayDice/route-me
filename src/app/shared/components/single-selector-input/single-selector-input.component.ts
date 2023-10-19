@@ -27,7 +27,7 @@ import { SingleSelectorData } from 'src/package/shared/domain/components/single-
     SingleSelectorModalComponent
   ]
 } )
-export class SingleSelectorInputComponent implements OnInit{
+export class SingleSelectorInputComponent implements OnInit {
 
   constructor( private modalCtrl: ModalController ) {}
 
@@ -36,7 +36,7 @@ export class SingleSelectorInputComponent implements OnInit{
   lastSelected: SingleSelectorData | undefined
   @Input( { required: true } ) label: string
   @Input() required = false
-  initialLabel = ''
+  initialLabel      = ''
 
   readonly singleSelectorControl = new FormControl( '', control => {
     if ( this.required && control.value === '' ) {

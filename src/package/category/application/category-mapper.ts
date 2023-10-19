@@ -3,9 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import {
-  Category
-} from 'src/package/category/domain/models/category'
+import { Category } from 'src/package/category/domain/models/category'
 import { newCategoryID } from 'src/package/category/domain/models/category-id'
 import { newCategoryName } from 'src/package/category/domain/models/category-name'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'

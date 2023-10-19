@@ -63,7 +63,7 @@ export const userToJson = ( user: User ): Result<Record<string, any>, Error[]> =
       const driver = driverToJson( user.driver.unwrap() )
 
       if ( driver.isErr() ) {
-        err.push( driver.unwrapErr() )
+        err.push( ...driver.unwrapErr() )
       }
       else {
         json['driver'] = driver.unwrap()
@@ -82,7 +82,7 @@ export const userToJson = ( user: User ): Result<Record<string, any>, Error[]> =
       }
     }
 
-    if ( err.length > 0 ) {
+    if ( preferences.length > 0 ) {
       json['preferences'] = preferences
     }
 
@@ -226,17 +226,17 @@ export const userFromJson = ( json: Record<string, any> ): Result<User, Error[]>
   }
 
   return Ok( {
-    id   : id.unwrap(),
-    email: email.unwrap(),
-    name : name.unwrap(),
-    lastName: lastName.unwrap(),
+    id         : id.unwrap(),
+    email      : email.unwrap(),
+    name       : name.unwrap(),
+    lastName   : lastName.unwrap(),
     description: description.unwrap(),
-    gender: gender.unwrap(),
-    phone: phone.unwrap(),
-    country: country.unwrap(),
-    birthDay: birthDay.unwrap(),
-    rating: rating.unwrap(),
+    gender     : gender.unwrap(),
+    phone      : phone.unwrap(),
+    country    : country.unwrap(),
+    birthDay   : birthDay.unwrap(),
+    rating     : rating.unwrap(),
     preferences: preferences,
-    driver: driver.isErr() ? None : Some( driver.unwrap() )
+    driver     : driver.isErr() ? None : Some( driver.unwrap() )
   } )
 }
