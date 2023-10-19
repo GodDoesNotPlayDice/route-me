@@ -7,7 +7,7 @@ import { FirebaseOperationException } from 'src/package/shared/infrastructure/ex
 import { TripHistoryPreviewDao } from 'src/package/trip-history/domain/dao/trip-history-preview-dao'
 import { TripHistoryPreview } from 'src/package/trip-history/domain/models/trip-history-preview'
 
-export class TripHistoryPreviewFirebase implements  TripHistoryPreviewDao{
+export class TripHistoryPreviewFirebase implements TripHistoryPreviewDao {
   constructor( private firebase: AngularFireDatabase ) {
   }
 

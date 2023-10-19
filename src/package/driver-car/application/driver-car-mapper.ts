@@ -1,7 +1,7 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
 import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
@@ -14,20 +14,20 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {UnknownException} - if unknown error
  */
 export const driverCarToJson = ( driverCar: DriverCar ): Result<Record<string, any>, Error> => {
-	try {
-		const json: Record<string, any> = {
-			id   : driverCar.id.value,
-			seat : driverCar.seat.value,
-			model: driverCar.model.value
-		}
-		return Ok( json )
-	}
-	catch ( e ) {
-		const err = e instanceof Error
-			? new UnknownException( e.message )
-			: new UnknownException( 'error driver car to json' )
-		return Err( err )
-	}
+  try {
+    const json: Record<string, any> = {
+      id   : driverCar.id.value,
+      seat : driverCar.seat.value,
+      model: driverCar.model.value
+    }
+    return Ok( json )
+  }
+  catch ( e ) {
+    const err = e instanceof Error
+      ? new UnknownException( e.message )
+      : new UnknownException( 'error driver car to json' )
+    return Err( err )
+  }
 }
 
 /**
@@ -37,40 +37,40 @@ export const driverCarToJson = ( driverCar: DriverCar ): Result<Record<string, a
  * @throws {DriverCarSeatInvalidException} - if seat is invalid
  */
 export const driverCarFromJson = ( json: Record<string, any> ): Result<DriverCar, Error[]> => {
-	const err: Error[] = []
+  const err: Error[] = []
 
-	const id = newDriverCarID( {
-		value: json['id'] ?? ''
-	} )
+  const id = newDriverCarID( {
+    value: json['id'] ?? ''
+  } )
 
-	if ( id.isErr() ) {
-		err.push( id.unwrapErr() )
-	}
+  if ( id.isErr() ) {
+    err.push( id.unwrapErr() )
+  }
 
-	const model = newDriverCarModel( {
-		value: json['model'] ?? ''
-	} )
+  const model = newDriverCarModel( {
+    value: json['model'] ?? ''
+  } )
 
-	if ( model.isErr() ) {
-		err.push( model.unwrapErr() )
-	}
+  if ( model.isErr() ) {
+    err.push( model.unwrapErr() )
+  }
 
-	const seat = newDriverCarSeat( {
-		value: json['seat'] ?? ''
-	} )
+  const seat = newDriverCarSeat( {
+    value: json['seat'] ?? ''
+  } )
 
-	if ( seat.isErr() ) {
-		err.push( seat.unwrapErr() )
-	}
+  if ( seat.isErr() ) {
+    err.push( seat.unwrapErr() )
+  }
 
-	if ( err.length > 0 ) {
-		return Err( err )
-	}
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
 
-	return Ok( {
-			id   : id.unwrap(),
-			model: model.unwrap(),
-			seat : seat.unwrap()
-		}
-	)
+  return Ok( {
+      id   : id.unwrap(),
+      model: model.unwrap(),
+      seat : seat.unwrap()
+    }
+  )
 }

@@ -8,10 +8,10 @@ import { User } from 'src/package/user/domain/models/user'
 
 /**
  * Get all users
- * @throws {UserNotFoundException} - if users not found
+ * @throws {InfrastructureOperationException} - if operation failed
  */
-export const getAllUsers = async ( repository: UserDao ): Promise<Result<User[], Error[]>> => {
-  const result = await repository.getAll()
+export const getAllUser = async ( dao: UserDao ): Promise<Result<User[], Error[]>> => {
+  const result = await dao.getAll()
 
   if ( result.isErr() ) {
     return Err( result.unwrapErr() )

@@ -4,7 +4,7 @@ import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card
 @Injectable( {
   providedIn: 'root'
 } )
-export class DriversService {
+export class DriverService {
 
   getDrivers(): DriverCardInfo[] {
     return driveInfoList

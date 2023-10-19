@@ -18,7 +18,7 @@ describe( 'AppBarCloneComponent', () => {
     } )
            .compileComponents()
 
-    fixture = TestBed.createComponent( AppBarCloneComponent )
+    fixture   = TestBed.createComponent( AppBarCloneComponent )
     component = fixture.componentInstance
     fixture.detectChanges()
   } ) )

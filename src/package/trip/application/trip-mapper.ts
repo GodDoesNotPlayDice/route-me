@@ -21,6 +21,11 @@ import {
   locationToJson
 } from 'src/package/location/application/location-mapper'
 import {
+  passengerFromJson,
+  passengerToJson
+} from 'src/package/passenger/application/passenger-mapper'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import {
   dateFromJSON,
   dateToJSON
 } from 'src/package/shared/config/helper/date/date-mapper'
@@ -29,16 +34,8 @@ import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
-import {
-  newTripPrice,
-  TripPrice
-} from 'src/package/trip/domain/models/trip-price'
+import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
-import {
-  userFromJson,
-  userToJson
-} from 'src/package/user/application/user-mapper'
-import { User } from 'src/package/user/domain/models/user'
 
 /**
  * Create a trip instance from json
@@ -58,15 +55,15 @@ import { User } from 'src/package/user/domain/models/user'
 export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]> => {
   const err: Error[] = []
 
-  const passenger: User[] = []
+  const passenger: Passenger[] = []
   if ( json['passengers'] ) {
     for ( const user of Object.values( json['passengers'] ) ) {
-      const userResult = userFromJson( user as Record<string, any> )
-      if ( userResult.isErr() ) {
-        err.push( ...userResult.unwrapErr() )
+      const passengerResult = passengerFromJson( user as Record<string, any> )
+      if ( passengerResult.isErr() ) {
+        err.push( ...passengerResult.unwrapErr() )
       }
       else {
-        passenger.push( userResult.unwrap() )
+        passenger.push( passengerResult.unwrap() )
       }
     }
   }
@@ -118,7 +115,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   const price = newTripPrice( {
     amount  : json['price']?.amount ?? '',
     currency: json['price']?.currency ?? ''
-  })
+  } )
 
   if ( price.isErr() ) {
     err.push( ...price.unwrapErr() )
@@ -201,8 +198,8 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
       end_date   : dateToJSON( trip.endDate ),
       description: trip.description.value,
       state      : trip.state,
-      price : {
-        amount: trip.price.amount.value,
+      price      : {
+        amount  : trip.price.amount.value,
         currency: trip.price.currency.value
       }
     }
@@ -227,7 +224,7 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
       }
     }
     else {
-        json['category'] = null
+      json['category'] = null
     }
 
     const startLocation = locationToJson( trip.startLocation )
@@ -250,13 +247,13 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 
     const passengers: Record<string, any>[] = []
     for ( const passenger of trip.passengers ) {
-      const userResult = userToJson( passenger )
+      const passengerResult = passengerToJson( passenger )
 
-      if ( userResult.isErr() ) {
+      if ( passengerResult.isErr() ) {
         err.push()
       }
       else {
-        passengers.push( userResult.unwrap() )
+        passengers.push( passengerResult.unwrap() )
       }
     }
 

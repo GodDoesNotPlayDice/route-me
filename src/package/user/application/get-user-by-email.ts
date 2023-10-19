@@ -3,19 +3,18 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { newEmail } from 'src/package/shared/domain/models/email'
+import { UserDao } from 'src/package/user/domain/dao/user-dao'
+import { User } from 'src/package/user/domain/models/user'
 
 /**
  * Get user by email
- * @throws {EmailInvalidException} - if email is invalid
- * @throws {UserEmailNotFoundException} - if user email not found
- * @throws {EmailInvalidException} - if email is invalid
+ * @throws {InfrastructureOperationException} - if operation failed
  */
 export const getUserByEmail = async (
-  repository: AuthUserRepository,
+  dao: UserDao,
   email: string
-): Promise<Result<boolean, Error[]>> => {
+): Promise<Result<User, Error[]>> => {
   const emailResult = newEmail( {
     value: email
   } )
@@ -24,7 +23,7 @@ export const getUserByEmail = async (
     return Err( [ emailResult.unwrapErr() ] )
   }
 
-  const result = await repository.getByEmail( emailResult.unwrap() )
+  const result = await dao.getByEmail( emailResult.unwrap() )
 
   if ( result.isErr() ) {
     return Err( result.unwrapErr() )

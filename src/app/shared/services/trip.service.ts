@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-import { Trip } from 'src/app/shared/models/trip/trip'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { LocationService } from 'src/app/shared/services/location.service'
@@ -8,6 +7,7 @@ import { Street } from 'src/package/street-api/domain/models/street'
 import { createTrip } from 'src/package/trip/application/create-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
+import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { ulid } from 'ulidx'
@@ -63,14 +63,6 @@ export class TripService {
     } )
 
     if ( id.isErr() ) {
-      return false
-    }
-
-    const chat = await this.chatService.createChat( {
-      tripID: id.unwrap()
-    } )
-
-    if ( chat.isNone() ) {
       return false
     }
 

@@ -107,7 +107,8 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
 
   //TODO: revisar si se verifica
   if ( json['latitude'] === undefined || json['longitude'] === undefined ) {
-    err.push( new PositionInvalidException( 'latitude or longitude is undefined' ) )
+    err.push(
+      new PositionInvalidException( 'latitude or longitude is undefined' ) )
   }
 
   if ( err.length > 0 ) {

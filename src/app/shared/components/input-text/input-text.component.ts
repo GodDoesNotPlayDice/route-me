@@ -9,7 +9,6 @@ import {
   Validators
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
-import { newPassengerPhone } from 'src/package/passenger/domain/models/passenger-phone'
 import { PasswordInsufficientCharacterException } from 'src/package/shared/domain/exceptions/password-insufficient-character-exception'
 import { PasswordInsufficientLengthException } from 'src/package/shared/domain/exceptions/password-insufficient-length-exception'
 import { PasswordInsufficientLowercaseException } from 'src/package/shared/domain/exceptions/password-insufficient-lowercase-exception'
@@ -17,8 +16,9 @@ import { PasswordInsufficientNumberException } from 'src/package/shared/domain/e
 import { PasswordInsufficientUppercaseException } from 'src/package/shared/domain/exceptions/password-insufficient-uppercase-exception'
 import { PhoneExceedsMaximumLengthException } from 'src/package/shared/domain/exceptions/phone-exceeds-maximum-length-exception'
 import { PhoneInsufficientLengthException } from 'src/package/shared/domain/exceptions/phone-insufficient-length-exception'
-import { newUserEmail } from 'src/package/shared/domain/models/email'
-import { newUserPassword } from 'src/package/shared/domain/models/password'
+import { newEmail } from 'src/package/shared/domain/models/email'
+import { newPassword } from 'src/package/shared/domain/models/password'
+import { newPhone } from 'src/package/shared/domain/models/phone'
 import { z } from 'zod'
 
 type InputTextType = 'email' | 'password' | 'text' | 'phone' | 'number'
@@ -43,7 +43,7 @@ export class InputTextComponent {
     }
     switch ( this.type ) {
       case 'email':
-        const emailResult = newUserEmail( {
+        const emailResult = newEmail( {
           value: control.value
         } )
         if ( emailResult.isErr() ) {
@@ -51,7 +51,7 @@ export class InputTextComponent {
         }
         break
       case 'password':
-        const passwordResult = newUserPassword( {
+        const passwordResult = newPassword( {
           value: control.value
         } )
         if ( passwordResult.isErr() ) {
@@ -88,7 +88,7 @@ export class InputTextComponent {
         control.addValidators( Validators.minLength( 3 ) )
         break
       case 'phone':
-        const phoneResult = newPassengerPhone( {
+        const phoneResult = newPhone( {
           value: control.value
         } )
         if ( phoneResult.isErr() ) {

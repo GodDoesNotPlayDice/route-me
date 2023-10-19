@@ -2,10 +2,10 @@ import {
   Err,
   Result
 } from 'oxide.ts'
+import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver-document-dao'
 import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
 import { DriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
-import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver-document-dao'
 
 export class DriverDocumentDaoFirebase implements DriverDocumentDao {
   /**

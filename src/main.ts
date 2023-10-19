@@ -45,18 +45,14 @@ import { LocationDao } from 'src/package/location/domain/dao/location-dao'
 import { LocationDaoFirebase } from 'src/package/location/infrastructure/location-dao-firebase'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
-import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
-import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
 import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
 import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
-import { GenderEnum } from 'src/package/shared/domain/models/gender'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripDaoFirebase } from 'src/package/trip/infrastructure/trip-dao-firebase'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
-import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
+import { UserDaoApi } from 'src/package/user/infrastructure/user-dao-api'
 import { environment } from './environments/environment'
 
 
@@ -64,76 +60,29 @@ if ( environment.production ) {
   enableProdMode()
 }
 
-export const defaultPassangers: Passenger[] = [
-  {
-    id         : {
-      value: 'abc'
-    },
-    userID     : {
-      value: 'abc'
-    },
-    name       : {
-      value: 'hola'
-    },
-    lastName   : {
-      value: 'last'
-    },
-    description: {
-      value: 'descdescdescdesc'
-    },
-    phone      : {
-      value: '123456788'
-    },
-    birthDay   : {
-      value: new Date( '1990-03-25' )
-    },
-    country    : {
-      value: 'Argentina'
-    },
-    gender     : GenderEnum.Male,
-    preferences: [ {
-      value: 'a1'
-    }
-    ]
-  }
-]
-
 bootstrapApplication( AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
-      provide: AuthUserRepository,
-      // useFactory: () => {
-      // return new AuthMemory(defaultUsers)
-      // },
-      // useFactory: (storage : Storage) => {
-      // return new AuthLocalStorage(storage)
-      // },
-      // deps      : [Storage]
+      provide   : AuthUserRepository,
       useFactory: ( firebase: AngularFireDatabase ) => {
         return new AuthUserFirebase( firebase )
       },
       deps      : [ AngularFireDatabase ]
     },
     {
-      provide: UserDao,
-      // useFactory: (storage : Storage) => {
-      //   return new UserDaoLocalStorage(storage)
-      // },
-      // deps      : [Storage]
-      useFactory: ( firebase: AngularFireDatabase ) => {
-        return new UserDaoFirebase( firebase )
+      provide   : UserDao,
+      useFactory: ( http: HttpClient ) => {
+        return new UserDaoApi( http )
       },
-      deps      : [ AngularFireDatabase ]
+      deps      : [ HttpClient ]
     },
     {
       provide   : TripDao,
       useFactory: ( firebase: AngularFireDatabase ) => {
-        // useFactory: ( http: HttpClient ) => {
         return new TripDaoFirebase( firebase )
       },
-      // deps      : [ HttpClient ]
-      deps: [ AngularFireDatabase ]
+      deps      : [ AngularFireDatabase ]
     },
     {
       provide   : CountryDao,
@@ -145,25 +94,14 @@ bootstrapApplication( AppComponent, {
     {
       provide   : LocationDao,
       useFactory: ( firebase: AngularFireDatabase ) => {
-        // useFactory: ( http: HttpClient ) => {
         return new LocationDaoFirebase( firebase )
       },
       deps      : [ AngularFireDatabase ]
-      // deps      : [ HttpClient ]
     },
     {
-      provide: ChatDao,
-      // useFactory: ( http: HttpClient ) => {
+      provide   : ChatDao,
       useFactory: ( firebase: AngularFireDatabase ) => {
         return new ChatDaoFirebase( firebase )
-      },
-      deps      : [ AngularFireDatabase ]
-      // deps      : [ HttpClient ]
-    },
-    {
-      provide   : PassengerDao,
-      useFactory: ( firebase: AngularFireDatabase ) => {
-        return new PassengerDaoFirebase( firebase )
       },
       deps      : [ AngularFireDatabase ]
     },

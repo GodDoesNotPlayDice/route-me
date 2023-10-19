@@ -5,6 +5,6 @@ import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { UserID } from 'src/package/user/domain/models/user-id'
 
 export abstract class TripRepository {
-	abstract getTripPrice( start: Position, end: Position, driverID: DriverID,
-		userID: UserID ): Promise<Result<TripPrice, Error[]>>
+  abstract getTripPrice( start: Position, end: Position, driverID: DriverID,
+    userID: UserID ): Promise<Result<TripPrice, Error[]>>
 }

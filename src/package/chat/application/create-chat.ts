@@ -15,7 +15,7 @@ export const createChat = async ( dao: ChatDao ): Promise<Result<Chat, Error[]>>
   } )
 
   if ( id.isErr() ) {
-    return Err( [id.unwrapErr()] )
+    return Err( [ id.unwrapErr() ] )
   }
 
   const chat: Chat = {

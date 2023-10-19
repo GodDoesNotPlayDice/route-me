@@ -13,10 +13,7 @@ import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
-import {
-  newTripPrice,
-  TripPrice
-} from 'src/package/trip/domain/models/trip-price'
+import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
 
 export const createTrip = async ( dao: TripDao,
@@ -79,7 +76,7 @@ export const createTrip = async ( dao: TripDao,
     description  : description.unwrap(),
     state        : state.unwrap(),
     passengers   : [],
-    category     : None,
+    category     : None
   }
 
   const response = await dao.create( result )

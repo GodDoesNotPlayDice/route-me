@@ -10,13 +10,13 @@ import { NearTripRepository } from 'src/package/near-trip/domain/repository/near
 import { Position } from 'src/package/position-api/domain/models/position'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 
-export class NearTripFirebase implements NearTripRepository{
+export class NearTripFirebase implements NearTripRepository {
 
-  constructor(private firebase: AngularFireDatabase) {
-    this.geoFire = new GeoFire(ref(this.firebase.database, 'test'))
+  constructor( private firebase: AngularFireDatabase ) {
+    this.geoFire = new GeoFire( ref( this.firebase.database, 'test' ) )
   }
 
-  private geoFire : GeoFire
+  private geoFire: GeoFire
 
   async getNearTrips( center: Position,
     radius: number ): Promise<Result<NearTrip[], Error[]>> {
@@ -30,7 +30,7 @@ export class NearTripFirebase implements NearTripRepository{
     //   if (str.length ==0) return
     //   this.locationsList.push(str)
     // })
-    return Err([new FirebaseOperationException()])
+    return Err( [ new FirebaseOperationException() ] )
   }
 
 }

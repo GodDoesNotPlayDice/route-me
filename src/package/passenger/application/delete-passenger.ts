@@ -3,18 +3,18 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
+import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Email } from 'src/package/shared/domain/models/email'
 
 /**
- * Get user by email
+ * Delete a passenger by email
  * @throws {FirebaseOperationException} - if operation failed
  */
-export const deleteUser = async (
-  repository: AuthUserRepository,
+export const deletePassenger = async (
+  dao: PassengerDao,
   email: Email
 ): Promise<Result<boolean, Error>> => {
-  const result = await repository.delete( email )
+  const result = await dao.delete( email )
 
   if ( result.isErr() ) {
     return Err( result.unwrapErr() )

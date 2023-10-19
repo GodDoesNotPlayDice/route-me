@@ -1,0 +1,154 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
+import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
+import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
+import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
+import { newPassengerID } from 'src/package/passenger/domain/models/passenger-id'
+import { newpassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
+import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
+import { newEmail } from 'src/package/shared/domain/models/email'
+import { newGender } from 'src/package/shared/domain/models/gender'
+import { newImageUrl } from 'src/package/shared/domain/models/image-url'
+import { newPhone } from 'src/package/shared/domain/models/phone'
+import { ulid } from 'ulidx'
+
+/**
+ * Register user
+ * @throws {PassengerIdInvalidException} - if id is invalid
+ * @throws {EmailInvalidException} - if email is invalid
+ * @throws {PassengerNameInvalidException} - if name is invalid
+ * @throws {PassengerLastNameInvalidException} - if last name is invalid
+ * @throws {PhoneInvalidFormatException} - if phone format is invalid
+ * @throws {PhoneInsufficientLengthException} - if length is insufficient
+ * @throws {PhoneExceedsMaximumLengthException} - if length exceeds maximum
+ * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
+ * @throws {PassengerCountryInvalidException} - if country is invalid
+ * @throws {GenderInvalidException} - if gender is invalid
+ * @throws {PassengerDescriptionInvalidException} - if description is invalid
+ * @throws {ImageUrlInvalidException} - if image is invalid
+ */
+export const createPassenger = async ( dao: PassengerDao,
+  props: {
+    email: string,
+    password: string,
+    name: string,
+    lastName: string,
+    phone: string,
+    birthDay: Date,
+    country: string,
+    gender: string
+  }
+): Promise<Result<string, Error[]>> => {
+  const error: Error[] = []
+
+  const id = newPassengerID( {
+    value: ulid()
+  } )
+
+  if ( id.isErr() ) {
+    error.push( id.unwrapErr() )
+  }
+
+  const email = newEmail( {
+    value: props.email ?? ''
+  } )
+
+  if ( email.isErr() ) {
+    error.push( email.unwrapErr() )
+  }
+
+  const name = newPassengerName( {
+    value: props.name
+  } )
+
+  if ( name.isErr() ) {
+    error.push( name.unwrapErr() )
+  }
+
+  const lastName = newpassengerLastName( {
+    value: props.lastName
+  } )
+
+  if ( lastName.isErr() ) {
+    error.push( lastName.unwrapErr() )
+  }
+
+  const phone = newPhone( {
+    value: props.phone
+  } )
+
+  if ( phone.isErr() ) {
+    error.push( ...phone.unwrapErr() )
+  }
+
+  const birthDay = newPassengerBirthDay( {
+    value: props.birthDay
+  } )
+
+  if ( birthDay.isErr() ) {
+    error.push( birthDay.unwrapErr() )
+  }
+
+  const country = newPassengerCountry( {
+    value: props.country
+  } )
+
+  if ( country.isErr() ) {
+    error.push( country.unwrapErr() )
+  }
+
+  const gender = newGender( {
+    value: props.gender
+  } )
+
+  if ( gender.isErr() ) {
+    error.push( gender.unwrapErr() )
+  }
+
+  const description = newPassengerDescription( {
+    value: ''
+  } )
+
+  if ( description.isErr() ) {
+    error.push( description.unwrapErr() )
+  }
+
+  const image = newImageUrl( {
+    value: 'https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png'
+  } )
+
+  if ( image.isErr() ) {
+    error.push( image.unwrapErr() )
+  }
+
+  if ( error.length > 0 ) {
+    return Err( error )
+  }
+
+  const result = await dao.create(
+    {
+      id         : id.unwrap(),
+      image      : image.unwrap(),
+      email      : email.unwrap(),
+      lastName   : lastName.unwrap(),
+      name       : name.unwrap(),
+      phone      : phone.unwrap(),
+      gender     : gender.unwrap(),
+      birthDay   : birthDay.unwrap(),
+      country    : country.unwrap(),
+      preferences: [],
+      description: description.unwrap()
+    }
+  )
+
+  if ( result.isErr() ) {
+    error.push( result.unwrapErr() )
+    return Err( error )
+  }
+
+  return Ok( result.unwrap() )
+}
