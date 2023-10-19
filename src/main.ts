@@ -33,31 +33,28 @@ import { StoreModule } from '@ngrx/store'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
-import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/infrastructure/auth-user-firebase'
+import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
+import { ChatDaoFirebase } from 'src/package/chat/infrastructure/chat-dao-firebase'
+import { CountryDao } from 'src/package/country-api/domain/dao/country-dao'
+import { CountryDaoRestCountries } from 'src/package/country-api/infrastructure/rest-countries/country-dao-rest-countries'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
-import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
-import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
+import { LocationDao } from 'src/package/location/domain/dao/location-dao'
+import { LocationDaoFirebase } from 'src/package/location/infrastructure/location-dao-firebase'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
-import {
-  newPassenger,
-  Passenger
-} from 'src/package/passenger/domain/models/passenger'
-import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
-import { newGender } from 'src/package/shared/domain/models/gender'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
+import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
+import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
+import { GenderEnum } from 'src/package/shared/domain/models/gender'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
-import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
-import {
-  newUser,
-  User
-} from 'src/package/user/domain/models/user'
-import { newUserID } from 'src/package/user/domain/models/user-id'
+import { TripDaoFirebase } from 'src/package/trip/infrastructure/trip-dao-firebase'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
 import { environment } from './environments/environment'
@@ -67,34 +64,38 @@ if ( environment.production ) {
   enableProdMode()
 }
 
-export const defaultUsers: User[] = [
-  newUser( {
-    id   : 'abc',
-    email: 'hola@gmail.com'
-  } ).unwrap()
-]
-
 export const defaultPassangers: Passenger[] = [
-  newPassenger( {
-    id         : 'abc',
-    userID     : newUserID( {
+  {
+    id         : {
       value: 'abc'
-    } ).unwrap(),
-    name       : 'hola',
-    lastName   : 'last',
-    description: 'descdescdescdesc',
-    phone      : '123456788',
-    birthDay   : new Date( '1990-03-25' ),
-    country    : 'Argentina',
-    gender     : newGender( {
-      value: 'Female'
-    } ).unwrap(),
-    preferences: [
-      newPreferenceID( {
-        value: 'a1'
-      } ).unwrap()
+    },
+    userID     : {
+      value: 'abc'
+    },
+    name       : {
+      value: 'hola'
+    },
+    lastName   : {
+      value: 'last'
+    },
+    description: {
+      value: 'descdescdescdesc'
+    },
+    phone      : {
+      value: '123456788'
+    },
+    birthDay   : {
+      value: new Date( '1990-03-25' )
+    },
+    country    : {
+      value: 'Argentina'
+    },
+    gender     : GenderEnum.Male,
+    preferences: [ {
+      value: 'a1'
+    }
     ]
-  } ).unwrap()
+  }
 ]
 
 bootstrapApplication( AppComponent, {
@@ -127,10 +128,37 @@ bootstrapApplication( AppComponent, {
     },
     {
       provide   : TripDao,
+      useFactory: ( firebase: AngularFireDatabase ) => {
+        // useFactory: ( http: HttpClient ) => {
+        return new TripDaoFirebase( firebase )
+      },
+      // deps      : [ HttpClient ]
+      deps: [ AngularFireDatabase ]
+    },
+    {
+      provide   : CountryDao,
       useFactory: ( http: HttpClient ) => {
-        return new TripDaoApi( http )
+        return new CountryDaoRestCountries( http )
       },
       deps      : [ HttpClient ]
+    },
+    {
+      provide   : LocationDao,
+      useFactory: ( firebase: AngularFireDatabase ) => {
+        // useFactory: ( http: HttpClient ) => {
+        return new LocationDaoFirebase( firebase )
+      },
+      deps      : [ AngularFireDatabase ]
+      // deps      : [ HttpClient ]
+    },
+    {
+      provide: ChatDao,
+      // useFactory: ( http: HttpClient ) => {
+      useFactory: ( firebase: AngularFireDatabase ) => {
+        return new ChatDaoFirebase( firebase )
+      },
+      deps      : [ AngularFireDatabase ]
+      // deps      : [ HttpClient ]
     },
     {
       provide   : PassengerDao,

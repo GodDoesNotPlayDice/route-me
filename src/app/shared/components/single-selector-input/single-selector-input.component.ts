@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  Input
+  Input,
+  OnInit
 } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { MatInputModule } from '@angular/material/input'
@@ -26,22 +27,28 @@ import { SingleSelectorData } from 'src/package/shared/domain/components/single-
     SingleSelectorModalComponent
   ]
 } )
-export class SingleSelectorInputComponent {
+export class SingleSelectorInputComponent implements OnInit {
 
-  constructor( private modalCtrl: ModalController) {}
+  constructor( private modalCtrl: ModalController ) {}
 
-  @Input({required:true}) databaseData : SingleSelectorData[]
-  @Input({required:true}) errorText : string
+  @Input( { required: true } ) databaseData: SingleSelectorData[]
+  @Input( { required: true } ) errorText: string
   lastSelected: SingleSelectorData | undefined
-  @Input({required:true}) label : string
+  @Input( { required: true } ) label: string
   @Input() required = false
+  initialLabel      = ''
 
   readonly singleSelectorControl = new FormControl( '', control => {
-    if (this.required && control.value === '' ) {
+    if ( this.required && control.value === '' ) {
       return { required: true }
     }
     return null
   } )
+
+  ngOnInit(): void {
+    this.initialLabel = this.label
+    this.singleSelectorControl.updateValueAndValidity()
+  }
 
   async openModal() {
     const modal = await this.modalCtrl.create( {
@@ -63,5 +70,10 @@ export class SingleSelectorInputComponent {
       this.singleSelectorControl.patchValue( this.lastSelected.id )
       this.singleSelectorControl.updateValueAndValidity()
     }
+  }
+
+  reset(): void {
+    this.label = this.initialLabel
+    this.singleSelectorControl.reset()
   }
 }

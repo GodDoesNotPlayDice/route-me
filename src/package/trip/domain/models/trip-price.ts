@@ -52,8 +52,9 @@ export const newTripPrice = ( props: TripPriceProps ): Result<TripPrice, Error[]
     return Err( errors )
   }
 
-  return Ok({
+  return Ok( {
       amount  : moneyResult.unwrap(),
       currency: currencyResult.unwrap()
     }
-  )}
+  )
+}

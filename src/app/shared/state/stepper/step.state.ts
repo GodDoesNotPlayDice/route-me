@@ -1,4 +1,4 @@
-export interface StepState  {
+export interface StepState {
   currentStep: number,
   maxStep: number,
 }

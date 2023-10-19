@@ -17,11 +17,11 @@ import {
   IonicModule
 } from '@ionic/angular'
 
-@Component({
-  standalone: true,
-  selector: 'app-date-time-selector',
+@Component( {
+  standalone : true,
+  selector   : 'app-date-time-selector',
   templateUrl: './date-time-selector.component.html',
-  styleUrls: ['./date-time-selector.component.scss'],
+  styleUrls  : [ './date-time-selector.component.scss' ],
   imports    : [
     IonicModule,
     CommonModule,
@@ -29,16 +29,16 @@ import {
     MatDatepickerModule,
     MatNativeDateModule
   ]
-})
-export class DateTimeSelectorComponent  implements OnInit {
+} )
+export class DateTimeSelectorComponent implements OnInit {
 
-  @ViewChild( 'dateInput', {static: true} ) dateInput!: HTMLInputElement
+  @ViewChild( 'dateInput', { static: true } ) dateInput!: HTMLInputElement
   timeInput: HTMLIonDatetimeElement | undefined
 
   @Input( { required: true } ) label: string
-  dateSelected: Date | null   = null
+  dateSelected: Date | null = null
   timeSelected: Date | null = null
-  dateEntered: Date | null = null
+  dateEntered: Date | null  = null
   readonly dateControl      = new FormControl<Date | null>( null, control => {
     if ( this.dateSelected === null ) {
       return { required: true }
@@ -61,7 +61,7 @@ export class DateTimeSelectorComponent  implements OnInit {
   onDate( event: MatDatepickerInputEvent<Date> ) {
     this.dateSelected = event.value
 
-    if(this.timeSelected !== null) {
+    if ( this.timeSelected !== null ) {
       this.dateSelected = new Date(
         this.dateSelected!.getFullYear(),
         this.dateSelected!.getMonth(),
@@ -88,7 +88,7 @@ export class DateTimeSelectorComponent  implements OnInit {
   }
 
   async onTime( $event: DatetimeCustomEvent ): Promise<void> {
-    this.timeInput = $event.target
+    this.timeInput    = $event.target
     this.timeSelected = new Date( this.timeInput.value as string )
     if ( this.dateSelected !== null ) {
       this.dateSelected = new Date(
@@ -110,9 +110,9 @@ export class DateTimeSelectorComponent  implements OnInit {
     if ( this.timeInput !== undefined ) {
       await this.timeInput.reset()
     }
-    this.dateSelected   = null
+    this.dateSelected = null
     this.timeSelected = null
-    this.dateEntered = null
+    this.dateEntered  = null
     this.dateControl.patchValue( this.dateSelected )
     this.dateControl.updateValueAndValidity()
   }

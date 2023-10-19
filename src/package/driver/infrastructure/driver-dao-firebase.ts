@@ -16,8 +16,8 @@ export class DriverDaoFirebase implements DriverDao {
    * Create a driver
    * @throws {UnknownException} - if unknown error
    */
-  async create( driver: Driver ): Promise<Result<Driver, Error>> {
-    return Err(new UnknownException())
+  async create( driver: Driver ): Promise<Result<boolean, Error>> {
+    return Err( new UnknownException() )
   }
 
   /**
@@ -25,23 +25,23 @@ export class DriverDaoFirebase implements DriverDao {
    * @throws {UnknownException} - if unknown error
    */
   async delete( id: DriverID ): Promise<Result<boolean, Error>> {
-    return Err(new UnknownException())
+    return Err( new UnknownException() )
   }
 
   /**
    * Get all drivers
    * @throws {UnknownException} - if unknown error
    */
-  async getAll(): Promise<Result<Driver[], Error>> {
-    return Err(new UnknownException())
+  async getAll(): Promise<Result<Driver[], Error[]>> {
+    return Err( [ new UnknownException() ] )
   }
 
   /**
    * Get a driver by id
    * @throws {UnknownException} - if unknown error
    */
-  async getById( id: DriverID ): Promise<Result<Driver, Error>> {
-    return Err(new UnknownException())
+  async getById( id: DriverID ): Promise<Result<Driver, Error[]>> {
+    return Err( [ new UnknownException() ] )
   }
 
   /**
@@ -49,7 +49,7 @@ export class DriverDaoFirebase implements DriverDao {
    * @throws {UnknownException} - if unknown error
    */
   async update( driver: Driver ): Promise<Result<boolean, Error>> {
-    return Err(new UnknownException())
+    return Err( new UnknownException() )
   }
 
 }

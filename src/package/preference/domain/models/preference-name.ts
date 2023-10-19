@@ -7,21 +7,23 @@ import { PreferenceNameInvalidException } from 'src/package/preference/domain/ex
 import { z } from 'zod'
 
 export const PreferenceNameSchema = z.object( {
-  value : z.string()
+  value: z.string()
+          .min( 1 )
 } )
 
 type PreferenceNameType = z.infer<typeof PreferenceNameSchema>
-export interface PreferenceName extends PreferenceNameType{}
+
+export interface PreferenceName extends PreferenceNameType {}
 
 export interface PreferenceNameProps {
-  value : string
+  value: string
 }
 
 /**
  * Create a preference name instance
  * @throws {PreferenceNameInvalidException} - if name is invalid
  */
-export const newPreferenceName = (props : PreferenceNameProps): Result<PreferenceName, Error> => {
+export const newPreferenceName = ( props: PreferenceNameProps ): Result<PreferenceName, Error> => {
   const result = PreferenceNameSchema.safeParse( {
     value: props.value
   } )

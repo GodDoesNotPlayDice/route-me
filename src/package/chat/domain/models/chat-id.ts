@@ -7,21 +7,23 @@ import { ChatIdInvalidException } from 'src/package/chat/domain/exceptions/chat-
 import { z } from 'zod'
 
 export const ChatIDSchema = z.object( {
-  value : z.string().nonempty()
+  value: z.string()
+          .min( 1 )
 } )
 
 type ChatIDType = z.infer<typeof ChatIDSchema>
+
 export interface ChatID extends ChatIDType {}
 
 export interface ChatIDProps {
-  value : string
+  value: string
 }
 
 /**
  * Create chat id instance
  * @throws {ChatIdInvalidException} - if id is invalid
  */
-export const newChatID = (props : ChatIDProps): Result<ChatID, Error> => {
+export const newChatID = ( props: ChatIDProps ): Result<ChatID, Error> => {
   const result = ChatIDSchema.safeParse( {
     value: props.value
   } )

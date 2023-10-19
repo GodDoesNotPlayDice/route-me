@@ -7,7 +7,8 @@ import { LocationNameInvalidException } from 'src/package/location/domain/except
 import { z } from 'zod'
 
 export const LocationNameSchema = z.object( {
-	value: z.string()
+  value: z.string()
+          .min( 1 )
 } )
 
 type LocationNameType = z.infer<typeof LocationNameSchema>
@@ -15,7 +16,7 @@ type LocationNameType = z.infer<typeof LocationNameSchema>
 export interface LocationName extends LocationNameType {}
 
 export interface LocationNameProps {
-	value: string
+  value: string
 }
 
 /**
@@ -23,7 +24,7 @@ export interface LocationNameProps {
  * @throws {LocationNameInvalidException} - if name is invalid
  */
 export const newLocationName = ( props: LocationNameProps ): Result<LocationName, Error> => {
-	const result = LocationNameSchema.safeParse( {
+  const result = LocationNameSchema.safeParse( {
     value: props.value
   } )
 

@@ -5,8 +5,8 @@
   <div *ngIf="streetData !== null">
     <ng-container *ngFor="let street of streetData.streets">
       <div (click)="onStreetClick(street)">
-      <div>{{ street.text }}</div>
-      <div>{{ street.place_name }}</div>
+        <div>{{ street.name.value }}</div>
+        <div>{{ street.place.value }}</div>
       </div>
       <hr/>
     </ng-container>

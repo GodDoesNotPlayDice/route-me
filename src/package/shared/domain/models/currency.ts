@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 export const CurrencySchema = z.object( {
   value: z.string()
-          .nonempty()
+          .min( 1 )
           .max( 3 )
 } )
 

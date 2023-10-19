@@ -1,54 +1,102 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
-	Driver,
-	newDriver
-} from 'src/package/driver/domain/models/driver'
+  driverDocumentFromJson,
+  driverDocumentToJson
+} from 'src/package/driver/application/driver-document-mapper'
+import { Driver } from 'src/package/driver/domain/models/driver'
+import { DriverDocument } from 'src/package/driver/domain/models/driver-document'
+import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
  * Create a json from driver instance
  * @throws {UnknownException} - if unknown error
  */
-export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Error> => {
-	try {
-		const json: Record<string, any> = {
-			id       : driver.id.value,
-			userID   : driver.userID.value,
-			documents: driver.documents.map( ( document ) => document.value )
-		}
-		return Ok( json )
-	}
-	catch ( e ) {
-		const err = e instanceof Error
-			? new UnknownException( e.message )
-			: new UnknownException( 'error driver to json' )
-		return Err( err )
-	}
+export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Error[]> => {
+  try {
+    const json: Record<string, any> = {
+      id: driver.id.value
+    }
+
+    const err: Error[] = []
+
+    const documents: Record<string, any>[] = []
+
+    for ( const document of driver.documents ) {
+      const documentResult = driverDocumentToJson( document )
+
+      if ( documentResult.isErr() ) {
+        err.push( documentResult.unwrapErr() )
+      }
+      else {
+        documents.push( documentResult.unwrap() )
+      }
+    }
+
+    if ( documents.length > 0 ) {
+      json['documents'] = documents
+    }
+
+    if ( err.length > 0 ) {
+      return Err( err )
+    }
+
+    return Ok( json )
+  }
+  catch ( e ) {
+    const err = e instanceof Error
+      ? new UnknownException( e.message )
+      : new UnknownException( 'error driver to json' )
+    return Err( [ err ] )
+  }
 }
 
 /**
  * Create a driver instance from json
- * @throws {DriverIdInvalidException} - if id is invalid
- * @throws {DriverDocumentIdInvalidException} - if id is invalid
+ * @throws {DriverIdInvalidException} - if driver id is invalid
+ * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
+ * @throws {DriverDocumentNameInvalidException} - if driver document name is invalid
+ * @throws {DriverDocumentReferenceInvalidException} - if driver document reference is invalid
  */
 export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Error[]> => {
+  const err: Error[] = []
 
-	const documents = Object.values( json['documents'] )
-	                        .map( ( document ) => document as string )
+  const driverID = newDriverID( {
+    value: json['id'] ?? ''
+  } )
 
-	const result = newDriver( {
-		id       : json['id'],
-		userID   : json['userID'],
-		documents: documents
-	} )
+  if ( driverID.isErr() ) {
+    err.push( driverID.unwrapErr() )
+  }
 
-	if ( result.isErr() ) {
-		return Err( result.unwrapErr() )
-	}
+  const documents: DriverDocument[] = []
 
-	return Ok( result.unwrap() )
+  if ( json['documents'] !== undefined ) {
+    for ( const document of Object.values( json['documents'] ) ) {
+      const driverDocument = driverDocumentFromJson(
+        document as Record<string, any> )
+
+      if ( driverDocument.isErr() ) {
+        err.push( ...driverDocument.unwrapErr() )
+      }
+      else {
+        documents.push( driverDocument.unwrap() )
+      }
+    }
+  }
+
+  if ( err.length > 0 ) {
+    err.push( ...err )
+    return Err( err )
+  }
+
+  return Ok( {
+      id       : driverID.unwrap(),
+      documents: documents
+    }
+  )
 }

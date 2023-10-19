@@ -1,55 +1,89 @@
 import {
+  Err,
+  None,
+  Ok,
   Result
 } from 'oxide.ts'
+import { ChatID } from 'src/package/chat/domain/models/chat-id'
+import { Driver } from 'src/package/driver/domain/models/driver'
+import { Location } from 'src/package/location/domain/models/location'
+import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
+import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
+import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
+import { newTripState } from 'src/package/trip/domain/models/trip-state'
 
-export const createTrip = async ( dao: TripDao, trip: Trip): Promise<Result<boolean, Error>> => {
-  return await dao.create(trip)
+export const createTrip = async ( dao: TripDao,
+  props: {
+    id: TripID,
+    driver: Driver,
+    chatID: ChatID,
+    startDate: Date,
+    startLocation: Location
+    endLocation: Location
+  } ): Promise<Result<Trip, Error[]>> => {
+  const err: Error[] = []
+
+  const end = newEndTripDate( {
+    value: props.startDate
+  } )
+
+  if ( end.isErr() ) {
+    err.push( end.unwrapErr() )
+  }
+
+  const startDate = newValidDate( {
+    value: props.startDate
+  } )
+
+  if ( startDate.isErr() ) {
+    err.push( startDate.unwrapErr() )
+  }
+
+  const description = newTripDescription( {
+    value: ''
+  } )
+
+  if ( description.isErr() ) {
+    err.push( description.unwrapErr() )
+  }
+
+  const state = newTripState( {
+    value: 'Open'
+  } )
+
+  if ( state.isErr() ) {
+    err.push( state.unwrapErr() )
+  }
+
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
+
+  const result: Trip = {
+    id           : props.id,
+    driver       : props.driver,
+    chatID       : props.chatID,
+    endLocation  : props.endLocation,
+    startLocation: props.startLocation,
+    startDate    : startDate.unwrap().value,
+    endDate      : end.unwrap().value,
+    description  : description.unwrap(),
+    state        : state.unwrap(),
+    passengers   : [],
+    category     : None,
+    price        : None,
+    seat         : None
+  }
+
+  const response = await dao.create( result )
+
+  if ( response.isErr() ) {
+    err.push( response.unwrapErr() )
+    return Err( err )
+  }
+
+  return Ok( result )
 }
-
-// const startDateInRange = newLimitDate( {
-//   value   : startDateValid.unwrap().value,
-//   numTimes: 12096e5
-// } )
-//
-// if ( startDateInRange.isErr() ) {
-//   err.push( startDateInRange.unwrapErr() )
-// }
-//
-// const endDateInRange = newLimitDate( {
-//   value   : endDateValid.unwrap().value,
-//   numTimes: 12096e5
-// } )
-//
-// if ( endDateInRange.isErr() ) {
-//   err.push( endDateInRange.unwrapErr() )
-// }
-//
-// if ( err.length > 0 ) {
-//   return Err( err )
-// }
-//
-// const startDate = newComparableDate( {
-//   value     : startDateInRange.unwrap().value,
-//   otherDate : endDateInRange.unwrap().value,
-//   comparator: newComparator( {
-//     value: 'Before'
-//   } )
-// } )
-//
-// if ( startDate.isErr() ) {
-//   err.push( startDate.unwrapErr() )
-// }
-//
-// const endDate = newComparableDate( {
-//   value     : endDateInRange.unwrap().value,
-//   otherDate : startDateInRange.unwrap().value,
-//   comparator: newComparator( {
-//     value: 'After'
-//   } )
-// } )
-//
-// if ( endDate.isErr() ) {
-//   err.push( endDate.unwrapErr() )
-// }

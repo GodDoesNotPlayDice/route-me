@@ -1,21 +1,24 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import { CountryNameInvalidException } from 'src/package/country-api/domain/exceptions/country-name-invalid-exception'
 import { z } from 'zod'
 
 export const CountryNameSchema = z.object( {
-	common  : z.string(),
-	official: z.string()
+  common  : z.string()
+             .min( 1 ),
+  official: z.string()
+             .min( 1 )
 } )
 type CountryNameType = z.infer<typeof CountryNameSchema>
 
 export interface CountryName extends CountryNameType {}
-export interface CountryNameProps{
-	common  : string
-	official: string
+
+export interface CountryNameProps {
+  common: string
+  official: string
 }
 
 /**
@@ -23,15 +26,15 @@ export interface CountryNameProps{
  * @throws {CountryNameInvalidException} - if name is invalid
  */
 export const newCountryName = ( props: CountryNameProps ): Result<CountryName, Error> => {
-	const result = CountryNameSchema.safeParse( {
-		common  : props.common,
-		official: props.official
-	} )
+  const result = CountryNameSchema.safeParse( {
+    common  : props.common,
+    official: props.official
+  } )
 
-	if ( !result.success ) {
-		return Err( new CountryNameInvalidException() )
-	}
-	else {
-		return Ok( result.data )
-	}
+  if ( !result.success ) {
+    return Err( new CountryNameInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }

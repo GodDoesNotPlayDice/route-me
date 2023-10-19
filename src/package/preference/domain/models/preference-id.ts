@@ -7,21 +7,23 @@ import { PreferenceIdInvalidException } from 'src/package/preference/domain/exce
 import { z } from 'zod'
 
 export const PreferenceIDSchema = z.object( {
-  value : z.string()
+  value: z.string()
+          .min( 1 )
 } )
 
 type PreferenceIDType = z.infer<typeof PreferenceIDSchema>
+
 export interface PreferenceID extends PreferenceIDType {}
 
 export interface PreferenceIDProps {
-  value : string
+  value: string
 }
 
 /**
  * Create a preference id instance
  * @throws {PreferenceIdInvalidException} - if id is invalid
  */
-export const newPreferenceID = (props : PreferenceIDProps): Result<PreferenceID, Error> => {
+export const newPreferenceID = ( props: PreferenceIDProps ): Result<PreferenceID, Error> => {
   const result = PreferenceIDSchema.safeParse( {
     value: props.value
   } )

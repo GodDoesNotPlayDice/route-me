@@ -1,14 +1,11 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
 import {
-	Direction,
-} from 'src/package/direction-api/domain/models/direction'
-import {
-	Location,
-	newLocation
+  Location,
+  newLocation
 } from 'src/package/location/domain/models/location'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
@@ -20,34 +17,43 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {PositionInvalidException} - if position is invalid
  */
 export const locationFromJson = ( json: Record<string, any> ): Result<Location, Error[]> => {
-	const result = newLocation({
-		id: json['id'],
-		name: json['name'],
-		countryCode: json['countryCode'],
-		position: json['position']
-	})
+  const result = newLocation( {
+    id         : json['id'] ?? '',
+    name       : json['name'] ?? '',
+    countryCode: json['country_code'] ?? '',
+    position   : {
+      lat: json['position']?.latitude ?? '',
+      lng: json['position']?.longitude ?? ''
+    }
+  } )
 
-	if ( result.isErr() ) {
-		return Err( result.unwrapErr() )
-	}
+  if ( result.isErr() ) {
+    return Err( result.unwrapErr() )
+  }
 
-	return Ok(result.unwrap())
+  return Ok( result.unwrap() )
 }
 
 /**
  * Create a json from location instance
  * @throws {UnknownException} - if unknown error
  */
-export const locationToJson = ( direction: Direction ): Result<Record<string, any>, Error> => {
-	try {
-		return Ok( {
-			coordinates: direction.coordinates.values
-		} )
-	}
-	catch ( e ) {
-		const err = e instanceof Error
-			? new UnknownException( e.message )
-			: new UnknownException( 'error location to json' )
-		return Err( err )
-	}
+export const locationToJson = ( location: Location ): Result<Record<string, any>, Error> => {
+  try {
+    return Ok( {
+      id          : location.id.value,
+      name        : location.name.value,
+      country_code: location.countryCode.value,
+      position    : {
+        latitude : location.position.lat,
+        longitude: location.position.lng
+      }
+    } )
+  }
+  catch ( e ) {
+    const err = e instanceof Error
+      ? new UnknownException( e.message )
+      : new UnknownException( 'error location to json' )
+    return Err( err )
+  }
 }

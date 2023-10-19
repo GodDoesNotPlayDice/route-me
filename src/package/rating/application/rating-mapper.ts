@@ -1,12 +1,11 @@
 import {
-	Err,
-	Ok,
-	Result
+  Err,
+  Ok,
+  Result
 } from 'oxide.ts'
-import {
-	newRating,
-	Rating
-} from 'src/package/rating/domain/models/rating'
+import { Rating } from 'src/package/rating/domain/models/rating'
+import { newRatingID } from 'src/package/rating/domain/models/rating-id'
+import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -15,16 +14,33 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {RatingValueInvalidException} - if value is invalid
  */
 export const ratingFromJson = ( json: Record<string, any> ): Result<Rating, Error[]> => {
-	const rating = newRating( {
-		id   : json['id'],
-		value: json['value']
-	} )
+  const err: Error[] = []
 
-	if ( rating.isErr() ) {
-		return Err( rating.unwrapErr() )
-	}
+  const id = newRatingID( {
+    value: json['id']
+  } )
 
-	return Ok( rating.unwrap())
+  if ( id.isErr() ) {
+    err.push( id.unwrapErr() )
+  }
+
+  const value = newRatingValue( {
+    value: json['value']
+  } )
+
+  if ( value.isErr() ) {
+    err.push( value.unwrapErr() )
+  }
+
+  if ( err.length > 0 ) {
+    return Err( err )
+  }
+
+  return Ok( {
+      id   : id.unwrap(),
+      value: value.unwrap()
+    }
+  )
 }
 
 /**
@@ -32,17 +48,17 @@ export const ratingFromJson = ( json: Record<string, any> ): Result<Rating, Erro
  * @throws {UnknownException} - if unknown error
  */
 export const ratingToJson = ( rating: Rating ): Result<Record<string, any>, Error> => {
-	try {
-		const json: Record<string, any> = {
-			id   : rating.id.value,
-			value: rating.value.value
-		}
-		return Ok( json )
-	}
-	catch ( e ) {
-		const err = e instanceof Error
-			? new UnknownException( e.message )
-			: new UnknownException( 'error rating to json' )
-		return Err( err )
-	}
+  try {
+    const json: Record<string, any> = {
+      id   : rating.id.value,
+      value: rating.value.value
+    }
+    return Ok( json )
+  }
+  catch ( e ) {
+    const err = e instanceof Error
+      ? new UnknownException( e.message )
+      : new UnknownException( 'error rating to json' )
+    return Err( err )
+  }
 }

@@ -21,7 +21,7 @@ export const stepReducer = createReducer(
       : state.currentStep + 1
     return {
       ...state,
-      currentStep: next,
+      currentStep: next
     }
   } ),
   on( clearStep, ( state ) => {

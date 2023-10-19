@@ -1,106 +1,101 @@
 import { CommonModule } from '@angular/common'
 import {
-	Component,
-	ViewChild
+  Component,
+  ViewChild
 } from '@angular/core'
 import {
-	FormGroup,
-	FormsModule,
-	ReactiveFormsModule
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule
 } from '@angular/forms'
 import {
-	Router,
-	RouterLink
+  Router,
+  RouterLink
 } from '@angular/router'
 import {
-	AlertController,
-	IonicModule,
-	ViewDidEnter
+  IonicModule,
+  ViewDidEnter
 } from '@ionic/angular'
 import { CheckboxInputComponent } from 'src/app/shared/components/checkbox-input/checkbox-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
+import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 
 @Component( {
-	standalone : true,
-	selector   : 'app-login',
-	templateUrl: './login.page.html',
-	imports    : [
-		IonicModule,
-		CommonModule,
-		LogoComponent,
-		InputTextComponent,
-		RouterLink,
-		CheckboxInputComponent,
-		FilledButtonComponent,
-		OutlinedButtonComponent,
-		FormsModule,
-		ReactiveFormsModule
-	],
-	styleUrls  : [ './login.page.scss' ]
+  standalone : true,
+  selector   : 'app-login',
+  templateUrl: './login.page.html',
+  imports    : [
+    IonicModule,
+    CommonModule,
+    LogoComponent,
+    InputTextComponent,
+    RouterLink,
+    CheckboxInputComponent,
+    FilledButtonComponent,
+    OutlinedButtonComponent,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  styleUrls  : [ './login.page.scss' ]
 } )
 export class LoginPage implements ViewDidEnter {
-	constructor(
-		private authService: AuthService,
-		private router: Router,
-		private alertController: AlertController
-	)
-	{}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private alertService: AlertService
+  )
+  {}
 
-	@ViewChild( 'user' ) userInput!: InputTextComponent
-	@ViewChild( 'password' ) passwordInput!: InputTextComponent
-	@ViewChild( 'check' ) checkbox!: CheckboxInputComponent
+  @ViewChild( 'user' ) userInput!: InputTextComponent
+  @ViewChild( 'password' ) passwordInput!: InputTextComponent
+  @ViewChild( 'check' ) checkbox!: CheckboxInputComponent
 
-	formGroup!: FormGroup
+  formGroup!: FormGroup
 
-	async presentAlert() {
-		const alert = await this.alertController.create( {
-			header   : 'Error',
-			subHeader: 'Credenciales no existen',
-			message  : '',
-			buttons  : [ 'OK' ]
-		} )
+  async ionViewDidEnter() {
+    //TODO: ver si colocar div dentro de backButton u manual, responde click
+    this.formGroup = new FormGroup( [
+      this.userInput.textControl,
+      this.passwordInput.textControl
+    ] )
+  }
 
-		await alert.present()
-	}
+  async submit( $event: SubmitEvent ) {
+    $event.preventDefault()
 
-	async ionViewDidEnter() {
-		//TODO: ver si colocar div dentro de backButton u manual, responde click
-		this.formGroup = new FormGroup( [
-			this.userInput.textControl,
-			this.passwordInput.textControl
-		] )
-	}
+    this.formGroup.updateValueAndValidity()
+    this.formGroup.markAllAsTouched()
 
-	async submit( $event: SubmitEvent ) {
-		$event.preventDefault()
+    if (
+      !this.formGroup.valid
+    )
+    {
+      return
+    }
 
-		this.formGroup.updateValueAndValidity()
-		this.formGroup.markAllAsTouched()
+    // si el checkbox esta marcado
+    // this.checkbox.checkboxControl.value
 
-		if (
-			!this.formGroup.valid
-		)
-		{
-			return
-		}
+    const result = await this.authService.userLogin(
+      this.userInput.textControl.value!,
+      this.passwordInput.textControl.value!
+    )
 
-		// si el checkbox esta marcado
-		// this.checkbox.checkboxControl.value
+    if ( result ) {
+      await this.router.navigate( [ '/tabs' ] )
+    }
+    else {
 
-		const result = await this.authService.userLogin(
-			this.userInput.textControl.value!,
-			this.passwordInput.textControl.value!
-		)
-
-		if ( result ) {
-			await this.router.navigate( [ '/tabs' ] )
-		}
-		else {
-			await this.presentAlert()
-		}
-	}
+      await this.alertService.presentAlert( {
+        header   : 'Error',
+        subHeader: 'Credenciales no existen',
+        message  : '',
+        buttons  : [ 'OK' ]
+      } )
+    }
+  }
 }

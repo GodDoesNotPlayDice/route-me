@@ -1,149 +1,187 @@
 import { Injectable } from '@angular/core'
 import {
-	None,
-	Option,
-	Some
+  None,
+  Option,
+  Some
 } from 'oxide.ts'
+import { deleteUser } from 'src/package/authentication/application/delete-user'
+import { getUserByEmail } from 'src/package/authentication/application/get-user-by-email'
 import { loginUser } from 'src/package/authentication/application/login-user'
 import { logoutUser } from 'src/package/authentication/application/logout-user'
 import { registerUser } from 'src/package/authentication/application/register-user'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
+import { Driver } from 'src/package/driver/domain/models/driver'
 import { createPassenger } from 'src/package/passenger/application/create-passenger'
+import { deletePassenger } from 'src/package/passenger/application/delete-passenger'
 import { updatePassenger } from 'src/package/passenger/application/update-passenger'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { PreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
 
 @Injectable( {
-	providedIn: 'root'
+  providedIn: 'root'
 } )
 export class AuthService {
 
-	constructor(
-		private authRepository: AuthUserRepository,
-		private passengerDao: PassengerDao
-	)
-	{ }
+  constructor(
+    private authRepository: AuthUserRepository,
+    private passengerDao: PassengerDao
+  )
+  { }
 
-	currentUser: Option<User>           = None
-	currentPassenger: Option<Passenger> = None
+  currentUser: Option<User>           = None
+  currentDriver: Option<Driver>       = None
+  currentPassenger: Option<Passenger> = None
 
-	async userLogin( email: string,
-		password: string ): Promise<boolean> {
-		const result = await loginUser( this.authRepository, email, password )
+  async userLogin( email: string,
+    password: string ): Promise<boolean> {
+    const result = await loginUser( this.authRepository, email, password )
 
-		if ( result.isErr() ) {
-			console.log( 'user login error' )
-			console.log( result.unwrapErr() )
-			return false
-		}
+    if ( result.isErr() ) {
+      console.log( 'user login error' )
+      console.log( result.unwrapErr() )
+      return false
+    }
 
-		this.currentUser = Some( result.unwrap() )
+    this.currentUser = Some( result.unwrap() )
 
-		return true
-	}
+    const pass = await this.getPassenger()
 
-	async getPassenger(): Promise<boolean> {
+    if ( pass ) {
+      this.currentUser = None
+      return false
+    }
 
-		const passengerResult = await this.passengerDao.getById(this.currentUser.unwrap().id)
+    console.log( 'this.currentPassenger' )
+    console.log( this.currentPassenger )
+    return true
+  }
 
-		if ( passengerResult.isErr() ) {
-			console.log( 'get passenger error' )
-			console.log( passengerResult.unwrapErr() )
-			return false
-		}
+  async getPassenger(): Promise<boolean> {
 
-		this.currentPassenger = Some( passengerResult.unwrap() )
+    const passengerResult = await this.passengerDao.getById(
+      this.currentUser.unwrap().id )
 
-		return true
-	}
+    if ( passengerResult.isErr() ) {
+      console.log( 'get passenger error' )
+      console.log( passengerResult.unwrapErr() )
+      return false
+    }
 
+    this.currentPassenger = Some( passengerResult.unwrap() )
 
-	async userRegister(
-		email: string,
-		password: string
-	): Promise<boolean> {
-		//TODO: deberia devolver un string, en caso de token
-		const result = await registerUser(
-			this.authRepository, email, password
-		)
-
-		if ( result.isErr() ) {
-			console.log( 'user register error' )
-			console.log( result.unwrapErr() )
-			return false
-		}
-
-		return await this.userLogin( email, password )
-	}
+    return true
+  }
 
 
-	async updatePassenger( partialProps: {
-		name?: string,
-		lastName?: string,
-		description?: string,
-		preferences?: PreferenceID[],
-		phone?: string,
-		birthDay?: Date,
-		country?: string,
-		gender?: string
-	}): Promise<boolean> {
-		const result = await updatePassenger(this.passengerDao, this.currentPassenger.unwrap(), partialProps)
-		if ( result.isErr() ) {
-			console.log( 'update passenger error' )
-			console.log( result.unwrapErr() )
-			return false
-		}
+  async userRegister(
+    email: string,
+    password: string
+  ): Promise<boolean> {
+    //TODO: deberia devolver un string, en caso de token
+    const result = await registerUser(
+      this.authRepository, email, password
+    )
 
-		this.currentPassenger = Some( result.unwrap() )
-		return true
-	}
+    if ( result.isErr() ) {
+      console.log( 'user register error' )
+      console.log( result.unwrapErr() )
+      return false
+    }
 
-	async registerPassenger( props: {
-		name: string,
-		lastName: string,
-		phone: string,
-		birthDay: Date,
-		country: string,
-		gender: string
-	} ): Promise<boolean> {
-		//TODO: ver si register devuelve token o entidad
-		const result = await createPassenger(this.passengerDao, {
-			name		 : props.name,
-			lastName : props.lastName,
-			phone		 : props.phone,
-			birthDay : props.birthDay,
-			country	 : props.country,
-			gender: props.gender,
-			userID: this.currentUser.unwrap().id
-		})
+    return await this.userLogin( email, password )
+  }
 
-		if ( result.isErr() ) {
-			console.log( 'register passenger error' )
-			console.log( result.unwrapErr() )
-			return false
-		}
 
-		this.currentPassenger = Some( result.unwrap() )
+  async updatePassenger( partialProps: {
+    name?: string,
+    lastName?: string,
+    description?: string,
+    preferences?: string[],
+    phone?: string,
+    birthDay?: Date,
+    country?: string,
+    gender?: string
+  } ): Promise<boolean> {
+    if ( this.currentPassenger.isNone() ) {
+      return false
+    }
+    const result = await updatePassenger( this.passengerDao,
+      this.currentPassenger.unwrap(), partialProps )
 
-		return true
-	}
+    if ( result.isErr() ) {
+      console.log( 'update passenger error' )
+      console.log( result.unwrapErr() )
+      return false
+    }
 
-	async authLogout( id: UserID ): Promise<boolean> {
-		const resultUser      = await logoutUser( this.authRepository, id )
+    this.currentPassenger = Some( result.unwrap() )
+    return true
+  }
 
-		if ( resultUser.isErr()) {
-			console.log( 'user authLogout error' )
-			console.log( resultUser.unwrapErr() )
-			return false
-		}
+  async registerPassenger( props: {
+    name: string,
+    lastName: string,
+    phone: string,
+    birthDay: Date,
+    country: string,
+    gender: string
+  } ): Promise<boolean> {
+    //TODO: ver si register devuelve token o entidad
+    const result = await createPassenger( this.passengerDao, {
+      name    : props.name,
+      lastName: props.lastName,
+      phone   : props.phone,
+      birthDay: props.birthDay,
+      country : props.country,
+      gender  : props.gender,
+      userID  : this.currentUser.unwrap().id
+    } )
 
-		this.currentUser      = None
-		this.currentPassenger = None
+    if ( result.isErr() ) {
+      console.log( 'register passenger error' )
+      console.log( result.unwrapErr() )
+      return false
+    }
 
-		return true
-	}
+    this.currentPassenger = Some( result.unwrap() )
 
+    return true
+  }
+
+  async authLogout( id: UserID ): Promise<boolean> {
+    const resultUser = await logoutUser( this.authRepository, id )
+
+    if ( resultUser.isErr() ) {
+      console.log( 'user authLogout response error' )
+      console.log( resultUser.unwrapErr() )
+    }
+    //TODO: quitar token
+    this.currentUser      = None
+    this.currentPassenger = None
+
+    return true
+  }
+
+  async checkUserEmail( email: string ): Promise<boolean> {
+    const existResult = await getUserByEmail( this.authRepository, email )
+    if ( existResult.isErr() ) {
+      return false
+    }
+    return true
+  }
+
+  async deleteAccount(): Promise<boolean> {
+    if ( this.currentUser.isNone() ) {
+      return false
+    }
+    deleteUser( this.authRepository, this.currentUser.unwrap().email )
+
+    if ( this.currentPassenger.isSome() ) {
+      deletePassenger( this.passengerDao, this.currentUser.unwrap().id )
+    }
+
+    return true
+  }
 }

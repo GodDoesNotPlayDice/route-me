@@ -1,4 +1,4 @@
 export interface Geometry {
   coordinates: number[];
-  type:        string;
+  type: string;
 }

@@ -1,16 +1,17 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing'
 
-import { LocationService } from 'src/app/shared/services/location.service';
+import { PositionService } from 'src/app/shared/services/position.service'
 
-describe('LocationService', () => {
-  let service: LocationService;
+describe( 'LocationService', () => {
+  let service: PositionService
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(LocationService);
-  });
+  beforeEach( () => {
+    TestBed.configureTestingModule( {} )
+    service = TestBed.inject( PositionService )
+  } )
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  it( 'should be created', () => {
+    expect( service )
+      .toBeTruthy()
+  } )
+} )

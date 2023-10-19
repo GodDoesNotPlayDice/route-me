@@ -6,7 +6,6 @@ import {
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
 import {
-  AlertController,
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
@@ -14,7 +13,9 @@ import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-
 import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-selector/date-time-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
+import { AlertService } from 'src/app/shared/services/alert.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 
 @Component( {
@@ -22,7 +23,7 @@ import { TripService } from 'src/app/shared/services/trip.service'
   selector   : 'app-publish',
   templateUrl: './publish.page.html',
   styleUrls  : [ './publish.page.scss' ],
-  imports: [
+  imports    : [
     IonicModule,
     CommonModule,
     InputTextComponent,
@@ -34,8 +35,9 @@ import { TripService } from 'src/app/shared/services/trip.service'
 export class PublishPage implements ViewDidEnter {
 
   constructor( private map: MapService,
+    private toastService: ToastService,
     private tripService: TripService,
-    private alertController: AlertController )
+    private alertService: AlertService )
   {}
 
   @ViewChild( 'pmap' ) divElementElementRef!: ElementRef<HTMLDivElement>
@@ -69,9 +71,13 @@ export class PublishPage implements ViewDidEnter {
       end.center )
   }
 
-  //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
-  async presentAlert() {
-    const alert = await this.alertController.create( {
+  async onPublish(): Promise<void> {
+    this.formGroup.updateValueAndValidity()
+    this.formGroup.markAllAsTouched()
+
+    if ( !this.formGroup.valid ) { return }
+
+    await this.alertService.presentAlert( {
       header: 'Confirma que deseas publicar el viaje',
       // subHeader: '',
       message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
@@ -83,38 +89,29 @@ export class PublishPage implements ViewDidEnter {
           text   : 'Publicar',
           handler: async () => {
             const result = await this.tripService.create( {
-              startName    : this.salidaInput.mapLocationControl.value!.place.value,
-              endName      : this.salidaInput.mapLocationControl.value!.place.value,
-              endPosition  : this.salidaInput.mapLocationControl.value!.center,
-              startPosition: this.inicioInput.mapLocationControl.value!.center,
+              endLocation  : this.salidaInput.mapLocationControl.value!,
+              startLocation: this.inicioInput.mapLocationControl.value!,
               startDate    : this.dateInput.dateControl.value!
             } )
-
-            //TODO: no se puede agregar elementos a alert, por lo que usar loading y toast con mensaje
             if ( result ) {
-              console.log( 'error publish' )
+              await this.toastService.presentToast( {
+                message : 'Viaje creado con exito',
+                duration: 1500,
+                position: 'bottom'
+              } )
+              await this.reset()
             }
             else {
-              console.log( 'ok publish' )
+              await this.toastService.presentToast( {
+                message : 'Hubo un problema en la creacion del viaje',
+                duration: 1500,
+                position: 'bottom'
+              } )
             }
-
-            //TODO: mandar post, dependiendo respuesta, resetear o mensaje error
-            await this.reset()
           }
         }
       ]
     } )
-
-    await alert.present()
-  }
-
-  async onPublish(): Promise<void> {
-    this.formGroup.updateValueAndValidity()
-    this.formGroup.markAllAsTouched()
-
-    if ( !this.formGroup.valid ) { return }
-
-    await this.presentAlert()
   }
 
   private async reset(): Promise<void> {

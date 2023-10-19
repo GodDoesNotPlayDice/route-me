@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  Input,
-  OnInit
+  Input
 } from '@angular/core'
 import {
   FormControl,
@@ -31,10 +30,7 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
   ]
 } )
 export class MultipleSelectorInputComponent {
-  constructor(
-    private modalCtrl: ModalController
-  )
-  {}
+  constructor( private modalCtrl: ModalController ) {}
 
   @Input() required = false
   @Input( { required: true } ) label: string
@@ -42,7 +38,7 @@ export class MultipleSelectorInputComponent {
 
   selectedData: MultipleSelectorData[] = []
 
-  @Input( { required: true } ) databaseList : MultipleSelectorData[]
+  @Input( { required: true } ) databaseList: MultipleSelectorData[]
 
   readonly multipleSelectorControl = new FormControl<string[]>( [],
     control => {
@@ -70,10 +66,14 @@ export class MultipleSelectorInputComponent {
     const { data, role } = await modal.onWillDismiss()
 
     this.selectedData = data
-    // if ( role1 === 'confirm' ) {}
-    this.multipleSelectorControl.patchValue( this.selectedData.map(value => {
+    this.multipleSelectorControl.patchValue( this.selectedData.map( value => {
       return value.id
-    }) )
+    } ) )
     this.multipleSelectorControl.updateValueAndValidity()
+  }
+
+  reset(): void {
+    this.selectedData = []
+    this.multipleSelectorControl.reset()
   }
 }

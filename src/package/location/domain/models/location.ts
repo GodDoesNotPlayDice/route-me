@@ -28,6 +28,7 @@ export interface Location {
   position: Position
 }
 
+
 export interface LocationProps {
   id: string
   name: string

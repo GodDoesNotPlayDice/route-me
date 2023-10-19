@@ -1,55 +1,28 @@
-import {
-  Err,
-  Ok,
-  Result
-} from 'oxide.ts'
-import {
-  newUserEmail,
-  UserEmail
-} from 'src/package/user/domain/models/user-email'
-import {
-  newUserID,
-  UserID
-} from 'src/package/user/domain/models/user-id'
+import { Option } from 'oxide.ts'
+import { Driver } from 'src/package/driver/domain/models/driver'
+import { Preference } from 'src/package/preference/domain/models/preference'
+import { Rating } from 'src/package/rating/domain/models/rating'
+import { Email } from 'src/package/shared/domain/models/email'
+import { Gender } from 'src/package/shared/domain/models/gender'
+import { Phone } from 'src/package/shared/domain/models/phone'
+import { UserBirthDay } from 'src/package/user/domain/models/user-birth-day'
+import { UserCountry } from 'src/package/user/domain/models/user-country'
+import { UserDescription } from 'src/package/user/domain/models/user-description'
+import { UserID } from 'src/package/user/domain/models/user-id'
+import { UserLastName } from 'src/package/user/domain/models/user-last-name'
+import { UserName } from 'src/package/user/domain/models/user-name'
 
 export interface User {
   id: UserID
-  email: UserEmail
+  email: Email,
+  name: UserName
+  lastName: UserLastName
+  description: UserDescription
+  gender: Gender
+  country: UserCountry
+  birthDay: UserBirthDay
+  phone: Phone
+  preferences: Preference[]
+  rating: Rating
+  driver: Option<Driver>
 }
-
-export interface UserProps {
-  id: string,
-  email: string,
-}
-
-/**
- * Create a user instance
- * @throws {EmailInvalidException} - if email is invalid
- * @throws {UserIdInvalidException} - if id is invalid
- */
-export const newUser = ( props: UserProps ): Result<User, Error[]> => {
-  const err: Error[] = []
-
-  const id = newUserID({
-    value: props.id
-  })
-
-  if ( id.isErr() ) {
-    err.push( id.unwrapErr() )
-  }
-
-  const email = newUserEmail({
-    value: props.email
-  })
-
-  if ( email.isErr() ) {
-    err.push( email.unwrapErr() )
-  }
-
-  if ( err.length > 0 ) return Err( err )
-
-  return Ok({
-      id   : id.unwrap(),
-      email: email.unwrap(),
-    }
-  )}

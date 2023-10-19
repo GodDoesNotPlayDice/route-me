@@ -6,15 +6,13 @@ import {
 } from '@angular/core'
 import {
   IonicModule,
-  ModalController,
+  ModalController
 } from '@ionic/angular'
 import { debounceTime } from 'rxjs'
 import { SearchInputComponent } from 'src/app/shared/components/search-input/search-input.component'
-import { LocationService } from 'src/app/shared/services/location.service'
+import { PositionService } from 'src/app/shared/services/position.service'
 import { StreetService } from 'src/app/shared/services/street.service'
-import {
-  Street
-} from 'src/package/street-api/domain/models/street'
+import { Street } from 'src/package/street-api/domain/models/street'
 import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
 
 @Component( {
@@ -28,17 +26,19 @@ import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
     SearchInputComponent
   ]
 } )
-export class SearchModalComponent implements OnInit{
+export class SearchModalComponent implements OnInit {
 
   constructor( private modalCtrl: ModalController,
-    private streetService : StreetService,
-    private locationService : LocationService) {}
+    private streetService: StreetService,
+    private locationService: PositionService )
+  {}
 
-  @ViewChild( 'search', { static: true} ) inputSearch!: SearchInputComponent
-  loading : boolean = false
-  streetData : StreetsData | null = null
-  selectedStreet : Street | undefined = undefined
-  firstTime : boolean = false
+  @ViewChild( 'search', { static: true } ) inputSearch!: SearchInputComponent
+  loading: boolean                   = false
+  streetData: StreetsData | null     = null
+  selectedStreet: Street | undefined = undefined
+  firstTime: boolean                 = false
+
   cancel() {
     return this.modalCtrl.dismiss( undefined, 'cancel' )
   }
@@ -48,25 +48,31 @@ export class SearchModalComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    //TODO: dificil generalizar esto
-    this.inputSearch.searchText$.pipe(debounceTime(1000)).subscribe(
-      async (searchText) => {
-        if ( searchText.length === 0 ) return
-        this.firstTime = true
-        this.loading = true
-        const pos = this.locationService.lastPosition
-        if ( pos === null ) return
-        const result = await this.streetService.getStreetByTerm(searchText, pos)
+    this.inputSearch.searchText$.pipe( debounceTime( 1000 ) )
+        .subscribe(
+          async ( searchText ) => {
+            if ( searchText.length === 0 ) {
+              return
+            }
+            this.firstTime = true
+            this.loading   = true
+            const pos      = this.locationService.lastPosition
+            if ( pos === null ) {
+              return
+            }
+            const result = await this.streetService.getStreetByTerm( searchText,
+              pos )
 
-        if ( result.isErr() ){
-          console.log('error search modal')
-          console.log(result.unwrapErr())
-          return
-        }
+            if ( result.isErr() ) {
+              console.log( 'error search modal' )
+              console.log( result.unwrapErr() )
+              return
+            }
 
-        this.streetData = result.unwrap()
-        this.loading = false
-      } )
+            this.streetData = result.unwrap()
+
+            this.loading = false
+          } )
   }
 
   async onStreetClick( street: Street ): Promise<void> {

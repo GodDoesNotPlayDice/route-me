@@ -10,10 +10,7 @@ import {
 } from '@ionic/angular'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { MultipleSelectorItemComponent } from 'src/app/shared/components/multiple-selector-item/multiple-selector-item.component'
-import {
-  newMultipleSelectorData,
-  MultipleSelectorData
-} from 'src/package/shared/domain/components/multiple-selector-data'
+import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,
@@ -30,23 +27,24 @@ import {
 export class MultipleSelectorModalComponent implements OnInit {
   constructor( private modalCtrl: ModalController ) {
   }
+
   ngOnInit(): void {
     this.dataList = Array.from( this.databaseData.values() )
-                         .map( ( data ) => {
-                                  const isSelected = this.selectedData.get( data.id)
-                                  if ( isSelected !== undefined ) {
-                                    return newMultipleSelectorData( {
-                                      ...data,
-                                      selected: true
-                                    } )
-                                  }
-                                  else {
-                                    return newMultipleSelectorData( {
-                                      ...data,
-                                      selected: false
-                                    } )
-                                  }
-                                } )
+                         .map( ( data ): MultipleSelectorData => {
+                           const isSelected = this.selectedData.get( data.id )
+                           if ( isSelected !== undefined ) {
+                             return ( {
+                               ...data,
+                               selected: true
+                             } )
+                           }
+                           else {
+                             return ( {
+                               ...data,
+                               selected: false
+                             } )
+                           }
+                         } )
   }
 
   dataList: MultipleSelectorData[] = []
