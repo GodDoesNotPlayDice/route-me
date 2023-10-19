@@ -3,10 +3,10 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { DriverDocument } from 'src/package/driver/domain/models/driver-document'
-import { newDriverDocumentID } from 'src/package/driver/domain/models/driver-document-id'
-import { newDriverDocumentName } from 'src/package/driver/domain/models/driver-document-name'
-import { newDriverDocumentReference } from 'src/package/driver/domain/models/driver-document-reference'
+import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
+import { newDriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
+import { newDriverDocumentName } from 'src/package/driver-document/domain/models/driver-document-name'
+import { newDriverDocumentReference } from 'src/package/driver-document/domain/models/driver-document-reference'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**

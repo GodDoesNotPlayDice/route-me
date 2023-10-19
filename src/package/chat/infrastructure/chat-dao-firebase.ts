@@ -4,6 +4,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { chatToJson } from 'src/package/chat/application/chat-mapper'
 import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { Chat } from 'src/package/chat/domain/models/chat'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
@@ -16,14 +17,17 @@ export class ChatDaoFirebase implements ChatDao {
 
   collectionKey = 'chatsv2'
 
-  async create( chat: Chat ): Promise<Result<boolean, Error>> {
+  async create( chat: Chat ): Promise<Result<boolean, Error[]>> {
     let completed: string | null = null
+
+    const json = chatToJson( chat )
+
+    if ( json.isErr() ) {
+      return Err( json.unwrapErr() )
+    }
+
     await this.firebase.database.ref( this.collectionKey )
-              .push(
-                {
-                  id    : chat.id.value,
-                  tripID: chat.tripID.value
-                },
+              .push( json.unwrap(),
                 ( error ) => {
                   if ( !error ) {
                     completed = 'completed'
@@ -32,7 +36,7 @@ export class ChatDaoFirebase implements ChatDao {
               )
 
     if ( completed === null ) {
-      return Err( new FirebaseOperationException() )
+      return Err( [ new FirebaseOperationException() ] )
     }
 
     return Ok( true )

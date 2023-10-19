@@ -10,7 +10,6 @@ export const UserIDSchema = z.object( {
   value: z.string()
           .min( 1 )
 } )
-//TODO: ver zod brand
 
 type UserIDType = z.infer<typeof UserIDSchema>
 

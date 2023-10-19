@@ -12,6 +12,8 @@ export class DriverDaoFirebase implements DriverDao {
   constructor( private firebase: AngularFireDatabase ) {
   }
 
+  collectionKey = 'driverv2'
+
   /**
    * Create a driver
    * @throws {UnknownException} - if unknown error

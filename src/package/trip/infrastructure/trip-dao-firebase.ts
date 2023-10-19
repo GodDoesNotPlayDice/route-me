@@ -4,11 +4,11 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { Trip } from 'src/app/shared/models/trip/trip'
-import { tripFromJSON } from 'src/app/shared/models/trip/trip-mapper'
 import { dateToJSON } from 'src/package/shared/config/helper/date/date-mapper'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
+import { tripFromJSON } from 'src/package/trip/application/trip-mapper'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
+import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 
@@ -16,20 +16,20 @@ export class TripDaoFirebase implements TripDao {
   constructor( private firebase: AngularFireDatabase ) {
   }
 
-  collectionKey = 'trips'
+  collectionKey = 'tripsv2'
 
-  async create( trip: Trip ): Promise<Result<boolean, Error>> {
+  async create( trip: Trip ): Promise<Result<boolean, Error[]>> {
     let completed: string | null = null
 
     await this.firebase.database.ref( this.collectionKey )
               .push( {
                   id           : trip.id.value,
-                  driverID     : trip.driverID.value,
+                  driver       : trip.driver,
                   chatID       : trip.chatID.value,
                   startDate    : dateToJSON( trip.startDate ),
                   endDate      : dateToJSON( trip.endDate ),
-                  startLocation: trip.startLocation.value,
-                  endLocation  : trip.endLocation.value,
+                  startLocation: trip.startLocation,
+                  endLocation  : trip.endLocation,
                   description  : '',
                   categoryID   : 'none',
                   passengersID : 'none',
@@ -45,7 +45,7 @@ export class TripDaoFirebase implements TripDao {
               )
 
     if ( completed === null ) {
-      return Err( new FirebaseOperationException() )
+      return Err( [ new FirebaseOperationException() ] )
     }
 
     return Ok( true )

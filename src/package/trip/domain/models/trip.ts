@@ -6,7 +6,6 @@ import { Location } from 'src/package/location/domain/models/location'
 import { TripDescription } from 'src/package/trip/domain/models/trip-description'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripPrice } from 'src/package/trip/domain/models/trip-price'
-import { TripSeat } from 'src/package/trip/domain/models/trip-seat'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { User } from 'src/package/user/domain/models/user'
 
@@ -19,9 +18,7 @@ export interface Trip {
   endDate: Date
   description: TripDescription
   state: TripState
-  //TODO: ver si en la creacion puede ser util omitir estos campos
-  price: Option<TripPrice>
-  seat: Option<TripSeat>
+  price: TripPrice
   passengers: User[]
   category: Option<Category>
   driver: Driver

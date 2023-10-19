@@ -1,6 +1,6 @@
 import { Result } from 'oxide.ts'
-import { DriverDocument } from 'src/package/driver/domain/models/driver-document'
-import { DriverDocumentID } from 'src/package/driver/domain/models/driver-document-id'
+import { DriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
+import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document';
 
 export abstract class DriverDocumentDao {
   abstract getAll(): Promise<Result<DriverDocument[], Error[]>>

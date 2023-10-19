@@ -8,14 +8,14 @@ import { Chat } from 'src/package/chat/domain/models/chat'
 import { newChatID } from 'src/package/chat/domain/models/chat-id'
 import { ulid } from 'ulidx'
 
-export const createChat = async ( dao: ChatDao ): Promise<Result<Chat, Error>> => {
+export const createChat = async ( dao: ChatDao ): Promise<Result<Chat, Error[]>> => {
 
   const id = newChatID( {
     value: ulid()
   } )
 
   if ( id.isErr() ) {
-    return Err( id.unwrapErr() )
+    return Err( [id.unwrapErr()] )
   }
 
   const chat: Chat = {

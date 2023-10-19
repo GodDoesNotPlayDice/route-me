@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { DriverDocumentIdInvalidException } from 'src/package/driver/domain/exceptions/driver-document-id-invalid-exception'
+import { DriverDocumentIdInvalidException } from 'src/package/driver-document/domain/exceptions/driver-document-id-invalid-exception'
 import { z } from 'zod'
 
 export const DriverDocumentIDSchema = z.object( {

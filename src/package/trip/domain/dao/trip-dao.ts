@@ -4,7 +4,7 @@ import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 
 export abstract class TripDao {
-  abstract create( trip: Trip ): Promise<Result<boolean, Error>>
+  abstract create( trip: Trip ): Promise<Result<boolean, Error[]>>
 
   abstract getById( id: TripID ): Promise<Result<Trip, Error[]>>
 

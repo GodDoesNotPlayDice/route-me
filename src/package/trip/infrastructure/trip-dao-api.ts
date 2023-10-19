@@ -5,13 +5,13 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { Trip } from 'src/app/shared/models/trip/trip'
+import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
 import {
   tripFromJSON,
   tripToJSON
-} from 'src/app/shared/models/trip/trip-mapper'
-import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
+} from 'src/package/trip/application/trip-mapper'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
+import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 
@@ -57,7 +57,7 @@ export class TripDaoApi implements TripDao {
    * Create trip
    * @throws {ApiOperationException} - if api operation failed
    */
-  async create( trip: Trip ): Promise<Result<boolean, Error>> {
+  async create( trip: Trip ): Promise<Result<boolean, Error[]>> {
     try {
       const tripJsonResult = tripToJSON( trip )
 
@@ -74,7 +74,7 @@ export class TripDaoApi implements TripDao {
       return Ok( true )
     }
     catch ( e ) {
-      return Err( new ApiOperationException( 'trip create firebase' ) )
+      return Err( [ new ApiOperationException( 'trip create firebase' ) ] )
     }
   }
 

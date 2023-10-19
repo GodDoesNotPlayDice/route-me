@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path        : 'tabs',
-    canActivate : [ CanLoginGuard ],
+    // canActivate : [ CanLoginGuard ],
     loadChildren: () => import('./tabs/tabs.routes').then( m => m.routes )
   },
   {
@@ -29,13 +29,13 @@ export const routes: Routes = [
   },
   {
     path         : 'trip-details',
-    canActivate  : [ CanLoginGuard ],
+    // canActivate  : [ CanLoginGuard ],
     loadComponent: () => import('./trip-details/trip-details.page').then(
       m => m.TripDetailsPage )
   },
   {
     path         : 'chat',
-    canActivate  : [ CanLoginGuard ],
+    // canActivate  : [ CanLoginGuard ],
     loadComponent: () => import('./chat/chat.page').then( m => m.ChatPage )
   },
   {

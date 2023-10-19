@@ -16,7 +16,7 @@ export class ChatDaoApi implements ChatDao {
 
   constructor( private http: HttpClient ) {}
 
-  async create( chat: Chat ): Promise<Result<boolean, Error>> {
+  async create( chat: Chat ): Promise<Result<boolean, Error[]>> {
     try {
       const chatJsonResult = chatToJson( chat )
 
@@ -31,7 +31,7 @@ export class ChatDaoApi implements ChatDao {
       return Ok( true )
     }
     catch ( e ) {
-      return Err( new ApiOperationException( 'chat create api' ) )
+      return Err( [new ApiOperationException( 'chat create api' )] )
     }
   }
 

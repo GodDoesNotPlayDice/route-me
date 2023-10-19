@@ -9,7 +9,6 @@ import { Street } from 'src/package/street-api/domain/models/street'
 import { newStreetName } from 'src/package/street-api/domain/models/street-name'
 import { newStreetPlace } from 'src/package/street-api/domain/models/street-place'
 import { newStreetShortCode } from 'src/package/street-api/domain/models/street-short-code'
-import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
 
 /**
  * Create a street instance from json
@@ -17,61 +16,48 @@ import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
  * @throws {StreetPlaceInvalidException} - if some place is invalid
  * @throws {PositionInvalidException} - if some position is invalid
  */
-export const streetsDataFromJson = ( json: Record<string, any> ): Result<StreetsData, Error[]> => {
+export const streetFromJson = ( json: Record<string, any> ): Result<Street, Error[]> => {
   const err: Error[] = []
 
-  const streets: Street[] = []
-  for ( const value of Object.values( json['features'] ) ) {
-    const entry = value as Record<string, any>
+  const positionResult = newPosition( {
+    lat: json['center'][1],
+    lng: json['center'][0]
+  } )
 
-    const positionResult = newPosition( {
-      lat: entry['center'][1],
-      lng: entry['center'][0]
-    } )
-
-    if ( positionResult.isErr() ) {
-      err.push( positionResult.unwrapErr() )
-    }
-
-    const place = newStreetPlace( {
-      value: entry['place_name'] ?? ''
-    } )
-
-    if ( place.isErr() ) {
-      err.push( place.unwrapErr() )
-    }
-
-    const name = newStreetName( {
-      value: entry['text'] ?? ''
-    } )
-
-    if ( name.isErr() ) {
-      err.push( name.unwrapErr() )
-    }
-
-    const contextLength = Object.values( entry['context'] ).length
-    const shortCode     = newStreetShortCode( {
-      value: entry['context'][contextLength - 1]['short_code']
-    } )
-
-    if ( err.length > 0 ) {
-      break
-    }
-
-    streets.push( {
-      center   : positionResult.unwrap(),
-      shortCode: shortCode.unwrap(),
-      place    : place.unwrap(),
-      name     : name.unwrap()
-    } )
+  if ( positionResult.isErr() ) {
+    err.push( positionResult.unwrapErr() )
   }
+
+  const place = newStreetPlace( {
+    value: json['place_name'] ?? ''
+  } )
+
+  if ( place.isErr() ) {
+    err.push( place.unwrapErr() )
+  }
+
+  const name = newStreetName( {
+    value: json['text'] ?? ''
+  } )
+
+  if ( name.isErr() ) {
+    err.push( name.unwrapErr() )
+  }
+
+  const contextLength = Object.values( json['context'] ).length
+  const shortCode     = newStreetShortCode( {
+    value: json['context'][contextLength - 1]['short_code'] ?? ''
+  } )
 
   if ( err.length > 0 ) {
     return Err( err )
   }
 
   return Ok( {
-    streets: streets
+    center   : positionResult.unwrap(),
+    shortCode: shortCode.unwrap(),
+    place    : place.unwrap(),
+    name     : name.unwrap()
   } )
 }
 

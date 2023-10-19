@@ -20,7 +20,7 @@ export class AuthUserFirebase implements AuthUserRepository {
   constructor( private firebase: AngularFireDatabase ) {
   }
 
-  collectionKey = 'users'
+  collectionKey = 'usersv2'
 
   /**
    * Logout user

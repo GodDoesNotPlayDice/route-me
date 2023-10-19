@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { DriverDocumentReferenceInvalidException } from 'src/package/driver/domain/exceptions/driver-document-reference-invalid-exception'
+import { DriverDocumentReferenceInvalidException } from 'src/package/driver-document/domain/exceptions/driver-document-reference-invalid-exception'
 import { z } from 'zod'
 
 export const DriverDocumentReferenceSchema = z.object( {

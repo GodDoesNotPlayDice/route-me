@@ -33,10 +33,6 @@ import {
   newTripPrice,
   TripPrice
 } from 'src/package/trip/domain/models/trip-price'
-import {
-  newTripSeat,
-  TripSeat
-} from 'src/package/trip/domain/models/trip-seat'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
 import {
   userFromJson,
@@ -86,7 +82,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   }
 
   let category: Option<Category> = None
-  if ( json['category'] !== '' ) {
+  if ( json['category'] !== null ) {
     const categoryResult = categoryFromJson( {
       value: json['category'] ?? ''
     } )
@@ -119,31 +115,13 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
     err.push( ...locationEnd.unwrapErr() )
   }
 
-  let price: Option<TripPrice> = None
-  if ( json['price'] !== '' ) {
-    const priceResult = newTripPrice( {
-      amount  : json['price']?.amount ?? '',
-      currency: json['price']?.currency ?? ''
-    } )
-    if ( priceResult.isErr() ) {
-      err.push( ...priceResult.unwrapErr() )
-    }
-    else {
-      price = Some( priceResult.unwrap() )
-    }
-  }
+  const price = newTripPrice( {
+    amount  : json['price']?.amount ?? '',
+    currency: json['price']?.currency ?? ''
+  })
 
-  let seat: Option<TripSeat> = None
-  if ( json['seat'] !== '' ) {
-    const seatResult = newTripSeat( {
-      value: json['seat'] ?? ''
-    } )
-    if ( seatResult.isErr() ) {
-      err.push( seatResult.unwrapErr() )
-    }
-    else {
-      seat = Some( seatResult.unwrap() )
-    }
+  if ( price.isErr() ) {
+    err.push( ...price.unwrapErr() )
   }
 
   const state = newTripState( {
@@ -190,10 +168,8 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
     return Err( err )
   }
 
-  //TODO: verificar parse date
   return Ok( {
-    price        : price,
-    seat         : seat,
+    price        : price.unwrap(),
     description  : description.unwrap(),
     category     : category,
     state        : state.unwrap(),
@@ -224,7 +200,11 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
       start_date : dateToJSON( trip.startDate ),
       end_date   : dateToJSON( trip.endDate ),
       description: trip.description.value,
-      state      : trip.state
+      state      : trip.state,
+      price : {
+        amount: trip.price.amount.value,
+        currency: trip.price.currency.value
+      }
     }
 
     const driver = driverToJson( trip.driver )
@@ -234,10 +214,6 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
     }
     else {
       json['driver'] = driver.unwrap()
-    }
-
-    if ( trip.seat.isSome() ) {
-      json['seat'] = trip.seat.unwrap().value
     }
 
     if ( trip.category.isSome() ) {
@@ -250,13 +226,8 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
         json['category'] = categoryResult.unwrap()
       }
     }
-
-    if ( trip.price.isSome() ) {
-      const price   = trip.price.unwrap()
-      json['price'] = {
-        amount  : price.amount,
-        currency: price.currency
-      }
+    else {
+        json['category'] = null
     }
 
     const startLocation = locationToJson( trip.startLocation )
