@@ -6,6 +6,7 @@ import {
 } from 'oxide.ts'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
+import { DriverService } from 'src/app/shared/services/driver.service'
 import { LocationService } from 'src/app/shared/services/location.service'
 import { Position } from 'src/package/position-api/domain/models/position'
 import { Street } from 'src/package/street-api/domain/models/street'
@@ -13,7 +14,10 @@ import { createTrip } from 'src/package/trip/application/create-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
-import { TripPrice } from 'src/package/trip/domain/models/trip-price'
+import {
+	newTripPrice,
+	TripPrice
+} from 'src/package/trip/domain/models/trip-price'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { TripRepository } from 'src/package/trip/domain/repository/trip-repository'
 
@@ -25,6 +29,7 @@ export class TripService {
 		private tripDao: TripDao,
 		private tripRepository: TripRepository,
 		private chatService: ChatService,
+		private driverService: DriverService,
 		private locationService: LocationService,
 		private authService: AuthService
 	)
@@ -52,7 +57,12 @@ export class TripService {
 
 	async calculateTripPrice( start: Position,
 		end: Position ): Promise<Option<TripPrice>> {
-		const result = await this.tripRepository.calculateTripPrice( start, end )
+
+		const result = newTripPrice({
+			amount: 1000,
+			currency: 'CL'
+		})
+		// const result = await this.tripRepository.calculateTripPrice( start, end )
 		if ( result.isErr() ) {
 			return None
 		}
@@ -64,9 +74,11 @@ export class TripService {
 		endLocation: Street,
 		startDate: Date
 	} ): Promise<boolean> {
-		const driver = this.authService.currentDriver
-
+		//TODO: driver email fijo
+		const driver = await this.driverService.getDriver()
+		// const driver = this.authService.currentDriver
 		if ( driver.isNone() ) {
+			console.log('driver none')
 			return false
 		}
 
@@ -76,6 +88,7 @@ export class TripService {
 		)
 
 		if ( tripPrice.isNone() ) {
+			console.log('price none')
 			return false
 		}
 
@@ -86,6 +99,7 @@ export class TripService {
 		} )
 
 		if ( startLocation.isNone() ) {
+			console.log('start loc none')
 			return false
 		}
 
@@ -96,12 +110,14 @@ export class TripService {
 		} )
 
 		if ( endLocation.isNone() ) {
+			console.log('end loc none')
 			return false
 		}
 
 		const chat = await this.chatService.createChat()
 
 		if ( chat.isNone() ) {
+			console.log('chat none')
 			return false
 		}
 
@@ -115,6 +131,7 @@ export class TripService {
 		} )
 
 		if ( result.isErr() ) {
+			console.log('create fail')
 			return false
 		}
 		return true

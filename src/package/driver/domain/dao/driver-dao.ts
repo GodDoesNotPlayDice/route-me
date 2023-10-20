@@ -8,7 +8,7 @@ export abstract class DriverDao {
 
   abstract getByEmail( email: Email ): Promise<Result<Driver, Error[]>>
 
-  abstract create( driver: Driver ): Promise<Result<boolean, Error>>
+  abstract create( driver: Driver ): Promise<Result<boolean, Error[]>>
 
   abstract delete( id: DriverID ): Promise<Result<boolean, Error>>
 

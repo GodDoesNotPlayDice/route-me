@@ -18,7 +18,6 @@ export class ChatService {
 	async createChat(): Promise<Option<ChatID>> {
 		const result = await createChat( this.chatDao )
 		if ( result.isErr() ) {
-
 			return None
 		}
 		return Some( result.unwrap().id )

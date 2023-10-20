@@ -102,7 +102,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   }
 
   let category: Option<Category> = None
-  if ( json['category'] !== null ) {
+  if ( json['category'] !== undefined ) {
     const categoryResult = categoryFromJson( {
       value: json['category'] ?? ''
     } )

@@ -10,6 +10,7 @@ import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/ema
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { Email } from 'src/package/shared/domain/models/email'
 import { Password } from 'src/package/shared/domain/models/password'
+import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { userFromJson } from 'src/package/user/application/user-mapper'
 import { User } from 'src/package/user/domain/models/user'
 import { UserID } from 'src/package/user/domain/models/user-id'
@@ -64,7 +65,7 @@ export class AuthUserFirebase implements AuthUserRepository {
                      } )
                      .catch( ( e ) => {
                        errors.push(
-                         new EmailNotFoundException( 'login firebase' ) )
+                         new FirebaseOperationException( 'login firebase' ) )
                        return Err( errors )
                      } )
   }

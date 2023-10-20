@@ -3,6 +3,7 @@ import { DriverDocumentName } from 'src/package/driver-document/domain/models/dr
 import { DriverDocumentReference } from 'src/package/driver-document/domain/models/driver-document-reference'
 
 export interface DriverDocument {
+  //TODO: id innecesario
   id: DriverDocumentID
   name: DriverDocumentName
   reference: DriverDocumentReference

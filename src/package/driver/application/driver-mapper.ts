@@ -48,6 +48,9 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
     if ( documents.length > 0 ) {
       json['documents'] = documents
     }
+    else {
+      json['documents'] = null
+    }
 
     const passenger = passengerToJson( driver.passenger )
 
@@ -117,7 +120,7 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 
   const documents: DriverDocument[] = []
 
-  if ( json['documents'] !== undefined ) {
+  if ( json['documents'] !== null ) {
     for ( const document of Object.values( json['documents'] ) ) {
       const driverDocument = driverDocumentFromJson(
         document as Record<string, any> )

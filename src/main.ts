@@ -41,6 +41,12 @@ import { CountryDao } from 'src/package/country-api/domain/dao/country-dao'
 import { CountryDaoRestCountries } from 'src/package/country-api/infrastructure/rest-countries/country-dao-rest-countries'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
+import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
+import { DriverCarDaoFirebase } from 'src/package/driver-car/infrastructure/driver-car-dao-firebase'
+import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver-document-dao'
+import { DriverDocumentDaoFirebase } from 'src/package/driver-document/infrastructure/driver-document-dao-firebase'
+import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
+import { DriverDaoFirebase } from 'src/package/driver/infrastructure/driver-dao-firebase'
 import { LocationDao } from 'src/package/location/domain/dao/location-dao'
 import { LocationDaoFirebase } from 'src/package/location/infrastructure/location-dao-firebase'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
@@ -52,7 +58,9 @@ import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/g
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
+import { TripRepository } from 'src/package/trip/domain/repository/trip-repository'
 import { TripDaoFirebase } from 'src/package/trip/infrastructure/trip-dao-firebase'
+import { TripRepositoryApi } from 'src/package/trip/infrastructure/trip-repository-api'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
 import { environment } from './environments/environment'
@@ -69,6 +77,27 @@ bootstrapApplication( AppComponent, {
 			provide   : AuthUserRepository,
 			useFactory: ( firebase: AngularFireDatabase ) => {
 				return new AuthUserFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : DriverDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new DriverDaoFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : DriverCarDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new DriverCarDaoFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : DriverDocumentDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new DriverDocumentDaoFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
 		},
@@ -94,6 +123,13 @@ bootstrapApplication( AppComponent, {
 				return new TripDaoFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : TripRepository,
+			useFactory: ( http: HttpClient ) => {
+				return new TripRepositoryApi( http )
+			},
+			deps      : [ HttpClient ]
 		},
 		{
 			provide   : CountryDao,

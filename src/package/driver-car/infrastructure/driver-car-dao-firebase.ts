@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from '@angular/fire/compat/database'
 import {
   Err,
   Result
@@ -8,6 +9,12 @@ import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 
 export class DriverCarDaoFirebase implements DriverCarDao {
+
+  constructor( private firebase: AngularFireDatabase ) {
+  }
+
+  collectionKey = 'driverscar'
+
   async create( driver: DriverCar ): Promise<Result<boolean, Error>> {
     return Err( new FirebaseOperationException() )
   }

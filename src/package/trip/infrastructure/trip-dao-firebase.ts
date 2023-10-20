@@ -37,7 +37,7 @@ export class TripDaoFirebase implements TripDao {
     }
 
     await this.firebase.database.ref( this.collectionKey )
-              .push( json,
+              .push( json.unwrap(),
                 ( error ) => {
                   if ( !error ) {
                     completed = 'completed'
@@ -121,6 +121,9 @@ export class TripDaoFirebase implements TripDao {
                      .equalTo( state )
                      .get()
                      .then( async ( snapshot ) => {
+                       if ( snapshot.val() === null ){
+                         return Err([new TripNotFoundException()])
+                       }
                        const error: Error[] = []
                        const trips: Trip[]  = []
                        for ( let value of Object.values( snapshot.val() ) ) {

@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from '@angular/fire/compat/database'
 import {
   Err,
   Result
@@ -8,6 +9,12 @@ import { DriverDocumentID } from 'src/package/driver-document/domain/models/driv
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 export class DriverDocumentDaoFirebase implements DriverDocumentDao {
+
+  constructor( private firebase: AngularFireDatabase ) {
+  }
+
+  collectionKey = 'driversdocuments'
+
   /**
    * Create a driver document
    * @throws {UnknownException} - if unknown error
