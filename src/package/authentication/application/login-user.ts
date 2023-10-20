@@ -16,7 +16,7 @@ import { User } from 'src/package/user/domain/models/user'
  * @throws {PasswordInsufficientLowercaseException} - if password lowercase is invalid
  * @throws {PasswordInsufficientNumberException} - if password number is invalid
  * @throws {PasswordInsufficientCharacterException} - if password character is invalid
- * @throws {UserNotFoundException} - if user not found
+ * @throws {EmailNotFoundException} - if email not found
  * @throws {PasswordNotMatchException} - if password not match
  * @throws {UnknownException} - if unknown error
  */

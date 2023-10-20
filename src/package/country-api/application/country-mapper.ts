@@ -21,7 +21,7 @@ export const countryFromJson = ( json: Record<string, any> ): Result<Country, Er
   const errors: Error[] = []
 
   const flag = newCountryFlagUrl( {
-    png: json['flags'] === undefined ? '' : json['flags']['png'] ?? ''
+    png: json['flags']?.png ?? ''
   } )
 
   if ( flag.isErr() ) {

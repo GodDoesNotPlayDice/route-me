@@ -7,7 +7,7 @@ import {
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
-import { DriversService } from 'src/app/shared/services/drivers.service'
+import { DriverService } from 'src/app/shared/services/driver.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
@@ -28,40 +28,46 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 } )
 export class HomePage implements ViewDidEnter {
 
-  constructor( private driversService: DriversService,
+  constructor( private driverService: DriverService,
     private trip: TripService )
   {}
 
   async ionViewDidEnter(): Promise<void> {
-    // this.info = this.driversService.getDrivers()
-    //                 .filter( ( driver ) => {
-    //                   return driver.state === TripStateEnum.Open
-    //                 } )
+    // const resultDriver = await this.driverService.driverRegister(
+    //   2, 'tesla', [ {
+    //     id       : '2',
+    //     name     : 'Licencia',
+    //     reference: 'url'
+    //   } ]
+    // )
+    // if ( resultDriver ){
+    //   console.log('driver ok')
+    // }
+    // else {
+    //   console.log('driver fail')
+    // }
+
     this.loading = true
     const result = await this.trip.getAllByState( TripStateEnum.Open )
 
     if ( result.length > 0 ) {
       this.info    = result.map( ( trip ): DriverCardInfo => {
         return {
-          cost             : trip.price.isNone()
-            ? 0
-            : trip.price.unwrap().amount.value,
+          cost             : trip.price.amount.value,
           date             : trip.startDate.toLocaleString(),
           state            : trip.state,
-          endLocationName  : trip.endLocation.value,
-          startLocationName: trip.startLocation.value,
+          endLocationName  : trip.endLocation.name.value,
+          startLocationName: trip.startLocation.name.value,
           driverAvatar     : {
-            name: trip.driverID.value,
-            url : 'https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png'
+            name: trip.driver.passenger.name.value,
+            url: trip.driver.passenger.image.value
           },
-          passengerUrls    : trip.passengersID.map( ( passenger ) => {
-            return passenger.value
+          passengerUrls    : trip.passengers.map( ( passenger ) => {
+            return passenger.image.value
           } )
         }
       } )
       this.loading = false
-      console.log( 'this.info' )
-      console.log( this.info )
     }
     else {
       this.error = true

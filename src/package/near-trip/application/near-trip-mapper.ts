@@ -5,6 +5,7 @@ import {
 } from 'oxide.ts'
 import { newLocation } from 'src/package/location/domain/models/location'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
+import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
 import {
   dateFromJSON,
   dateToJSON
@@ -29,10 +30,8 @@ export const nearTripToJson = ( nearTrip: NearTrip ): Result<Record<string, any>
         currency: nearTrip.price.currency
       },
       start_date         : dateToJSON( nearTrip.startDate.value ),
-      start_position     : {
-        latitude : nearTrip.startPosition.lat,
-        longitude: nearTrip.startPosition.lng
-      }
+      latitude           : nearTrip.latitude,
+      longitude          : nearTrip.longitude
     } )
   }
   catch ( e ) {
@@ -106,6 +105,12 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
     err.push( ...endLocation.unwrapErr() )
   }
 
+  //TODO: revisar si se verifica
+  if ( json['latitude'] === undefined || json['longitude'] === undefined ) {
+    err.push(
+      new PositionInvalidException( 'latitude or longitude is undefined' ) )
+  }
+
   if ( err.length > 0 ) {
     return Err( err )
   }
@@ -114,9 +119,10 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
       id               : id.unwrap(),
       price            : price.unwrap(),
       startDate        : startDate.unwrap(),
-      startPosition    : startLocation.unwrap().position,
       startLocationName: startLocation.unwrap().name,
-      endLocationName  : endLocation.unwrap().name
+      endLocationName  : endLocation.unwrap().name,
+      latitude         : json['latitude'],
+      longitude        : json['longitude']
     }
   )
 }

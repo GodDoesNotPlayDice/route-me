@@ -5,5 +5,5 @@ export interface TripHistoryPreview {
   id: TripID
   startLocationName: LocationName
   endLocationName: LocationName
-  startDate : Date
+  startDate: Date
 }

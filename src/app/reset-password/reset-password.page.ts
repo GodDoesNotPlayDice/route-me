@@ -1,46 +1,63 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  ViewChild
+	Component,
+	ViewChild
 } from '@angular/core'
+import { FormGroup } from '@angular/forms'
+import { Router } from '@angular/router'
 import {
-  IonicModule,
-  ViewDidEnter
+	IonicModule,
+	ViewDidEnter
 } from '@ionic/angular'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
+import { AuthService } from 'src/app/shared/services/auth.service'
 
 @Component( {
-  standalone : true,
-  selector   : 'app-reset-password',
-  templateUrl: './reset-password.page.html',
-  styleUrls  : [ './reset-password.page.scss' ],
-  imports    : [
-    IonicModule,
-    CommonModule,
-    InputTextComponent,
-    FilledButtonComponent
-  ]
+	standalone : true,
+	selector   : 'app-reset-password',
+	templateUrl: './reset-password.page.html',
+	styleUrls  : [ './reset-password.page.scss' ],
+	imports    : [
+		IonicModule,
+		CommonModule,
+		InputTextComponent,
+		FilledButtonComponent
+	]
 } )
-export class ResetPasswordPage implements ViewDidEnter {
+export class ResetPasswordPage implements ViewDidEnter{
 
-  @ViewChild( 'pw1' ) password1Input!: InputTextComponent
-  @ViewChild( 'pw2' ) password2Input!: InputTextComponent
+	constructor( private router: Router,
+		private auth: AuthService )
+	{}
 
-  // formGroup! : FormGroup
+	@ViewChild( 'user' ) emailInput!: InputTextComponent
+	formGroup!: FormGroup
 
-  public ionViewDidEnter(): void {
-    // this.formGroup = new FormGroup([
-    //   this.password1Input.textControl,
-    //   this.password2Input.textControl
-    // ],{
-    //   validators: (control) => {
-    //     const password1 = control.get('pw1')?.value
-    //     const password2 = control.get('pw2')?.value
-    //     if(password1 === password2) return null
-    //     return { passwordMatch: true }
-    //   }
-    // })
-  }
+	async ionViewDidEnter(): Promise<void> {
+		this.formGroup = new FormGroup( [
+			this.emailInput.textControl
+		] )
+	}
 
+	async buttonClick(): Promise<void> {
+		this.formGroup.updateValueAndValidity()
+		this.formGroup.markAllAsTouched()
+
+		if (
+			!this.formGroup.valid
+		)
+		{
+			return
+		}
+
+		const result = await this.auth.resetPasswordSend(this.emailInput.textControl.value!)
+
+		if (  result){
+		  await this.router.navigate(['/login'])
+		}
+		else {
+		  console.log('reset failed')
+		}
+	}
 }

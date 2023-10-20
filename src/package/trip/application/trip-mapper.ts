@@ -21,6 +21,11 @@ import {
   locationToJson
 } from 'src/package/location/application/location-mapper'
 import {
+  passengerFromJson,
+  passengerToJson
+} from 'src/package/passenger/application/passenger-mapper'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import {
   dateFromJSON,
   dateToJSON
 } from 'src/package/shared/config/helper/date/date-mapper'
@@ -29,48 +34,59 @@ import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
-import {
-  newTripPrice,
-  TripPrice
-} from 'src/package/trip/domain/models/trip-price'
-import {
-  newTripSeat,
-  TripSeat
-} from 'src/package/trip/domain/models/trip-seat'
+import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
-import {
-  userFromJson,
-  userToJson
-} from 'src/package/user/application/user-mapper'
-import { User } from 'src/package/user/domain/models/user'
 
 /**
  * Create a trip instance from json
+ * @throws {EmailInvalidException} - if email is invalid
+ * @throws {PassengerIdInvalidException} - if id is invalid
+ * @throws {PassengerNameInvalidException} - if name is invalid
+ * @throws {PassengerLastNameInvalidException} - if last name is invalid
+ * @throws {PassengerDescriptionInvalidException} - if description is invalid
+ * @throws {PhoneInvalidFormatException} - if phone format is invalid
+ * @throws {PhoneInsufficientLengthException} - if phone length is insufficient
+ * @throws {PhoneExceedsMaximumLengthException} - if phone length exceeds maximum
+ * @throws {PassengerBirthDayInvalidException} - if birthday is invalid
+ * @throws {PassengerCountryInvalidException} - if country is invalid
+ * @throws {PreferenceIdInvalidException} - if preference id is invalid
+ * @throws {GenderInvalidException} - if gender is invalid
+ * @throws {ImageUrlInvalidException} - if image is invalid
+ * @throws {RatingIdInvalidException} - if id is invalid
+ * @throws {RatingValueInvalidException} - if value is invalid
  * @throws {DriverIdInvalidException} - if driver id is invalid
- * @throws {CategoryIdInvalidException} - if category id is invalid
- * @throws {ChatIdInvalidException} - if chat id is invalid
- * @throws {LocationIdInvalidException} - if location id is invalid
+ * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
+ * @throws {DriverDocumentNameInvalidException} - if driver document name is invalid
+ * @throws {DriverDocumentReferenceInvalidException} - if driver document reference is invalid
+ * @throws {DriverCarIDInvalidException} - if id is invalid
+ * @throws {DriverCarModelInvalidException} - if model is invalid
+ * @throws {DriverCarSeatInvalidException} - if seat is invalid
+ * @throws {CategoryIdInvalidException} - if id is invalid
+ * @throws {CategoryNameInvalidException} - if name is invalid
+ * @throws {ChatIdInvalidException} - if id is invalid
+ * @throws {LocationIdInvalidException} - if id is invalid
+ * @throws {LocationNameInvalidException} - if name is invalid
+ * @throws {LocationCountryCodeInvalidException} - if country code is invalid
+ * @throws {PositionInvalidException} - if position is invalid
  * @throws {MoneyInvalidException} - if money is invalid
- * @throws {TripSeatInvalidException} - if seat is invalid
- * @throws {TripStateInvalidException} - if state is invalid
- * @throws {TripIdInvalidException} - if trip id is invalid
- * @throws {DateInvalidException} - if date is invalid
- * @throws {TripDescriptionInvalidException} - if description is invalid
- * @throws {UserIdInvalidException} - if passenger id is invalid
  * @throws {CurrencyInvalidException} - if currency is invalid
+ * @throws {TripStateInvalidException} - if state is invalid
+ * @throws {TripIdInvalidException} - if id is invalid
+ * @throws {TripDescriptionInvalidException} - if description is invalid
+ * @throws {DateInvalidException} - if date is invalid
  */
 export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]> => {
   const err: Error[] = []
 
-  const passenger: User[] = []
+  const passenger: Passenger[] = []
   if ( json['passengers'] ) {
     for ( const user of Object.values( json['passengers'] ) ) {
-      const userResult = userFromJson( user as Record<string, any> )
-      if ( userResult.isErr() ) {
-        err.push( ...userResult.unwrapErr() )
+      const passengerResult = passengerFromJson( user as Record<string, any> )
+      if ( passengerResult.isErr() ) {
+        err.push( ...passengerResult.unwrapErr() )
       }
       else {
-        passenger.push( userResult.unwrap() )
+        passenger.push( passengerResult.unwrap() )
       }
     }
   }
@@ -86,7 +102,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
   }
 
   let category: Option<Category> = None
-  if ( json['category'] !== '' ) {
+  if ( json['category'] !== undefined ) {
     const categoryResult = categoryFromJson( {
       value: json['category'] ?? ''
     } )
@@ -119,31 +135,13 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
     err.push( ...locationEnd.unwrapErr() )
   }
 
-  let price: Option<TripPrice> = None
-  if ( json['price'] !== '' ) {
-    const priceResult = newTripPrice( {
-      amount  : json['price']?.amount ?? '',
-      currency: json['price']?.currency ?? ''
-    } )
-    if ( priceResult.isErr() ) {
-      err.push( ...priceResult.unwrapErr() )
-    }
-    else {
-      price = Some( priceResult.unwrap() )
-    }
-  }
+  const price = newTripPrice( {
+    amount  : json['price']?.amount ?? '',
+    currency: json['price']?.currency ?? ''
+  } )
 
-  let seat: Option<TripSeat> = None
-  if ( json['seat'] !== '' ) {
-    const seatResult = newTripSeat( {
-      value: json['seat'] ?? ''
-    } )
-    if ( seatResult.isErr() ) {
-      err.push( seatResult.unwrapErr() )
-    }
-    else {
-      seat = Some( seatResult.unwrap() )
-    }
+  if ( price.isErr() ) {
+    err.push( ...price.unwrapErr() )
   }
 
   const state = newTripState( {
@@ -190,10 +188,8 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
     return Err( err )
   }
 
-  //TODO: verificar parse date
   return Ok( {
-    price        : price,
-    seat         : seat,
+    price        : price.unwrap(),
     description  : description.unwrap(),
     category     : category,
     state        : state.unwrap(),
@@ -217,14 +213,17 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
   try {
     const err: Error[] = []
 
-
     const json: Record<string, any> = {
       id         : trip.id.value,
       chat_id    : trip.chatID.value,
       start_date : dateToJSON( trip.startDate ),
       end_date   : dateToJSON( trip.endDate ),
       description: trip.description.value,
-      state      : trip.state
+      state      : trip.state,
+      price      : {
+        amount  : trip.price.amount.value,
+        currency: trip.price.currency.value
+      }
     }
 
     const driver = driverToJson( trip.driver )
@@ -234,10 +233,6 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
     }
     else {
       json['driver'] = driver.unwrap()
-    }
-
-    if ( trip.seat.isSome() ) {
-      json['seat'] = trip.seat.unwrap().value
     }
 
     if ( trip.category.isSome() ) {
@@ -250,13 +245,8 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
         json['category'] = categoryResult.unwrap()
       }
     }
-
-    if ( trip.price.isSome() ) {
-      const price   = trip.price.unwrap()
-      json['price'] = {
-        amount  : price.amount,
-        currency: price.currency
-      }
+    else {
+      json['category'] = null
     }
 
     const startLocation = locationToJson( trip.startLocation )
@@ -279,18 +269,21 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 
     const passengers: Record<string, any>[] = []
     for ( const passenger of trip.passengers ) {
-      const userResult = userToJson( passenger )
+      const passengerResult = passengerToJson( passenger )
 
-      if ( userResult.isErr() ) {
-        err.push()
+      if ( passengerResult.isErr() ) {
+        err.push(...passengerResult.unwrapErr())
       }
       else {
-        passengers.push( userResult.unwrap() )
+        passengers.push( passengerResult.unwrap() )
       }
     }
 
     if ( passengers.length > 0 ) {
       json['passengers'] = passengers
+    }
+    else {
+      json['passengers'] = null
     }
 
     if ( err.length > 0 ) {

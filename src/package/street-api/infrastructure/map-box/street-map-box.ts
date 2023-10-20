@@ -6,7 +6,7 @@ import {
   Result
 } from 'oxide.ts'
 import { Position } from 'src/package/position-api/domain/models/position'
-import { streetsDataFromJson } from 'src/package/street-api/application/street-mapper'
+import { streetsDataFromJson } from 'src/package/street-api/application/streets-data-mapper'
 import { StreetNotFoundException } from 'src/package/street-api/domain/exceptions/street-not-found-exception'
 import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'

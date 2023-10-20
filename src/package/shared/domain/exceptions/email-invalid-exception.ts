@@ -4,3 +4,4 @@ export class EmailInvalidException extends Error {
     this.name = 'EmailInvalidException'
   }
 }
+

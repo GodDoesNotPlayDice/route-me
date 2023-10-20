@@ -4,6 +4,8 @@ import { TripHistoryID } from 'src/package/trip-history/domain/models/trip-histo
 
 export abstract class TripHistoryDao {
   abstract create( trip: TripHistory ): Promise<Result<boolean, Error[]>>
+
   abstract getById( id: TripHistoryID ): Promise<Result<TripHistory, Error[]>>
+
   abstract getAll(): Promise<Result<TripHistory[], Error[]>>
 }
