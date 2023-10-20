@@ -13,23 +13,24 @@ import {
   ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
+import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputAreaComponent } from 'src/app/shared/components/input-area/input-area.component'
 import { MultipleSelectorInputComponent } from 'src/app/shared/components/multiple-selector-input/multiple-selector-input.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
-import {
-  MultipleSelectorData,
-  newMultipleSelectorData
-} from 'src/app/shared/models/multiple-selector-data'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 import { UserPreferenceService } from 'src/app/shared/services/user-preference.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import {
   clearStep,
   notifyStep
 } from 'src/app/shared/state/stepper/step.actions'
-import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
+import { Preference } from 'src/package/preference/domain/models/preference'
+import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
+import { newPreferenceName } from 'src/package/preference/domain/models/preference-name'
+import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,
@@ -42,20 +43,21 @@ import { newPreferenceID } from 'src/package/preference/domain/models/preference
     InputAreaComponent,
     MultipleSelectorInputComponent,
     FilledButtonComponent,
-    FormsModule
+    FormsModule,
+    AppBarCloneComponent
   ],
   styleUrls  : [ './step3.page.scss' ]
 } )
 export class Step3Page implements ViewDidEnter {
 
   constructor( private store: Store<AppState>, private router: Router,
+    private toastService: ToastService,
     private userPreferenceService: UserPreferenceService,
     private auth: AuthService )
   {
-    //TODO: colocar con observable despues, como en country service
-    this.preferences = this.userPreferenceService.getUserPreferences()
+    this.preferences = this.userPreferenceService.getPreferences()
                            .map(
-                             ( preference ) => newMultipleSelectorData( {
+                             ( preference ): MultipleSelectorData => ( {
                                id      : preference.id.value,
                                name    : preference.name.value,
                                icon    : preference.icon.value,
@@ -63,9 +65,9 @@ export class Step3Page implements ViewDidEnter {
                              } ) )
   }
 
+  @ViewChild( 'appBar' ) appBar !: AppBarCloneComponent
   @ViewChild( 'area' ) areaInput !: InputAreaComponent
-  @ViewChild(
-    'preference' ) preferenceInput !: MultipleSelectorInputComponent
+  @ViewChild( 'preference' ) preferenceInput !: MultipleSelectorInputComponent
 
   formGroup!: FormGroup
 
@@ -78,8 +80,7 @@ export class Step3Page implements ViewDidEnter {
     ] )
   }
 
-  async submit( $event: SubmitEvent ) {
-    $event.preventDefault()
+  async submit() {
     this.formGroup.updateValueAndValidity()
     this.formGroup.markAllAsTouched()
 
@@ -87,20 +88,46 @@ export class Step3Page implements ViewDidEnter {
       return
     }
 
-    this.store.dispatch( notifyStep() )
-
-    await this.auth.updatePassenger( {
-      preferences: this.preferenceInput.multipleSelectorControl.value!.map(
-        ( preference ) => newPreferenceID( {
-          value: preference
-        } ) ),
-      description: newPassengerDescription( {
-        value: this.areaInput.textControl.value!
-      } )
+    const updated = await this.auth.updatePassenger( {
+      description: this.areaInput.textControl.value!,
+      preferences: this.preferenceInput.multipleSelectorControl.value!
     } )
 
-    this.store.dispatch( clearStep() )
+    if ( !updated ) {
+      await this.toastService.presentToast( {
+        message : 'Hubo un problema. Intente denuevo',
+        duration: 1500,
+        position: 'bottom'
+      } )
+      return
+    }
 
+    this.store.dispatch( notifyStep() )
     await this.router.navigate( [ '/tabs/home' ] )
+    this.store.dispatch( clearStep() )
+  }
+
+  async buttonClick(): Promise<void> {
+    await this.submit()
+    this.reset()
+  }
+
+  async leadClick(): Promise<void> {
+    const isDelete = await this.auth.deleteAccount()
+    if ( isDelete ) {
+      await this.appBar.backPage()
+    }
+    else {
+      await this.toastService.presentToast( {
+        message : 'Hubo un problema. Intente denuevo',
+        duration: 1500,
+        position: 'bottom'
+      } )
+    }
+  }
+
+  private reset(): void {
+    this.areaInput.reset()
+    this.preferenceInput.reset()
   }
 }

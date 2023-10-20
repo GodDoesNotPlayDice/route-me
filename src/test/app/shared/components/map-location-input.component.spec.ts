@@ -1,24 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import {
+  ComponentFixture,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component';
+import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
 
-describe('MapLocationInputComponent', () => {
-  let component: MapLocationInputComponent;
-  let fixture: ComponentFixture<MapLocationInputComponent>;
+describe( 'MapLocationInputComponent', () => {
+  let component: MapLocationInputComponent
+  let fixture: ComponentFixture<MapLocationInputComponent>
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach( waitForAsync( () => {
+    TestBed.configureTestingModule( {
       declarations: [ MapLocationInputComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+      imports     : [ IonicModule.forRoot() ]
+    } )
+           .compileComponents()
 
-    fixture = TestBed.createComponent(MapLocationInputComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+    fixture   = TestBed.createComponent( MapLocationInputComponent )
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  } ) )
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  it( 'should create', () => {
+    expect( component )
+      .toBeTruthy()
+  } )
+} )

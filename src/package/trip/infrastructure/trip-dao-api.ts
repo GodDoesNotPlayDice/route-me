@@ -5,11 +5,15 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { TripState } from 'src/package/trip/domain/models/trip-state'
-import { tripToJSON } from 'src/package/trip/application/trip-mapper'
+import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
+import {
+  tripFromJSON,
+  tripToJSON
+} from 'src/package/trip/application/trip-mapper'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
-import { TripID } from '../domain/models/trip-id'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
+import { TripState } from 'src/package/trip/domain/models/trip-state'
 
 export class TripDaoApi implements TripDao {
 
@@ -17,42 +21,86 @@ export class TripDaoApi implements TripDao {
 
   constructor( private http: HttpClient ) {}
 
-  async getAllByState( state: TripState ): Promise<Result<Trip[], string>> {
-    return Promise.resolve( Err( '' ) )
-
+  /**
+   * Get all trips by state
+   * @throws {ApiOperationException} - if api operation failed
+   */
+  async getAllByState( state: TripState ): Promise<Result<Trip[], Error[]>> {
+    return Err( [ new ApiOperationException() ] )
   }
 
-  async getById( id: TripID ): Promise<Result<Trip, string>> {
-    return Promise.resolve( Err( '' ) )
+  /**
+   * Get by id trip
+   * @throws {ApiOperationException} - if api operation failed
+   */
+  async getById( id: TripID ): Promise<Result<Trip, Error[]>> {
+    return Err( [ new ApiOperationException() ] )
   }
 
-  async delete( id: TripID ): Promise<Result<boolean, string>> {
-    return Promise.resolve( Err( '' ) )
+  /**
+   * Delete trip
+   * @throws {ApiOperationException} - if api operation failed
+   */
+  async delete( id: TripID ): Promise<Result<boolean, Error>> {
+    return Err( new ApiOperationException() )
   }
 
-  async update( trip: Trip ): Promise<Result<boolean, string>> {
-    return Promise.resolve( Err( '' ) )
+  /**
+   * Update trip
+   * @throws {ApiOperationException} - if api operation failed
+   */
+  async update( trip: Trip ): Promise<Result<boolean, Error[]>> {
+    return Err( [new ApiOperationException()] )
   }
 
-  async create( trip: Trip ): Promise<Result<boolean, string>> {
+  /**
+   * Create trip
+   * @throws {ApiOperationException} - if api operation failed
+   */
+  async create( trip: Trip ): Promise<Result<boolean, Error[]>> {
     try {
-      const j = tripToJSON( trip )
-      this.http.post( this.url, j )
+      const tripJsonResult = tripToJSON( trip )
+
+      if ( tripJsonResult.isErr() ) {
+        return Err( tripJsonResult.unwrapErr() )
+      }
+
+      this.http.post( this.url, tripJsonResult.unwrap() )
           .subscribe( ( data ) => {
             console.log( 'data', data )
           } )
-      return Promise.resolve( Ok( true ) )
+
+
+      return Ok( true )
     }
     catch ( e ) {
-      return Promise.resolve( Err( 'err create trip' ) )
+      return Err( [ new ApiOperationException( 'trip create firebase' ) ] )
     }
   }
 
-  async getAll(): Promise<Result<Trip[], string>> {
-    this.http.get( this.url )
-        .subscribe( ( data ) => {
-          console.log( 'data', data )
-        } )
-    return Promise.resolve( Ok( [] ) )
+  /**
+   * Get all trips
+   * @throws {ApiOperationException} - if api operation failed
+   */
+  async getAll(): Promise<Result<Trip[], Error[]>> {
+
+    const response = await this.http.get( this.url )
+                               .toPromise()
+
+    if ( response === undefined ) {
+      return Err( [ new ApiOperationException( 'trip get all api' ) ] )
+    }
+
+    const result = tripFromJSON( response as Record<string, any> )
+    console.log( 'result', result )
+
+    // const trip = tripFromJSON( response )
+    //
+    // if ( trip.isErr() ) {
+    // 	return Err( trip.unwrapErr() )
+    // }
+    //
+    // return Ok( trip.unwrap() )
+    return Ok( [] )
   }
 }

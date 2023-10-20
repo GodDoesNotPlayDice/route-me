@@ -1,28 +1,9 @@
-import {
-  MessageContent,
-  newMessageContent
-} from 'src/package/chat/domain/models/message-content'
-import {
-  MessageID,
-  newMessageID
-} from 'src/package/chat/domain/models/message-id'
+import { MessageContent } from 'src/package/chat/domain/models/message-content'
+import { MessageID } from 'src/package/chat/domain/models/message-id'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 
 export interface Message {
-	id     : MessageID,
-	content: MessageContent
+  id: MessageID,
+  passengerOwner: Passenger
+  content: MessageContent
 }
-
-export interface MessageProps {
-	id: string
-	content: string
-}
-
-export const newMessage = ( props: MessageProps ): Message => {
-	return {
-    id: newMessageID({
-      value: props.id
-    }),
-    content: newMessageContent({
-      value: props.content
-    })
-  }}

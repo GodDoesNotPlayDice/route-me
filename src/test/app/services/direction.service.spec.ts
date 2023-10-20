@@ -1,16 +1,17 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing'
 
-import { DirectionService } from 'src/app/shared/services/direction.service';
+import { DirectionService } from 'src/app/shared/services/direction.service'
 
-describe('DirectionService', () => {
-  let service: DirectionService;
+describe( 'DirectionService', () => {
+  let service: DirectionService
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DirectionService);
-  });
+  beforeEach( () => {
+    TestBed.configureTestingModule( {} )
+    service = TestBed.inject( DirectionService )
+  } )
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  it( 'should be created', () => {
+    expect( service )
+      .toBeTruthy()
+  } )
+} )

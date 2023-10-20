@@ -1,19 +1,9 @@
-import {
-  Err,
-  Ok,
-  Result
-} from 'oxide.ts'
-import { TripState } from 'src/package/trip/domain/models/trip-state'
+import { Result } from 'oxide.ts'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
+import { TripState } from 'src/package/trip/domain/models/trip-state'
 
-export const getAllByState = async ( dao: TripDao, state: TripState): Promise<Result<Trip[], string>> => {
-  try {
-    const result   = await dao.getAllByState(state)
-    const response = result.unwrap()
-    return Promise.resolve( Ok( response ) )
-  }
-  catch ( e ) {
-    return Promise.resolve( Err( 'create trip error' ) )
-  }
+export const getAllByState = async ( dao: TripDao,
+  state: TripState ): Promise<Result<Trip[], Error[]>> => {
+  return await dao.getAllByState( state )
 }

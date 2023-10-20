@@ -6,7 +6,7 @@ import {
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
 import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
-import { DriverCardInfo } from 'src/app/shared/models/driver-card-info'
+import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 
 @Component( {
   standalone : true,
@@ -23,7 +23,7 @@ export class DriveCardComponent {
 
   constructor( private router: Router ) { }
 
-  @Input({required: true}) info: DriverCardInfo
+  @Input( { required: true } ) info: DriverCardInfo
 
   async buttonClick( $event: MouseEvent ) {
     $event.preventDefault()

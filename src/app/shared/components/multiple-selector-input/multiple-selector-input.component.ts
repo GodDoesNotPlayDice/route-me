@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
   Component,
-  Input,
-  OnInit
+  Input
 } from '@angular/core'
 import {
   FormControl,
@@ -15,7 +14,7 @@ import {
   ModalController
 } from '@ionic/angular'
 import { MultipleSelectorModalComponent } from 'src/app/shared/components/multiple-selector-modal/multiple-selector-modal.component'
-import { MultipleSelectorData } from 'src/app/shared/models/multiple-selector-data'
+import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,
@@ -31,10 +30,7 @@ import { MultipleSelectorData } from 'src/app/shared/models/multiple-selector-da
   ]
 } )
 export class MultipleSelectorInputComponent {
-  constructor(
-    private modalCtrl: ModalController
-  )
-  {}
+  constructor( private modalCtrl: ModalController ) {}
 
   @Input() required = false
   @Input( { required: true } ) label: string
@@ -42,9 +38,9 @@ export class MultipleSelectorInputComponent {
 
   selectedData: MultipleSelectorData[] = []
 
-  @Input( { required: true } ) databaseList : MultipleSelectorData[]
+  @Input( { required: true } ) databaseList: MultipleSelectorData[]
 
-  readonly multipleSelectorControl = new FormControl<string[]>( [],
+  readonly multipleSelectorControl = new FormControl<MultipleSelectorData[]>( [],
     control => {
       if ( this.required && control.value.length === 0 ) {
         control.addValidators( Validators.required )
@@ -70,10 +66,12 @@ export class MultipleSelectorInputComponent {
     const { data, role } = await modal.onWillDismiss()
 
     this.selectedData = data
-    // if ( role1 === 'confirm' ) {}
-    this.multipleSelectorControl.patchValue( this.selectedData.map(value => {
-      return value.id
-    }) )
+    this.multipleSelectorControl.patchValue( this.selectedData)
     this.multipleSelectorControl.updateValueAndValidity()
+  }
+
+  reset(): void {
+    this.selectedData = []
+    this.multipleSelectorControl.reset()
   }
 }

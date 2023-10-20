@@ -6,7 +6,7 @@ import {
   Output
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { MultipleSelectorData } from 'src/app/shared/models/multiple-selector-data'
+import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
 @Component( {
   standalone : true,
@@ -20,7 +20,7 @@ import { MultipleSelectorData } from 'src/app/shared/models/multiple-selector-da
 } )
 export class MultipleSelectorItemComponent {
   @Input() selected: boolean                   = false
-  @Input({required: true}) item : MultipleSelectorData
+  @Input( { required: true } ) item: MultipleSelectorData
   @Output() onSelected: EventEmitter<string>   = new EventEmitter<string>()
   @Output() onDeselected: EventEmitter<string> = new EventEmitter<string>()
 

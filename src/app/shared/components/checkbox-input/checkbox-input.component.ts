@@ -6,9 +6,7 @@ import {
   OnInit,
   Output
 } from '@angular/core'
-import {
-  FormControl
-} from '@angular/forms'
+import { FormControl } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 
 @Component( {
@@ -29,7 +27,7 @@ export class CheckboxInputComponent implements OnInit {
 
   @Input() errorText: string
 
-  @Input({required: true}) contentText: string = ''
+  @Input( { required: true } ) contentText: string = ''
 
   @Output() isCheckedChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
@@ -50,5 +48,10 @@ export class CheckboxInputComponent implements OnInit {
 
   public ngOnInit(): void {
     this.checkboxControl.updateValueAndValidity()
+  }
+
+  reset(): void {
+    this.isChecked = false
+    this.checkboxControl.reset()
   }
 }

@@ -16,7 +16,7 @@ import { IonicModule } from '@ionic/angular'
   ]
 } )
 export class StepperItemComponent {
-  @Input({required: true}) step : number
-  @Input({required: true}) currentStep : number
-  @Input({required: true}) maxStep : number
+  @Input( { required: true } ) step: number
+  @Input( { required: true } ) currentStep: number
+  @Input( { required: true } ) maxStep: number
 }

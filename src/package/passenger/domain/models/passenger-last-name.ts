@@ -1,7 +1,14 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { PassengerLastNameInvalidException } from 'src/package/passenger/domain/exceptions/passenger-last-name-invalid-exception'
 import { z } from 'zod'
 
 export const PassengerLastNameSchema = z.object( {
   value: z.string()
+          .min( 1 )
 } )
 
 type PassengerLastNameType = z.infer<typeof PassengerLastNameSchema>
@@ -12,8 +19,20 @@ export interface PassengerLastNameProps {
   value: string
 }
 
-export const newPassengerLastName = ( props: PassengerLastNameProps ): PassengerLastName => {
-  return PassengerLastNameSchema.parse( {
+/**
+ * Create a passenger last name instance
+ * @throws {PassengerLastNameInvalidException} - if last name is invalid
+ */
+export const newpassengerLastName = ( props: PassengerLastNameProps ): Result<PassengerLastName, Error> => {
+
+  const result = PassengerLastNameSchema.safeParse( {
     value: props.value
   } )
+
+  if ( !result.success ) {
+    return Err( new PassengerLastNameInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
 }

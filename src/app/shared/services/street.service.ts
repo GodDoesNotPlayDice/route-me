@@ -1,23 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { Result } from 'oxide.ts'
-import { Position } from 'src/package/location-api/domain/models/position';
-import {
-  StreetsData
-} from 'src/package/street-api/domain/models/street'
+import { Position } from 'src/package/position-api/domain/models/position'
+import { StreetsData } from 'src/package/street-api/domain/models/streets-data'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 
-@Injectable({
+@Injectable( {
   providedIn: 'root'
-})
+} )
 export class StreetService {
 
-  constructor(private streetRepository : StreetRepository) { }
+  constructor( private streetRepository: StreetRepository ) { }
 
-  async getStreetByTerm(searchTerm : string, center : Position) : Promise<Result<StreetsData, string>> {
-    return this.streetRepository.getStreetsByTerm(searchTerm, center)
+  async getStreetByTerm( searchTerm: string,
+    center: Position ): Promise<Result<StreetsData, Error[]>> {
+    return await this.streetRepository.getStreetsByTerm( searchTerm, center )
   }
 
-  async getStreetsByPosition( center: Position ) : Promise<Result<StreetsData, string>>{
-    return this.streetRepository.getStreetsByPosition(center)
+  async getStreetsByPosition( center: Position ): Promise<Result<StreetsData, Error[]>> {
+    return await this.streetRepository.getStreetsByPosition( center )
   }
 }

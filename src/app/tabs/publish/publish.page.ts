@@ -6,17 +6,17 @@ import {
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
 import {
-  AlertController,
   IonicModule,
   ViewDidEnter
 } from '@ionic/angular'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
-import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
+import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-selector/date-time-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
-import { LocationService } from 'src/app/shared/services/location.service'
+import { AlertService } from 'src/app/shared/services/alert.service'
 import { MapService } from 'src/app/shared/services/map.service'
-import { StreetService } from 'src/app/shared/services/street.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
+import { TripService } from 'src/app/shared/services/trip.service'
 
 @Component( {
   standalone : true,
@@ -27,21 +27,21 @@ import { StreetService } from 'src/app/shared/services/street.service'
     IonicModule,
     CommonModule,
     InputTextComponent,
-    DateSelectorComponent,
     AdaptativeButtonComponent,
-    MapLocationInputComponent
+    MapLocationInputComponent,
+    DateTimeSelectorComponent
   ]
 } )
 export class PublishPage implements ViewDidEnter {
 
   constructor( private map: MapService,
-    private street: StreetService,
-    private location: LocationService,
-    private alertController: AlertController )
+    private toastService: ToastService,
+    private tripService: TripService,
+    private alertService: AlertService )
   {}
 
   @ViewChild( 'pmap' ) divElementElementRef!: ElementRef<HTMLDivElement>
-  @ViewChild( 'date' ) dateInput!: DateSelectorComponent
+  @ViewChild( 'date' ) dateInput!: DateTimeSelectorComponent
   @ViewChild( 'salida' ) salidaInput!: MapLocationInputComponent
   @ViewChild( 'inicio' ) inicioInput!: MapLocationInputComponent
 
@@ -65,32 +65,10 @@ export class PublishPage implements ViewDidEnter {
   }
 
   async addRoute() {
-    const start = this.inicioInput.mapLocationControl.value!
-    const end     = this.salidaInput.mapLocationControl.value!
-    const result = await this.map.addRouteMap( this.pageKey, start.center, end.center )
-  }
-
-  //TODO: cuando se haga click al boton publicar, deberia lanzar alerta de confirmacion
-  async presentAlert() {
-    const alert = await this.alertController.create( {
-      header: 'Confirma que deseas publicar el viaje',
-      // subHeader: '',
-      message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
-      buttons: [
-        {
-          text: 'Cancelar',
-        },
-        {
-          text   : 'Publicar',
-          handler: async () => {
-            //TODO: mandar post, dependiendo respuesta, resetear o mensaje error
-            await this.reset()
-          }
-        }
-      ]
-    } )
-
-    await alert.present()
+    const start  = this.inicioInput.mapLocationControl.value!
+    const end    = this.salidaInput.mapLocationControl.value!
+    //TODO: result error en agregar path a mapa
+    await this.map.addRouteMap( this.pageKey, start.center, end.center )
   }
 
   async onPublish(): Promise<void> {
@@ -99,7 +77,40 @@ export class PublishPage implements ViewDidEnter {
 
     if ( !this.formGroup.valid ) { return }
 
-    await this.presentAlert()
+    await this.alertService.presentAlert( {
+      header: 'Confirma que deseas publicar el viaje',
+      message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
+      buttons: [
+        {
+          text: 'Cancelar'
+        },
+        {
+          text   : 'Publicar',
+          handler: async () => {
+            const result = await this.tripService.create( {
+              endLocation  : this.salidaInput.mapLocationControl.value!,
+              startLocation: this.inicioInput.mapLocationControl.value!,
+              startDate    : this.dateInput.dateControl.value!
+            } )
+            if ( result ) {
+              await this.toastService.presentToast( {
+                message : 'Viaje creado con exito',
+                duration: 1500,
+                position: 'bottom'
+              } )
+              await this.reset()
+            }
+            else {
+              await this.toastService.presentToast( {
+                message : 'Hubo un problema en la creacion del viaje',
+                duration: 1500,
+                position: 'bottom'
+              } )
+            }
+          }
+        }
+      ]
+    } )
   }
 
   private async reset(): Promise<void> {

@@ -1,10 +1,13 @@
 <div>
-  <div class="relative z-0">
-    <input [formControl]="textControl"
-      [type]="type"
-      class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
-      (input)="input($event)"
-      [ngClass]="{
+	<div class="relative z-0">
+		<div class="flex w-full justify-center items-center">
+
+			<div class="w-full">
+				<input [formControl]="textControl"
+					[type]="type"
+					class="block py-2.5 px-0 w-full text-lg bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer"
+					(input)="input($event)"
+					[ngClass]="{
            'text-threateningRed-900': textControl.invalid && (textControl.dirty || textControl.touched),
            'text-gray-900' : textControl.valid || !textControl.touched,
            'border-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
@@ -12,37 +15,60 @@
            'focus:border-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
            'focus:border-indigoBlack-300' : textControl.valid || !textControl.touched
            }"
-      placeholder=""
-      required/>
-    <label class="absolute font-gotham text-lg duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-      [ngClass]="{
+					placeholder=""
+					required/>
+				<label class="absolute font-gotham text-lg duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+					[ngClass]="{
            'peer-focus:text-threateningRed-300': textControl.invalid && (textControl.dirty || textControl.touched),
            'peer-focus:text-indigoBlack-300' : textControl.valid || !textControl.touched,
            'text-threateningRed-500': textControl.invalid && (textControl.dirty || textControl.touched),
            'text-gray-500' : textControl.valid || !textControl.touched
            }">
-      {{placeholder}}
-    </label>
-  </div>
-  <div class="mt-2 text-xs text-threateningRed-500 h-8 font-gotham">
-    <div *ngIf="textControl.invalid && (textControl.dirty || textControl.touched)">
-      <div *ngIf="textControl.errors?.['email']">
-        El email no es correcto
-      </div>
-      <div *ngIf="textControl.errors?.['required']">
-        {{placeholder}} es requerido
-      </div>
-      <div *ngIf="textControl.errors?.['minlength']">
-        Debe contener
-        almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
-      </div>
-      <div *ngIf="textControl.errors?.['maxlength']">
-        Debe tener como
-        maximo {{textControl.errors?.['maxlength']?.['requiredLength']}} letras
-      </div>
-      <div *ngIf="textControl.errors?.['number']">
-        Debe contener unicamente numeros
-      </div>
-    </div>
-  </div>
+					{{placeholder}}
+				</label>
+			</div>
+
+			<div *ngIf="shouldToggleHidden" class="flex justify-center items-center rounded-full"
+				(click)="hiddenClick()"
+			>
+			<ion-icon class="w-6 h-6" [name]="toggleHidden ? 'eye-off-outline': 'eye-outline'"></ion-icon>
+			</div>
+		</div>
+	</div>
+	<div class="mt-2 text-xs text-threateningRed-500 font-gotham">
+		<div *ngIf="textControl.invalid && (textControl.dirty || textControl.touched)">
+			<div *ngIf="textControl.errors?.['required']">
+				{{placeholder}} es requerido
+			</div>
+			<div *ngIf="textControl.errors?.['email']">
+				El email no es correcto
+			</div>
+			<div *ngIf="textControl.errors?.['duplicate']">
+				El {{ placeholder | lowercase }} ya existe
+			</div>
+			<div *ngIf="textControl.errors?.['uppercase']">
+				Debe contener almenos una letra mayuscula
+			</div>
+			<div *ngIf="textControl.errors?.['lowercase']">
+				Debe contener almenos una letra minuscula
+			</div>
+			<div *ngIf="textControl.errors?.['number']">
+				Debe contener almenos un numero
+			</div>
+			<div *ngIf="textControl.errors?.['character']">
+				Debe contener almenos un caracter especial
+			</div>
+			<div *ngIf="textControl.errors?.['minlength']">
+				Debe contener
+				almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
+			</div>
+			<div *ngIf="textControl.errors?.['maxlength']">
+				Debe tener como
+				maximo {{textControl.errors?.['maxlength']?.['requiredLength']}} letras
+			</div>
+			<div *ngIf="textControl.errors?.['int']">
+				Debe contener unicamente numeros
+			</div>
+		</div>
+	</div>
 </div>

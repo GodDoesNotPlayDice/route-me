@@ -1,32 +1,41 @@
 import { Injectable } from '@angular/core'
-import {
-  newPreference,
-  Preference
-} from 'src/package/preference/domain/models/preference'
+import { Preference } from 'src/package/preference/domain/models/preference'
 
 @Injectable( {
   providedIn: 'root'
 } )
 export class UserPreferenceService {
 
-  private userPreferences: Preference[] = defaultPreference()
+  readonly userPreferences: Preference[] = defaultPreference()
 
-  getUserPreferences(): Preference[] {
+  getPreferences(): Preference[] {
     return this.userPreferences
   }
 }
 
 function defaultPreference(): Preference[] {
   return [
-    newPreference( {
-      id  : '1',
-      icon: 'musical-notes-outline',
-      name: 'Con Musica'
-    } ),
-    newPreference( {
-      id  : '2',
-      icon: 'logo-no-smoking',
-      name: 'Sin Fumar'
-    } )
+    {
+      id  : {
+        value: '1'
+      },
+      icon: {
+        value: 'musical-notes-outline'
+      },
+      name: {
+        value: 'Con Musica'
+      }
+    },
+    {
+      id  : {
+        value: '2'
+      },
+      icon: {
+        value: 'logo-no-smoking'
+      },
+      name: {
+        value: 'Sin Fumar'
+      }
+    }
   ]
 }

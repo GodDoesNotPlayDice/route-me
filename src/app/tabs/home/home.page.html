@@ -10,9 +10,18 @@
     </div>
     <div class="p-2.5 w-full mx-auto flex flex-col gap-4">
       <div class="font-gotham text-xl">Cerca de ti</div>
-      <div *ngFor="let card of info">
-        <app-drive-card [info]="card"></app-drive-card>
+      <div class="w-full flex justify-center items-center"
+        *ngIf="loading">
+        <ion-spinner name="dots"></ion-spinner>
       </div>
+      <div *ngIf="error">
+        No hay nada por mostrar
+      </div>
+      <ng-container *ngIf="!error">
+        <div *ngFor="let card of info">
+          <app-drive-card [info]="card"></app-drive-card>
+        </div>
+      </ng-container>
     </div>
   </div>
 </ion-content>

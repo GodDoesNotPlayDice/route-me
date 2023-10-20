@@ -1,20 +1,26 @@
-import { Directive, ElementRef, Renderer2, Input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  Renderer2
+} from '@angular/core'
 
-@Directive({
+@Directive( {
   standalone: true,
-  selector: '[focusBlur]'
-})
+  selector  : '[focusBlur]'
+} )
 export class FocusBlurDirective {
-  @Input('focusBlur') isFocused: boolean;
+  @Input( 'focusBlur' ) isFocused: boolean
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
+  constructor( private el: ElementRef, private renderer: Renderer2 ) { }
 
   ngOnChanges() {
-    if (this.isFocused) {
-      this.renderer.addClass(this.el.nativeElement, 'focused')
+    if ( this.isFocused ) {
+      this.renderer.addClass( this.el.nativeElement, 'focused' )
       this.el.nativeElement.focus()
-    } else {
-      this.renderer.removeClass(this.el.nativeElement, 'focused')
+    }
+    else {
+      this.renderer.removeClass( this.el.nativeElement, 'focused' )
       this.el.nativeElement.blur()
     }
   }

@@ -11,8 +11,8 @@ import {
   MatMenuTrigger
 } from '@angular/material/menu'
 import { IonicModule } from '@ionic/angular'
-import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
+import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
 
 
 @Component( {

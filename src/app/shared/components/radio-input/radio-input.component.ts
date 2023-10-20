@@ -3,9 +3,12 @@ import {
   Component,
   Input
 } from '@angular/core'
-import { FormControl } from '@angular/forms'
+import {
+  FormControl,
+  FormsModule
+} from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
-import { RadioButtonData } from 'src/app/shared/models/radio-button-data'
+import { RadioButtonData } from 'src/package/shared/domain/components/radio-button-data'
 
 @Component( {
   standalone : true,
@@ -14,15 +17,17 @@ import { RadioButtonData } from 'src/app/shared/models/radio-button-data'
   styleUrls  : [ './radio-input.component.scss' ],
   imports    : [
     IonicModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ]
 } )
 export class RadioInputComponent {
   @Input( { required: true } ) radioButtons: RadioButtonData[] = []
-  @Input( { required: true } ) name!: string
+  @Input( { required: true } ) name: string
+  selectedOption: string | null                                = null
 
   readonly radioControl = new FormControl( '', control => {
-      if ( control.value === '' ) {
+      if ( control.value === '' || control.value === null ) {
         return { required: true }
       }
       return null
@@ -30,12 +35,12 @@ export class RadioInputComponent {
   )
 
   onRadioChange( $event: Event ) {
-    if ( $event.target instanceof HTMLInputElement ) {
-      this.radioControl.patchValue( $event.target.value )
-    }
-    else {
-      this.radioControl.patchValue( '' )
-    }
+    this.radioControl.patchValue( this.selectedOption )
     this.radioControl.updateValueAndValidity()
+  }
+
+  reset(): void {
+    this.selectedOption = null
+    this.radioControl.reset()
   }
 }

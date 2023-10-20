@@ -24,11 +24,11 @@ export class StepperComponent {
     this.store.select( selectStepRegister )
         .subscribe( ( step ) => {
             this.currentStep = step.currentStep
-            this.maxStep = step.maxStep
+            this.maxStep     = step.maxStep
           }
         )
   }
 
   currentStep: number = -1
-  maxStep: number = 0
+  maxStep: number     = 0
 }

@@ -5,19 +5,19 @@ import {
   Input
 } from '@angular/core'
 
-@Directive({
+@Directive( {
   standalone: true,
-  selector: '[selectInput]'
-})
+  selector  : '[selectInput]'
+} )
 export class SelectInputDirective {
-  @Input('selectInput') shouldSelect: boolean;
+  @Input( 'selectInput' ) shouldSelect: boolean
 
-  constructor(private el: ElementRef) { }
+  constructor( private el: ElementRef ) { }
 
-  @HostListener('focus')
+  @HostListener( 'focus' )
   onFocus() {
-    if (this.shouldSelect) {
-      this.el.nativeElement.select();
+    if ( this.shouldSelect ) {
+      this.el.nativeElement.select()
     }
   }
 }
