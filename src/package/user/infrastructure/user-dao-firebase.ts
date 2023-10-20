@@ -6,12 +6,8 @@ import {
 } from 'oxide.ts'
 import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/email-not-found-exception'
 import { Email } from 'src/package/shared/domain/models/email'
-import { Password } from 'src/package/shared/domain/models/password'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
-import {
-	userFromJson,
-	userToJson
-} from 'src/package/user/application/user-mapper'
+import { userFromJson } from 'src/package/user/application/user-mapper'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { User } from 'src/package/user/domain/models/user'
 
@@ -21,72 +17,6 @@ export class UserDaoFirebase implements UserDao {
 	}
 
 	collectionKey = 'usersv2'
-
-	/**
-	 * Create user
-	 * @throws {FirebaseOperationException} - if operation failed
-	 * @throws {UnknownException} - if unknown error
-	 */
-	async create( user: User,
-		password: Password ): Promise<Result<string, Error[]>> {
-		let completed: string | null = null
-
-		const jsonResult = userToJson( user )
-
-		if ( jsonResult.isErr() ) {
-			return Err( jsonResult.unwrapErr() )
-		}
-
-		const json = jsonResult.unwrap()
-
-		json['password'] = password.value
-
-		await this.firebase.database.ref( this.collectionKey )
-		          .push( json,
-			          ( error ) => {
-				          if ( error === null ) {
-					          completed = 'completed'
-				          }
-			          }
-		          )
-
-
-		if ( completed === null ) {
-			return Err( [ new FirebaseOperationException() ] )
-		}
-
-		return Ok( 'tk' )
-	}
-
-	/**
-	 * Delete user by email
-	 * @throws {FirebaseOperationException} - if operation failed
-	 */
-	async delete( email: Email ): Promise<Result<boolean, Error>> {
-		const keySaved = await this.getKey( email )
-
-		if ( keySaved.isErr() ) {
-			return Err( keySaved.unwrapErr() )
-		}
-
-		let completed: string | null = null
-
-		await this.firebase.database.ref( this.collectionKey )
-		          .child( keySaved.unwrap() )
-		          .remove(
-			          ( error ) => {
-				          if ( !error ) {
-					          completed = 'completed'
-				          }
-			          }
-		          )
-
-		if ( completed === null ) {
-			return Err( new FirebaseOperationException( 'delete' ) )
-		}
-
-		return Ok( true )
-	}
 
 	/**
 	 * Get all users
@@ -171,5 +101,4 @@ export class UserDaoFirebase implements UserDao {
 				                 return Ok( key )
 			                 } )
 	}
-
 }

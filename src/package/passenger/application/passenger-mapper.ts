@@ -187,7 +187,7 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
   }
 
   const preferences: Preference[] = []
-  if ( json['preferences'] !== null ) {
+  if ( json['preferences'] !== undefined ) {
     for ( const preference of Object.values( json['preferences'] ) ) {
       const preferenceResult = preferenceFromJson(
         preference as Record<string, any> )

@@ -3,6 +3,7 @@ import {
 	Component,
 	ViewChild
 } from '@angular/core'
+import { AngularFireAuth } from '@angular/fire/compat/auth'
 import {
 	FormGroup,
 	FormsModule,
@@ -23,7 +24,6 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
-import { DriverService } from 'src/app/shared/services/driver.service'
 
 @Component( {
 	standalone : true,
@@ -46,6 +46,7 @@ import { DriverService } from 'src/app/shared/services/driver.service'
 export class LoginPage implements ViewDidEnter {
 	constructor(
 		private authService: AuthService,
+		private firebase: AngularFireAuth,
 		private router: Router,
 		private alertService: AlertService
 	)
@@ -58,7 +59,6 @@ export class LoginPage implements ViewDidEnter {
 	formGroup!: FormGroup
 
 	async ionViewDidEnter() {
-		//TODO: ver si colocar div dentro de backButton u manual, responde click
 		this.formGroup = new FormGroup( [
 			this.userInput.textControl,
 			this.passwordInput.textControl
@@ -98,5 +98,8 @@ export class LoginPage implements ViewDidEnter {
 				buttons  : [ 'OK' ]
 			} )
 		}
+		this.userInput.reset()
+		this.passwordInput.reset()
+		this.checkbox.reset()
 	}
 }

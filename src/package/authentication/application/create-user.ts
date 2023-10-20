@@ -3,9 +3,9 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newPassword } from 'src/package/shared/domain/models/password'
-import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { newUserID } from 'src/package/user/domain/models/user-id'
 import { ulid } from 'ulidx'
 
@@ -20,7 +20,7 @@ import { ulid } from 'ulidx'
  * @throws {PasswordInsufficientCharacterException} - if password character is invalid
  * @throws {InfrastructureOperationException} - if operation failed
  */
-export const createUser = async ( dao: UserDao,
+export const createUser = async ( rep: AuthUserRepository,
   props: {
     email: string,
     password: string,
@@ -37,7 +37,7 @@ export const createUser = async ( dao: UserDao,
   }
 
   const email = newEmail( {
-    value: props.email ?? ''
+    value: props.email
   } )
 
   if ( email.isErr() ) {
@@ -45,7 +45,7 @@ export const createUser = async ( dao: UserDao,
   }
 
   const password = newPassword( {
-    value: props.password ?? ''
+    value: props.password
   } )
 
   if ( password.isErr() ) {
@@ -56,7 +56,7 @@ export const createUser = async ( dao: UserDao,
     return Err( error )
   }
 
-  const result = await dao.create(
+  const result = await rep.registerUser(
     {
       id    : id.unwrap(),
       email : email.unwrap(),

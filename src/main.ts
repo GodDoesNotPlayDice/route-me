@@ -7,7 +7,10 @@ import {
 	importProvidersFrom
 } from '@angular/core'
 import { AngularFireModule } from '@angular/fire/compat'
-import { AngularFireAuthModule } from '@angular/fire/compat/auth'
+import {
+	AngularFireAuth,
+	AngularFireAuthModule
+} from '@angular/fire/compat/auth'
 import {
 	AngularFireDatabase,
 	AngularFireDatabaseModule
@@ -35,6 +38,7 @@ import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { AuthUserFirebase } from 'src/package/authentication/infrastructure/auth-user-firebase'
+import { AuthUserFirebaseSignin } from 'src/package/authentication/infrastructure/auth-user-firebase-signin'
 import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { ChatDaoFirebase } from 'src/package/chat/infrastructure/chat-dao-firebase'
 import { CountryDao } from 'src/package/country-api/domain/dao/country-dao'
@@ -75,10 +79,10 @@ bootstrapApplication( AppComponent, {
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 		{
 			provide   : AuthUserRepository,
-			useFactory: ( firebase: AngularFireDatabase ) => {
-				return new AuthUserFirebase( firebase )
+			useFactory: ( auth: AngularFireAuth, firebase: AngularFireDatabase ) => {
+				return new AuthUserFirebaseSignin( auth, firebase )
 			},
-			deps      : [ AngularFireDatabase ]
+			deps      : [ AngularFireAuth, AngularFireDatabase  ]
 		},
 		{
 			provide   : DriverDao,

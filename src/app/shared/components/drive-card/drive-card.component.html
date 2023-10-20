@@ -7,7 +7,7 @@
         alt="">
     </div>
     <div class="basis-9/12 flex flex-col m-1 justify-between">
-      <div class="">Fecha viaje: {{info.date | date:'short'}}</div>
+      <div class="">Fecha viaje: {{info.date | date:'dd MMM HH:mm '}}</div>
       <div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
       <div>Inicio: {{info.startLocationName | slice:0:20 }}</div>
       <div>Fin: {{info.endLocationName | slice:0:20 }}</div>

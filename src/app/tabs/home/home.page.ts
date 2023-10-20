@@ -68,8 +68,6 @@ export class HomePage implements ViewDidEnter {
         }
       } )
       this.loading = false
-      console.log( 'home page info' )
-      console.log( this.info )
     }
     else {
       this.error = true

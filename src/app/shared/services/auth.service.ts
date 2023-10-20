@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core'
+import { AngularFireAuth } from '@angular/fire/compat/auth'
 import {
 	None,
 	Option,
 	Some
 } from 'oxide.ts'
+import { createUser } from 'src/package/authentication/application/create-user'
+import { deleteAccount } from 'src/package/authentication/application/delete-account'
 import { loginUser } from 'src/package/authentication/application/login-user'
 import { logoutUser } from 'src/package/authentication/application/logout-user'
+import { sendResetPassword } from 'src/package/authentication/application/send-reset-password'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { Driver } from 'src/package/driver/domain/models/driver'
@@ -14,12 +18,9 @@ import { deletePassenger } from 'src/package/passenger/application/delete-passen
 import { updatePassenger } from 'src/package/passenger/application/update-passenger'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { createUser } from 'src/package/user/application/create-user'
-import { deleteUser } from 'src/package/user/application/delete-user'
 import { getUserByEmail } from 'src/package/user/application/get-user-by-email'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { User } from 'src/package/user/domain/models/user'
-import { UserID } from 'src/package/user/domain/models/user-id'
 
 @Injectable( {
 	providedIn: 'root'
@@ -30,7 +31,7 @@ export class AuthService {
 		private authRepository: AuthUserRepository,
 		private userDao: UserDao,
 		private passengerDao: PassengerDao,
-		private driverDao: DriverDao,
+		private driverDao: DriverDao
 	)
 	{ }
 
@@ -58,9 +59,9 @@ export class AuthService {
 			return false
 		}
 
-		const d = await this.driverDao.getByEmail(this.currentUser.unwrap().email)
-		console.log('d')
-		console.log(d)
+		const d = await this.driverDao.getByEmail( this.currentUser.unwrap().email )
+		console.log( 'd' )
+		console.log( d )
 		return true
 	}
 
@@ -85,10 +86,11 @@ export class AuthService {
 		password: string
 	): Promise<boolean> {
 		//TODO: deberia devolver un string, en caso de token
-		const result = await createUser(
-			this.userDao, { email, password }
-		)
 
+		// await this.auth.createUserWithEmailAndPassword(email, password)
+		const result = await createUser(
+			this.authRepository, { email, password }
+		)
 		if ( result.isErr() ) {
 			console.log( 'user register error' )
 			console.log( result.unwrapErr() )
@@ -173,8 +175,9 @@ export class AuthService {
 	}
 
 
-	async authLogout( id: UserID ): Promise<boolean> {
-		const resultUser = await logoutUser( this.authRepository, id )
+	async authLogout(): Promise<boolean> {
+		const resultUser = await logoutUser( this.authRepository,
+			this.currentUser.unwrap().email )
 
 		if ( resultUser.isErr() ) {
 			console.log( 'user authLogout response error' )
@@ -194,11 +197,21 @@ export class AuthService {
 		return true
 	}
 
+	async resetPasswordSend( email: string ) : Promise<boolean> {
+		const result = await sendResetPassword( this.authRepository, email )
+
+		if ( result.isErr() ){
+			console.log('auth reset error')
+			return false
+		}
+		return true
+	}
+
 	async deleteAccount(): Promise<boolean> {
 		if ( this.currentUser.isNone() ) {
 			return false
 		}
-		await deleteUser( this.userDao, this.currentUser.unwrap().email )
+		await deleteAccount( this.authRepository, this.currentUser.unwrap().email )
 
 		if ( this.currentPassenger.isSome() ) {
 			await deletePassenger( this.passengerDao,
