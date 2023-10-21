@@ -3,17 +3,17 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import {
   newLocation,
   TripLocation
-} from 'src/package/location/domain/models/trip-location'
-import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+} from 'src/package/trip-location/domain/models/trip-location'
 
 /**
  * Create a location instance from json
- * @throws {LocationIdInvalidException} - if id is invalid
- * @throws {LocationNameInvalidException} - if name is invalid
- * @throws {LocationCountryCodeInvalidException} - if country code is invalid
+ * @throws {TripLocationIdInvalidException} - if id is invalid
+ * @throws {TripLocationNameInvalidException} - if name is invalid
+ * @throws {TripLocationCountryCodeInvalidException} - if country code is invalid
  * @throws {PositionInvalidException} - if position is invalid
  */
 export const locationFromJson = ( json: Record<string, any> ): Result<TripLocation, Error[]> => {

@@ -1,6 +1,6 @@
 import { Result } from 'oxide.ts'
-import { TripLocation } from 'src/package/location/domain/models/trip-location'
-import { TripLocationID } from 'src/package/location/domain/models/trip-location-id'
+import { TripLocation } from 'src/package/trip-location/domain/models/trip-location'
+import { TripLocationID } from 'src/package/trip-location/domain/models/trip-location-id'
 
 export abstract class LocationDao {
   abstract create( location: TripLocation ): Promise<Result<boolean, Error>>

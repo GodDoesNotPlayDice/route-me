@@ -3,12 +3,12 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { LocationDao } from 'src/package/location/domain/dao/location-dao'
-import { TripLocation } from 'src/package/location/domain/models/trip-location'
-import { newTripLocationCountryCode } from 'src/package/location/domain/models/trip-location-country-code'
-import { newTripLocationID } from 'src/package/location/domain/models/trip-location-id'
-import { newTripLocationName } from 'src/package/location/domain/models/trip-location-name'
 import { Position } from 'src/package/position-api/domain/models/position'
+import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
+import { TripLocation } from 'src/package/trip-location/domain/models/trip-location'
+import { newTripLocationCountryCode } from 'src/package/trip-location/domain/models/trip-location-country-code'
+import { newTripLocationID } from 'src/package/trip-location/domain/models/trip-location-id'
+import { newTripLocationName } from 'src/package/trip-location/domain/models/trip-location-name'
 import { ulid } from 'ulidx'
 
 export const createLocation = async ( repository: LocationDao, props: {

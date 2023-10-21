@@ -17,10 +17,6 @@ import {
   driverToJson
 } from 'src/package/driver/application/driver-mapper'
 import {
-  locationFromJson,
-  locationToJson
-} from 'src/package/location/application/location-mapper'
-import {
   passengerFromJson,
   passengerToJson
 } from 'src/package/passenger/application/passenger-mapper'
@@ -31,6 +27,10 @@ import {
 } from 'src/package/shared/config/helper/date/date-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
+import {
+  locationFromJson,
+  locationToJson
+} from 'src/package/trip-location/application/location-mapper'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'

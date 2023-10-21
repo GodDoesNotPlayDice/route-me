@@ -4,11 +4,11 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { locationToJson } from 'src/package/location/application/location-mapper'
-import { LocationDao } from 'src/package/location/domain/dao/location-dao'
-import { TripLocation } from 'src/package/location/domain/models/trip-location'
-import { TripLocationID } from 'src/package/location/domain/models/trip-location-id'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
+import { locationToJson } from 'src/package/trip-location/application/location-mapper'
+import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
+import { TripLocation } from 'src/package/trip-location/domain/models/trip-location'
+import { TripLocationID } from 'src/package/trip-location/domain/models/trip-location-id'
 
 export class LocationDaoFirebase implements LocationDao {
 

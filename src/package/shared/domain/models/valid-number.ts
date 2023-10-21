@@ -3,11 +3,12 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { DateInvalidException } from 'src/package/shared/domain/exceptions/date-invalid-exception'
+import { NumberInvalidException } from 'src/package/shared/domain/exceptions/number-invalid-exception'
 import { z } from 'zod'
 
 export const ValidNumberSchema = z.object( {
   value: z.number()
+          .nonnegative()
 } )
 
 type ValidNumberType = z.infer<typeof ValidNumberSchema>
@@ -20,7 +21,7 @@ interface ValidNumberProps {
 
 /**
  * Create a valid date instance
- * @throws {DateInvalidException} - if date is invalid
+ * @throws {NumberInvalidException} - if number is invalid
  */
 export const newValidNumber = ( props: ValidNumberProps ): Result<ValidNumber, Error> => {
   const result = ValidNumberSchema.safeParse( {
@@ -28,7 +29,7 @@ export const newValidNumber = ( props: ValidNumberProps ): Result<ValidNumber, E
   } )
 
   if ( !result.success ) {
-    return Err( new DateInvalidException() )
+    return Err( new NumberInvalidException() )
   }
   else {
     return Ok( result.data )

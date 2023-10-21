@@ -147,7 +147,6 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
   }
 
   if ( err.length > 0 ) {
-    err.push( ...err )
     return Err( err )
   }
 

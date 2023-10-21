@@ -4,22 +4,22 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  newTripLocationCountryCode,
-  TripLocationCountryCode
-} from 'src/package/location/domain/models/trip-location-country-code'
-import {
-  newTripLocationID,
-  TripLocationID
-} from 'src/package/location/domain/models/trip-location-id'
-import {
-  newTripLocationName,
-  TripLocationName
-} from 'src/package/location/domain/models/trip-location-name'
-import {
   newPosition,
   Position,
   PositionProps
 } from 'src/package/position-api/domain/models/position'
+import {
+  newTripLocationCountryCode,
+  TripLocationCountryCode
+} from 'src/package/trip-location/domain/models/trip-location-country-code'
+import {
+  newTripLocationID,
+  TripLocationID
+} from 'src/package/trip-location/domain/models/trip-location-id'
+import {
+  newTripLocationName,
+  TripLocationName
+} from 'src/package/trip-location/domain/models/trip-location-name'
 
 export interface TripLocation {
   id: TripLocationID

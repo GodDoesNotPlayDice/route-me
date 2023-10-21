@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { TripLocationNameInvalidException } from 'src/package/location/domain/exception/trip-location-name-invalid-exception'
+import { TripLocationNameInvalidException } from 'src/package/trip-location/domain/exception/trip-location-name-invalid-exception'
 import { z } from 'zod'
 
 export const TripLocationNameSchema = z.object( {
