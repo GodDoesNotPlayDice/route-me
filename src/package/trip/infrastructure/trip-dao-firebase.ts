@@ -30,10 +30,10 @@ export class TripDaoFirebase implements TripDao {
   async create( trip: Trip ): Promise<Result<boolean, Error[]>> {
     let completed: string | null = null
 
-    const json = tripToJSON(trip)
+    const json = tripToJSON( trip )
 
-    if ( json.isErr() ){
-      return Err(json.unwrapErr())
+    if ( json.isErr() ) {
+      return Err( json.unwrapErr() )
     }
 
     await this.firebase.database.ref( this.collectionKey )
@@ -121,8 +121,8 @@ export class TripDaoFirebase implements TripDao {
                      .equalTo( state )
                      .get()
                      .then( async ( snapshot ) => {
-                       if ( snapshot.val() === null ){
-                         return Err([new TripNotFoundException()])
+                       if ( snapshot.val() === null ) {
+                         return Err( [ new TripNotFoundException() ] )
                        }
                        const error: Error[] = []
                        const trips: Trip[]  = []
@@ -169,7 +169,7 @@ export class TripDaoFirebase implements TripDao {
                          return Err( passenger.unwrapErr() )
                        }
 
-                       return Ok( passenger.unwrap())
+                       return Ok( passenger.unwrap() )
                      } )
                      .catch( ( error ) => {
                        return Err( [ new FirebaseOperationException() ] )

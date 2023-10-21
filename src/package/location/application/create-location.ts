@@ -4,10 +4,10 @@ import {
   Result
 } from 'oxide.ts'
 import { LocationDao } from 'src/package/location/domain/dao/location-dao'
-import { Location } from 'src/package/location/domain/models/location'
-import { newLocationCountryCode } from 'src/package/location/domain/models/location-country-code'
-import { newLocationID } from 'src/package/location/domain/models/location-id'
-import { newLocationName } from 'src/package/location/domain/models/location-name'
+import { TripLocation } from 'src/package/location/domain/models/trip-location'
+import { newTripLocationCountryCode } from 'src/package/location/domain/models/trip-location-country-code'
+import { newTripLocationID } from 'src/package/location/domain/models/trip-location-id'
+import { newTripLocationName } from 'src/package/location/domain/models/trip-location-name'
 import { Position } from 'src/package/position-api/domain/models/position'
 import { ulid } from 'ulidx'
 
@@ -15,10 +15,10 @@ export const createLocation = async ( repository: LocationDao, props: {
   name: string,
   countryCode: string,
   position: Position
-} ): Promise<Result<Location, Error[]>> => {
+} ): Promise<Result<TripLocation, Error[]>> => {
   const err: Error[] = []
 
-  const id = newLocationID( {
+  const id = newTripLocationID( {
     value: ulid()
   } )
 
@@ -26,7 +26,7 @@ export const createLocation = async ( repository: LocationDao, props: {
     err.push( id.unwrapErr() )
   }
 
-  const name = newLocationName( {
+  const name = newTripLocationName( {
     value: props.name
   } )
 
@@ -34,7 +34,7 @@ export const createLocation = async ( repository: LocationDao, props: {
     err.push( name.unwrapErr() )
   }
 
-  const code = newLocationCountryCode( {
+  const code = newTripLocationCountryCode( {
     value: props.countryCode
   } )
 
@@ -46,7 +46,7 @@ export const createLocation = async ( repository: LocationDao, props: {
     return Err( err )
   }
 
-  const location: Location = {
+  const location: TripLocation = {
     id         : id.unwrap(),
     name       : name.unwrap(),
     countryCode: code.unwrap(),

@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { newLocation } from 'src/package/location/domain/models/location'
+import { newLocation } from 'src/package/location/domain/models/trip-location'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
 import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
 import {

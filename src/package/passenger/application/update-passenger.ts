@@ -140,18 +140,18 @@ export const updatePassenger = async (
   }
 
   const newPassenger: Passenger = {
-    image      : image.unwrap(),
-    name       : name.unwrap(),
-    lastName   : lastName.unwrap(),
-    description: description.unwrap(),
-    phone      : phone.unwrap(),
-    country    : country.unwrap(),
-    email      : email.unwrap(),
-    gender     : gender.unwrap(),
-    rating     : passenger.rating,
-    preferences: preferences,
-    id         : passenger.id,
-    birthDay   : passenger.birthDay
+    image        : image.unwrap(),
+    name         : name.unwrap(),
+    lastName     : lastName.unwrap(),
+    description  : description.unwrap(),
+    phone        : phone.unwrap(),
+    country      : country.unwrap(),
+    email        : email.unwrap(),
+    gender       : gender.unwrap(),
+    averageRating: passenger.averageRating,
+    preferences  : preferences,
+    id           : passenger.id,
+    birthDay     : passenger.birthDay
   }
 
   const result = await dao.update( newPassenger )

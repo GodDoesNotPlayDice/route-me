@@ -60,7 +60,7 @@ export class HomePage implements ViewDidEnter {
           startLocationName: trip.startLocation.name.value,
           driverAvatar     : {
             name: trip.driver.passenger.name.value,
-            url: trip.driver.passenger.image.value
+            url : trip.driver.passenger.image.value
           },
           passengerUrls    : trip.passengers.map( ( passenger ) => {
             return passenger.image.value

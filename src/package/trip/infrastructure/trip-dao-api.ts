@@ -50,7 +50,7 @@ export class TripDaoApi implements TripDao {
    * @throws {ApiOperationException} - if api operation failed
    */
   async update( trip: Trip ): Promise<Result<boolean, Error[]>> {
-    return Err( [new ApiOperationException()] )
+    return Err( [ new ApiOperationException() ] )
   }
 
   /**
