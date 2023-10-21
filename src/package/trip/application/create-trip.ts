@@ -6,15 +6,13 @@ import {
 } from 'oxide.ts'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
 import { Driver } from 'src/package/driver/domain/models/driver'
-import { Location } from 'src/package/location/domain/models/location'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
+import { TripLocation } from 'src/package/trip-location/domain/models/trip-location'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
-import {
-  newTripID,
-} from 'src/package/trip/domain/models/trip-id'
+import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
 import { ulid } from 'ulidx'
@@ -24,18 +22,18 @@ export const createTrip = async ( dao: TripDao,
     driver: Driver,
     chatID: ChatID,
     startDate: Date,
-    startLocation: Location
-    endLocation: Location
+    startLocation: TripLocation
+    endLocation: TripLocation
     price: TripPrice,
   } ): Promise<Result<Trip, Error[]>> => {
   const err: Error[] = []
 
-  const id = newTripID({
+  const id = newTripID( {
     value: ulid()
-  })
+  } )
 
-  if ( id.isErr() ){
-    err.push(id.unwrapErr())
+  if ( id.isErr() ) {
+    err.push( id.unwrapErr() )
   }
 
   const end = newEndTripDate( {

@@ -4,27 +4,27 @@ import {
   Result
 } from 'oxide.ts'
 import {
-  LocationCountryCode,
-  newLocationCountryCode
-} from 'src/package/location/domain/models/location-country-code'
-import {
-  LocationID,
-  newLocationID
-} from 'src/package/location/domain/models/location-id'
-import {
-  LocationName,
-  newLocationName
-} from 'src/package/location/domain/models/location-name'
-import {
   newPosition,
   Position,
   PositionProps
 } from 'src/package/position-api/domain/models/position'
+import {
+  newTripLocationCountryCode,
+  TripLocationCountryCode
+} from 'src/package/trip-location/domain/models/trip-location-country-code'
+import {
+  newTripLocationID,
+  TripLocationID
+} from 'src/package/trip-location/domain/models/trip-location-id'
+import {
+  newTripLocationName,
+  TripLocationName
+} from 'src/package/trip-location/domain/models/trip-location-name'
 
-export interface Location {
-  id: LocationID
-  name: LocationName
-  countryCode: LocationCountryCode
+export interface TripLocation {
+  id: TripLocationID
+  name: TripLocationName
+  countryCode: TripLocationCountryCode
   position: Position
 }
 
@@ -38,15 +38,15 @@ export interface LocationProps {
 
 /**
  * Create location instance
- * @throws {LocationIdInvalidException} - if id is invalid
- * @throws {LocationNameInvalidException} - if name is invalid
- * @throws {LocationCountryCodeInvalidException} - if country code is invalid
+ * @throws {TripLocationIdInvalidException} - if id is invalid
+ * @throws {TripLocationNameInvalidException} - if name is invalid
+ * @throws {TripLocationCountryCodeInvalidException} - if country code is invalid
  * @throws {PositionInvalidException} - if position is invalid
  */
-export const newLocation = ( props: LocationProps ): Result<Location, Error[]> => {
+export const newLocation = ( props: LocationProps ): Result<TripLocation, Error[]> => {
   const err: Error[] = []
 
-  const id = newLocationID( {
+  const id = newTripLocationID( {
     value: props.id
   } )
 
@@ -54,7 +54,7 @@ export const newLocation = ( props: LocationProps ): Result<Location, Error[]> =
     err.push( id.unwrapErr() )
   }
 
-  const name = newLocationName( {
+  const name = newTripLocationName( {
     value: props.name
   } )
 
@@ -62,7 +62,7 @@ export const newLocation = ( props: LocationProps ): Result<Location, Error[]> =
     err.push( name.unwrapErr() )
   }
 
-  const countryCode = newLocationCountryCode( {
+  const countryCode = newTripLocationCountryCode( {
     value: props.countryCode
   } )
 

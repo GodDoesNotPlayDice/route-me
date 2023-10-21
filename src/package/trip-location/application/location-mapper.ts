@@ -3,20 +3,20 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import {
-  Location,
-  newLocation
-} from 'src/package/location/domain/models/location'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import {
+  newLocation,
+  TripLocation
+} from 'src/package/trip-location/domain/models/trip-location'
 
 /**
  * Create a location instance from json
- * @throws {LocationIdInvalidException} - if id is invalid
- * @throws {LocationNameInvalidException} - if name is invalid
- * @throws {LocationCountryCodeInvalidException} - if country code is invalid
+ * @throws {TripLocationIdInvalidException} - if id is invalid
+ * @throws {TripLocationNameInvalidException} - if name is invalid
+ * @throws {TripLocationCountryCodeInvalidException} - if country code is invalid
  * @throws {PositionInvalidException} - if position is invalid
  */
-export const locationFromJson = ( json: Record<string, any> ): Result<Location, Error[]> => {
+export const locationFromJson = ( json: Record<string, any> ): Result<TripLocation, Error[]> => {
   const result = newLocation( {
     id         : json['id'] ?? '',
     name       : json['name'] ?? '',
@@ -38,7 +38,7 @@ export const locationFromJson = ( json: Record<string, any> ): Result<Location, 
  * Create a json from location instance
  * @throws {UnknownException} - if unknown error
  */
-export const locationToJson = ( location: Location ): Result<Record<string, any>, Error> => {
+export const locationToJson = ( location: TripLocation ): Result<Record<string, any>, Error> => {
   try {
     return Ok( {
       id          : location.id.value,

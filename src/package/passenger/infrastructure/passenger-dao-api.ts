@@ -15,7 +15,7 @@ export class PassengerDaoApi implements PassengerDao {
   private url = environment.apiUrl
 
   async create( passenger: Passenger ): Promise<Result<boolean, Error[]>> {
-    return Err( [new ApiOperationException()] )
+    return Err( [ new ApiOperationException() ] )
   }
 
   async delete( email: Email ): Promise<Result<boolean, Error>> {
@@ -31,6 +31,6 @@ export class PassengerDaoApi implements PassengerDao {
   }
 
   async update( user: Passenger ): Promise<Result<boolean, Error[]>> {
-    return Err( [new ApiOperationException()] )
+    return Err( [ new ApiOperationException() ] )
   }
 }

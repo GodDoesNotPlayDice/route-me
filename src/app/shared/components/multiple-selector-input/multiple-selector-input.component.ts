@@ -40,7 +40,8 @@ export class MultipleSelectorInputComponent {
 
   @Input( { required: true } ) databaseList: MultipleSelectorData[]
 
-  readonly multipleSelectorControl = new FormControl<MultipleSelectorData[]>( [],
+  readonly multipleSelectorControl = new FormControl<MultipleSelectorData[]>(
+    [],
     control => {
       if ( this.required && control.value.length === 0 ) {
         control.addValidators( Validators.required )
@@ -66,7 +67,7 @@ export class MultipleSelectorInputComponent {
     const { data, role } = await modal.onWillDismiss()
 
     this.selectedData = data
-    this.multipleSelectorControl.patchValue( this.selectedData)
+    this.multipleSelectorControl.patchValue( this.selectedData )
     this.multipleSelectorControl.updateValueAndValidity()
   }
 

@@ -3,7 +3,6 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { newLocation } from 'src/package/location/domain/models/location'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
 import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
 import {
@@ -12,6 +11,7 @@ import {
 } from 'src/package/shared/config/helper/date/date-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
+import { newLocation } from 'src/package/trip-location/domain/models/trip-location'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
 

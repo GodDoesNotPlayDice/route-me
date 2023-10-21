@@ -5,8 +5,8 @@ import {
 } from 'oxide.ts'
 import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver-document-dao'
 import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
-import { DriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { Email } from 'src/package/shared/domain/models/email'
 
 export class DriverDocumentDaoFirebase implements DriverDocumentDao {
 
@@ -27,7 +27,7 @@ export class DriverDocumentDaoFirebase implements DriverDocumentDao {
    * Delete a driver document
    * @throws {UnknownException} - if unknown error
    */
-  async delete( id: DriverDocumentID ): Promise<Result<boolean, Error>> {
+  async delete( email: Email ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException() )
   }
 
@@ -43,7 +43,7 @@ export class DriverDocumentDaoFirebase implements DriverDocumentDao {
    * Get a driver document by id
    * @throws {UnknownException} - if unknown error
    */
-  async getById( id: DriverDocumentID ): Promise<Result<DriverDocument, Error[]>> {
+  async getByEmail( email: Email ): Promise<Result<DriverDocument, Error[]>> {
     return Err( [ new UnknownException() ] )
   }
 

@@ -5,12 +5,12 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { locationToJson } from 'src/package/location/application/location-mapper'
-import { LocationDao } from 'src/package/location/domain/dao/location-dao'
-import { Location } from 'src/package/location/domain/models/location'
-import { LocationID } from 'src/package/location/domain/models/location-id'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
+import { locationToJson } from 'src/package/trip-location/application/location-mapper'
+import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
+import { TripLocation } from 'src/package/trip-location/domain/models/trip-location'
+import { TripLocationID } from 'src/package/trip-location/domain/models/trip-location-id'
 
 export class LocationDaoApi implements LocationDao {
 
@@ -22,7 +22,7 @@ export class LocationDaoApi implements LocationDao {
    * Create location
    * @throws {ApiOperationException} - if api operation failed
    */
-  async create( location: Location ): Promise<Result<boolean, Error>> {
+  async create( location: TripLocation ): Promise<Result<boolean, Error>> {
     try {
       const locationJsonResult = locationToJson( location )
 
@@ -46,7 +46,7 @@ export class LocationDaoApi implements LocationDao {
    * Delete location
    * @throws {UnknownException} - if unknown error
    */
-  async delete( id: LocationID ): Promise<Result<boolean, Error>> {
+  async delete( id: TripLocationID ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException() )
   }
 
@@ -54,7 +54,7 @@ export class LocationDaoApi implements LocationDao {
    * Get all location
    * @throws {UnknownException} - if unknown error
    */
-  async getAll(): Promise<Result<Location[], Error[]>> {
+  async getAll(): Promise<Result<TripLocation[], Error[]>> {
     return Err( [ new UnknownException() ] )
   }
 
@@ -62,7 +62,7 @@ export class LocationDaoApi implements LocationDao {
    * Get by id location
    * @throws {UnknownException} - if unknown error
    */
-  async getById( id: LocationID ): Promise<Result<Location, Error[]>> {
+  async getById( id: TripLocationID ): Promise<Result<TripLocation, Error[]>> {
     return Err( [ new UnknownException() ] )
   }
 
@@ -70,7 +70,7 @@ export class LocationDaoApi implements LocationDao {
    * Update location
    * @throws {UnknownException} - if unknown error
    */
-  async update( location: Location ): Promise<Result<boolean, Error>> {
+  async update( location: TripLocation ): Promise<Result<boolean, Error>> {
     return Err( new UnknownException() )
   }
 

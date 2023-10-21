@@ -5,8 +5,6 @@ import {
   Some
 } from 'oxide.ts'
 import { AuthService } from 'src/app/shared/services/auth.service'
-import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
-import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver-document-dao'
 import { createDriver } from 'src/package/driver/application/create-driver'
 import { getDriver } from 'src/package/driver/application/get-driver'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
@@ -20,11 +18,12 @@ import { newEmail } from 'src/package/shared/domain/models/email'
 export class DriverService {
 
   constructor(
-    private driverDao : DriverDao,
-    private authService : AuthService,
+    private driverDao: DriverDao,
+    private authService: AuthService
     // private driverCarDao : DriverCarDao,
     // private driverDocumentDao : DriverDocumentDao
-  ) {}
+  )
+  {}
 
   getDrivers(): DriverCardInfo[] {
     return driveInfoList
@@ -35,21 +34,21 @@ export class DriverService {
     //   return None
     // }
     //TODO: driver email fijo
-    const email = newEmail({ value: 'u@go.co' })
+    const email = newEmail( { value: 'u@go.co' } )
 
-    if ( email.isErr() ){
-      console.log('email fijo fail')
+    if ( email.isErr() ) {
+      console.log( 'email fijo fail' )
       return None
     }
 
-    const result = await getDriver(this.driverDao, email.unwrap())
+    const result = await getDriver( this.driverDao, email.unwrap() )
 
-    if ( result.isErr() ){
-      console.log(result.unwrapErr())
-      console.log('get driver fail')
+    if ( result.isErr() ) {
+      console.log( result.unwrapErr() )
+      console.log( 'get driver fail' )
       return None
     }
-    return Some(result.unwrap())
+    return Some( result.unwrap() )
   }
 
   async driverRegister(
@@ -62,24 +61,24 @@ export class DriverService {
     }[]
   ): Promise<boolean> {
 
-    if ( this.authService.currentPassenger.isNone() ){
+    if ( this.authService.currentPassenger.isNone() ) {
       return false
     }
 
-    const result = await createDriver(this.driverDao ,{
-      seat: seat,
-      model: model,
+    const result = await createDriver( this.driverDao, {
+      seat     : seat,
+      model    : model,
       documents: documents,
       passenger: this.authService.currentPassenger.unwrap()
-    })
+    } )
 
-    if ( result.isErr() ){
+    if ( result.isErr() ) {
       console.log( 'driver register error' )
       return false
     }
 
     //TODO: mejor en auth?
-    this.authService.currentDriver = Some(result.unwrap())
+    this.authService.currentDriver = Some( result.unwrap() )
     return true
   }
 }

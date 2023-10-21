@@ -16,10 +16,6 @@ import {
 } from 'src/package/preference/application/preference-mapper'
 import { Preference } from 'src/package/preference/domain/models/preference'
 import {
-  ratingFromJson,
-  ratingToJson
-} from 'src/package/rating/application/rating-mapper'
-import {
   dateFromJSON,
   dateToJSON
 } from 'src/package/shared/config/helper/date/date-mapper'
@@ -28,6 +24,7 @@ import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { newImageUrl } from 'src/package/shared/domain/models/image-url'
 import { newPhone } from 'src/package/shared/domain/models/phone'
+import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
 
 /**
  * Create a json from passenger instance
@@ -38,16 +35,17 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
     const err: Error[] = []
 
     const json: Record<string, any> = {
-      id         : passenger.id.value,
-      email      : passenger.email.value,
-      name       : passenger.name.value,
-      image      : passenger.image.value,
-      last_name  : passenger.lastName.value,
-      description: passenger.description.value,
-      gender     : passenger.gender,
-      country    : passenger.country.value,
-      birth_day  : dateToJSON(passenger.birthDay.value),
-      phone      : passenger.phone.value
+      id            : passenger.id.value,
+      email         : passenger.email.value,
+      name          : passenger.name.value,
+      image         : passenger.image.value,
+      last_name     : passenger.lastName.value,
+      description   : passenger.description.value,
+      gender        : passenger.gender,
+      country       : passenger.country.value,
+      birth_day     : dateToJSON( passenger.birthDay.value ),
+      average_rating: passenger.averageRating.value,
+      phone         : passenger.phone.value
     }
 
     const preferences: Record<string, any>[] = []
@@ -67,15 +65,6 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
     }
     else {
       json['preferences'] = null
-    }
-
-    const rating = ratingToJson( passenger.rating )
-
-    if ( rating.isErr() ) {
-      err.push( rating.unwrapErr() )
-    }
-    else {
-      json['rating'] = rating.unwrap()
     }
 
     if ( err.length > 0 ) {
@@ -107,8 +96,6 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
  * @throws {PreferenceIdInvalidException} - if preference id is invalid
  * @throws {GenderInvalidException} - if gender is invalid
  * @throws {ImageUrlInvalidException} - if image is invalid
- * @throws {RatingIdInvalidException} - if id is invalid
- * @throws {RatingValueInvalidException} - if value is invalid
  */
 export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger, Error[]> => {
 
@@ -171,7 +158,7 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
   }
 
   const birthDay = newPassengerBirthDay( {
-    value: dateFromJSON(json['birth_day'])
+    value: dateFromJSON( json['birth_day'] )
   } )
 
   if ( birthDay.isErr() ) {
@@ -201,11 +188,10 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
     }
   }
 
-  //TODO: verificar como se comporta null
-  const rating = ratingFromJson( json['rating'] )
+  const rating = newValidNumber( json['average_rating'] ?? 0 )
 
   if ( rating.isErr() ) {
-    err.push( ...rating.unwrapErr() )
+    err.push( rating.unwrapErr() )
   }
 
   const image = newImageUrl( {
@@ -221,17 +207,17 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
   }
 
   return Ok( {
-    id         : id.unwrap(),
-    image      : image.unwrap(),
-    email      : email.unwrap(),
-    name       : name.unwrap(),
-    lastName   : lastName.unwrap(),
-    description: description.unwrap(),
-    gender     : gender.unwrap(),
-    phone      : phone.unwrap(),
-    country    : country.unwrap(),
-    birthDay   : birthDay.unwrap(),
-    rating: rating.unwrap(),
-    preferences: preferences
+    id           : id.unwrap(),
+    image        : image.unwrap(),
+    email        : email.unwrap(),
+    name         : name.unwrap(),
+    lastName     : lastName.unwrap(),
+    description  : description.unwrap(),
+    gender       : gender.unwrap(),
+    phone        : phone.unwrap(),
+    country      : country.unwrap(),
+    birthDay     : birthDay.unwrap(),
+    averageRating: rating.unwrap(),
+    preferences  : preferences
   } )
 }
