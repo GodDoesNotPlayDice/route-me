@@ -58,8 +58,8 @@ export const createUser = async ( rep: AuthUserRepository,
 
   const result = await rep.registerUser(
     {
-      id    : id.unwrap(),
-      email : email.unwrap(),
+      id   : id.unwrap(),
+      email: email.unwrap()
     },
     password.unwrap()
   )

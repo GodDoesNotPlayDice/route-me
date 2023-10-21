@@ -272,7 +272,7 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
       const passengerResult = passengerToJson( passenger )
 
       if ( passengerResult.isErr() ) {
-        err.push(...passengerResult.unwrapErr())
+        err.push( ...passengerResult.unwrapErr() )
       }
       else {
         passengers.push( passengerResult.unwrap() )

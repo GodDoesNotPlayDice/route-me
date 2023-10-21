@@ -1,0 +1,36 @@
+import {
+  Err,
+  Ok,
+  Result
+} from 'oxide.ts'
+import { DateInvalidException } from 'src/package/shared/domain/exceptions/date-invalid-exception'
+import { z } from 'zod'
+
+export const ValidNumberSchema = z.object( {
+  value: z.number()
+} )
+
+type ValidNumberType = z.infer<typeof ValidNumberSchema>
+
+export interface ValidNumber extends ValidNumberType {}
+
+interface ValidNumberProps {
+  value: number
+}
+
+/**
+ * Create a valid date instance
+ * @throws {DateInvalidException} - if date is invalid
+ */
+export const newValidNumber = ( props: ValidNumberProps ): Result<ValidNumber, Error> => {
+  const result = ValidNumberSchema.safeParse( {
+    value: props.value
+  } )
+
+  if ( !result.success ) {
+    return Err( new DateInvalidException() )
+  }
+  else {
+    return Ok( result.data )
+  }
+}

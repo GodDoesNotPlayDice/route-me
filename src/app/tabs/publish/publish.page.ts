@@ -65,8 +65,8 @@ export class PublishPage implements ViewDidEnter {
   }
 
   async addRoute() {
-    const start  = this.inicioInput.mapLocationControl.value!
-    const end    = this.salidaInput.mapLocationControl.value!
+    const start = this.inicioInput.mapLocationControl.value!
+    const end   = this.salidaInput.mapLocationControl.value!
     //TODO: result error en agregar path a mapa
     await this.map.addRouteMap( this.pageKey, start.center, end.center )
   }
@@ -78,7 +78,7 @@ export class PublishPage implements ViewDidEnter {
     if ( !this.formGroup.valid ) { return }
 
     await this.alertService.presentAlert( {
-      header: 'Confirma que deseas publicar el viaje',
+      header : 'Confirma que deseas publicar el viaje',
       message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
       buttons: [
         {

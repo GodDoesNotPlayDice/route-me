@@ -1,5 +1,6 @@
 import {
   Err,
+  Ok,
   Result,
   Some
 } from 'oxide.ts'
@@ -12,14 +13,14 @@ export const updateTrip = async ( dao: TripDao,
   trip: Trip, props: {
     description?: string
     category?: Category
-  } ): Promise<Result<boolean, Error>> => {
+  } ): Promise<Result<Trip, Error[]>> => {
 
   const description = newPassengerDescription( {
     value: props.description ?? trip.description.value
   } )
 
   if ( description.isErr() ) {
-    return Err( description.unwrapErr() )
+    return Err( [ description.unwrapErr() ] )
   }
 
   const newTrip: Trip = {
@@ -38,5 +39,11 @@ export const updateTrip = async ( dao: TripDao,
     endDate      : trip.endDate
   }
 
-  return await dao.update( newTrip )
+  const result = await dao.update( newTrip )
+
+  if ( result.isErr() ) {
+    return Err( result.unwrapErr() )
+  }
+
+  return Ok( newTrip )
 }

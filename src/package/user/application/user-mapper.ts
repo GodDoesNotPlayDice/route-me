@@ -61,7 +61,7 @@ export const userFromJson = ( json: Record<string, any> ): Result<User, Error[]>
   }
 
   return Ok( {
-    id    : id.unwrap(),
-    email : email.unwrap(),
+    id   : id.unwrap(),
+    email: email.unwrap()
   } )
 }

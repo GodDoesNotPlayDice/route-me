@@ -1,15 +1,15 @@
 import { Result } from 'oxide.ts'
-import { Location } from 'src/package/location/domain/models/location'
-import { LocationID } from 'src/package/location/domain/models/location-id'
+import { TripLocation } from 'src/package/location/domain/models/trip-location'
+import { TripLocationID } from 'src/package/location/domain/models/trip-location-id'
 
 export abstract class LocationDao {
-  abstract create( location: Location ): Promise<Result<boolean, Error>>
+  abstract create( location: TripLocation ): Promise<Result<boolean, Error>>
 
-  abstract getById( id: LocationID ): Promise<Result<Location, Error[]>>
+  abstract getById( id: TripLocationID ): Promise<Result<TripLocation, Error[]>>
 
-  abstract getAll(): Promise<Result<Location[], Error[]>>
+  abstract getAll(): Promise<Result<TripLocation[], Error[]>>
 
-  abstract delete( id: LocationID ): Promise<Result<boolean, Error>>
+  abstract delete( id: TripLocationID ): Promise<Result<boolean, Error>>
 
-  abstract update( location: Location ): Promise<Result<boolean, Error>>
+  abstract update( location: TripLocation ): Promise<Result<boolean, Error>>
 }

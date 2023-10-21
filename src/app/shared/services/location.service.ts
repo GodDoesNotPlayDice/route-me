@@ -6,7 +6,7 @@ import {
 } from 'oxide.ts'
 import { createLocation } from 'src/package/location/application/create-location'
 import { LocationDao } from 'src/package/location/domain/dao/location-dao'
-import { Location } from 'src/package/location/domain/models/location'
+import { TripLocation } from 'src/package/location/domain/models/trip-location'
 import { Position } from 'src/package/position-api/domain/models/position'
 
 @Injectable( {
@@ -20,7 +20,7 @@ export class LocationService {
     name: string,
     countryCode: string,
     position: Position
-  } ): Promise<Option<Location>> {
+  } ): Promise<Option<TripLocation>> {
     const result = await createLocation( this.locationDao, props )
 
     if ( result.isErr() ) {
