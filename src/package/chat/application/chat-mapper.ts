@@ -3,13 +3,13 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
+import { Chat } from 'src/package/chat/domain/models/chat'
+import { newChatID } from 'src/package/chat/domain/models/chat-id'
 import {
   messageFromJson,
   messageToJson
-} from 'src/package/chat/application/message-mapper'
-import { Chat } from 'src/package/chat/domain/models/chat'
-import { newChatID } from 'src/package/chat/domain/models/chat-id'
-import { Message } from 'src/package/chat/domain/models/message'
+} from 'src/package/message/application/message-mapper'
+import { Message } from 'src/package/message/domain/models/message'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**

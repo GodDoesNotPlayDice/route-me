@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { MessageContentInvalidException } from 'src/package/chat/domain/exceptions/message-content-invalid-exception'
+import { MessageContentInvalidException } from 'src/package/message/domain/exceptions/message-content-invalid-exception'
 import { z } from 'zod'
 
 export const MessageContentSchema = z.object( {

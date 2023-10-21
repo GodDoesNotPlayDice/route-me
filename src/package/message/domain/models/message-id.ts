@@ -3,7 +3,7 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { MessageIdInvalidException } from 'src/package/chat/domain/exceptions/message-id-invalid-exception'
+import { MessageIdInvalidException } from 'src/package/message/domain/exceptions/message-id-invalid-exception'
 import { z } from 'zod'
 
 export const MessageIDSchema = z.object( {
