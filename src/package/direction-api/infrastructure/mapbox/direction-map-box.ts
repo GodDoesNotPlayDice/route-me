@@ -19,7 +19,7 @@ export class DirectionMapBox implements DirectionRepository {
    * @throws {DirectionNotFoundException} - if direction not found
    */
   async getDirection( inicio: Position,
-    final: Position ): Promise<Result<Direction, Error>> {
+    final: Position ): Promise<Result<Direction, Error[]>> {
     const start = `${ inicio.lng },${ inicio.lat }`
     const end   = `${ final.lng },${ final.lat }`
 
@@ -28,7 +28,7 @@ export class DirectionMapBox implements DirectionRepository {
                                .toPromise()
 
     if ( response === undefined ) {
-      return Err( new DirectionNotFoundException() )
+      return Err( [new DirectionNotFoundException()] )
     }
 
     const directionResult = directionFromJson( response )

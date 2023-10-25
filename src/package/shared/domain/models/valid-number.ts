@@ -7,8 +7,7 @@ import { NumberInvalidException } from 'src/package/shared/domain/exceptions/num
 import { z } from 'zod'
 
 export const ValidNumberSchema = z.object( {
-  value: z.number()
-          .nonnegative()
+  value: z.number().gte(0)
 } )
 
 type ValidNumberType = z.infer<typeof ValidNumberSchema>

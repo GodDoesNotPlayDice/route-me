@@ -12,7 +12,7 @@ export class DirectionService {
   constructor( private directionRepository: DirectionRepository ) { }
 
   async getDirection( inicio: Position,
-    final: Position ): Promise<Result<Direction, Error>> {
+    final: Position ): Promise<Result<Direction, Error[]>> {
     return await this.directionRepository.getDirection( inicio, final )
   }
 }

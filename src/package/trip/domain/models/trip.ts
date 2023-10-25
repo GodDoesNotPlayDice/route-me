@@ -10,16 +10,16 @@ import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 
 export interface Trip {
-  id: TripID
-  startDate: Date
-  endDate: Date
-  description: TripDescription
-  state: TripState
-  price: TripPrice
-  driver: Driver
-  chatID: ChatID
-  startLocation: TripLocation
-  endLocation: TripLocation
-  category: Option<Category>
-  passengers: Passenger[]
+	id: TripID
+	startDate: Date
+	endDate: Date
+	description: TripDescription
+	state: TripState
+	price: TripPrice
+	driver: Driver
+	chatID: ChatID
+	startLocation: TripLocation
+	endLocation: TripLocation
+	category: Option<Category>
+	passengers: Passenger[]
 }

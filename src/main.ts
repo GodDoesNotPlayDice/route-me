@@ -110,7 +110,6 @@ bootstrapApplication( AppComponent, {
         return new UserDaoFirebase( firebase )
       },
       deps      : [ AngularFireDatabase ]
-
     },
     {
       provide   : PassengerDao,

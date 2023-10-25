@@ -24,6 +24,8 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { TripService } from 'src/app/shared/services/trip.service'
+import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
 
 @Component( {
   standalone : true,
@@ -46,7 +48,6 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 export class LoginPage implements ViewDidEnter {
   constructor(
     private authService: AuthService,
-    private firebase: AngularFireAuth,
     private router: Router,
     private alertService: AlertService
   )

@@ -188,7 +188,9 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
     }
   }
 
-  const rating = newValidNumber( json['average_rating'] ?? 0 )
+  const rating = newValidNumber( {
+	  value: json['average_rating'] ?? 0
+  })
 
   if ( rating.isErr() ) {
     err.push( rating.unwrapErr() )

@@ -6,23 +6,38 @@ import {
 import { Direction } from 'src/package/direction-api/domain/models/direction'
 import { newGeometry } from 'src/package/direction-api/domain/models/geometry'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
 
 /**
  * Create a direction instance from json
  * @throws {GeometryInvalidException} - if geometry is invalid
  */
-export const directionFromJson = ( json: Record<string, any> ): Result<Direction, Error> => {
-  const result = newGeometry( {
-    // values: json['routes'][0]['geometry']['coordinates'] ?? []
+export const directionFromJson = ( json: Record<string, any> ): Result<Direction, Error[]> => {
+	const err : Error[] = []
+
+	const distance = newValidNumber({
+		value: json['routes'][0]?.distance ?? -1
+	})
+
+  const geometry = newGeometry( {
     values: json['routes'][0]?.geometry?.coordinates ?? []
   } )
 
-  if ( result.isErr() ) {
-    return Err( result.unwrapErr() )
+  if ( geometry.isErr() ) {
+    err.push(geometry.unwrapErr())
   }
 
+	if ( distance.isErr() ) {
+		err.push(distance.unwrapErr())
+	}
+
+	if ( err.length > 0 ) {
+		return Err( err )
+	}
+
   return Ok( {
-    coordinates: result.unwrap()
+    coordinates: geometry.unwrap(),
+	  distance: distance.unwrap()
   } )
 }
 
