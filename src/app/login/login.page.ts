@@ -1,21 +1,20 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  ViewChild
+	Component,
+	ViewChild
 } from '@angular/core'
-import { AngularFireAuth } from '@angular/fire/compat/auth'
 import {
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule
 } from '@angular/forms'
 import {
-  Router,
-  RouterLink
+	Router,
+	RouterLink
 } from '@angular/router'
 import {
-  IonicModule,
-  ViewDidEnter
+	IonicModule,
+	ViewDidEnter
 } from '@ionic/angular'
 import { CheckboxInputComponent } from 'src/app/shared/components/checkbox-input/checkbox-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
@@ -24,8 +23,7 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
-import { TripService } from 'src/app/shared/services/trip.service'
-import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
+import { TripHistoryMother } from 'src/test/app/stubs/object-mothers/trip-history/trip-history-mother'
 
 @Component( {
   standalone : true,
@@ -104,3 +102,4 @@ export class LoginPage implements ViewDidEnter {
     this.checkbox.reset()
   }
 }
+

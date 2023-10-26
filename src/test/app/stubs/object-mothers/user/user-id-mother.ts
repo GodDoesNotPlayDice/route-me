@@ -14,7 +14,7 @@ export class UserIDMother {
 
 	static invalid() :Result<UserID, Error>{
 		return newUserID({
-			value: 'invalid'
+			value: ''
 		})
 	}
 }

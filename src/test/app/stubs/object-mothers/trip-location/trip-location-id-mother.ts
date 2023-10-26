@@ -14,7 +14,7 @@ export class TripLocationIDMother {
 
 	static invalid() :Result<TripLocationID, Error>{
 		return newTripLocationID({
-			value: 'invalid'
+			value: ''
 		})
 	}
 }

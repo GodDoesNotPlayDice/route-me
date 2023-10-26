@@ -14,7 +14,7 @@ export class CategoryIDMother {
 
 	static invalid(): Result<CategoryID, Error> {
 		return newCategoryID( {
-			value: 'invalid'
+			value: ''
 		} )
 	}
 }

@@ -3,12 +3,17 @@ import {
 	newPhone,
 	Phone
 } from 'src/package/shared/domain/models/phone'
-import { FakerPhoneMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-phone-mother'
+import { FakerNumberTextMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-number-text-mother'
 
 export class PhoneMother {
 	static random(): Result<Phone, Error[]> {
 		return newPhone({
-			value: FakerPhoneMother.random().replace(/-/g, '')
+			value: FakerNumberTextMother.random({
+				length:{
+					min:8,
+					max:9
+				}
+			})
 		})
 	}
 

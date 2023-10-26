@@ -3,6 +3,7 @@ import {
 	newTripDescription,
 	TripDescription
 } from 'src/package/trip/domain/models/trip-description'
+import { FakerAlphanumericMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-alphanumeric-mother'
 import { FakerProductDescriptionMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-product-description-mother'
 
 export class TripDescriptionMother {
@@ -15,7 +16,9 @@ export class TripDescriptionMother {
 
 	static invalid(): Result<TripDescription, Error> {
 		return newTripDescription( {
-			value: '' + undefined
+			value: FakerAlphanumericMother.random({
+				length: 200
+			})
 		} )
 	}
 }

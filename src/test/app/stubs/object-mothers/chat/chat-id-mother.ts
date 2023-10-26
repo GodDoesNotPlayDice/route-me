@@ -15,7 +15,7 @@ export class ChatIDMother {
 
 	static invalid() :Result<ChatID, Error>{
 		return newTripID({
-			value: 'invalid'
+			value: ''
 		})
 	}
 }

@@ -5,7 +5,7 @@ import {
 	Password
 } from 'src/package/shared/domain/models/password'
 import { FakerAlphanumericMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-alphanumeric-mother'
-import { FakerNumberIntMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-number-int-mother'
+import { FakerNumberTextMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-number-text-mother'
 import { FakerSpecialCharacterSymbolMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-special-character-symbol-mother'
 
 export class PasswordMother {
@@ -14,13 +14,12 @@ export class PasswordMother {
 			length: 3,
 			casing: 'upper'
 		} )
-
 		const lower    = FakerAlphanumericMother.random( {
 			length: 3,
 			casing: 'lower'
 		} )
 		const charater = FakerSpecialCharacterSymbolMother.random(3)
-		const numbers  = FakerNumberIntMother.random()
+		const numbers  = FakerNumberTextMother.random(3)
 		const combined = faker.helpers.shuffle([upper, lower, charater, numbers.toString()]).join('')
 		return newPassword( {
 			value: combined
