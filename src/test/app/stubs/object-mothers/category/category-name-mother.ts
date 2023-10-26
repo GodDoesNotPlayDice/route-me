@@ -19,4 +19,5 @@ export class CategoryNameMother {
 		}
 }
 
+//TODO: cambiar inputs
 const categories = ['Electrónica', 'Ropa', 'Hogar', 'Deportes', 'Juguetes', 'Libros', 'Automóviles'];
