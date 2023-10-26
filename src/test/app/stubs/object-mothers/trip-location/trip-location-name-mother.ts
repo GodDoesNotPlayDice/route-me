@@ -5,10 +5,10 @@ import {
 	TripLocationName
 } from 'src/package/trip-location/domain/models/trip-location-name'
 import { FakerCountryCodeMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-country-code-mother'
-import { FakerAddressMother } from 'src/test/app/stubs/object-mothers/shared/faker/name/faker-address-mother'
-import { FakerCountryMother } from 'src/test/app/stubs/object-mothers/shared/faker/name/faker-country-mother'
-import { FakerStateMother } from 'src/test/app/stubs/object-mothers/shared/faker/name/faker-state-mother'
-import { FakerZipCodeMother } from 'src/test/app/stubs/object-mothers/shared/faker/name/faker-zip-code-mother'
+import { FakerAddressMother } from 'src/test/app/stubs/object-mothers/shared/faker/location-name/faker-address-mother'
+import { FakerCountryMother } from 'src/test/app/stubs/object-mothers/shared/faker/location-name/faker-country-mother'
+import { FakerStateMother } from 'src/test/app/stubs/object-mothers/shared/faker/location-name/faker-state-mother'
+import { FakerZipCodeMother } from 'src/test/app/stubs/object-mothers/shared/faker/location-name/faker-zip-code-mother'
 export class TripLocationNameMother {
 	static random() :Result<TripLocationName, Error>{
 		const address = FakerAddressMother.random()

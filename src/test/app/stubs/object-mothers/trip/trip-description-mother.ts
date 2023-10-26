@@ -3,19 +3,19 @@ import {
 	newTripDescription,
 	TripDescription
 } from 'src/package/trip/domain/models/trip-description'
-import { FakerBioMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-bio-mother'
+import { FakerProductDescriptionMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-product-description-mother'
 
-export  class TripDescriptionMother {
+export class TripDescriptionMother {
 
-	static random():Result<TripDescription, Error>{
-		return newTripDescription({
-			value: FakerBioMother.random()
-		})
+	static random(): Result<TripDescription, Error> {
+		return newTripDescription( {
+			value: FakerProductDescriptionMother.random()
+		} )
 	}
 
-	static invalid():Result<TripDescription, Error>{
-		return newTripDescription({
-			value: ''+undefined
-		})
+	static invalid(): Result<TripDescription, Error> {
+		return newTripDescription( {
+			value: '' + undefined
+		} )
 	}
 }
