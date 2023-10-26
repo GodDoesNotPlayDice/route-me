@@ -3,13 +3,13 @@ import {
   Ok,
   Result
 } from 'oxide.ts'
-import { DateDifferenteTextException } from 'src/package/shared/config/helper/date/date-differente-text-exception'
-import { DateRemainingUnitsException } from 'src/package/shared/config/helper/date/date-remaining-units-exception'
+import { DateDifferenteTextException } from 'src/package/shared/utils/date/date-differente-text-exception'
+import { DateRemainingUnitsException } from 'src/package/shared/utils/date/date-remaining-units-exception'
 import {
-  RemainingUnits,
-  Unit,
-  UnitText
-} from 'src/package/shared/config/helper/date/unit'
+	RemainingUnits,
+	Unit,
+	UnitText
+} from 'src/package/shared/utils/date/unit'
 
 export const dateFromJSON = ( utc: string ): Date => {
   return new Date( utc )

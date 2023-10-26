@@ -21,12 +21,12 @@ import {
   passengerToJson
 } from 'src/package/passenger/application/passenger-mapper'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import {
-  dateFromJSON,
-  dateToJSON
-} from 'src/package/shared/config/helper/date/date-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
+import {
+	dateFromJSON,
+	dateToJSON
+} from 'src/package/shared/utils/date/date-mapper'
 import {
   locationFromJson,
   locationToJson
@@ -52,8 +52,6 @@ import { newTripState } from 'src/package/trip/domain/models/trip-state'
  * @throws {PreferenceIdInvalidException} - if preference id is invalid
  * @throws {GenderInvalidException} - if gender is invalid
  * @throws {ImageUrlInvalidException} - if image is invalid
- * @throws {RatingIdInvalidException} - if id is invalid
- * @throws {RatingValueInvalidException} - if value is invalid
  * @throws {DriverIdInvalidException} - if driver id is invalid
  * @throws {DriverDocumentIdInvalidException} - if driver document id is invalid
  * @throws {DriverDocumentNameInvalidException} - if driver document name is invalid
@@ -64,9 +62,9 @@ import { newTripState } from 'src/package/trip/domain/models/trip-state'
  * @throws {CategoryIdInvalidException} - if id is invalid
  * @throws {CategoryNameInvalidException} - if name is invalid
  * @throws {ChatIdInvalidException} - if id is invalid
- * @throws {LocationIdInvalidException} - if id is invalid
- * @throws {LocationNameInvalidException} - if name is invalid
- * @throws {LocationCountryCodeInvalidException} - if country code is invalid
+ * @throws {TripLocationIdInvalidException} - if id is invalid
+ * @throws {TripLocationNameInvalidException} - if name is invalid
+ * @throws {TripLocationCountryCodeInvalidException} - if country code is invalid
  * @throws {PositionInvalidException} - if position is invalid
  * @throws {MoneyInvalidException} - if money is invalid
  * @throws {CurrencyInvalidException} - if currency is invalid

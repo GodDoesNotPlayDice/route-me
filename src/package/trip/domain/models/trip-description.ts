@@ -7,7 +7,7 @@ import { TripDescriptionInvalidException } from 'src/package/trip/domain/excepti
 import { z } from 'zod'
 
 export const TripDescriptionSchema = z.object( {
-  value: z.string()
+  value: z.string().max(180)
 } )
 
 type TripDescriptionType = z.infer<typeof TripDescriptionSchema>
