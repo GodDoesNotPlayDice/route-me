@@ -15,16 +15,16 @@ import {
   preferenceToJson
 } from 'src/package/preference/application/preference-mapper'
 import { Preference } from 'src/package/preference/domain/models/preference'
-import {
-  dateFromJSON,
-  dateToJSON
-} from 'src/package/shared/config/helper/date/date-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import { newImageUrl } from 'src/package/shared/domain/models/image-url'
 import { newPhone } from 'src/package/shared/domain/models/phone'
 import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
+import {
+	dateFromJSON,
+	dateToJSON
+} from 'src/package/shared/utils/date/date-mapper'
 
 /**
  * Create a json from passenger instance
