@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-export class FakerDescriptionMother {
+export class FakerBioMother {
 	static random() : string{
 		return faker.person.bio()
 	}

@@ -3,13 +3,13 @@ import {
 	newTripDescription,
 	TripDescription
 } from 'src/package/trip/domain/models/trip-description'
-import { FakerDescriptionMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-description-mother'
+import { FakerBioMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-bio-mother'
 
 export  class TripDescriptionMother {
 
 	static random():Result<TripDescription, Error>{
 		return newTripDescription({
-			value: FakerDescriptionMother.random()
+			value: FakerBioMother.random()
 		})
 	}
 

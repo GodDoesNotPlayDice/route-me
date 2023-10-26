@@ -5,7 +5,7 @@ import {
 } from 'src/package/trip/domain/models/trip-id'
 import { ulid } from 'ulidx'
 
-export class TripIdMother {
+export class TripIDMother {
 	static random() :Result<TripID, Error>{
 		return newTripID({
 			value: ulid()

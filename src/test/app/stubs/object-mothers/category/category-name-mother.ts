@@ -1,11 +1,22 @@
+import { faker } from '@faker-js/faker'
+import { Result } from 'oxide.ts';
+import {
+	CategoryName,
+	newCategoryName
+} from 'src/package/category/domain/models/category-name'
+
 export class CategoryNameMother {
-			static random() {
-				const randomIndex = faker.random.number({ min: 0, max: categories.length - 1 });
-				return categories[randomIndex];
-				return faker.lorem.word();
+			static random() : Result<CategoryName, Error> {
+				return newCategoryName({
+					value: faker.helpers.arrayElement(categories)
+				})
 		}
-		static invalid() {
-				return faker.lorem.word();
+
+		static invalid(): Result<CategoryName, Error> {
+			return newCategoryName({
+				value: ''
+			})
 		}
 }
-const categorias = ['Electrónica', 'Ropa', 'Hogar', 'Deportes', 'Juguetes', 'Libros', 'Automóviles'];
+
+const categories = ['Electrónica', 'Ropa', 'Hogar', 'Deportes', 'Juguetes', 'Libros', 'Automóviles'];

@@ -29,7 +29,7 @@ export interface TripLocation {
 }
 
 
-export interface LocationProps {
+export interface TripLocationProps {
   id: string
   name: string
   countryCode: string
@@ -43,7 +43,7 @@ export interface LocationProps {
  * @throws {TripLocationCountryCodeInvalidException} - if country code is invalid
  * @throws {PositionInvalidException} - if position is invalid
  */
-export const newLocation = ( props: LocationProps ): Result<TripLocation, Error[]> => {
+export const newLocation = ( props: TripLocationProps ): Result<TripLocation, Error[]> => {
   const err: Error[] = []
 
   const id = newTripLocationID( {
