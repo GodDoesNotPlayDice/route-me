@@ -6,15 +6,15 @@ import {
 import { FakerFirstNameMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-first-name-mother'
 
 export class PassengerNameMother {
-	static random() :Result<PassengerName, Error>{
-		return newPassengerName({
+	static random(): Result<PassengerName, Error> {
+		return newPassengerName( {
 			value: FakerFirstNameMother.random()
-		})
+		} )
 	}
 
-	static invalid() :Result<PassengerName, Error>{
-		return newPassengerName({
-			value:''
-		})
+	static invalid(): Result<PassengerName, Error> {
+		return newPassengerName( {
+			value: ''
+		} )
 	}
 }

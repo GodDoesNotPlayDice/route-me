@@ -6,15 +6,15 @@ import {
 } from 'src/package/shared/domain/models/gender'
 
 export class GenderMother {
-	static random() : Result<GenderEnum, Error> {
-		return newGender({
-			value: faker.helpers.enumValue(GenderEnum)
-		})
+	static random(): Result<GenderEnum, Error> {
+		return newGender( {
+			value: faker.helpers.enumValue( GenderEnum )
+		} )
 	}
 
 	static invalid(): Result<GenderEnum, Error> {
-		return newGender({
+		return newGender( {
 			value: 'invalid'
-		})
+		} )
 	}
 }

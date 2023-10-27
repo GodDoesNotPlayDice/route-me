@@ -1,7 +1,7 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
@@ -12,14 +12,14 @@ import { UserID } from 'src/package/user/domain/models/user-id'
  * @throws {UnknownException} - if unknown error
  */
 export const logoutUser = async (
-  repository: AuthUserRepository,
-  id: UserID
+	repository: AuthUserRepository,
+	id: UserID
 ): Promise<Result<boolean, Error>> => {
-  const result = await repository.logout( id )
+	const result = await repository.logout( id )
 
-  if ( result.isErr() ) {
-    return Err( new UnknownException( 'logout user' ) )
-  }
+	if ( result.isErr() ) {
+		return Err( new UnknownException( 'logout user' ) )
+	}
 
-  return Ok( result.unwrap() )
+	return Ok( result.unwrap() )
 }

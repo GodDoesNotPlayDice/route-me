@@ -6,15 +6,15 @@ import {
 } from 'src/package/trip/domain/models/trip-state'
 
 export class TripStateMother {
-	static random() : Result<TripStateEnum, Error> {
-		return newTripState({
-			value: faker.helpers.enumValue(TripStateEnum)
-		})
+	static random(): Result<TripStateEnum, Error> {
+		return newTripState( {
+			value: faker.helpers.enumValue( TripStateEnum )
+		} )
 	}
 
 	static invalid(): Result<TripStateEnum, Error> {
-		return newTripState({
+		return newTripState( {
 			value: 'invalid'
-		})
+		} )
 	}
 }

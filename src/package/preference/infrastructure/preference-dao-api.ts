@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http'
 import { environment } from '@env/environment'
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { preferenceFromJson } from 'src/package/preference/application/preference-mapper'
 import { PreferenceDao } from 'src/package/preference/domain/dao/preference-dao'
@@ -13,55 +13,55 @@ import { ApiOperationException } from 'src/package/shared/infrastructure/excepti
 
 export class PreferenceDaoApi implements PreferenceDao {
 
-  constructor( private http: HttpClient ) {}
+	constructor( private http: HttpClient ) {}
 
-  private url = environment.apiUrl
+	private url = environment.apiUrl
 
-  async getAll(): Promise<Result<Preference[], Error[]>> {
-    const response = await this.http.get( this.url )
-                               .toPromise()
+	async getAll(): Promise<Result<Preference[], Error[]>> {
+		const response = await this.http.get( this.url )
+		                           .toPromise()
 
-    if ( response === undefined ) {
-      return Err( [ new ApiOperationException( 'preference api. get all' ) ] )
-    }
+		if ( response === undefined ) {
+			return Err( [ new ApiOperationException( 'preference api. get all' ) ] )
+		}
 
-    const errors: Error[]          = []
-    const resultList: Preference[] = []
-    for ( const value of Object.values( response ) ) {
-      const result = preferenceFromJson( value as Record<string, any> )
+		const errors: Error[]          = []
+		const resultList: Preference[] = []
+		for ( const value of Object.values( response ) ) {
+			const result = preferenceFromJson( value as Record<string, any> )
 
-      if ( result.isErr() ) {
-        errors.push( ...result.unwrapErr() )
-      }
-      resultList.push( result.unwrap() )
-    }
+			if ( result.isErr() ) {
+				errors.push( ...result.unwrapErr() )
+			}
+			resultList.push( result.unwrap() )
+		}
 
-    if ( errors.length > 0 ) {
-      return Err( errors )
-    }
+		if ( errors.length > 0 ) {
+			return Err( errors )
+		}
 
-    return Ok( resultList )
-  }
+		return Ok( resultList )
+	}
 
-  async getById( id: PreferenceID ): Promise<Result<Preference, Error[]>> {
-    const response = await this.http.get( this.url, {
-      params: {
-        id: id.value
-      }
-    } )
-                               .toPromise()
+	async getById( id: PreferenceID ): Promise<Result<Preference, Error[]>> {
+		const response = await this.http.get( this.url, {
+			params: {
+				id: id.value
+			}
+		} )
+		                           .toPromise()
 
-    if ( response === undefined ) {
-      return Err( [ new ApiOperationException( 'preference api. get by id' ) ] )
-    }
+		if ( response === undefined ) {
+			return Err( [ new ApiOperationException( 'preference api. get by id' ) ] )
+		}
 
-    const result = preferenceFromJson( response )
+		const result = preferenceFromJson( response )
 
-    if ( result.isErr() ) {
-      return Err( result.unwrapErr() )
-    }
+		if ( result.isErr() ) {
+			return Err( result.unwrapErr() )
+		}
 
-    return Ok( result.unwrap() )
-  }
+		return Ok( result.unwrap() )
+	}
 
 }

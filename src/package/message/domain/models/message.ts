@@ -4,8 +4,8 @@ import { PassengerName } from 'src/package/passenger/domain/models/passenger-nam
 import { Email } from 'src/package/shared/domain/models/email'
 
 export interface Message {
-  id: MessageID,
-  passengerName: PassengerName
-  passengerEmail: Email
-  content: MessageContent
+	id: MessageID,
+	passengerName: PassengerName
+	passengerEmail: Email
+	content: MessageContent
 }

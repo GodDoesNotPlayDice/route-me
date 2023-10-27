@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core'
 import {
-	Err,
 	None,
-	Ok,
 	Option,
-	Result,
 	Some
 } from 'oxide.ts'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LocationService } from 'src/app/shared/services/location.service'
-import { Position } from 'src/package/position-api/domain/models/position'
 import { newCurrency } from 'src/package/shared/domain/models/currency'
 import {
 	newValidNumber,
@@ -22,10 +18,7 @@ import { createTrip } from 'src/package/trip/application/create-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
-import {
-	newTripPrice,
-	TripPrice
-} from 'src/package/trip/domain/models/trip-price'
+import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { TripRepository } from 'src/package/trip/domain/repository/trip-repository'
 
@@ -63,13 +56,16 @@ export class TripService {
 		return result.unwrap()
 	}
 
-	async calculateTripPrice( distance : ValidNumber ): Promise<Option<TripPrice>> {
+	async calculateTripPrice( distance: ValidNumber ): Promise<Option<TripPrice>> {
 		//TODO: obtener moneda del usuario
-		const result = await this.tripRepository.calculateTripPrice( distance , newCurrency({
-			value: 'USD'
-		}).unwrap())
+		const result = await this.tripRepository.calculateTripPrice( distance,
+			newCurrency( {
+				value: 'USD'
+			} )
+				.unwrap() )
 		if ( result.isErr() ) {
-			console.log( 'error. calculate trip price. trip service', result.unwrapErr() )
+			console.log( 'error. calculate trip price. trip service',
+				result.unwrapErr() )
 			return None
 		}
 		return Some( result.unwrap() )
@@ -89,9 +85,10 @@ export class TripService {
 		}
 
 		const tripPrice = await this.calculateTripPrice(
-			newValidNumber({
+			newValidNumber( {
 				value: 1
-			}).unwrap()
+			} )
+				.unwrap()
 		)
 
 		if ( tripPrice.isNone() ) {

@@ -1,14 +1,14 @@
 <div class="flex flex-col">
-  <mat-form-field (click)="openModal()">
-    <mat-label>{{label}}</mat-label>
-    <mat-select>
-    </mat-select>
-  </mat-form-field>
-  <div class="mt-2 text-xs text-threateningRed-500 font-gotham">
-    <div *ngIf="singleSelectorControl.invalid && (singleSelectorControl.dirty || singleSelectorControl.touched)">
-      <div *ngIf="singleSelectorControl.errors?.['required']">
-        {{ errorText }}
-      </div>
-    </div>
-  </div>
+	<mat-form-field (click)="openModal()">
+		<mat-label>{{label}}</mat-label>
+		<mat-select>
+		</mat-select>
+	</mat-form-field>
+	<div class="mt-2 text-xs text-threateningRed-500 font-gotham">
+		<div *ngIf="singleSelectorControl.invalid && (singleSelectorControl.dirty || singleSelectorControl.touched)">
+			<div *ngIf="singleSelectorControl.errors?.['required']">
+				{{ errorText }}
+			</div>
+		</div>
+	</div>
 </div>

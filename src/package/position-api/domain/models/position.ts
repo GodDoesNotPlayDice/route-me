@@ -1,14 +1,18 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
 import { z } from 'zod'
 
 export const PositionSchema = z.object( {
-  lat: z.number().min(-90).max(90),
-  lng: z.number().min(-180).max(180)
+	lat: z.number()
+	      .min( -90 )
+	      .max( 90 ),
+	lng: z.number()
+	      .min( -180 )
+	      .max( 180 )
 } )
 
 type PositionType = z.infer<typeof PositionSchema>
@@ -16,8 +20,8 @@ type PositionType = z.infer<typeof PositionSchema>
 export interface Position extends PositionType {}
 
 export interface PositionProps {
-  lat: number,
-  lng: number
+	lat: number,
+	lng: number
 }
 
 /**
@@ -25,15 +29,15 @@ export interface PositionProps {
  * @throws {PositionInvalidException} - if position is invalid
  */
 export const newPosition = ( props: PositionProps ): Result<Position, Error> => {
-  const result = PositionSchema.safeParse( {
-    lat: props.lat,
-    lng: props.lng
-  } )
+	const result = PositionSchema.safeParse( {
+		lat: props.lat,
+		lng: props.lng
+	} )
 
-  if ( !result.success ) {
-    return Err( new PositionInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new PositionInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

@@ -4,5 +4,6 @@ import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
 import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 
 export abstract class TripRepository {
-  abstract calculateTripPrice( distance : ValidNumber, currency : Currency ): Promise<Result<TripPrice, Error[]>>
+	abstract calculateTripPrice( distance: ValidNumber,
+		currency: Currency ): Promise<Result<TripPrice, Error[]>>
 }

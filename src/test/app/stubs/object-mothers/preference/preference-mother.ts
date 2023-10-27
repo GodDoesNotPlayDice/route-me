@@ -11,19 +11,22 @@ import { PreferenceIDMother } from 'src/test/app/stubs/object-mothers/preference
 import { PreferenceNameMother } from 'src/test/app/stubs/object-mothers/preference/preference-name-mother'
 
 export class PreferenceMother {
-	static random() :Result<Preference, Error[]>{
-		return Ok({
-			id: PreferenceIDMother.random().unwrap(),
-			name: PreferenceNameMother.random().unwrap(),
-			icon: PreferenceIconMother.random().unwrap()
-		})
+	static random(): Result<Preference, Error[]> {
+		return Ok( {
+			id  : PreferenceIDMother.random()
+			                        .unwrap(),
+			name: PreferenceNameMother.random()
+			                          .unwrap(),
+			icon: PreferenceIconMother.random()
+			                          .unwrap()
+		} )
 	}
 
-	static invalid() :Result<Preference, Error[]>{
-		return newPreference({
-			id: '',
+	static invalid(): Result<Preference, Error[]> {
+		return newPreference( {
+			id  : '',
 			name: '',
 			icon: ''
-		})
+		} )
 	}
 }

@@ -1,7 +1,7 @@
 import { AngularFireDatabase } from '@angular/fire/compat/database'
 import {
-  Err,
-  Result
+	Err,
+	Result
 } from 'oxide.ts'
 import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { Chat } from 'src/package/chat/domain/models/chat'
@@ -10,19 +10,19 @@ import { FirebaseOperationException } from 'src/package/shared/infrastructure/ex
 
 export class ChatDaoFirebase implements ChatDao {
 
-  constructor( private firebase: AngularFireDatabase ) {}
+	constructor( private firebase: AngularFireDatabase ) {}
 
-  collectionKey = 'chatsv2'
+	collectionKey = 'chatsv2'
 
-  async getAll(): Promise<Result<Chat[], Error[]>> {
-    return Err( [ new FirebaseOperationException() ] )
-  }
+	async getAll(): Promise<Result<Chat[], Error[]>> {
+		return Err( [ new FirebaseOperationException() ] )
+	}
 
-  async getById( id: ChatID ): Promise<Result<Chat, Error[]>> {
-    return Err( [ new FirebaseOperationException() ] )
-  }
+	async getById( id: ChatID ): Promise<Result<Chat, Error[]>> {
+		return Err( [ new FirebaseOperationException() ] )
+	}
 
-  async create( chat: Chat ): Promise<Result<boolean, Error[]>> {
-    return Err( [ new FirebaseOperationException() ] )
-  }
+	async create( chat: Chat ): Promise<Result<boolean, Error[]>> {
+		return Err( [ new FirebaseOperationException() ] )
+	}
 }

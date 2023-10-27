@@ -12,16 +12,16 @@ import { Phone } from 'src/package/shared/domain/models/phone'
 import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
 
 export interface Passenger {
-  id: PassengerID
-  image: ImageUrl
-  name: PassengerName
-  lastName: PassengerLastName
-  description: PassengerDescription
-  gender: Gender
-  country: PassengerCountry
-  birthDay: PassengerBirthDay
-  phone: Phone
-  preferences: Preference[]
-  email: Email
-  averageRating: ValidNumber
+	id: PassengerID
+	image: ImageUrl
+	name: PassengerName
+	lastName: PassengerLastName
+	description: PassengerDescription
+	gender: Gender
+	country: PassengerCountry
+	birthDay: PassengerBirthDay
+	phone: Phone
+	preferences: Preference[]
+	email: Email
+	averageRating: ValidNumber
 }

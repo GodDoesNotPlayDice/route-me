@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker'
 import { Result } from 'oxide.ts'
 import {
 	newPosition,
@@ -8,15 +7,16 @@ import { FakerPositionMother } from 'src/test/app/stubs/object-mothers/shared/fa
 
 export class PositionMother {
 	static random(): Result<Position, Error> {
-		return newPosition( FakerPositionMother.random())
+		return newPosition( FakerPositionMother.random() )
 	}
 
-	static nearRandom(center : Position, radius : number): Result<Position, Error> {
+	static nearRandom( center: Position,
+		radius: number ): Result<Position, Error> {
 		const near = FakerPositionMother.nearRandom( center, radius )
-		return newPosition({
+		return newPosition( {
 			lat: near[0],
 			lng: near[1]
-		})
+		} )
 	}
 
 	static invalid(): Result<Position, Error> {

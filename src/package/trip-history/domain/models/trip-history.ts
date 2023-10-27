@@ -2,6 +2,6 @@ import { TripHistoryID } from 'src/package/trip-history/domain/models/trip-histo
 import { Trip } from 'src/package/trip/domain/models/trip'
 
 export interface TripHistory {
-  id: TripHistoryID
-  trips: Trip[]
+	id: TripHistoryID
+	trips: Trip[]
 }

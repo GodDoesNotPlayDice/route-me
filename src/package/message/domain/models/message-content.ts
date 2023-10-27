@@ -1,14 +1,14 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { MessageContentInvalidException } from 'src/package/message/domain/exceptions/message-content-invalid-exception'
 import { z } from 'zod'
 
 export const MessageContentSchema = z.object( {
-  value: z.string()
-          .min( 1 )
+	value: z.string()
+	        .min( 1 )
 } )
 
 type MessageContentType = z.infer<typeof MessageContentSchema>
@@ -16,7 +16,7 @@ type MessageContentType = z.infer<typeof MessageContentSchema>
 export interface MessageContent extends MessageContentType {}
 
 export interface MessageContentProps {
-  value: string
+	value: string
 }
 
 /**
@@ -24,14 +24,14 @@ export interface MessageContentProps {
  * @throws {MessageContentInvalidException} - if content is invalid
  */
 export const newMessageContent = ( props: MessageContentProps ): Result<MessageContent, Error> => {
-  const result = MessageContentSchema.safeParse( {
-    value: props.value
-  } )
+	const result = MessageContentSchema.safeParse( {
+		value: props.value
+	} )
 
-  if ( !result.success ) {
-    return Err( new MessageContentInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new MessageContentInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

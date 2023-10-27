@@ -1,8 +1,8 @@
 import {
-  Err,
-  Ok,
-  Result,
-  Some
+	Err,
+	Ok,
+	Result,
+	Some
 } from 'oxide.ts'
 import { Category } from 'src/package/category/domain/models/category'
 import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
@@ -11,42 +11,42 @@ import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 
 export const updateTrip = async ( dao: TripDao,
-  trip: Trip, props: {
-    description?: string
-    category?: Category
-    state?: TripState
-    endDate?: Date
-  } ): Promise<Result<Trip, Error[]>> => {
+	trip: Trip, props: {
+		description?: string
+		category?: Category
+		state?: TripState
+		endDate?: Date
+	} ): Promise<Result<Trip, Error[]>> => {
 
-  const description = newPassengerDescription( {
-    value: props.description ?? trip.description.value
-  } )
+	const description = newPassengerDescription( {
+		value: props.description ?? trip.description.value
+	} )
 
-  if ( description.isErr() ) {
-    return Err( [ description.unwrapErr() ] )
-  }
+	if ( description.isErr() ) {
+		return Err( [ description.unwrapErr() ] )
+	}
 
-  const newTrip: Trip = {
-    id           : trip.id,
-    description  : description.unwrap(),
-    category     : props.category === undefined ? trip.category : Some(
-      props.category ),
-    chatID       : trip.chatID,
-    driver       : trip.driver,
-    endLocation  : trip.endLocation,
-    price        : trip.price,
-    startDate    : trip.startDate,
-    startLocation: trip.startLocation,
-    state        : props.state ?? trip.state,
-    passengers   : trip.passengers,
-    endDate      : props.endDate ?? trip.endDate
-  }
+	const newTrip: Trip = {
+		id           : trip.id,
+		description  : description.unwrap(),
+		category     : props.category === undefined ? trip.category : Some(
+			props.category ),
+		chatID       : trip.chatID,
+		driver       : trip.driver,
+		endLocation  : trip.endLocation,
+		price        : trip.price,
+		startDate    : trip.startDate,
+		startLocation: trip.startLocation,
+		state        : props.state ?? trip.state,
+		passengers   : trip.passengers,
+		endDate      : props.endDate ?? trip.endDate
+	}
 
-  const result = await dao.update( newTrip )
+	const result = await dao.update( newTrip )
 
-  if ( result.isErr() ) {
-    return Err( result.unwrapErr() )
-  }
+	if ( result.isErr() ) {
+		return Err( result.unwrapErr() )
+	}
 
-  return Ok( newTrip )
+	return Ok( newTrip )
 }

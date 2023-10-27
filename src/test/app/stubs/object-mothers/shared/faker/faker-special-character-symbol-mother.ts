@@ -5,7 +5,8 @@ export class FakerSpecialCharacterSymbolMother {
 		min: number;
 		max: number;
 	} ): string {
-		return faker.helpers.arrayElements( allowedCharacters, 3 ).join( '' )
+		return faker.helpers.arrayElements( allowedCharacters, 3 )
+		            .join( '' )
 	}
 }
 

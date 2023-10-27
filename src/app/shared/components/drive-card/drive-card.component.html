@@ -1,34 +1,34 @@
 <div class="p-2 rounded-md shadow-md shadow-black/50 border-indigoBlack-200 ">
-  <div class="flex h-full gap-2 justify-center items-center">
-    <div
-      class="basis-3/12 max-w-[55px] max-h-[55px] m-1.5 rounded-full shadow-md shadow-black/20">
-      <img class="max-w-[55px] max-h-[55px] object-fill aspect-square rounded-full"
-        [src]="info.driverAvatar.url"
-        alt="">
-    </div>
-    <div class="basis-9/12 flex flex-col m-1 justify-between">
-      <div class="">Fecha viaje: {{info.date | date:'dd MMM HH:mm '}}</div>
-      <div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
-      <div>Inicio: {{info.startLocationName | slice:0:20 }}</div>
-      <div>Fin: {{info.endLocationName | slice:0:20 }}</div>
-    </div>
-  </div>
-  <div class="flex justify-between items-center gap-2">
-    <div class="flex items-center basis-5/12">
-      <div *ngFor="let passenger of info.passengerUrls">
-        <app-avatar-home [url]="passenger"></app-avatar-home>
-      </div>
-      <div *ngIf="info.passengerUrls.length === 0">
-        Sin pasajeros
-      </div>
-    </div>
-    <div class="basis-3/12">${{info.cost}}</div>
-    <button
-      (click)="buttonClick($event)"
-      type="button"
-      class="basis-4/12 tracking-wider font-light py-0.5 inline-block w-full text-sm rounded bg-indigoBlack-500 uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] ">
-      Solicitar
-    </button>
-  </div>
+	<div class="flex h-full gap-2 justify-center items-center">
+		<div
+			class="basis-3/12 max-w-[55px] max-h-[55px] m-1.5 rounded-full shadow-md shadow-black/20">
+			<img class="max-w-[55px] max-h-[55px] object-fill aspect-square rounded-full"
+				[src]="info.driverAvatar.url"
+				alt="">
+		</div>
+		<div class="basis-9/12 flex flex-col m-1 justify-between">
+			<div class="">Fecha viaje: {{info.date | date:'dd MMM HH:mm '}}</div>
+			<div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
+			<div>Inicio: {{info.startLocationName | slice:0:20 }}</div>
+			<div>Fin: {{info.endLocationName | slice:0:20 }}</div>
+		</div>
+	</div>
+	<div class="flex justify-between items-center gap-2">
+		<div class="flex items-center basis-5/12">
+			<div *ngFor="let passenger of info.passengerUrls">
+				<app-avatar-home [url]="passenger"></app-avatar-home>
+			</div>
+			<div *ngIf="info.passengerUrls.length === 0">
+				Sin pasajeros
+			</div>
+		</div>
+		<div class="basis-3/12">${{info.cost}}</div>
+		<button
+			(click)="buttonClick($event)"
+			type="button"
+			class="basis-4/12 tracking-wider font-light py-0.5 inline-block w-full text-sm rounded bg-indigoBlack-500 uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] ">
+			Solicitar
+		</button>
+	</div>
 </div>
 <!--<div><img src="https://exo.pet/images/banners/bet96060.gif" alt=""></div>-->

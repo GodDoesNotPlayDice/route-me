@@ -1,14 +1,14 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { PassengerNameInvalidException } from 'src/package/passenger/domain/exceptions/passenger-name-invalid-exception'
 import { z } from 'zod'
 
 export const PassengerNameSchema = z.object( {
-  value: z.string()
-          .min( 1 )
+	value: z.string()
+	        .min( 1 )
 } )
 
 type PassengerNameType = z.infer<typeof PassengerNameSchema>
@@ -16,7 +16,7 @@ type PassengerNameType = z.infer<typeof PassengerNameSchema>
 export interface PassengerName extends PassengerNameType {}
 
 export interface PassengerNameProps {
-  value: string
+	value: string
 }
 
 /**
@@ -24,14 +24,14 @@ export interface PassengerNameProps {
  * @throws {PassengerNameInvalidException} - if name is invalid
  */
 export const newPassengerName = ( props: PassengerNameProps ): Result<PassengerName, Error> => {
-  const result = PassengerNameSchema.safeParse( {
-    value: props.value
-  } )
+	const result = PassengerNameSchema.safeParse( {
+		value: props.value
+	} )
 
-  if ( !result.success ) {
-    return Err( new PassengerNameInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new PassengerNameInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

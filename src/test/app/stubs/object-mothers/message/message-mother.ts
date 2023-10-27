@@ -10,21 +10,29 @@ import { PassengerNameMother } from 'src/test/app/stubs/object-mothers/passenger
 import { EmailMother } from 'src/test/app/stubs/object-mothers/shared/email-mother'
 
 export class MessageMother {
-	static random() :Result<Message, Error>{
-		return Ok({
-			id: MessageIDMother.random().unwrap(),
-			passengerName: PassengerNameMother.random().unwrap(),
-			passengerEmail: EmailMother.random().unwrap(),
-			content: MessageContentMother.random().unwrap(),
-		})
+	static random(): Result<Message, Error> {
+		return Ok( {
+			id            : MessageIDMother.random()
+			                               .unwrap(),
+			passengerName : PassengerNameMother.random()
+			                                   .unwrap(),
+			passengerEmail: EmailMother.random()
+			                           .unwrap(),
+			content       : MessageContentMother.random()
+			                                    .unwrap()
+		} )
 	}
 
-	static invalid() :Result<Message, Error[]>{
-		return Err([
-			MessageIDMother.invalid().unwrapErr(),
-			PassengerNameMother.invalid().unwrapErr(),
-			EmailMother.invalid().unwrapErr(),
-			MessageContentMother.invalid().unwrapErr(),
-		])
+	static invalid(): Result<Message, Error[]> {
+		return Err( [
+			MessageIDMother.invalid()
+			               .unwrapErr(),
+			PassengerNameMother.invalid()
+			                   .unwrapErr(),
+			EmailMother.invalid()
+			           .unwrapErr(),
+			MessageContentMother.invalid()
+			                    .unwrapErr()
+		] )
 	}
 }

@@ -7,19 +7,19 @@ import { FakerNumberTextMother } from 'src/test/app/stubs/object-mothers/shared/
 
 export class PhoneMother {
 	static random(): Result<Phone, Error[]> {
-		return newPhone({
-			value: FakerNumberTextMother.random({
-				length:{
-					min:8,
-					max:9
+		return newPhone( {
+			value: FakerNumberTextMother.random( {
+				length: {
+					min: 8,
+					max: 9
 				}
-			})
-		})
+			} )
+		} )
 	}
 
 	static invalid(): Result<Phone, Error[]> {
-		return newPhone({
+		return newPhone( {
 			value: ''
-		})
+		} )
 	}
 }

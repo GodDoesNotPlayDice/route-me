@@ -7,14 +7,14 @@ import { FakerMoneyMother } from 'src/test/app/stubs/object-mothers/shared/faker
 
 export class MoneyMother {
 	static random(): Result<Money, Error> {
-		return newMoney({
+		return newMoney( {
 			value: FakerMoneyMother.random()
-		})
+		} )
 	}
 
 	static invalid(): Result<Money, Error> {
-		return newMoney({
+		return newMoney( {
 			value: -1
-		})
+		} )
 	}
 }

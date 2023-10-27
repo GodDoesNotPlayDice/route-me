@@ -9,16 +9,20 @@ import { CategoryNameMother } from 'src/test/app/stubs/object-mothers/category/c
 
 export class CategoryMother {
 	static random(): Result<Category, Error[]> {
-		return Ok({
-			id: CategoryIDMother.random().unwrap(),
-			name: CategoryNameMother.random().unwrap()
-		})
+		return Ok( {
+			id  : CategoryIDMother.random()
+			                      .unwrap(),
+			name: CategoryNameMother.random()
+			                        .unwrap()
+		} )
 	}
 
 	static invalid(): Result<Category, Error[]> {
-		return Err([
-			CategoryIDMother.invalid().unwrapErr(),
-			CategoryNameMother.invalid().unwrapErr()
-		])
+		return Err( [
+			CategoryIDMother.invalid()
+			                .unwrapErr(),
+			CategoryNameMother.invalid()
+			                  .unwrapErr()
+		] )
 	}
 }

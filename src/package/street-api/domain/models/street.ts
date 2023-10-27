@@ -4,8 +4,8 @@ import { StreetPlace } from 'src/package/street-api/domain/models/street-place'
 import { StreetShortCode } from 'src/package/street-api/domain/models/street-short-code'
 
 export interface Street {
-  name: StreetName
-  place: StreetPlace
-  shortCode: StreetShortCode
-  center: Position
+	name: StreetName
+	place: StreetPlace
+	shortCode: StreetShortCode
+	center: Position
 }

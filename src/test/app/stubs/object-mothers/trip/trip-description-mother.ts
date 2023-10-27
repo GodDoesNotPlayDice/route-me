@@ -16,9 +16,9 @@ export class TripDescriptionMother {
 
 	static invalid(): Result<TripDescription, Error> {
 		return newTripDescription( {
-			value: FakerAlphanumericMother.random({
+			value: FakerAlphanumericMother.random( {
 				length: 200
-			})
+			} )
 		} )
 	}
 }

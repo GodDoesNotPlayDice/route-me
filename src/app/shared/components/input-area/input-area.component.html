@@ -1,21 +1,21 @@
 <div>
-  <ion-textarea (ionInput)="onChange()"
-    [formControl]="textControl"
-    [label]="title"
-    [value]="value"
-    labelPlacement="floating"
-    fill="outline"
-    placeholder="Ejemplo: Soy un estudiante de computacion, me gusta el futbol"
-    rows="6"></ion-textarea>
-  <div class="text-xs text-threateningRed-500 h-4 font-gotham">
-    <div *ngIf="textControl.invalid && (textControl.dirty || textControl.touched)">
-      <div *ngIf="textControl.errors?.['required']">
-        {{title}} es requerido
-      </div>
-      <div *ngIf="textControl.errors?.['minlength']">
-        Debe contener
-        almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
-      </div>
-    </div>
-  </div>
+	<ion-textarea (ionInput)="onChange()"
+		[formControl]="textControl"
+		[label]="title"
+		[value]="value"
+		labelPlacement="floating"
+		fill="outline"
+		placeholder="Ejemplo: Soy un estudiante de computacion, me gusta el futbol"
+		rows="6"></ion-textarea>
+	<div class="text-xs text-threateningRed-500 h-4 font-gotham">
+		<div *ngIf="textControl.invalid && (textControl.dirty || textControl.touched)">
+			<div *ngIf="textControl.errors?.['required']">
+				{{title}} es requerido
+			</div>
+			<div *ngIf="textControl.errors?.['minlength']">
+				Debe contener
+				almenos {{textControl.errors?.['minlength']?.['requiredLength']}} letras
+			</div>
+		</div>
+	</div>
 </div>

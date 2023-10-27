@@ -6,15 +6,15 @@ import {
 import { FakerCountryCodeMother } from 'src/test/app/stubs/object-mothers/shared/faker/faker-country-code-mother'
 
 export class TripLocationCountryCodeMother {
-	static random() :Result<TripLocationCountryCode, Error>{
-		return newTripLocationCountryCode({
+	static random(): Result<TripLocationCountryCode, Error> {
+		return newTripLocationCountryCode( {
 			value: FakerCountryCodeMother.random()
-		})
+		} )
 	}
 
-	static invalid() :Result<TripLocationCountryCode, Error>{
-		return newTripLocationCountryCode({
+	static invalid(): Result<TripLocationCountryCode, Error> {
+		return newTripLocationCountryCode( {
 			value: ''
-		})
+		} )
 	}
 }

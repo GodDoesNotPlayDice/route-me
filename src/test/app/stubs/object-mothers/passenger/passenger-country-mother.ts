@@ -8,14 +8,14 @@ import { FakerCountryCodeMother } from 'src/test/app/stubs/object-mothers/shared
 export class PassengerCountryMother {
 
 	static random(): Result<PassengerCountry, Error> {
-		return newPassengerCountry({
+		return newPassengerCountry( {
 			value: FakerCountryCodeMother.random()
-		})
+		} )
 	}
 
 	static invalid(): Result<PassengerCountry, Error> {
-		return newPassengerCountry({
+		return newPassengerCountry( {
 			value: ''
-		})
+		} )
 	}
 }

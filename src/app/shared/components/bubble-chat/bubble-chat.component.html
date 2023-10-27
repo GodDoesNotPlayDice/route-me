@@ -1,28 +1,28 @@
 <div class="flex py-2">
-  <div class="flex justify-end w-full px-2"
-    *ngIf="owner">
-    <div class="rounded-xl p-2 bg-gray-300">
-      {{ message }}
-    </div>
-  </div>
-  <div class="flex px-2 w-full gap-2"
-    *ngIf="!owner">
-    <div
-      class="max-w-[50px] max-h-[50px] rounded-full shadow-md shadow-black/20">
-      <img class="object-fill aspect-square rounded-full"
-        [src]="urlImage"
-        [alt]="userName">
-    </div>
-    <div class="flex w-full"
-      *ngIf="!owner">
-      <div class="flex flex-col gap-2 rounded-xl p-2 bg-gray-300">
-        <div class="font-bold">
-          {{ userName }}
-        </div>
-        <div>
-          {{ message }}
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="flex justify-end w-full px-2"
+		*ngIf="owner">
+		<div class="rounded-xl p-2 bg-gray-300">
+			{{ message }}
+		</div>
+	</div>
+	<div class="flex px-2 w-full gap-2"
+		*ngIf="!owner">
+		<div
+			class="max-w-[50px] max-h-[50px] rounded-full shadow-md shadow-black/20">
+			<img class="object-fill aspect-square rounded-full"
+				[src]="urlImage"
+				[alt]="userName">
+		</div>
+		<div class="flex w-full"
+			*ngIf="!owner">
+			<div class="flex flex-col gap-2 rounded-xl p-2 bg-gray-300">
+				<div class="font-bold">
+					{{ userName }}
+				</div>
+				<div>
+					{{ message }}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

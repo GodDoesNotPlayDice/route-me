@@ -10,7 +10,7 @@ import { FakerSpecialCharacterSymbolMother } from 'src/test/app/stubs/object-mot
 
 export class PasswordMother {
 	static random(): Result<Password, Error[]> {
-		const upper = FakerAlphanumericMother.random( {
+		const upper    = FakerAlphanumericMother.random( {
 			length: 3,
 			casing: 'upper'
 		} )
@@ -18,9 +18,11 @@ export class PasswordMother {
 			length: 3,
 			casing: 'lower'
 		} )
-		const charater = FakerSpecialCharacterSymbolMother.random(3)
-		const numbers  = FakerNumberTextMother.random(3)
-		const combined = faker.helpers.shuffle([upper, lower, charater, numbers.toString()]).join('')
+		const charater = FakerSpecialCharacterSymbolMother.random( 3 )
+		const numbers  = FakerNumberTextMother.random( 3 )
+		const combined = faker.helpers.shuffle(
+			[ upper, lower, charater, numbers.toString() ] )
+		                      .join( '' )
 		return newPassword( {
 			value: combined
 		} )

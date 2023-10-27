@@ -1,27 +1,27 @@
 <ion-content [fullscreen]="true">
-  <app-app-bar-clone
-    href="/login"
-    #appBar
-    label="Registrarse"
-    (leadClicked)="leadClick()"
-  >
-  </app-app-bar-clone>
-  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col gap-5 justify-between">
-    <div class="flex flex-col gap-5">
-      <app-stepper></app-stepper>
-      <form class="flex flex-col gap-5">
-        <app-input-area #area
-          label="Sobre mi"
-          placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
-        <app-multiple-selector-input
-          label="Preferencia al viajar"
-          [databaseList]="preferences"
-          placeholder="Elegir"
-          #preference></app-multiple-selector-input>
-      </form>
-    </div>
-    <app-filled-button (onClick)="buttonClick()"
-      class="my-5"
-      contentText="Finalizar"></app-filled-button>
-  </div>
+	<app-app-bar-clone
+		href="/login"
+		#appBar
+		label="Registrarse"
+		(leadClicked)="leadClick()"
+	>
+	</app-app-bar-clone>
+	<div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col gap-5 justify-between">
+		<div class="flex flex-col gap-5">
+			<app-stepper></app-stepper>
+			<form class="flex flex-col gap-5">
+				<app-input-area #area
+					label="Sobre mi"
+					placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
+				<app-multiple-selector-input
+					label="Preferencia al viajar"
+					[databaseList]="preferences"
+					placeholder="Elegir"
+					#preference></app-multiple-selector-input>
+			</form>
+		</div>
+		<app-filled-button (onClick)="buttonClick()"
+			class="my-5"
+			contentText="Finalizar"></app-filled-button>
+	</div>
 </ion-content>

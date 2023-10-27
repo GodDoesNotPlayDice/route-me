@@ -1,21 +1,21 @@
 import {
-  Directive,
-  ElementRef,
-  Input
+	Directive,
+	ElementRef,
+	Input
 } from '@angular/core'
 
 @Directive( {
-  standalone: true,
-  selector  : '[autoFoco]'
+	standalone: true,
+	selector  : '[autoFoco]'
 } )
 export class AutoFocoDirective {
-  @Input( 'autoFoco' ) shouldFocus: boolean
+	@Input( 'autoFoco' ) shouldFocus: boolean
 
-  constructor( private el: ElementRef ) { }
+	constructor( private el: ElementRef ) { }
 
-  ngOnChanges() {
-    if ( this.shouldFocus ) {
-      this.el.nativeElement.focus()
-    }
-  }
+	ngOnChanges() {
+		if ( this.shouldFocus ) {
+			this.el.nativeElement.focus()
+		}
+	}
 }

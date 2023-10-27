@@ -5,7 +5,6 @@ import {
 	Result,
 	Some
 } from 'oxide.ts'
-import { Position } from 'src/package/position-api/domain/models/position'
 import { newEndTripDate } from 'src/package/trip/domain/models/end-trip-date'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { CategoryMother } from 'src/test/app/stubs/object-mothers/category/category-mother'
@@ -23,64 +22,89 @@ import { TripIDMother } from 'src/test/app/stubs/object-mothers/trip/trip-id-mot
 import { TripPriceMother } from 'src/test/app/stubs/object-mothers/trip/trip-price-mother'
 import { TripStateMother } from 'src/test/app/stubs/object-mothers/trip/trip-state-mother'
 
-export class TripMother{
-	static random(radiusInKm : number) : Result<Trip, Error[]>{
-		const startDate = ValidDateMother.randomNearFuture({days: 10})
-		const endDate = newEndTripDate({
+export class TripMother {
+	static random( radiusInKm: number ): Result<Trip, Error[]> {
+		const startDate     = ValidDateMother.randomNearFuture( { days: 10 } )
+		const endDate       = newEndTripDate( {
 			value: startDate.unwrap().value
-		})
-		const passengers = faker.helpers.multiple(() => PassengerMother.random().unwrap(),{
-			count: {
-				min: 1,
-				max: 4
-			}
-		})
-		const startPosition = PositionMother.random().unwrap()
-		return Ok({
-			id: TripIDMother.random().unwrap(),
-			description: TripDescriptionMother.random().unwrap(),
-			state: TripStateMother.random().unwrap(),
-			category: Some(CategoryMother.random().unwrap()),
-			chatID: ChatIDMother.random().unwrap(),
-			price: TripPriceMother.random().unwrap(),
-			endLocation: TripLocationMother.random(startPosition, radiusInKm).unwrap(),
+		} )
+		const passengers    = faker.helpers.multiple( () => PassengerMother.random()
+		                                                                   .unwrap(),
+			{
+				count: {
+					min: 1,
+					max: 4
+				}
+			} )
+		const startPosition = PositionMother.random()
+		                                    .unwrap()
+		return Ok( {
+			id           : TripIDMother.random()
+			                           .unwrap(),
+			description  : TripDescriptionMother.random()
+			                                    .unwrap(),
+			state        : TripStateMother.random()
+			                              .unwrap(),
+			category     : Some( CategoryMother.random()
+			                                   .unwrap() ),
+			chatID       : ChatIDMother.random()
+			                           .unwrap(),
+			price        : TripPriceMother.random()
+			                              .unwrap(),
+			endLocation  : TripLocationMother.random( startPosition, radiusInKm )
+			                                 .unwrap(),
 			startLocation: {
-				id: TripLocationIDMother.random().unwrap(),
-				name: TripLocationNameMother.random().unwrap(),
-				countryCode: TripLocationCountryCodeMother.random().unwrap(),
-				position: startPosition
+				id         : TripLocationIDMother.random()
+				                                 .unwrap(),
+				name       : TripLocationNameMother.random()
+				                                   .unwrap(),
+				countryCode: TripLocationCountryCodeMother.random()
+				                                          .unwrap(),
+				position   : startPosition
 			},
-			endDate: endDate.unwrap().value,
-			startDate: startDate.unwrap().value,
-			driver: DriverMother.random().unwrap(),
-			passengers: passengers
-		})
+			endDate      : endDate.unwrap().value,
+			startDate    : startDate.unwrap().value,
+			driver       : DriverMother.random()
+			                           .unwrap(),
+			passengers   : passengers
+		} )
 	}
 
-	static invalid() : Result<Trip, Error[]>{
-		const startDate = ValidDateMother.invalid()
-		const endDate = newEndTripDate({
-			value: new Date('invalid')
-		})
-		const passengersErrs = faker.helpers.multiple(() => PassengerMother.invalid().unwrapErr(), {
-			count: {
-				min: 1,
-				max: 4
-			}
-		})
+	static invalid(): Result<Trip, Error[]> {
+		const startDate      = ValidDateMother.invalid()
+		const endDate        = newEndTripDate( {
+			value: new Date( 'invalid' )
+		} )
+		const passengersErrs = faker.helpers.multiple(
+			() => PassengerMother.invalid()
+			                     .unwrapErr(), {
+				count: {
+					min: 1,
+					max: 4
+				}
+			} )
 		return Err( [
-			TripIDMother.invalid().unwrapErr(),
-			TripDescriptionMother.invalid().unwrapErr(),
-			TripStateMother.invalid().unwrapErr(),
-			ChatIDMother.invalid().unwrapErr(),
+			TripIDMother.invalid()
+			            .unwrapErr(),
+			TripDescriptionMother.invalid()
+			                     .unwrapErr(),
+			TripStateMother.invalid()
+			               .unwrapErr(),
+			ChatIDMother.invalid()
+			            .unwrapErr(),
 			endDate.unwrapErr(),
 			startDate.unwrapErr(),
 			...passengersErrs.flat(),
-			...CategoryMother.invalid().unwrapErr(),
-			...TripPriceMother.invalid().unwrapErr(),
-			...TripLocationMother.invalid().unwrapErr(),
-			...TripLocationMother.invalid().unwrapErr(),
-			...DriverMother.invalid().unwrapErr(),
+			...CategoryMother.invalid()
+			                 .unwrapErr(),
+			...TripPriceMother.invalid()
+			                  .unwrapErr(),
+			...TripLocationMother.invalid()
+			                     .unwrapErr(),
+			...TripLocationMother.invalid()
+			                     .unwrapErr(),
+			...DriverMother.invalid()
+			               .unwrapErr()
 		] )
 	}
 }

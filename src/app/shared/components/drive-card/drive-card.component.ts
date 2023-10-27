@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  Input
+	Component,
+	Input
 } from '@angular/core'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
@@ -9,27 +9,27 @@ import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.compone
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 
 @Component( {
-  standalone : true,
-  selector   : 'app-drive-card',
-  templateUrl: './drive-card.component.html',
-  styleUrls  : [ './drive-card.component.scss' ],
-  imports    : [
-    IonicModule,
-    CommonModule,
-    AvatarComponent
-  ]
+	standalone : true,
+	selector   : 'app-drive-card',
+	templateUrl: './drive-card.component.html',
+	styleUrls  : [ './drive-card.component.scss' ],
+	imports    : [
+		IonicModule,
+		CommonModule,
+		AvatarComponent
+	]
 } )
 export class DriveCardComponent {
 
-  constructor( private router: Router ) { }
+	constructor( private router: Router ) { }
 
-  @Input( { required: true } ) info: DriverCardInfo
+	@Input( { required: true } ) info: DriverCardInfo
 
-  async buttonClick( $event: MouseEvent ) {
-    $event.preventDefault()
-    await this.router.navigate( [ `/trip-details/` ],
-      { state: { ...this.info } } )
-  }
+	async buttonClick( $event: MouseEvent ) {
+		$event.preventDefault()
+		await this.router.navigate( [ `/trip-details/` ],
+			{ state: { ...this.info } } )
+	}
 }
 
 

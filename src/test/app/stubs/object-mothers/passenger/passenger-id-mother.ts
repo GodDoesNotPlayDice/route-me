@@ -1,4 +1,4 @@
-import { Result } from "oxide.ts"
+import { Result } from 'oxide.ts'
 import {
 	newPassengerID,
 	PassengerID
@@ -6,15 +6,15 @@ import {
 import { ulid } from 'ulidx'
 
 export class PassengerIDMother {
-	static random() :Result<PassengerID, Error>{
-		return newPassengerID({
+	static random(): Result<PassengerID, Error> {
+		return newPassengerID( {
 			value: ulid()
-		})
+		} )
 	}
 
-	static invalid() :Result<PassengerID, Error>{
-		return newPassengerID({
+	static invalid(): Result<PassengerID, Error> {
+		return newPassengerID( {
 			value: ''
-		})
+		} )
 	}
 }

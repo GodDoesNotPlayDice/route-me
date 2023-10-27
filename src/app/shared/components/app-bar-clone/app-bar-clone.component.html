@@ -1,23 +1,23 @@
 <div class="h-14 w-full flex shadow-md shadow-neutral-400 items-center">
-  <div *ngIf="leadNameIcon !== ''"
-    class="basis-2/12 flex justify-center">
-    <ion-icon
-      (click)="leadClick()"
-      class="w-6 h-6"
-      [name]="leadNameIcon"></ion-icon>
-  </div>
-  <div
-    [ngClass]="{
+	<div *ngIf="leadNameIcon !== ''"
+		class="basis-2/12 flex justify-center">
+		<ion-icon
+			(click)="leadClick()"
+			class="w-6 h-6"
+			[name]="leadNameIcon"></ion-icon>
+	</div>
+	<div
+		[ngClass]="{
     'pl-4' : leadNameIcon === '',
     'pl-2' : leadNameIcon !== '',
     }"
-    class="basis-6/12 text-xl">{{ label }}</div>
-  <div
-    [ngClass]="{
+		class="basis-6/12 text-xl">{{ label }}</div>
+	<div
+		[ngClass]="{
     'basis-6/12' : leadNameIcon === '',
     'basis-4/12' : leadNameIcon !== '',
     }"
-    class="flex justify-end pr-4">
-    <ng-content></ng-content>
-  </div>
+		class="flex justify-end pr-4">
+		<ng-content></ng-content>
+	</div>
 </div>

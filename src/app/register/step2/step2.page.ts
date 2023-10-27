@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  ViewChild
+	Component,
+	ViewChild
 } from '@angular/core'
 import {
-  FormGroup,
-  FormsModule
+	FormGroup,
+	FormsModule
 } from '@angular/forms'
 import { Router } from '@angular/router'
 import {
-  IonicModule,
-  ViewDidEnter
+	IonicModule,
+	ViewDidEnter
 } from '@ionic/angular'
 import { Store } from '@ngrx/store'
 import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
@@ -29,140 +29,140 @@ import { RadioButtonData } from 'src/package/shared/domain/components/radio-butt
 import { SingleSelectorData } from 'src/package/shared/domain/components/single-selector-data'
 
 @Component( {
-  standalone : true,
-  selector   : 'app-step2',
-  templateUrl: './step2.page.html',
-  styleUrls  : [ './step2.page.scss' ],
-  imports    : [
-    IonicModule,
-    StepperComponent,
-    InputTextComponent,
-    SingleSelectorInputComponent,
-    DateSelectorComponent,
-    RadioInputComponent,
-    FilledButtonComponent,
-    FormsModule,
-    CommonModule,
-    AppBarCloneComponent
-  ]
+	standalone : true,
+	selector   : 'app-step2',
+	templateUrl: './step2.page.html',
+	styleUrls  : [ './step2.page.scss' ],
+	imports    : [
+		IonicModule,
+		StepperComponent,
+		InputTextComponent,
+		SingleSelectorInputComponent,
+		DateSelectorComponent,
+		RadioInputComponent,
+		FilledButtonComponent,
+		FormsModule,
+		CommonModule,
+		AppBarCloneComponent
+	]
 } )
 export class Step2Page implements ViewDidEnter {
 
-  constructor( private store: Store<AppState>,
-    private toastService: ToastService,
-    private countryService: CountryPhoneCodeService,
-    private auth: AuthService,
-    private router: Router )
-  {
-    this.countryService.countriesList$.subscribe(
-      ( countries ) => {
-        this.countries = countries.map( ( country ): SingleSelectorData =>
-          ( {
-            id      : country.code.value,
-            name    : country.name.common,
-            image   : country.flag.png,
-            selected: false
-          } ) )
-      }
-    )
-  }
+	constructor( private store: Store<AppState>,
+		private toastService: ToastService,
+		private countryService: CountryPhoneCodeService,
+		private auth: AuthService,
+		private router: Router )
+	{
+		this.countryService.countriesList$.subscribe(
+			( countries ) => {
+				this.countries = countries.map( ( country ): SingleSelectorData =>
+					( {
+						id      : country.code.value,
+						name    : country.name.common,
+						image   : country.flag.png,
+						selected: false
+					} ) )
+			}
+		)
+	}
 
-  @ViewChild( 'user' ) userInput !: InputTextComponent
-  @ViewChild( 'lastName' ) lastNameInput !: InputTextComponent
-  @ViewChild( 'phone' ) phoneInput !: InputTextComponent
-  @ViewChild( 'country' ) countryInput !: SingleSelectorInputComponent
-  @ViewChild( 'date' ) dateSelectorInput !: DateSelectorComponent
-  @ViewChild( 'radio' ) radioButtonInput !: RadioInputComponent
-  @ViewChild( 'appBar' ) appBar !: AppBarCloneComponent
+	@ViewChild( 'user' ) userInput !: InputTextComponent
+	@ViewChild( 'lastName' ) lastNameInput !: InputTextComponent
+	@ViewChild( 'phone' ) phoneInput !: InputTextComponent
+	@ViewChild( 'country' ) countryInput !: SingleSelectorInputComponent
+	@ViewChild( 'date' ) dateSelectorInput !: DateSelectorComponent
+	@ViewChild( 'radio' ) radioButtonInput !: RadioInputComponent
+	@ViewChild( 'appBar' ) appBar !: AppBarCloneComponent
 
-  countries: SingleSelectorData[] = []
+	countries: SingleSelectorData[] = []
 
-  genderButtonsInfo: RadioButtonData[] = [
-    {
-      name: 'Male',
-      icon: 'male-outline'
-    },
-    {
-      name: 'Female',
-      icon: 'female-outline'
-    },
-    {
-      name: 'None',
-      icon: 'male-female-outline'
-    }
-  ]
+	genderButtonsInfo: RadioButtonData[] = [
+		{
+			name: 'Male',
+			icon: 'male-outline'
+		},
+		{
+			name: 'Female',
+			icon: 'female-outline'
+		},
+		{
+			name: 'None',
+			icon: 'male-female-outline'
+		}
+	]
 
-  formGroup!: FormGroup
+	formGroup!: FormGroup
 
-  ionViewDidEnter() {
-    this.formGroup = new FormGroup( [
-      this.userInput.textControl,
-      this.lastNameInput.textControl,
-      this.phoneInput.textControl,
-      this.countryInput.singleSelectorControl,
-      this.dateSelectorInput.dateControl,
-      this.radioButtonInput.radioControl
-    ] )
-  }
+	ionViewDidEnter() {
+		this.formGroup = new FormGroup( [
+			this.userInput.textControl,
+			this.lastNameInput.textControl,
+			this.phoneInput.textControl,
+			this.countryInput.singleSelectorControl,
+			this.dateSelectorInput.dateControl,
+			this.radioButtonInput.radioControl
+		] )
+	}
 
-  async submit() {
-    this.formGroup.updateValueAndValidity()
-    this.formGroup.markAllAsTouched()
+	async submit() {
+		this.formGroup.updateValueAndValidity()
+		this.formGroup.markAllAsTouched()
 
-    if (
-      !this.formGroup.valid
-    )
-    {
-      return
-    }
+		if (
+			!this.formGroup.valid
+		)
+		{
+			return
+		}
 
-    const result = await this.auth.registerPassenger( {
-      name    : this.userInput.textControl.value!,
-      lastName: this.lastNameInput.textControl.value!,
-      phone   : this.phoneInput.textControl.value!,
-      country : this.countryInput.singleSelectorControl.value!,
-      birthDay: this.dateSelectorInput.dateControl.value!,
-      gender  : this.radioButtonInput.radioControl.value!
-    } )
+		const result = await this.auth.registerPassenger( {
+			name    : this.userInput.textControl.value!,
+			lastName: this.lastNameInput.textControl.value!,
+			phone   : this.phoneInput.textControl.value!,
+			country : this.countryInput.singleSelectorControl.value!,
+			birthDay: this.dateSelectorInput.dateControl.value!,
+			gender  : this.radioButtonInput.radioControl.value!
+		} )
 
-    if ( result ) {
-      this.store.dispatch( notifyStep() )
-      await this.router.navigate( [ '/register/step3' ] )
-    }
-    else {
-      await this.toastService.presentToast( {
-        message : 'Hubo un problema. Intente denuevo',
-        duration: 1500,
-        position: 'bottom'
-      } )
-    }
-  }
+		if ( result ) {
+			this.store.dispatch( notifyStep() )
+			await this.router.navigate( [ '/register/step3' ] )
+		}
+		else {
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
+		}
+	}
 
-  async leadClick(): Promise<void> {
-    const isDelete = await this.auth.deleteAccount()
-    if ( isDelete ) {
-      await this.appBar.backPage()
-    }
-    else {
-      await this.toastService.presentToast( {
-        message : 'Hubo un problema. Intente denuevo',
-        duration: 1500,
-        position: 'bottom'
-      } )
-    }
-  }
+	async leadClick(): Promise<void> {
+		const isDelete = await this.auth.deleteAccount()
+		if ( isDelete ) {
+			await this.appBar.backPage()
+		}
+		else {
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
+		}
+	}
 
-  private reset(): void {
-    this.userInput.reset()
-    this.lastNameInput.reset()
-    this.phoneInput.reset()
-    this.dateSelectorInput.reset()
-    this.countryInput.reset()
-    this.radioButtonInput.reset()
-  }
+	private reset(): void {
+		this.userInput.reset()
+		this.lastNameInput.reset()
+		this.phoneInput.reset()
+		this.dateSelectorInput.reset()
+		this.countryInput.reset()
+		this.radioButtonInput.reset()
+	}
 
-  async buttonClick(): Promise<void> {
-    await this.submit()
-    this.reset()
-  }
+	async buttonClick(): Promise<void> {
+		await this.submit()
+		this.reset()
+	}
 }

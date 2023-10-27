@@ -6,15 +6,15 @@ import {
 import { ulid } from 'ulidx'
 
 export class PreferenceIDMother {
-	static random() :Result<PreferenceID, Error>{
-		return newPreferenceID({
+	static random(): Result<PreferenceID, Error> {
+		return newPreferenceID( {
 			value: ulid()
-		})
+		} )
 	}
 
-	static invalid() :Result<PreferenceID, Error>{
-		return newPreferenceID({
+	static invalid(): Result<PreferenceID, Error> {
+		return newPreferenceID( {
 			value: ''
-		})
+		} )
 	}
 }

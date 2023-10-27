@@ -1,25 +1,25 @@
 <div class="flex items-center justify-between">
-  <div class="flex items-center gap-2">
-    <app-avatar-home [url]="userUrlImage"></app-avatar-home>
-    <div>{{ userName }}</div>
-  </div>
-  <div>
-    <button mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="Example icon-button with a menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon class="">warning</mat-icon>
-        <span class="text-red-600">Reportar</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>star</mat-icon>
-        <span>Valorar</span>
-      </button>
-    </mat-menu>
-  </div>
+	<div class="flex items-center gap-2">
+		<app-avatar-home [url]="userUrlImage"></app-avatar-home>
+		<div>{{ userName }}</div>
+	</div>
+	<div>
+		<button mat-icon-button
+			[matMenuTriggerFor]="menu"
+			aria-label="Example icon-button with a menu">
+			<mat-icon>more_vert</mat-icon>
+		</button>
+		<mat-menu #menu="matMenu">
+			<button mat-menu-item>
+				<mat-icon class="">warning</mat-icon>
+				<span class="text-red-600">Reportar</span>
+			</button>
+			<button mat-menu-item>
+				<mat-icon>star</mat-icon>
+				<span>Valorar</span>
+			</button>
+		</mat-menu>
+	</div>
 </div>
 
 

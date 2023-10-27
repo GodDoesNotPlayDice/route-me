@@ -16,9 +16,9 @@ export class PassengerDescriptionMother {
 
 	static invalid(): Result<PassengerDescription, Error> {
 		return newPassengerDescription( {
-			value: FakerAlphanumericMother.random({
+			value: FakerAlphanumericMother.random( {
 				length: 200
-			})
+			} )
 		} )
 	}
 }

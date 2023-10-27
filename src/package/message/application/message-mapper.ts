@@ -1,7 +1,7 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { Message } from 'src/package/message/domain/models/message'
 import { newMessageContent } from 'src/package/message/domain/models/message-content'
@@ -15,22 +15,22 @@ import { newEmail } from 'src/package/shared/domain/models/email'
  * @throws {UnknownException} - if unknown error
  */
 export const messageToJson = ( message: Message ): Result<Record<string, any>, Error> => {
-  try {
-    const json: Record<string, any> = {
-      id             : message.id.value,
-      passenger_name : message.passengerName.value,
-      passenger_email: message.passengerEmail.value,
-      content        : message.content.value
-    }
+	try {
+		const json: Record<string, any> = {
+			id             : message.id.value,
+			passenger_name : message.passengerName.value,
+			passenger_email: message.passengerEmail.value,
+			content        : message.content.value
+		}
 
-    return Ok( json )
-  }
-  catch ( e ) {
-    const err = e instanceof Error
-      ? new UnknownException( e.message )
-      : new UnknownException( 'error message to json' )
-    return Err( err )
-  }
+		return Ok( json )
+	}
+	catch ( e ) {
+		const err = e instanceof Error
+			? new UnknownException( e.message )
+			: new UnknownException( 'error message to json' )
+		return Err( err )
+	}
 }
 
 /**
@@ -41,48 +41,48 @@ export const messageToJson = ( message: Message ): Result<Record<string, any>, E
  * @throws {PassengerNameInvalidException} - if name is invalid
  */
 export const messageFromJson = ( json: Record<string, any> ): Result<Message, Error[]> => {
-  const errors: Error[] = []
+	const errors: Error[] = []
 
-  const id = newMessageID( {
-    value: json['id'] ?? ''
-  } )
+	const id = newMessageID( {
+		value: json['id'] ?? ''
+	} )
 
-  if ( id.isErr() ) {
-    errors.push( id.unwrapErr() )
-  }
+	if ( id.isErr() ) {
+		errors.push( id.unwrapErr() )
+	}
 
-  const content = newMessageContent( {
-    value: json['content'] ?? ''
-  } )
+	const content = newMessageContent( {
+		value: json['content'] ?? ''
+	} )
 
-  if ( content.isErr() ) {
-    errors.push( content.unwrapErr() )
-  }
+	if ( content.isErr() ) {
+		errors.push( content.unwrapErr() )
+	}
 
-  const passengerEmail = newEmail({
-    value: json['passenger_email'] ?? ''
-  })
+	const passengerEmail = newEmail( {
+		value: json['passenger_email'] ?? ''
+	} )
 
-  if ( passengerEmail.isErr() ) {
-    errors.push( passengerEmail.unwrapErr() )
-  }
+	if ( passengerEmail.isErr() ) {
+		errors.push( passengerEmail.unwrapErr() )
+	}
 
-  const passengerName = newPassengerName({
-    value: json['passenger_name'] ?? ''
-  })
+	const passengerName = newPassengerName( {
+		value: json['passenger_name'] ?? ''
+	} )
 
-  if ( passengerName.isErr() ) {
-    errors.push( passengerName.unwrapErr() )
-  }
+	if ( passengerName.isErr() ) {
+		errors.push( passengerName.unwrapErr() )
+	}
 
-  if ( errors.length > 0 ) {
-    return Err( errors )
-  }
+	if ( errors.length > 0 ) {
+		return Err( errors )
+	}
 
-  return Ok( {
-    id            : id.unwrap(),
-    content       : content.unwrap(),
-    passengerName : passengerName.unwrap(),
-    passengerEmail: passengerEmail.unwrap()
-  } )
+	return Ok( {
+		id            : id.unwrap(),
+		content       : content.unwrap(),
+		passengerName : passengerName.unwrap(),
+		passengerEmail: passengerEmail.unwrap()
+	} )
 }

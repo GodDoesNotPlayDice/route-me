@@ -1,7 +1,7 @@
 import { AngularFireDatabase } from '@angular/fire/compat/database'
 import {
-  Err,
-  Result
+	Err,
+	Result
 } from 'oxide.ts'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
 import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
@@ -10,29 +10,29 @@ import { FirebaseOperationException } from 'src/package/shared/infrastructure/ex
 
 export class DriverCarDaoFirebase implements DriverCarDao {
 
-  constructor( private firebase: AngularFireDatabase ) {
-  }
+	constructor( private firebase: AngularFireDatabase ) {
+	}
 
-  collectionKey = 'driverscar'
+	collectionKey = 'driverscar'
 
-  async create( driver: DriverCar ): Promise<Result<boolean, Error>> {
-    return Err( new FirebaseOperationException() )
-  }
+	async create( driver: DriverCar ): Promise<Result<boolean, Error>> {
+		return Err( new FirebaseOperationException() )
+	}
 
-  async delete( email: Email ): Promise<Result<boolean, Error>> {
-    return Err( new FirebaseOperationException() )
-  }
+	async delete( email: Email ): Promise<Result<boolean, Error>> {
+		return Err( new FirebaseOperationException() )
+	}
 
-  async getAll(): Promise<Result<DriverCar[], Error[]>> {
-    return Err( [ new FirebaseOperationException() ] )
-  }
+	async getAll(): Promise<Result<DriverCar[], Error[]>> {
+		return Err( [ new FirebaseOperationException() ] )
+	}
 
-  async getByEmail( email: Email ): Promise<Result<DriverCar, Error[]>> {
-    return Err( [ new FirebaseOperationException() ] )
-  }
+	async getByEmail( email: Email ): Promise<Result<DriverCar, Error[]>> {
+		return Err( [ new FirebaseOperationException() ] )
+	}
 
-  async update( driver: DriverCar ): Promise<Result<boolean, Error>> {
-    return Err( new FirebaseOperationException() )
-  }
+	async update( driver: DriverCar ): Promise<Result<boolean, Error>> {
+		return Err( new FirebaseOperationException() )
+	}
 
 }

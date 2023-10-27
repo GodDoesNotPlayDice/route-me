@@ -1,35 +1,35 @@
 <div>
-  <label class="font-gotham text-lg"
-    [ngClass]="{
+	<label class="font-gotham text-lg"
+		[ngClass]="{
            'peer-focus:text-threateningRed-300': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
            'peer-focus:text-indigoBlack-300' : mapLocationControl.valid || !mapLocationControl.touched,
            'text-threateningRed-500': mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched),
            'text-gray-500' : mapLocationControl.valid || !mapLocationControl.touched
            }">
-    {{placeholder}}
-  </label>
-  <div class="flex w-full gap-2 justify-center items-center">
-    <div class="relative z-0 basis-11/12">
-      <app-search-launcher
-        [value]="locationText"
-        (onStreetPosition)="onStreetPosition($event)"
-      ></app-search-launcher>
-    </div>
-    <div class="basis-1/12 flex">
-      <app-activable-circle
-        [isRed]="isRed"
-        iconNameDisabled="edit_location"
-        iconNameEnabled="location_on"
-        [isActive]="isFocused"
-        (isActiveChange)="onActiveChange($event)"
-      ></app-activable-circle>
-    </div>
-  </div>
-  <div class="text-xs text-threateningRed-500 h-8 font-gotham">
-    <div *ngIf="mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched)">
-      <div *ngIf="mapLocationControl.errors?.['required']">
-        {{placeholder}} es requerido
-      </div>
-    </div>
-  </div>
+		{{placeholder}}
+	</label>
+	<div class="flex w-full gap-2 justify-center items-center">
+		<div class="relative z-0 basis-11/12">
+			<app-search-launcher
+				[value]="locationText"
+				(onStreetPosition)="onStreetPosition($event)"
+			></app-search-launcher>
+		</div>
+		<div class="basis-1/12 flex">
+			<app-activable-circle
+				[isRed]="isRed"
+				iconNameDisabled="edit_location"
+				iconNameEnabled="location_on"
+				[isActive]="isFocused"
+				(isActiveChange)="onActiveChange($event)"
+			></app-activable-circle>
+		</div>
+	</div>
+	<div class="text-xs text-threateningRed-500 h-8 font-gotham">
+		<div *ngIf="mapLocationControl.invalid && (mapLocationControl.dirty || mapLocationControl.touched)">
+			<div *ngIf="mapLocationControl.errors?.['required']">
+				{{placeholder}} es requerido
+			</div>
+		</div>
+	</div>
 </div>

@@ -6,15 +6,15 @@ import {
 import { ulid } from 'ulidx'
 
 export class TripLocationIDMother {
-	static random() :Result<TripLocationID, Error>{
-		return newTripLocationID({
+	static random(): Result<TripLocationID, Error> {
+		return newTripLocationID( {
 			value: ulid()
-		})
+		} )
 	}
 
-	static invalid() :Result<TripLocationID, Error>{
-		return newTripLocationID({
+	static invalid(): Result<TripLocationID, Error> {
+		return newTripLocationID( {
 			value: ''
-		})
+		} )
 	}
 }

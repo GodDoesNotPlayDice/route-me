@@ -3,14 +3,14 @@ import { Component } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 
 @Component( {
-  standalone : true,
-  selector   : 'app-register',
-  templateUrl: './register.page.html',
-  styleUrls  : [ './register.page.scss' ],
-  imports    : [
-    IonicModule,
-    CommonModule
-  ]
+	standalone : true,
+	selector   : 'app-register',
+	templateUrl: './register.page.html',
+	styleUrls  : [ './register.page.scss' ],
+	imports    : [
+		IonicModule,
+		CommonModule
+	]
 } )
 export class RegisterPage {
 }

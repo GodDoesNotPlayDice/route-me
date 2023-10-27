@@ -6,15 +6,15 @@ import {
 import { ulid } from 'ulidx'
 
 export class MessageIDMother {
-	static random() :Result<MessageID, Error>{
-		return newMessageID({
+	static random(): Result<MessageID, Error> {
+		return newMessageID( {
 			value: ulid()
-		})
+		} )
 	}
 
-	static invalid() :Result<MessageID, Error>{
-		return newMessageID({
+	static invalid(): Result<MessageID, Error> {
+		return newMessageID( {
 			value: ''
-		})
+		} )
 	}
 }

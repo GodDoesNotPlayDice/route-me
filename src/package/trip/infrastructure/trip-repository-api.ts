@@ -38,17 +38,17 @@ export class TripRepositoryApi implements TripRepository {
 		}
 
 
-		const json = response as Record<string, any>
-		const tripPrice = newTripPrice({
-			amount: json[ 'amount' ] ?? -1,
-			currency: json[ 'currency' ] ?? ''
-		})
+		const json      = response as Record<string, any>
+		const tripPrice = newTripPrice( {
+			amount  : json['amount'] ?? -1,
+			currency: json['currency'] ?? ''
+		} )
 
 		if ( tripPrice.isErr() ) {
 			return Err( tripPrice.unwrapErr() )
 		}
 
-		return Ok( tripPrice.unwrap())
+		return Ok( tripPrice.unwrap() )
 	}
 
 }

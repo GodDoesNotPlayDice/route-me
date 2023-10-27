@@ -14,8 +14,8 @@ export class FakerPositionMother {
 	}, radius: number )
 	{
 		return faker.location.nearbyGPSCoordinate( {
-			origin: [ center.lat, center.lng ],
-			radius: radius,
+			origin  : [ center.lat, center.lng ],
+			radius  : radius,
 			isMetric: true
 		} )
 	}

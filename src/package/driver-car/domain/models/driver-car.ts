@@ -3,7 +3,7 @@ import { DriverCarModel } from 'src/package/driver-car/domain/models/driver-car-
 import { DriverCarSeat } from 'src/package/driver-car/domain/models/driver-car-seat'
 
 export interface DriverCar {
-  id: DriverCarID
-  model: DriverCarModel
-  seat: DriverCarSeat
+	id: DriverCarID
+	model: DriverCarModel
+	seat: DriverCarSeat
 }

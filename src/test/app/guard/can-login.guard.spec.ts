@@ -3,15 +3,15 @@ import { CanLoginGuard } from 'src/app/shared/guard'
 
 
 describe( 'CanLoginGuard', () => {
-  let guard: CanLoginGuard
+	let guard: CanLoginGuard
 
-  beforeEach( () => {
-    TestBed.configureTestingModule( {} )
-    guard = TestBed.inject( CanLoginGuard )
-  } )
+	beforeEach( () => {
+		TestBed.configureTestingModule( {} )
+		guard = TestBed.inject( CanLoginGuard )
+	} )
 
-  it( 'should be created', () => {
-    expect( guard )
-      .toBeTruthy()
-  } )
+	it( 'should be created', () => {
+		expect( guard )
+			.toBeTruthy()
+	} )
 } )

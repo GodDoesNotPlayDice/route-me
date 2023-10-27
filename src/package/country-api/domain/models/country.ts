@@ -4,8 +4,8 @@ import { CountryNameCode } from 'src/package/country-api/domain/models/country-n
 import { CountryNumberCode } from 'src/package/country-api/domain/models/country-number-code'
 
 export interface Country {
-  flag: CountryFlagUrl
-  name: CountryName
-  code: CountryNameCode
-  number: CountryNumberCode
+	flag: CountryFlagUrl
+	name: CountryName
+	code: CountryNameCode
+	number: CountryNumberCode
 }

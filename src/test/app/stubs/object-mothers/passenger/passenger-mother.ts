@@ -19,39 +19,64 @@ import { PhoneMother } from 'src/test/app/stubs/object-mothers/shared/phone-moth
 import { ValidNumberMother } from 'src/test/app/stubs/object-mothers/shared/valid-number-mother'
 
 export class PassengerMother {
-	static random() :Result<Passenger, Error>{
-		const preferences = faker.helpers.multiple(() => PreferenceMother.random().unwrap())
-		return Ok({
-			id: PassengerIDMother.random().unwrap(),
-			country: PassengerCountryMother.random().unwrap(),
-			birthDay: PassengerBirthDayMother.random().unwrap(),
-			email: EmailMother.random().unwrap(),
-			gender: GenderMother.random().unwrap(),
-			image: ImageUrlMother.random().unwrap(),
-			description: PassengerDescriptionMother.random().unwrap(),
-			name: PassengerNameMother.random().unwrap(),
-			phone: PhoneMother.random().unwrap(),
-			lastName: PassengerLastNameMother.random().unwrap(),
-			preferences: preferences,
-			averageRating: ValidNumberMother.random(1,5).unwrap()
-		})
+	static random(): Result<Passenger, Error> {
+		const preferences = faker.helpers.multiple( () => PreferenceMother.random()
+		                                                                  .unwrap() )
+		return Ok( {
+			id           : PassengerIDMother.random()
+			                                .unwrap(),
+			country      : PassengerCountryMother.random()
+			                                     .unwrap(),
+			birthDay     : PassengerBirthDayMother.random()
+			                                      .unwrap(),
+			email        : EmailMother.random()
+			                          .unwrap(),
+			gender       : GenderMother.random()
+			                           .unwrap(),
+			image        : ImageUrlMother.random()
+			                             .unwrap(),
+			description  : PassengerDescriptionMother.random()
+			                                         .unwrap(),
+			name         : PassengerNameMother.random()
+			                                  .unwrap(),
+			phone        : PhoneMother.random()
+			                          .unwrap(),
+			lastName     : PassengerLastNameMother.random()
+			                                      .unwrap(),
+			preferences  : preferences,
+			averageRating: ValidNumberMother.random( 1, 5 )
+			                                .unwrap()
+		} )
 	}
 
-	static invalid() :Result<Passenger, Error[]>{
-		const preferencesErrs = faker.helpers.multiple(() => PreferenceMother.invalid().unwrapErr())
-		return Err([
-			PassengerIDMother.invalid().unwrapErr(),
-			PassengerCountryMother.invalid().unwrapErr(),
-			PassengerBirthDayMother.invalid().unwrapErr(),
-			EmailMother.invalid().unwrapErr(),
-			GenderMother.invalid().unwrapErr(),
-			ImageUrlMother.invalid().unwrapErr(),
-			PassengerDescriptionMother.invalid().unwrapErr(),
-			PassengerNameMother.invalid().unwrapErr(),
-			PassengerLastNameMother.invalid().unwrapErr(),
-			ValidNumberMother.invalid().unwrapErr(),
-			...PhoneMother.invalid().unwrapErr(),
+	static invalid(): Result<Passenger, Error[]> {
+		const preferencesErrs = faker.helpers.multiple(
+			() => PreferenceMother.invalid()
+			                      .unwrapErr() )
+		return Err( [
+			PassengerIDMother.invalid()
+			                 .unwrapErr(),
+			PassengerCountryMother.invalid()
+			                      .unwrapErr(),
+			PassengerBirthDayMother.invalid()
+			                       .unwrapErr(),
+			EmailMother.invalid()
+			           .unwrapErr(),
+			GenderMother.invalid()
+			            .unwrapErr(),
+			ImageUrlMother.invalid()
+			              .unwrapErr(),
+			PassengerDescriptionMother.invalid()
+			                          .unwrapErr(),
+			PassengerNameMother.invalid()
+			                   .unwrapErr(),
+			PassengerLastNameMother.invalid()
+			                       .unwrapErr(),
+			ValidNumberMother.invalid()
+			                 .unwrapErr(),
+			...PhoneMother.invalid()
+			              .unwrapErr(),
 			...preferencesErrs.flat()
-		])
+		] )
 	}
 }
