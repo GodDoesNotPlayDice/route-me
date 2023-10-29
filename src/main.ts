@@ -62,6 +62,7 @@ import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
 import { LocationDaoFirebase } from 'src/package/trip-location/infrastructure/location-dao-firebase'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripRepository } from 'src/package/trip/domain/repository/trip-repository'
+import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
 import { TripDaoFirebase } from 'src/package/trip/infrastructure/trip-dao-firebase'
 import { TripRepositoryApi } from 'src/package/trip/infrastructure/trip-repository-api'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
@@ -117,14 +118,16 @@ bootstrapApplication( AppComponent, {
 				return new PassengerDaoFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
-
 		},
 		{
 			provide   : TripDao,
-			useFactory: ( firebase: AngularFireDatabase ) => {
-				return new TripDaoFirebase( firebase )
+			// useFactory: ( firebase: AngularFireDatabase ) => {
+			// 	return new TripDaoFirebase( firebase )
+			// deps      : [ AngularFireDatabase ]
+			useFactory: ( http: HttpClient ) => {
+				return new TripDaoApi(http)
 			},
-			deps      : [ AngularFireDatabase ]
+			deps      : [ HttpClient ]
 		},
 		{
 			provide   : TripRepository,

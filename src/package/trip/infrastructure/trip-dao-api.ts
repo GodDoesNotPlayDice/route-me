@@ -65,13 +65,10 @@ export class TripDaoApi implements TripDao {
 				return Err( tripJsonResult.unwrapErr() )
 			}
 
-			this.http.post( this.url, tripJsonResult.unwrap() )
-			    .subscribe( ( data ) => {
-				    console.log( 'data', data )
-			    } )
+			const response = await this.http.post( `${this.url}/trip/create`, tripJsonResult.unwrap() ).toPromise()
 
-
-			return Ok( true )
+			const result = response !== undefined
+			return Ok( result )
 		}
 		catch ( e ) {
 			return Err( [ new ApiOperationException( 'trip create firebase' ) ] )

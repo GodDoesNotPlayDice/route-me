@@ -17,8 +17,8 @@ export const driverDocumentToJson = ( driverDocument: DriverDocument ): Result<R
 	try {
 		const json: Record<string, any> = {
 			id       : driverDocument.id.value,
-			name     : driverDocument.name.value,
-			reference: driverDocument.reference.value
+			document_name     : driverDocument.name.value,
+			document_reference: driverDocument.reference.value
 		}
 		return Ok( json )
 	}
@@ -48,7 +48,7 @@ export const driverDocumentFromJson = ( json: Record<string, any> ): Result<Driv
 	}
 
 	const documentName = newDriverDocumentName( {
-		value: json['name'] ?? ''
+		value: json['document_name'] ?? ''
 	} )
 
 	if ( documentName.isErr() ) {
@@ -56,7 +56,7 @@ export const driverDocumentFromJson = ( json: Record<string, any> ): Result<Driv
 	}
 
 	const documentReference = newDriverDocumentReference( {
-		value: json['reference'] ?? ''
+		value: json['document_reference'] ?? ''
 	} )
 
 	if ( documentReference.isErr() ) {

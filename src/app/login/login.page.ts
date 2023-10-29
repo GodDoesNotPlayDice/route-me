@@ -23,6 +23,7 @@ import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { TripService } from 'src/app/shared/services/trip.service'
 
 @Component( {
 	standalone : true,
@@ -46,6 +47,7 @@ export class LoginPage implements ViewDidEnter {
 	constructor(
 		private authService: AuthService,
 		private router: Router,
+		private tripService : TripService,
 		private alertService: AlertService
 	)
 	{}

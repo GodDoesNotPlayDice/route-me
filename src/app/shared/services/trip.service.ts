@@ -77,13 +77,14 @@ export class TripService {
 		startDate: Date
 	} ): Promise<boolean> {
 		//TODO: driver email fijo
-		const driver = await this.driverService.getDriver()
 		// const driver = this.authService.currentDriver
+		const driver = await this.driverService.getDriver()
 		if ( driver.isNone() ) {
 			console.log( 'driver none' )
 			return false
 		}
 
+		//TODO: mover el calculo a una apartado para visualizarlo en la publish page
 		const tripPrice = await this.calculateTripPrice(
 			newValidNumber( {
 				value: 1
@@ -134,7 +135,9 @@ export class TripService {
 			driver       : driver.unwrap()
 		} )
 
+
 		if ( result.isErr() ) {
+			console.log( result.unwrapErr())
 			console.log( 'create fail' )
 			return false
 		}
