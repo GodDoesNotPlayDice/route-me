@@ -45,6 +45,7 @@ import { CountryDaoRestCountries } from 'src/package/country-api/infrastructure/
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
+import { DriverCarDaoApi } from 'src/package/driver-car/infrastructure/driver-car-dao-api'
 import { DriverCarDaoFirebase } from 'src/package/driver-car/infrastructure/driver-car-dao-firebase'
 import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver-document-dao'
 import { DriverDocumentDaoFirebase } from 'src/package/driver-document/infrastructure/driver-document-dao-firebase'
@@ -93,10 +94,12 @@ bootstrapApplication( AppComponent, {
 		},
 		{
 			provide   : DriverCarDao,
-			useFactory: ( firebase: AngularFireDatabase ) => {
-				return new DriverCarDaoFirebase( firebase )
+			// useFactory: ( firebase: AngularFireDatabase ) => {
+				useFactory: ( http: HttpClient ) => {
+					return new DriverCarDaoApi( http )
 			},
-			deps      : [ AngularFireDatabase ]
+			deps      : [ HttpClient ]
+			// deps      : [ AngularFireDatabase ]
 		},
 		{
 			provide   : DriverDocumentDao,
