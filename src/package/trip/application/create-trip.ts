@@ -15,7 +15,6 @@ import { newTripDescription } from 'src/package/trip/domain/models/trip-descript
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
-import { TripMother } from 'src/test/app/stubs/object-mothers/trip/trip-mother'
 import { ulid } from 'ulidx'
 
 export const createTrip = async ( dao: TripDao,

@@ -17,6 +17,7 @@ import { deletePassenger } from 'src/package/passenger/application/delete-passen
 import { updatePassenger } from 'src/package/passenger/application/update-passenger'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { PreferenceProps } from 'src/package/preference/domain/models/preference'
 import { getUserByEmail } from 'src/package/user/application/get-user-by-email'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { User } from 'src/package/user/domain/models/user'
@@ -118,11 +119,7 @@ export class AuthService {
 		phone?: string,
 		country?: string,
 		gender?: string
-		preferences?: {
-			id: string
-			name: string
-			icon: string
-		}[],
+		preferences?: PreferenceProps[],
 	} ): Promise<boolean> {
 		if ( this.currentPassenger.isNone() ) {
 			return false

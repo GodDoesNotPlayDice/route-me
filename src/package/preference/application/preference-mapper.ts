@@ -7,6 +7,7 @@ import { Preference } from 'src/package/preference/domain/models/preference'
 import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { newPreferenceName } from 'src/package/preference/domain/models/preference-name'
+import { newPreferenceSource } from 'src/package/preference/domain/models/preference-source'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -42,6 +43,14 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
 		errors.push( icon.unwrapErr() )
 	}
 
+	const source = newPreferenceSource( {
+		value: json['source'] ?? ''
+	})
+
+	if ( source.isErr() ) {
+		errors.push( source.unwrapErr() )
+	}
+
 	if ( errors.length > 0 ) {
 		return Err( errors )
 	}
@@ -49,7 +58,8 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
 	return Ok( {
 		id  : id.unwrap(),
 		name: name.unwrap(),
-		icon: icon.unwrap()
+		icon: icon.unwrap(),
+		source: source.unwrap()
 	} )
 }
 
@@ -62,7 +72,8 @@ export const preferenceToJson = ( preference: Preference ): Result<Record<string
 		const json: Record<string, any> = {
 			id  : preference.id.value,
 			name: preference.name.value,
-			icon: preference.icon.value
+			icon: preference.icon.value,
+			source: preference.source.value
 		}
 		return Ok( json )
 	}

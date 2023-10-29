@@ -57,6 +57,7 @@ export class Step3Page implements ViewDidEnter {
 				                       id      : preference.id.value,
 				                       name    : preference.name.value,
 				                       icon    : preference.icon.value,
+				                       source  : preference.source.value,
 				                       selected: false
 			                       } ) )
 	}

@@ -11,7 +11,8 @@ import { newPassengerLastName } from 'src/package/passenger/domain/models/passen
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import {
 	newPreference,
-	Preference
+	Preference,
+	PreferenceProps
 } from 'src/package/preference/domain/models/preference'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
@@ -43,11 +44,7 @@ export const updatePassenger = async (
 		phone?: string,
 		country?: string,
 		gender?: string
-		preferences?: {
-			id: string
-			name: string
-			icon: string
-		}[],
+		preferences?: PreferenceProps[],
 	}
 ): Promise<Result<Passenger, Error[]>> => {
 

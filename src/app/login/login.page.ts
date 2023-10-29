@@ -24,6 +24,7 @@ import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-butt
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { TripService } from 'src/app/shared/services/trip.service'
+import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
 
 @Component( {
 	standalone : true,

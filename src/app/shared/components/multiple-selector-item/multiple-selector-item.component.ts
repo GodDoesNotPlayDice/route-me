@@ -5,6 +5,7 @@ import {
 	Input,
 	Output
 } from '@angular/core'
+import { MatIconModule } from '@angular/material/icon'
 import { IonicModule } from '@ionic/angular'
 import { MultipleSelectorData } from 'src/package/shared/domain/components/multiple-selector-data'
 
@@ -13,9 +14,10 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
 	selector   : 'app-multiple-selector-item',
 	templateUrl: './multiple-selector-item.component.html',
 	styleUrls  : [ './multiple-selector-item.component.scss' ],
-	imports    : [
+	imports: [
 		IonicModule,
-		CommonModule
+		CommonModule,
+		MatIconModule
 	]
 } )
 export class MultipleSelectorItemComponent {
