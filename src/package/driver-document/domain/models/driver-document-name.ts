@@ -15,7 +15,7 @@ type DriverDocumentNameType = z.infer<typeof DriverDocumentNameSchema>
 
 export interface DriverDocumentName extends DriverDocumentNameType {}
 
-interface DriverDocumentNameProps {
+export interface DriverDocumentNameProps {
 	value: string
 }
 

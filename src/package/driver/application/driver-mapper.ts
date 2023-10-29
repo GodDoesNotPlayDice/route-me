@@ -7,6 +7,7 @@ import {
 	driverCarFromJson,
 	driverCarToJson
 } from 'src/package/driver-car/application/driver-car-mapper'
+import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import {
 	driverDocumentFromJson,
 	driverDocumentToJson
@@ -27,7 +28,8 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Error[]> => {
 	try {
 		const json: Record<string, any> = {
-			id: driver.id.value
+			id: driver.id.value,
+			car_id: driver.carID.value
 		}
 
 		const err: Error[] = []
@@ -59,15 +61,6 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
 		}
 		else {
 			json['passenger'] = passenger.unwrap()
-		}
-
-		const car = driverCarToJson( driver.car )
-
-		if ( car.isErr() ) {
-			err.push( car.unwrapErr() )
-		}
-		else {
-			json['car'] = car.unwrap()
 		}
 
 		if ( err.length > 0 ) {
@@ -134,10 +127,10 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 		}
 	}
 
-	const car = driverCarFromJson( json['car'] )
+	const car = newDriverCarID( json['car_id'] )
 
 	if ( car.isErr() ) {
-		err.push( ...car.unwrapErr() )
+		err.push( car.unwrapErr() )
 	}
 
 	const passenger = passengerFromJson( json['passenger'] )
@@ -152,7 +145,7 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 
 	return Ok( {
 			id       : driverID.unwrap(),
-			car      : car.unwrap(),
+			carID    : car.unwrap(),
 			passenger: passenger.unwrap(),
 			documents: documents
 		}

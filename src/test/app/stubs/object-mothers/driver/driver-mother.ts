@@ -5,6 +5,7 @@ import {
 	Result
 } from 'oxide.ts'
 import { Driver } from 'src/package/driver/domain/models/driver'
+import { DriverCarIDMother } from 'src/test/app/stubs/object-mothers/driver-car/driver-car-id-mother'
 import { DriverCarMother } from 'src/test/app/stubs/object-mothers/driver-car/driver-car-mother'
 import { DriverDocumentMother } from 'src/test/app/stubs/object-mothers/driver-document/driver-document-mother'
 import { DriverIDMother } from 'src/test/app/stubs/object-mothers/driver/driver-id-mother'
@@ -18,8 +19,8 @@ export class DriverMother {
 		return Ok( {
 			id       : DriverIDMother.random()
 			                         .unwrap(),
-			car      : DriverCarMother.random()
-			                          .unwrap(),
+			carID: DriverCarIDMother.random()
+			                      .unwrap(),
 			passenger: PassengerMother.random()
 			                          .unwrap(),
 			documents: documents

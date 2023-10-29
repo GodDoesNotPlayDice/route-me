@@ -1,3 +1,5 @@
+import { HttpClient } from '@angular/common/http'
+import { environment } from '@env/environment'
 import {
 	Err,
 	Result
@@ -8,6 +10,11 @@ import { Email } from 'src/package/shared/domain/models/email'
 import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
 
 export class DriverCarDaoApi implements DriverCarDao {
+
+	constructor( private http: HttpClient ) {}
+
+	private url = environment.apiUrl
+
 	async create( driver: DriverCar ): Promise<Result<boolean, Error>> {
 		return Err( new ApiOperationException() )
 	}
