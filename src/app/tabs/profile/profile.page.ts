@@ -12,18 +12,24 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { User } from 'src/package/user/domain/models/user'
+import {
+    AppBarCloneComponent
+} from "../../shared/components/app-bar-clone/app-bar-clone.component";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component( {
 	standalone : true,
 	selector   : 'app-profile',
 	templateUrl: './profile.page.html',
 	styleUrls  : [ './profile.page.scss' ],
-	imports    : [
+	imports: [
 		IonicModule,
 		CommonModule,
 		DividerComponent,
 		LabeledIconComponent,
-		AdaptativeButtonComponent
+		AdaptativeButtonComponent,
+		AppBarCloneComponent,
+		MatIconModule
 	]
 } )
 export class ProfilePage implements ViewDidEnter {
@@ -41,11 +47,12 @@ export class ProfilePage implements ViewDidEnter {
 			this.passenger = this.authService.currentPassenger.unwrap()
 			this.edad      =
 				new Date().getFullYear() - this.passenger.birthDay.value.getFullYear()
+			this.profile_label = `Bienvenido ${this.passenger.name.value}`
 		}
 
 
 	}
-
+	profile_label = 'Perfil'
 	edad: number | undefined
 	user: User | undefined
 	passenger: Passenger | undefined

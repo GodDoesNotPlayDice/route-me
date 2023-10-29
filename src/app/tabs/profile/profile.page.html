@@ -1,17 +1,17 @@
-<ion-header [translucent]="true">
-	<ion-toolbar>
-		<ion-title>profile</ion-title>
-	</ion-toolbar>
-</ion-header>
 <ion-content [fullscreen]="true">
+	<app-app-bar-clone [label]="profile_label">
+		<mat-icon
+				(click)="onLogout()"
+				fontIcon='logout'></mat-icon>
+	</app-app-bar-clone>
 	<div class="flex items-center flex-col my-5 gap-6">
-		<app-adaptative-button text_color="text-white"
-			(click)="onLogout()"
-			color="bg-stone-800"
-			color_hover="bg-stone-800"
-			text="Logout"
-			size="py-2.5 px-3"
-			font_size="text-sm"></app-adaptative-button>
+<!--		<app-adaptative-button text_color="text-white"-->
+<!--			(click)="onLogout()"-->
+<!--			color="bg-stone-800"-->
+<!--			color_hover="bg-stone-800"-->
+<!--			text="Logout"-->
+<!--			size="py-2.5 px-3"-->
+<!--			font_size="text-sm"></app-adaptative-button>-->
 		<div class="flex">
 			<img class="rounded-full w-32"
 				src="https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png">
