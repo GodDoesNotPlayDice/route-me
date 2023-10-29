@@ -1,0 +1,23 @@
+<div>
+	<div class="font-gotham text-base">{{ label }}</div>
+	<a (click)="presentActionSheet()"
+		class="mb-3">
+		<div class="px-3 py-1 focus:z-[3] focus:text-neutral-700 focus:outline-none focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] rounded-br-md rounded-tr-md border rounded-bl-md rounded-tl-md border-solid border-neutral-300 focus:border-primary relative flex w-full flex-wrap items-center justify-center">
+			<input
+				type="text"
+				[value]="value"
+				class="relative m-0 block w-[1px] min-w-0 flex-auto bg-transparent bg-clip-padding py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out"
+				[placeholder]="placeholder"
+			/>
+			<ion-icon class="w-7 h-7"
+				name="document-outline"></ion-icon>
+		</div>
+	</a>
+	<div class="mt-2 text-xs text-threateningRed-500 font-gotham">
+		<div *ngIf="fileControl.invalid && (fileControl.dirty || fileControl.touched)">
+			<div *ngIf="fileControl.errors?.['required']">
+				{{label}} es requerido
+			</div>
+		</div>
+	</div>
+</div>
