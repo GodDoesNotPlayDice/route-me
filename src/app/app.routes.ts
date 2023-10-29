@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router'
 import { CanLoginGuard } from 'src/app/shared/guard'
+import { CanRegisterGuard } from 'src/app/shared/guard/can-register.guard'
 
 export const routes: Routes = [
 	{
@@ -8,21 +9,23 @@ export const routes: Routes = [
 		pathMatch : 'full'
 	},
 	{
+		canActivate : [ CanRegisterGuard ],
 		path         : 'login',
 		loadComponent: () => import('./login/login.page').then( m => m.LoginPage )
 	},
 	{
 		path        : 'tabs',
-		canActivate : [ CanLoginGuard ],
+		// canActivate : [ CanLoginGuard ],
 		loadChildren: () => import('./tabs/tabs.routes').then( m => m.routes )
 	},
 	{
-		//TODO: agregar si existe user, redirigir  home
+		canActivate : [ CanRegisterGuard ],
 		path        : 'register',
 		loadChildren: () => import('./register/register.routes').then(
 			m => m.routes )
 	},
 	{
+		canActivate : [ CanRegisterGuard ],
 		path         : 'reset-password',
 		loadComponent: () => import('./reset-password/reset-password.page').then(
 			m => m.ResetPasswordPage )
