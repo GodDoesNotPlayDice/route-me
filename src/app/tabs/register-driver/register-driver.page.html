@@ -4,7 +4,10 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-	<div class="p-2.5 w-full max-w-sm mx-auto flex flex-col justify-between">
+	<div *ngIf="waitForEnable" class="p-2.5 w-full h-full max-w-sm mx-auto flex flex-col justify-center items-center">
+		Espera a que un administrador habilite tu cuenta
+	</div>
+	<div *ngIf="!waitForEnable" class="p-2.5 w-full max-w-sm mx-auto flex flex-col justify-between">
 		<app-file-input
 			#licencia
 			label="Licencia de conducir"

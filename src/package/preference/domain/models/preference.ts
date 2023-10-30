@@ -5,23 +5,19 @@ import {
 } from 'oxide.ts'
 import {
 	newPreferenceIcon,
-	PreferenceIcon,
-	PreferenceIconProps
+	PreferenceIcon
 } from 'src/package/preference/domain/models/preference-icon'
 import {
 	newPreferenceID,
-	PreferenceID,
-	PreferenceIDProps
+	PreferenceID
 } from 'src/package/preference/domain/models/preference-id'
 import {
 	newPreferenceName,
-	PreferenceName,
-	PreferenceNameProps
+	PreferenceName
 } from 'src/package/preference/domain/models/preference-name'
 import {
 	newPreferenceSource,
-	PreferenceSource,
-	PreferenceSourceProps
+	PreferenceSource
 } from 'src/package/preference/domain/models/preference-source'
 
 export interface Preference {

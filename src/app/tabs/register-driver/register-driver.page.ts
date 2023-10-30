@@ -16,26 +16,34 @@ import { CarModelSelectorComponent } from 'src/app/shared/components/car-model-s
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
-import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
+import { AuthService } from 'src/app/shared/services/auth.service'
 
 @Component( {
-	selector: 'app-register-driver',
+	selector   : 'app-register-driver',
 	templateUrl: './register-driver.page.html',
-	styleUrls: [ './register-driver.page.scss' ],
-	standalone: true,
-	imports: [ IonicModule, CommonModule, FormsModule, FileInputComponent,
+	styleUrls  : [ './register-driver.page.scss' ],
+	standalone : true,
+	imports    : [ IonicModule, CommonModule, FormsModule, FileInputComponent,
 		FilledButtonComponent, CarModelSelectorComponent, DividerComponent ]
 } )
 export class RegisterDriverPage implements ViewDidEnter {
-	constructor() { }
+	constructor( private auth: AuthService ) { }
+
 	@ViewChild( 'licencia' ) licenceInput !: FileInputComponent
 	@ViewChild( 'registro' ) registerInput !: FileInputComponent
 	@ViewChild( 'antecedentes' ) recordInput !: FileInputComponent
 	@ViewChild( 'historial' ) historyInput !: FileInputComponent
 	@ViewChild( 'car' ) carInput !: CarModelSelectorComponent
+
+	waitForEnable = false
+
 	formGroup!: FormGroup
 
 	async ionViewDidEnter() {
+		if ( this.auth.currentDriver.isSome() && !this.auth.currentDriver.unwrap().enabled){
+			this.waitForEnable = true
+		}
+
 		this.formGroup = new FormGroup( [
 			this.licenceInput.fileControl,
 			this.registerInput.fileControl,
@@ -45,11 +53,11 @@ export class RegisterDriverPage implements ViewDidEnter {
 		] )
 	}
 
-	buttonClick(){
+	buttonClick() {
 		console.log( 'buttonClick' )
 		this.formGroup.updateValueAndValidity()
 		this.formGroup.markAllAsTouched()
-		console.log( 'formGroup', this.formGroup.value)
+		console.log( 'formGroup', this.formGroup.value )
 
 		if ( !this.formGroup.valid )
 		{
@@ -57,7 +65,7 @@ export class RegisterDriverPage implements ViewDidEnter {
 		}
 	}
 
-	private reset(){
+	private reset() {
 		this.carInput.reset()
 		this.licenceInput.reset()
 		this.registerInput.reset()

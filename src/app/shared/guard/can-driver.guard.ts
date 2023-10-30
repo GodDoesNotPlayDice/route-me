@@ -18,7 +18,7 @@ export class CanDriverGuard implements CanActivate {
 	canActivate(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		if ( this.auth.currentDriver.isSome())
+		if ( this.auth.currentDriver.isSome() && this.auth.currentDriver.unwrap().enabled)
 		{
 			return true
 		}

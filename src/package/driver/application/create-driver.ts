@@ -15,6 +15,7 @@ import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { newValidBoolean } from 'src/package/shared/domain/models/valid-bool'
 import { ulid } from 'ulidx'
 
 /**
@@ -84,12 +85,21 @@ export const createDriver = async ( dao: DriverDao,
 		} )
 	}
 
+	const enabled = newValidBoolean({
+		value: false
+	})
+
+	if ( enabled.isErr() ) {
+		error.push( enabled.unwrapErr() )
+	}
+
 	if ( error.length > 0 ) {
 		return Err( error )
 	}
 
 	const driver: Driver = {
 		id       : id.unwrap(),
+		enabled	: enabled.unwrap(),
 		passenger: props.passenger,
 		carID    : carID.unwrap(),
 		documents: driverDocuments

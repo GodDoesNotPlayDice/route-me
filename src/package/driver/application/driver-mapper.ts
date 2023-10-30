@@ -3,10 +3,6 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import {
-	driverCarFromJson,
-	driverCarToJson
-} from 'src/package/driver-car/application/driver-car-mapper'
 import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import {
 	driverDocumentFromJson,
@@ -20,6 +16,7 @@ import {
 	passengerToJson
 } from 'src/package/passenger/application/passenger-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newValidBoolean } from 'src/package/shared/domain/models/valid-bool'
 
 /**
  * Create a json from driver instance
@@ -28,8 +25,9 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Error[]> => {
 	try {
 		const json: Record<string, any> = {
-			id: driver.id.value,
-			car_id: driver.carID.value
+			id     : driver.id.value,
+			car_id : driver.carID.value,
+			enabled: driver.enabled.value
 		}
 
 		const err: Error[] = []
@@ -139,6 +137,14 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 		err.push( ...passenger.unwrapErr() )
 	}
 
+	const enabled = newValidBoolean( {
+		value: json['enabled']
+	} )
+
+	if ( enabled.isErr() ) {
+		err.push( enabled.unwrapErr() )
+	}
+
 	if ( err.length > 0 ) {
 		return Err( err )
 	}
@@ -147,6 +153,7 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 			id       : driverID.unwrap(),
 			carID    : car.unwrap(),
 			passenger: passenger.unwrap(),
+			enabled  : enabled.unwrap(),
 			documents: documents
 		}
 	)
