@@ -56,4 +56,9 @@ export class FileInputComponent {
 
 		await actionSheet.present()
 	}
+
+	reset(){
+		this.value = ''
+		this.fileControl.reset()
+	}
 }

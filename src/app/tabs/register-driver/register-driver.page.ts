@@ -16,6 +16,7 @@ import { CarModelSelectorComponent } from 'src/app/shared/components/car-model-s
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
+import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
 
 @Component( {
 	selector: 'app-register-driver',
@@ -34,7 +35,7 @@ export class RegisterDriverPage implements ViewDidEnter {
 	@ViewChild( 'car' ) carInput !: CarModelSelectorComponent
 	formGroup!: FormGroup
 
-	ionViewDidEnter() {
+	async ionViewDidEnter() {
 		this.formGroup = new FormGroup( [
 			this.licenceInput.fileControl,
 			this.registerInput.fileControl,
@@ -48,17 +49,20 @@ export class RegisterDriverPage implements ViewDidEnter {
 		console.log( 'buttonClick' )
 		this.formGroup.updateValueAndValidity()
 		this.formGroup.markAllAsTouched()
+		console.log( 'formGroup', this.formGroup.value)
 
-		if (
-			!this.formGroup.valid
-		)
+		if ( !this.formGroup.valid )
 		{
 			return
 		}
-		console.log( 'formGroup', this.formGroup.value)
 	}
 
 	private reset(){
-		//TODO: reset all inputs
+		this.carInput.reset()
+		this.licenceInput.reset()
+		this.registerInput.reset()
+		this.recordInput.reset()
+		this.historyInput.reset()
+		this.formGroup.reset()
 	}
 }

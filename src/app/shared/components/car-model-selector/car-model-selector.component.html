@@ -1,15 +1,39 @@
 <div>
+	<div class="font-gotham text-base">{{ label }}</div>
 	<div>
 		<div class="w-full flex justify-center items-center"
 			*ngIf="loading">
 			<ion-spinner name="dots"></ion-spinner>
 		</div>
-		<div class="w-full flex justify-center items-center"
+		<div class="w-full flex items-center"
 			*ngIf="!loading">
-			<div *ngIf="driverCarList.length > 0">
-				<ion-icon name="caret-back-outline"></ion-icon>
-				<div>selected: {{ driverCarList[selectedIndex].model.value}}</div>
-				<ion-icon name="caret-forward-outline"></ion-icon>
+			<div *ngIf="driverCarList.length > 0"
+				class="flex flex-col w-full">
+				<div *ngIf="!firstTime" class="flex flex-col items-center">
+					<div>Selected: {{ selectedIndex + 1}}/{{ driverCarList.length }}</div>
+					<div>Model: {{ driverCarList[selectedIndex].model.value}}</div>
+					<div>Seats: {{ driverCarList[selectedIndex].seat.value}}</div>
+				</div>
+				<div class="flex items-center">
+					<div class="basis-1/12 flex items-center">
+						<ion-icon (click)="leftClick()"
+							class="w-5 h-5"
+							name="caret-back-outline"></ion-icon>
+					</div>
+					<div class="basis-10/12 flex justify-center items-center">
+
+						<img *ngIf="!firstTime" class="object-contain aspect-square h-64"
+							[src]="driverCarList[selectedIndex].image.value">
+						<div *ngIf="firstTime" class="flex flex-col justify-center items-center h-80">
+							Navege con las flechas para seleccionar el auto
+						</div>
+					</div>
+					<div class="basis-1/12 flex items-center">
+						<ion-icon (click)="rightClick()"
+							class="w-5 h-5"
+							name="caret-forward-outline"></ion-icon>
+					</div>
+				</div>
 			</div>
 			<div *ngIf="driverCarList.length === 0">
 				No hay autos registrados
@@ -19,7 +43,7 @@
 	<div class="mt-2 text-xs text-threateningRed-500 font-gotham">
 		<div *ngIf="carControl.invalid && (carControl.dirty || carControl.touched)">
 			<div *ngIf="carControl.errors?.['required']">
-				Auto es requerido
+				{{ label }} es requerido
 			</div>
 		</div>
 	</div>

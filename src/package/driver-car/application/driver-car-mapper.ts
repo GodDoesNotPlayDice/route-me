@@ -8,6 +8,7 @@ import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-
 import { newDriverCarModel } from 'src/package/driver-car/domain/models/driver-car-model'
 import { newDriverCarSeat } from 'src/package/driver-car/domain/models/driver-car-seat'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newImageUrl } from 'src/package/shared/domain/models/image-url'
 
 /**
  * Create a json from driver car instance
@@ -18,7 +19,8 @@ export const driverCarToJson = ( driverCar: DriverCar ): Result<Record<string, a
 		const json: Record<string, any> = {
 			id   : driverCar.id.value,
 			seat : driverCar.seat.value,
-			model: driverCar.model.value
+			model: driverCar.model.value,
+			image: driverCar.image.value
 		}
 		return Ok( json )
 	}
@@ -63,6 +65,14 @@ export const driverCarFromJson = ( json: Record<string, any> ): Result<DriverCar
 		err.push( seat.unwrapErr() )
 	}
 
+	const image = newImageUrl( {
+		value: json['image'] ?? ''
+	} )
+
+	if ( image.isErr() ) {
+		err.push( image.unwrapErr() )
+	}
+
 	if ( err.length > 0 ) {
 		return Err( err )
 	}
@@ -70,7 +80,8 @@ export const driverCarFromJson = ( json: Record<string, any> ): Result<DriverCar
 	return Ok( {
 			id   : id.unwrap(),
 			model: model.unwrap(),
-			seat : seat.unwrap()
+			seat : seat.unwrap(),
+			image: image.unwrap()
 		}
 	)
 }

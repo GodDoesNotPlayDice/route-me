@@ -94,12 +94,13 @@ bootstrapApplication( AppComponent, {
 		},
 		{
 			provide   : DriverCarDao,
-			// useFactory: ( firebase: AngularFireDatabase ) => {
-				useFactory: ( http: HttpClient ) => {
-					return new DriverCarDaoApi( http )
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				// useFactory: ( http: HttpClient ) => {
+				// 	return new DriverCarDaoApi( http )
+					return new DriverCarDaoFirebase( firebase )
 			},
-			deps      : [ HttpClient ]
-			// deps      : [ AngularFireDatabase ]
+			// deps      : [ HttpClient ]
+			deps      : [ AngularFireDatabase ]
 		},
 		{
 			provide   : DriverDocumentDao,

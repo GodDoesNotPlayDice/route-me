@@ -4,39 +4,37 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-	<div class="p-2.5 w-full h-full max-w-sm mx-auto flex flex-col justify-between">
-		<div class="flex flex-col">
+	<div class="p-2.5 w-full max-w-sm mx-auto flex flex-col justify-between">
 		<app-file-input
 			#licencia
 			label="Licencia de conducir"
 			placeholder="Ingresa un documento"
 		></app-file-input>
-			<app-divider></app-divider>
-			<app-file-input
-				#registro
-				label="Registro del vehiculo"
-				placeholder="Ingresa un documento"
-			></app-file-input>
-			<app-divider></app-divider>
-			<app-file-input
-				#antecedentes
-				label="Antecedentes penales"
-				placeholder="Ingresa un documento"
-			></app-file-input>
-			<app-divider></app-divider>
-			<app-file-input
-				#historial
-				label="Historial de conduccion"
-				placeholder="Ingresa un documento"
-			></app-file-input>
-			<app-divider></app-divider>
-			<app-car-model-selector
-				#car
-			></app-car-model-selector>
-	</div>
+		<app-divider></app-divider>
+		<app-file-input
+			#registro
+			label="Registro del vehiculo"
+			placeholder="Ingresa un documento"
+		></app-file-input>
+		<app-divider></app-divider>
+		<app-file-input
+			#antecedentes
+			label="Antecedentes penales"
+			placeholder="Ingresa un documento"
+		></app-file-input>
+		<app-divider></app-divider>
+		<app-file-input
+			#historial
+			label="Historial de conduccion"
+			placeholder="Ingresa un documento"
+		></app-file-input>
+		<app-divider></app-divider>
+		<app-car-model-selector
+			#car
+		></app-car-model-selector>
 		<app-filled-button
-			(onClick)="buttonClick()"
 			class="my-5"
+			(onClick)="buttonClick()"
 			contentText="Enviar"></app-filled-button>
 	</div>
 </ion-content>
