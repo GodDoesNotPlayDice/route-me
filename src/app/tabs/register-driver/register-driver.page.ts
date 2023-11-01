@@ -16,7 +16,7 @@ import { CarModelSelectorComponent } from 'src/app/shared/components/car-model-s
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
-import { AuthService } from 'src/app/shared/services/auth.service'
+import { DriverService } from 'src/app/shared/services/driver.service'
 
 @Component( {
 	selector   : 'app-register-driver',
@@ -27,7 +27,7 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 		FilledButtonComponent, CarModelSelectorComponent, DividerComponent ]
 } )
 export class RegisterDriverPage implements ViewDidEnter {
-	constructor( private auth: AuthService ) { }
+	constructor( private driverService: DriverService ) { }
 
 	@ViewChild( 'licencia' ) licenceInput !: FileInputComponent
 	@ViewChild( 'registro' ) registerInput !: FileInputComponent
@@ -40,7 +40,9 @@ export class RegisterDriverPage implements ViewDidEnter {
 	formGroup!: FormGroup
 
 	async ionViewDidEnter() {
-		if ( this.auth.currentDriver.isSome() && !this.auth.currentDriver.unwrap().enabled){
+		if ( this.driverService.currentDriver.isSome() &&
+			!this.driverService.currentDriver.unwrap().enabled )
+		{
 			this.waitForEnable = true
 		}
 
@@ -53,8 +55,7 @@ export class RegisterDriverPage implements ViewDidEnter {
 		] )
 	}
 
-	buttonClick() {
-		console.log( 'buttonClick' )
+	async buttonClick() {
 		this.formGroup.updateValueAndValidity()
 		this.formGroup.markAllAsTouched()
 		console.log( 'formGroup', this.formGroup.value )
@@ -63,6 +64,28 @@ export class RegisterDriverPage implements ViewDidEnter {
 		{
 			return
 		}
+
+		const result = await this.driverService.driverRegister(
+			this.carInput.carControl.value!.id,
+			[
+				{
+					name     : 'Licencia',
+					reference: this.licenceInput.fileControl.value!
+				},
+				{
+					name     : 'Registro',
+					reference: this.registerInput.fileControl.value!
+				},
+				{
+					name     : 'Antecedentes',
+					reference: this.recordInput.fileControl.value!
+				},
+				{
+					name     : 'Historial',
+					reference: this.historyInput.fileControl.value!
+				}
+			]
+		)
 	}
 
 	private reset() {

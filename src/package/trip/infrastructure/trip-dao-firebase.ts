@@ -20,7 +20,7 @@ export class TripDaoFirebase implements TripDao {
 	constructor( private firebase: AngularFireDatabase ) {
 	}
 
-	collectionKey = 'tripsv2'
+	collectionKey = 'trips'
 
 	/**
 	 * Create trip
@@ -192,7 +192,7 @@ export class TripDaoFirebase implements TripDao {
 
 		await this.firebase.database.ref( this.collectionKey )
 		          .child( keySaved.unwrap() )
-		          .set( json,
+		          .set( json.unwrap(),
 			          ( error ) => {
 				          if ( !error ) {
 					          completed = 'completed'

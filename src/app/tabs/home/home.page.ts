@@ -28,36 +28,34 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 } )
 export class HomePage implements ViewDidEnter {
 
-	constructor( private driverService: DriverService,
-		private trip: TripService )
-	{}
+	constructor( private trip: TripService ) {}
+
+
+	info: DriverCardInfo[] = []
+
+	loading: boolean = false
+
+	protected readonly filterButtonList = filterButtonList
 
 	async ionViewDidEnter(): Promise<void> {
-		// const resultDriver = await this.driverService.driverRegister(
-		//   2, 'tesla', [ {
-		//     id       : '2',
-		//     name     : 'Licencia',
-		//     reference: 'url'
-		//   } ]
-		// )
-		// if ( resultDriver ){
-		//   console.log('driver ok')
-		// }
-		// else {
-		//   console.log('driver fail')
-		// }
-
 		this.loading = true
 		const result = await this.trip.getAllByState( TripStateEnum.Open )
 
 		if ( result.length > 0 ) {
-			this.info    = result.map( ( trip ): DriverCardInfo => {
+			this.info = result.map( ( trip ): DriverCardInfo => {
+				const startSplitted = trip.startLocation.name.value.split( ',' )
+				const formatedStartLocationName = `${ startSplitted[ 0 ] }, ${ startSplitted[ 1 ] }, ${ startSplitted[ 3 ] }`
+
+				const endSplitted = trip.endLocation.name.value.split( ',' )
+				const formatedEndLocationName = `${ endSplitted[ 0 ] }, ${ endSplitted[ 1 ] }, ${ endSplitted[ 3 ] }`
+
 				return {
+					currency				 : trip.price.currency.value,
 					cost             : trip.price.amount.value,
 					date             : trip.startDate.toLocaleString(),
 					state            : trip.state,
-					endLocationName  : trip.endLocation.name.value,
-					startLocationName: trip.startLocation.name.value,
+					endLocationName  : formatedEndLocationName,
+					startLocationName: formatedStartLocationName,
 					driverAvatar     : {
 						name: trip.driver.passenger.name.value,
 						url : trip.driver.passenger.image.value
@@ -67,20 +65,9 @@ export class HomePage implements ViewDidEnter {
 					} )
 				}
 			} )
-			this.loading = false
 		}
-		else {
-			this.error = true
-		}
+		this.loading = false
 	}
-
-
-	info: DriverCardInfo[] = []
-
-	error: boolean   = false
-	loading: boolean = false
-
-	protected readonly filterButtonList = filterButtonList
 }
 
 const filterButtonList: FilterButtonData[] = [

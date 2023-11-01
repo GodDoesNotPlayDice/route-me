@@ -7,10 +7,12 @@
 				alt="">
 		</div>
 		<div class="basis-9/12 flex flex-col m-1 justify-between">
-			<div class="">Fecha viaje: {{info.date | date:'dd MMM HH:mm '}}</div>
+			<div class="flex w-full items-center justify-between">
 			<div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
-			<div>Inicio: {{info.startLocationName | slice:0:20 }}</div>
-			<div>Fin: {{info.endLocationName | slice:0:20 }}</div>
+			<div>{{info.date | date:'dd MMM HH:mm '}}</div>
+			</div>
+			<div>Inicio: {{info.startLocationName }}</div>
+			<div>Fin: {{info.endLocationName }}</div>
 		</div>
 	</div>
 	<div class="flex justify-between items-center gap-2">
@@ -18,11 +20,11 @@
 			<div *ngFor="let passenger of info.passengerUrls">
 				<app-avatar-home [url]="passenger"></app-avatar-home>
 			</div>
-			<div *ngIf="info.passengerUrls.length === 0">
+			<div class="text-gray-400" *ngIf="info.passengerUrls.length === 0">
 				Sin pasajeros
 			</div>
 		</div>
-		<div class="basis-3/12">${{info.cost}}</div>
+		<div class="basis-3/12">${{info.cost}} {{ info.currency }}</div>
 		<button
 			(click)="buttonClick($event)"
 			type="button"

@@ -15,7 +15,7 @@ export const routes: Routes = [
 	},
 	{
 		path        : 'tabs',
-		// canActivate : [ CanLoginGuard ],
+		canActivate : [ CanLoginGuard ],
 		loadChildren: () => import('./tabs/tabs.routes').then( m => m.routes )
 	},
 	{

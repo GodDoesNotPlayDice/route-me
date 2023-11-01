@@ -5,6 +5,7 @@ import {
 	Some
 } from 'oxide.ts'
 import { Category } from 'src/package/category/domain/models/category'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
@@ -15,6 +16,8 @@ export const updateTrip = async ( dao: TripDao,
 		description?: string
 		category?: Category
 		state?: TripState
+		queuePassengers?: Passenger[]
+		passengers?: Passenger[]
 		endDate?: Date
 	} ): Promise<Result<Trip, Error[]>> => {
 
@@ -27,19 +30,20 @@ export const updateTrip = async ( dao: TripDao,
 	}
 
 	const newTrip: Trip = {
-		id           : trip.id,
-		description  : description.unwrap(),
-		category     : props.category === undefined ? trip.category : Some(
-			props.category ),
-		chatID       : trip.chatID,
-		driver       : trip.driver,
-		endLocation  : trip.endLocation,
-		price        : trip.price,
-		startDate    : trip.startDate,
-		startLocation: trip.startLocation,
-		state        : props.state ?? trip.state,
-		passengers   : trip.passengers,
-		endDate      : props.endDate ?? trip.endDate
+		id             : trip.id,
+		description    : description.unwrap(),
+		category       : props.category === undefined ? trip.category : Some( props.category ),
+		feeMethod      : trip.feeMethod,
+		chatID         : trip.chatID,
+		driver         : trip.driver,
+		endLocation    : trip.endLocation,
+		price          : trip.price,
+		startDate      : trip.startDate,
+		startLocation  : trip.startLocation,
+		state          : props.state ?? trip.state,
+		queuePassengers: props.queuePassengers ?? trip.queuePassengers,
+		passengers     : props.passengers ?? trip.passengers,
+		endDate        : props.endDate ?? trip.endDate
 	}
 
 	const result = await dao.update( newTrip )

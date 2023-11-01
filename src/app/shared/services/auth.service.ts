@@ -4,6 +4,11 @@ import {
 	Option,
 	Some
 } from 'oxide.ts'
+import {
+	BehaviorSubject,
+	Observable
+} from 'rxjs'
+import { DriverService } from 'src/app/shared/services/driver.service'
 import { createUser } from 'src/package/authentication/application/create-user'
 import { deleteAccount } from 'src/package/authentication/application/delete-account'
 import { loginUser } from 'src/package/authentication/application/login-user'
@@ -31,13 +36,15 @@ export class AuthService {
 		private authRepository: AuthUserRepository,
 		private userDao: UserDao,
 		private passengerDao: PassengerDao,
-		private driverDao: DriverDao
 	)
 	{ }
 
 	currentUser: Option<User>           = None
 	currentPassenger: Option<Passenger> = None
-	currentDriver: Option<Driver>       = None
+
+	private userChange = new BehaviorSubject<User | null>( null )
+
+	public userChange$: Observable<User | null> = this.userChange.asObservable()
 
 	async userLogin( email: string,
 		password: string ): Promise<boolean> {
@@ -59,9 +66,7 @@ export class AuthService {
 			return false
 		}
 
-		const d = await this.driverDao.getByEmail( this.currentUser.unwrap().email )
-		console.log( 'd' )
-		console.log( d )
+		this.userChange.next( this.currentUser.unwrap() )
 		return true
 	}
 

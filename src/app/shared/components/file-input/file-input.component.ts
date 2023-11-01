@@ -28,7 +28,7 @@ export class FileInputComponent {
 	value = ''
 	@Input({ required: true }) label: string
 	@Input({ required: true }) placeholder: string
-	readonly fileControl = new FormControl( '', [Validators.required])
+	readonly fileControl = new FormControl( 'test', [Validators.required])
 	async presentActionSheet() {
 		const actionSheet = await this.actionSheetCtrl.create( {
 			header : 'Actions',

@@ -9,6 +9,7 @@ import { ChatService } from 'src/app/shared/services/chat.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LocationService } from 'src/app/shared/services/location.service'
 import { newCurrency } from 'src/package/shared/domain/models/currency'
+import { newMoney } from 'src/package/shared/domain/models/money'
 import {
 	newValidNumber,
 	ValidNumber
@@ -18,9 +19,13 @@ import { createTrip } from 'src/package/trip/application/create-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
-import { TripPrice } from 'src/package/trip/domain/models/trip-price'
+import {
+	newTripPrice,
+	TripPrice
+} from 'src/package/trip/domain/models/trip-price'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { TripRepository } from 'src/package/trip/domain/repository/trip-repository'
+import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 
 @Injectable( {
 	providedIn: 'root'
@@ -73,6 +78,7 @@ export class TripService {
 
 	async create( props: {
 		startLocation: Street,
+		distance : number,
 		endLocation: Street,
 		startDate: Date
 	} ): Promise<boolean> {
@@ -84,18 +90,7 @@ export class TripService {
 			return false
 		}
 
-		//TODO: mover el calculo a una apartado para visualizarlo en la publish page
-		const tripPrice = await this.calculateTripPrice(
-			newValidNumber( {
-				value: 1
-			} )
-				.unwrap()
-		)
-
-		if ( tripPrice.isNone() ) {
-			console.log( 'price none' )
-			return false
-		}
+		// const tripPrice = await this.calculateTripPrice()
 
 		const startLocation = await this.locationService.createLocation( {
 			name       : props.startLocation.place.value,
@@ -126,10 +121,11 @@ export class TripService {
 			return false
 		}
 
+
 		const result = await createTrip( this.tripDao, {
 			startDate    : props.startDate,
 			chatID       : chat.unwrap(),
-			price        : tripPrice.unwrap(),
+			distance: props.distance,
 			endLocation  : endLocation.unwrap(),
 			startLocation: startLocation.unwrap(),
 			driver       : driver.unwrap()

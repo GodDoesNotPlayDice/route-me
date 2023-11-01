@@ -1,16 +1,22 @@
-import { Injectable } from '@angular/core'
+import {
+	Injectable,
+} from '@angular/core'
 import {
 	None,
 	Option,
 	Some
 } from 'oxide.ts'
+import {
+	filter,
+	first,
+	takeWhile
+} from 'rxjs'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import { createDriver } from 'src/package/driver/application/create-driver'
-import { getDriver } from 'src/package/driver/application/get-driver'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { Driver } from 'src/package/driver/domain/models/driver'
-import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
-import { newEmail } from 'src/package/shared/domain/models/email'
+import { Email } from 'src/package/shared/domain/models/email'
 
 @Injectable( {
 	providedIn: 'root'
@@ -23,39 +29,26 @@ export class DriverService {
 		// private driverCarDao : DriverCarDao,
 		// private driverDocumentDao : DriverDocumentDao
 	)
-	{}
-
-	getDrivers(): DriverCardInfo[] {
-		return driveInfoList
+	{
+		this.authService.userChange$.pipe(first(
+			( user ) => user !== null
+		))
+		    .subscribe( async ( user ) => {
+			    if ( user !== null ) {
+				    await this.getByEmail( user.email )
+			    }
+		    } )
 	}
 
+	currentDriver: Option<Driver> = None
+
 	async getDriver(): Promise<Option<Driver>> {
-		// if ( this.authService.currentUser.isNone() ){
-		//   return None
-		// }
-		//TODO: driver email fijo
-		const email = newEmail( { value: 'u@go.co' } )
-
-		if ( email.isErr() ) {
-			console.log( 'email fijo fail' )
-			return None
-		}
-
-		const result = await getDriver( this.driverDao, email.unwrap() )
-
-		if ( result.isErr() ) {
-			console.log( result.unwrapErr() )
-			console.log( 'get driver fail' )
-			return None
-		}
-		return Some( result.unwrap() )
+		return this.currentDriver
 	}
 
 	async driverRegister(
-		seat: number,
-		model: string,
+		id: DriverCarID,
 		documents: {
-			id: string,
 			name: string,
 			reference: string
 		}[]
@@ -66,8 +59,7 @@ export class DriverService {
 		}
 
 		const result = await createDriver( this.driverDao, {
-			seat     : seat,
-			model    : model,
+			carID    : id,
 			documents: documents,
 			passenger: this.authService.currentPassenger.unwrap()
 		} )
@@ -77,58 +69,20 @@ export class DriverService {
 			return false
 		}
 
-		//TODO: mejor en auth?
-		this.authService.currentDriver = Some( result.unwrap() )
+		this.currentDriver = Some( result.unwrap() )
+		return true
+	}
+
+	async getByEmail( email: Email ): Promise<boolean> {
+		const result = await this.driverDao.getByEmail( email )
+
+		if ( result.isErr() ) {
+			console.log(result.unwrapErr())
+			console.log( 'get driver error')
+			return false
+		}
+
+		this.currentDriver = Some( result.unwrap() )
 		return true
 	}
 }
-
-const driveInfoList: DriverCardInfo[] = [
-	{
-		driverAvatar     : {
-			name: 'Juan',
-			url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148055951946027070/640px-LinuxCon_Europe_Linus_Torvalds_03_28cropped29.png'
-		},
-		passengerUrls    : [
-			'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png',
-			'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png',
-			'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
-		],
-		startLocationName: 'viña',
-		endLocationName  : 'santiago',
-		date             : new Date().toLocaleString(),
-		cost             : 50,
-		state            : 'Open'
-	},
-	{
-		driverAvatar     : {
-			name: 'Fernando',
-			url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148056114244636783/AOPolaRSwFJEGgQu8V26chPkzDVgwaq7cTXKyglLcp-oAgs900-c-k-c0x00ffffff-no-rj.png'
-		},
-		passengerUrls    : [
-			'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png',
-			'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
-		],
-		startLocationName: 'viña',
-		endLocationName  : 'santiago',
-		date             : new Date().toLocaleString(),
-		cost             : 50,
-		state            : 'Completed'
-	},
-	{
-		driverAvatar     : {
-			name: 'Nicolas',
-			url : 'https://cdn.discordapp.com/attachments/982116594543099924/1148057504740298782/influencer_9989_2rdz5slp_400x400_oqd2hpij12.png'
-		},
-		passengerUrls    : [
-			'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png',
-			'https://cdn.discordapp.com/attachments/982116594543099924/1148058714184614018/x_kb0LZN_400x400.png'
-		],
-		startLocationName: 'viña',
-		endLocationName  : 'santiago',
-		date             : new Date().toLocaleString(),
-		cost             : 50,
-		state            : 'Progress'
-	}
-]
-

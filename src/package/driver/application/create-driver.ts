@@ -1,9 +1,13 @@
 import {
 	Err,
+	None,
 	Ok,
 	Result
 } from 'oxide.ts'
-import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
+import {
+	DriverCarID,
+	newDriverCarID
+} from 'src/package/driver-car/domain/models/driver-car-id'
 import {
 	DriverDocument,
 	DriverDocumentProps
@@ -24,9 +28,11 @@ import { ulid } from 'ulidx'
 export const createDriver = async ( dao: DriverDao,
 	props: {
 		passenger: Passenger,
-		seat: number,
-		model: string,
-		documents: DriverDocumentProps[]
+		carID: DriverCarID,
+		documents: {
+			name: string
+			reference: string
+		}[]
 	}
 ): Promise<Result<Driver, Error[]>> => {
 	const error: Error[] = []
@@ -39,19 +45,11 @@ export const createDriver = async ( dao: DriverDao,
 		error.push( id.unwrapErr() )
 	}
 
-	const carID = newDriverCarID( {
-		value: ulid()
-	} )
-
-	if ( carID.isErr() ) {
-		error.push( carID.unwrapErr() )
-	}
-
 	const driverDocuments: DriverDocument[] = []
 
 	for ( const doc of props.documents ) {
 		const docID = newDriverDocumentID( {
-			value: doc.id
+			value: ulid()
 		} )
 
 		if ( docID.isErr() ) {
@@ -85,9 +83,9 @@ export const createDriver = async ( dao: DriverDao,
 		} )
 	}
 
-	const enabled = newValidBoolean({
+	const enabled = newValidBoolean( {
 		value: false
-	})
+	} )
 
 	if ( enabled.isErr() ) {
 		error.push( enabled.unwrapErr() )
@@ -98,11 +96,12 @@ export const createDriver = async ( dao: DriverDao,
 	}
 
 	const driver: Driver = {
-		id       : id.unwrap(),
-		enabled	: enabled.unwrap(),
-		passenger: props.passenger,
-		carID    : carID.unwrap(),
-		documents: driverDocuments
+		id        : id.unwrap(),
+		enabled   : enabled.unwrap(),
+		activeTrip: None,
+		passenger : props.passenger,
+		carID     : props.carID,
+		documents : driverDocuments
 	}
 
 	const result = await dao.create( driver )

@@ -14,10 +14,10 @@
 				*ngIf="loading">
 				<ion-spinner name="dots"></ion-spinner>
 			</div>
-			<div *ngIf="error">
+			<div *ngIf="info.length === 0">
 				No hay nada por mostrar
 			</div>
-			<ng-container *ngIf="!error">
+			<ng-container *ngIf="info.length > 0">
 				<div *ngFor="let card of info">
 					<app-drive-card [info]="card"></app-drive-card>
 				</div>

@@ -14,7 +14,9 @@ import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/email-not-found-exception'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { Email } from 'src/package/shared/domain/models/email'
+import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
 
 export class DriverDaoFirebase implements DriverDao {
 	constructor( private firebase: AngularFireDatabase ) {
@@ -52,29 +54,13 @@ export class DriverDaoFirebase implements DriverDao {
 	}
 
 	/**
-	 * Delete a driver
-	 * @throws {UnknownException} - if unknown error
-	 */
-	async delete( id: DriverID ): Promise<Result<boolean, Error>> {
-		return Err( new UnknownException() )
-	}
-
-	/**
-	 * Get all drivers
-	 * @throws {UnknownException} - if unknown error
-	 */
-	async getAll(): Promise<Result<Driver[], Error[]>> {
-		return Err( [ new UnknownException() ] )
-	}
-
-	/**
 	 * Get a driver by id
 	 * @throws {FirebaseOperationException} - if operation failed
 	 * @throws {EmailNotFoundException} - if email not found
 	 */
 	async getByEmail( email: Email ): Promise<Result<Driver, Error[]>> {
 		return await this.firebase.database.ref( this.collectionKey )
-		                 .orderByChild( 'email' )
+		                 .orderByChild( 'passenger/email' )
 		                 .equalTo( email.value )
 		                 .get()
 		                 .then( async ( snapshot ) => {
@@ -96,15 +82,66 @@ export class DriverDaoFirebase implements DriverDao {
 		                 .catch( ( error ) => {
 			                 return Err( [ new FirebaseOperationException() ] )
 		                 } )
-
 	}
 
 	/**
 	 * Update a driver
 	 * @throws {UnknownException} - if unknown error
 	 */
-	async update( driver: Driver ): Promise<Result<boolean, Error>> {
-		return Err( new UnknownException() )
+	async update( driver: Driver ): Promise<Result<boolean, Error[]>> {
+		const keySaved = await this.getKey( driver.id )
+
+		if ( keySaved.isErr() ) {
+			return Err( [ keySaved.unwrapErr() ] )
+		}
+		let completed: string | null = null
+
+		const json = driverToJson( driver )
+
+		if ( json.isErr() ) {
+			return Err( json.unwrapErr() )
+		}
+
+		await this.firebase.database.ref( this.collectionKey )
+		          .child( keySaved.unwrap() )
+		          .set( json.unwrap(),
+			          ( error ) => {
+				          if ( !error ) {
+					          completed = 'completed'
+				          }
+			          } )
+		if ( completed === null ) {
+			return Err( [ new FirebaseOperationException() ] )
+		}
+		return Ok( true )
 	}
 
+	/**
+	 * Get firebase key by id
+	 * @throws {FirebaseKeyNotFoundException} - if key operation failed
+	 * @throws {FirebaseOperationException} - if operation failed
+	 */
+	private async getKey( id: DriverID ): Promise<Result<string, Error>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'id' )
+		                 .equalTo( id.value )
+		                 .get()
+		                 .then(
+			                 async ( snapshot ) => {
+
+				                 let key: string | null = null
+
+				                 snapshot.forEach( ( childSnapshot ) => {
+					                 key = childSnapshot.key
+				                 } )
+
+				                 if ( key === null ) {
+					                 return Err( new FirebaseKeyNotFoundException() )
+				                 }
+				                 return Ok( key )
+			                 } )
+		                 .catch( ( error ) => {
+			                 return Err( new FirebaseOperationException() )
+		                 } )
+	}
 }

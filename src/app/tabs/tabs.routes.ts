@@ -23,7 +23,7 @@ export const routes: Routes = [
 					m => m.SearchPage )
 			},
 			{
-				// canActivate : [ CanDriverGuard ],
+				canActivate : [ CanDriverGuard ],
 				path         : 'publish',
 				loadComponent: () => import('./publish/publish.page').then(
 					m => m.PublishPage )

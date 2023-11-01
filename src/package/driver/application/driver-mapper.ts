@@ -1,7 +1,10 @@
 import {
 	Err,
+	None,
 	Ok,
-	Result
+	Option,
+	Result,
+	Some
 } from 'oxide.ts'
 import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import {
@@ -17,6 +20,11 @@ import {
 } from 'src/package/passenger/application/passenger-mapper'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newValidBoolean } from 'src/package/shared/domain/models/valid-bool'
+import {
+	tripFromJSON,
+	tripToJSON
+} from 'src/package/trip/application/trip-mapper'
+import { Trip } from 'src/package/trip/domain/models/trip'
 
 /**
  * Create a json from driver instance
@@ -50,6 +58,20 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
 		}
 		else {
 			json['documents'] = null
+		}
+
+		if ( driver.activeTrip.isSome() ) {
+			const activeTripResult = tripToJSON( driver.activeTrip.unwrap() )
+
+			if ( activeTripResult.isErr() ) {
+				err.push( ...activeTripResult.unwrapErr() )
+			}
+			else {
+				json['active_trip'] = activeTripResult.unwrap()
+			}
+		}
+		else {
+			json['active_trip'] = null
 		}
 
 		const passenger = passengerToJson( driver.passenger )
@@ -125,7 +147,9 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 		}
 	}
 
-	const car = newDriverCarID( json['car_id'] )
+	const car = newDriverCarID( {
+		value: json['car_id']
+	} )
 
 	if ( car.isErr() ) {
 		err.push( car.unwrapErr() )
@@ -145,16 +169,29 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 		err.push( enabled.unwrapErr() )
 	}
 
+	let activeTrip: Option<Trip> = None
+	if ( json['active_trip'] !== undefined ) {
+		const activeTripResult = tripFromJSON( json['active_trip'] ?? '' )
+
+		if ( activeTripResult.isErr() ) {
+			err.push( ...activeTripResult.unwrapErr() )
+		}
+		else {
+			activeTrip = Some( activeTripResult.unwrap() )
+		}
+	}
+
 	if ( err.length > 0 ) {
 		return Err( err )
 	}
 
 	return Ok( {
-			id       : driverID.unwrap(),
-			carID    : car.unwrap(),
-			passenger: passenger.unwrap(),
-			enabled  : enabled.unwrap(),
-			documents: documents
+			id        : driverID.unwrap(),
+			carID     : car.unwrap(),
+			passenger : passenger.unwrap(),
+			activeTrip: activeTrip,
+			enabled   : enabled.unwrap(),
+			documents : documents
 		}
 	)
 }

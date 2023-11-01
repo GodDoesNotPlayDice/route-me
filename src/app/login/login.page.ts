@@ -3,6 +3,7 @@ import {
 	Component,
 	ViewChild
 } from '@angular/core'
+import { AngularFireAuth } from '@angular/fire/compat/auth'
 import {
 	FormGroup,
 	FormsModule,
@@ -49,7 +50,7 @@ export class LoginPage implements ViewDidEnter {
 		private authService: AuthService,
 		private router: Router,
 		private tripService : TripService,
-		private alertService: AlertService
+		private alertService: AlertService,
 	)
 	{}
 

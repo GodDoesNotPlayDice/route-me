@@ -18,6 +18,7 @@ import { TripLocationIDMother } from 'src/test/app/stubs/object-mothers/trip-loc
 import { TripLocationMother } from 'src/test/app/stubs/object-mothers/trip-location/trip-location-mother'
 import { TripLocationNameMother } from 'src/test/app/stubs/object-mothers/trip-location/trip-location-name-mother'
 import { TripDescriptionMother } from 'src/test/app/stubs/object-mothers/trip/trip-description-mother'
+import { TripFeeMethodMother } from 'src/test/app/stubs/object-mothers/trip/trip-fee-method-mother'
 import { TripIDMother } from 'src/test/app/stubs/object-mothers/trip/trip-id-mother'
 import { TripPriceMother } from 'src/test/app/stubs/object-mothers/trip/trip-price-mother'
 import { TripStateMother } from 'src/test/app/stubs/object-mothers/trip/trip-state-mother'
@@ -45,6 +46,7 @@ export class TripMother {
 			                                    .unwrap(),
 			state        : TripStateMother.random()
 			                              .unwrap(),
+			feeMethod: TripFeeMethodMother.random().unwrap(),
 			category     : Some( CategoryMother.random()
 			                                   .unwrap() ),
 			chatID       : ChatIDMother.random()

@@ -5,11 +5,11 @@ describe('RegisterDriverPage', () => {
   let component: RegisterDriverPage;
   let fixture: ComponentFixture<RegisterDriverPage>;
 
-  beforeEach(async(() => {
+  beforeEach(async() => {
     fixture = TestBed.createComponent(RegisterDriverPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

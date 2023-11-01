@@ -15,7 +15,7 @@ type ValidNumberType = z.infer<typeof ValidNumberSchema>
 
 export interface ValidNumber extends ValidNumberType {}
 
-interface ValidNumberProps {
+export interface ValidNumberProps {
 	value: number
 }
 

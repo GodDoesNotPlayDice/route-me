@@ -125,13 +125,10 @@ bootstrapApplication( AppComponent, {
 		},
 		{
 			provide   : TripDao,
-			// useFactory: ( firebase: AngularFireDatabase ) => {
-			// 	return new TripDaoFirebase( firebase )
-			// deps      : [ AngularFireDatabase ]
-			useFactory: ( http: HttpClient ) => {
-				return new TripDaoApi(http)
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new TripDaoFirebase( firebase )
 			},
-			deps      : [ HttpClient ]
+			deps      : [ AngularFireDatabase ]
 		},
 		{
 			provide   : TripRepository,

@@ -15,7 +15,7 @@ type EmailType = z.infer<typeof EmailSchema>
 
 export interface Email extends EmailType {}
 
-interface EmailProps {
+export interface EmailProps {
 	value: string
 }
 

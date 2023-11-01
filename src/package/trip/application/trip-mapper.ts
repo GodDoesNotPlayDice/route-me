@@ -33,6 +33,7 @@ import {
 } from 'src/package/trip-location/application/location-mapper'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
+import { newTripFeeMethod } from 'src/package/trip/domain/models/trip-fee-method'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
@@ -72,9 +73,23 @@ import { newTripState } from 'src/package/trip/domain/models/trip-state'
  * @throws {TripIdInvalidException} - if id is invalid
  * @throws {TripDescriptionInvalidException} - if description is invalid
  * @throws {DateInvalidException} - if date is invalid
+ * @throws {TripFeeInvalidException} - if trip fee is invalid
  */
 export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]> => {
 	const err: Error[] = []
+
+	const queuePassengers: Passenger[] = []
+	if ( json['queue_passengers'] ) {
+		for ( const user of Object.values( json['queue_passengers'] ) ) {
+			const passengerResult = passengerFromJson( user as Record<string, any> )
+			if ( passengerResult.isErr() ) {
+				err.push( ...passengerResult.unwrapErr() )
+			}
+			else {
+				queuePassengers.push( passengerResult.unwrap() )
+			}
+		}
+	}
 
 	const passenger: Passenger[] = []
 	if ( json['passengers'] ) {
@@ -89,10 +104,6 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 		}
 	}
 
-	if ( err.length > 0 ) {
-		return Err( err )
-	}
-
 	const driver = driverFromJson( json['driver'] )
 
 	if ( driver.isErr() ) {
@@ -101,9 +112,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 
 	let category: Option<Category> = None
 	if ( json['category'] !== undefined ) {
-		const categoryResult = categoryFromJson( {
-			value: json['category'] ?? ''
-		} )
+		const categoryResult = categoryFromJson( json['category'] ?? '')
 
 		if ( categoryResult.isErr() ) {
 			err.push( ...categoryResult.unwrapErr() )
@@ -182,6 +191,14 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 		err.push( startDate.unwrapErr() )
 	}
 
+	const feeMethod = newTripFeeMethod( {
+		value: json['fee_method'] ?? ''
+	} )
+
+	if ( feeMethod.isErr() ) {
+		err.push( feeMethod.unwrapErr() )
+	}
+
 	if ( err.length > 0 ) {
 		return Err( err )
 	}
@@ -191,12 +208,14 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 		description  : description.unwrap(),
 		category     : category,
 		state        : state.unwrap(),
+		feeMethod    : feeMethod.unwrap(),
 		id           : id.unwrap(),
 		startDate    : startDate.unwrap().value,
 		endDate      : endDate.unwrap().value,
 		driver       : driver.unwrap(),
 		chatID       : chatID.unwrap(),
 		passengers   : passenger,
+		queuePassengers: queuePassengers,
 		startLocation: locationStart.unwrap(),
 		endLocation  : locationEnd.unwrap()
 	} )
@@ -217,6 +236,7 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 			end_date   : dateToJSON( trip.endDate ),
 			description: trip.description.value,
 			state      : trip.state,
+			fee_method : trip.feeMethod,
 			price      : {
 				amount  : trip.price.amount.value,
 				currency: trip.price.currency.value
@@ -281,6 +301,25 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 		}
 		else {
 			json['passengers'] = null
+		}
+
+		const queuePassengers: Record<string, any>[] = []
+		for ( const passenger of trip.passengers ) {
+			const passengerResult = passengerToJson( passenger )
+
+			if ( passengerResult.isErr() ) {
+				err.push( ...passengerResult.unwrapErr() )
+			}
+			else {
+				queuePassengers.push( passengerResult.unwrap() )
+			}
+		}
+
+		if ( queuePassengers.length > 0 ) {
+			json['queue_passengers'] = queuePassengers
+		}
+		else {
+			json['queue_passengers'] = null
 		}
 
 		if ( err.length > 0 ) {

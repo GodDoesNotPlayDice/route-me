@@ -20,15 +20,15 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 export class TripHistoryPage {
 
 	constructor( private driversService: DriverService ) {
-		this.driversService.getDrivers()
-		    .forEach( ( driver ) => {
-			    if ( driver.state === TripStateEnum.Progress ) {
-				    this.progressDrivers.push( driver )
-			    }
-			    else if ( driver.state === TripStateEnum.Completed ) {
-				    this.completedDrivers.push( driver )
-			    }
-		    } )
+		// this.driversService.getDrivers()
+		//     .forEach( ( driver ) => {
+		// 	    if ( driver.state === TripStateEnum.Progress ) {
+		// 		    this.progressDrivers.push( driver )
+		// 	    }
+		// 	    else if ( driver.state === TripStateEnum.Completed ) {
+		// 		    this.completedDrivers.push( driver )
+		// 	    }
+		//     } )
 	}
 
 	progressDrivers: DriverCardInfo[]  = []

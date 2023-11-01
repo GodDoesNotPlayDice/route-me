@@ -17,6 +17,8 @@ import { AlertService } from 'src/app/shared/services/alert.service'
 import { MapService } from 'src/app/shared/services/map.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripService } from 'src/app/shared/services/trip.service'
+import { newMoney } from 'src/package/shared/domain/models/money'
+import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 
 @Component( {
 	standalone : true,
@@ -48,6 +50,8 @@ export class PublishPage implements ViewDidEnter {
 	formGroup!: FormGroup
 	pageKey        = 'publish'
 	first: boolean = true
+	distance : number | null = null
+	simulatedPrice: number | null = null
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
@@ -73,8 +77,15 @@ export class PublishPage implements ViewDidEnter {
 		if ( dir.isNone() ) {
 			console.log( 'error. add route. publish page' )
 		}
-		const a = await this.tripService.calculateTripPrice( dir.unwrap().distance )
-		console.log( 'a', a )
+		else {
+			const formatoDistancia = new Intl.NumberFormat('en', { minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(dir.unwrap().distance.value / 1000)
+			this.distance = Number.parseFloat(formatoDistancia)
+			//TODO: con backend, esto se mandaria en trip service, y segun currency se parsearia en backend
+			//TODO: talvez sea necesario agregar divisa a conductor
+			const amount = new KilometerPricing( newMoney({value: 300}).unwrap(), this.distance ).calculate()
+			const formatoNumero = new Intl.NumberFormat('en', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(amount)
+			this.simulatedPrice = Number.parseFloat(formatoNumero)
+		}
 	}
 
 	async onPublish(): Promise<void> {
@@ -95,6 +106,7 @@ export class PublishPage implements ViewDidEnter {
 					handler: async () => {
 						const result = await this.tripService.create( {
 							endLocation  : this.salidaInput.mapLocationControl.value!,
+							distance		 : this.distance!,
 							startLocation: this.inicioInput.mapLocationControl.value!,
 							startDate    : this.dateInput.dateControl.value!
 						} )
