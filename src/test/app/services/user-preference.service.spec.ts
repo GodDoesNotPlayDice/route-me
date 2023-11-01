@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing'
 
-import { UserPreferenceService } from 'src/app/shared/services/user-preference.service'
+import { PreferenceService } from 'src/app/shared/services/preference.service'
 
 describe( 'UserPreferenceService', () => {
-	let service: UserPreferenceService
+	let service: PreferenceService
 
 	beforeEach( () => {
 		TestBed.configureTestingModule( {} )
-		service = TestBed.inject( UserPreferenceService )
+		service = TestBed.inject( PreferenceService )
 	} )
 
 	it( 'should be created', () => {
