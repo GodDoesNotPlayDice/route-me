@@ -8,7 +8,7 @@ import {
 export class DriverDocumentNameMother {
 	static random(): Result<DriverDocumentName, Error> {
 		return newDriverDocumentName( {
-			value: faker.helpers.arrayElement( categories )
+			value: faker.helpers.arrayElement( names )
 		} )
 	}
 
@@ -19,6 +19,4 @@ export class DriverDocumentNameMother {
 	}
 }
 
-//TODO: cambiar inputs
-const categories = [ 'Electrónica', 'Ropa', 'Hogar', 'Deportes', 'Juguetes',
-	'Libros', 'Automóviles' ]
+const names = [ 'Licencia', 'Registro', 'Antecedentes', 'Historial']
