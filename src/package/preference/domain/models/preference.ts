@@ -19,6 +19,7 @@ import {
 	newPreferenceSource,
 	PreferenceSource
 } from 'src/package/preference/domain/models/preference-source'
+import { ulid } from 'ulidx'
 
 export interface Preference {
 	id: PreferenceID
@@ -28,7 +29,6 @@ export interface Preference {
 }
 
 export interface PreferenceProps {
-	id: string
 	name: string
 	icon: string
 	source: string
@@ -43,7 +43,7 @@ export interface PreferenceProps {
 export const newPreference = ( props: PreferenceProps): Result<Preference, Error[]> => {
 	const err: Error[] = []
 	const id           = newPreferenceID( {
-		value: props.id
+		value: ulid()
 	} )
 
 	if ( id.isErr() ) {
