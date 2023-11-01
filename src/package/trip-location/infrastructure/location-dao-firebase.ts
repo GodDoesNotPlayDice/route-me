@@ -15,7 +15,7 @@ export class LocationDaoFirebase implements LocationDao {
 	constructor( private firebase: AngularFireDatabase ) {
 	}
 
-	collectionKey = 'locationsv2'
+	collectionKey = 'locations'
 
 	async create( location: TripLocation ): Promise<Result<boolean, Error>> {
 		let completed: string | null = null

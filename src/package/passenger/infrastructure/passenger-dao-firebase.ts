@@ -20,7 +20,7 @@ export class PassengerDaoFirebase implements PassengerDao {
 	constructor( private firebase: AngularFireDatabase ) {
 	}
 
-	collectionKey = 'passengersv2'
+	collectionKey = 'passengers'
 
 	/**
 	 * Create passenger

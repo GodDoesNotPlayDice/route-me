@@ -5,12 +5,12 @@ import {
 } from 'oxide.ts'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
 import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
+import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newValidDate } from 'src/package/shared/domain/models/valid-date'
 import {
 	dateFromJSON,
 	dateToJSON
-} from 'src/package/shared/config/helper/date/date-mapper'
-import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
-import { newValidDate } from 'src/package/shared/domain/models/valid-date'
+} from 'src/package/shared/utils/date/date-mapper'
 import { newLocation } from 'src/package/trip-location/domain/models/trip-location'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
@@ -44,9 +44,9 @@ export const nearTripToJson = ( nearTrip: NearTrip ): Result<Record<string, any>
  * @throws {TripIdInvalidException} - if trip id is invalid
  * @throws {CategoryNameInvalidException} - if category name is invalid
  * @throws {DateInvalidException} - if date is invalid
- * @throws {LocationIdInvalidException} - if location id is invalid
- * @throws {LocationNameInvalidException} - if location name is invalid
- * @throws {LocationCountryCodeInvalidException} - if location country code is invalid
+ * @throws {TripLocationIdInvalidException} - if location id is invalid
+ * @throws {TripLocationNameInvalidException} - if location name is invalid
+ * @throws {TripLocationCountryCodeInvalidException} - if location country code is invalid
  * @throws {PositionInvalidException} - if location position is invalid
  */
 export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, Error[]> => {

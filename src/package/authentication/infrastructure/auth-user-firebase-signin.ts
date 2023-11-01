@@ -21,7 +21,7 @@ export class AuthUserFirebaseSignin implements AuthUserRepository {
 	{
 	}
 
-	collectionKey = 'usersv2'
+	collectionKey = 'users'
 
 	/**
 	 * Logout user
@@ -91,15 +91,19 @@ export class AuthUserFirebaseSignin implements AuthUserRepository {
 
 			let completed: string | null = null
 
-			const json = userToJson( user )
+			const jsonResult = userToJson( user )
 
-			if ( json.isErr() ) {
-				return Err( json.unwrapErr() )
+			if ( jsonResult.isErr() ) {
+				return Err( jsonResult.unwrapErr() )
 			}
 
-			//TODO: seria bueno en el user agregar string proovedor
+			const json = jsonResult.unwrap()
+
+			json['password'] = password.value
+			json['provider'] = 'firebase'
+
 			await this.firebase.database.ref( this.collectionKey )
-			          .push( json.unwrap(),
+			          .push( json,
 				          ( error ) => {
 					          if ( error === null ) {
 						          completed = 'completed'

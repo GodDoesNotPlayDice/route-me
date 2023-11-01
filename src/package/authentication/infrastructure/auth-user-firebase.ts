@@ -20,7 +20,7 @@ export class AuthUserFirebase implements AuthUserRepository {
 	constructor( private firebase: AngularFireDatabase ) {
 	}
 
-	collectionKey = 'usersv2'
+	collectionKey = 'users'
 
 	/**
 	 * Logout user
@@ -89,6 +89,7 @@ export class AuthUserFirebase implements AuthUserRepository {
 		const json = jsonResult.unwrap()
 
 		json['password'] = password.value
+		json['provider'] = 'email'
 
 		await this.firebase.database.ref( this.collectionKey )
 		          .push( json,
