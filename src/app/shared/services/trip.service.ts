@@ -62,7 +62,7 @@ export class TripService {
 	}
 
 	async calculateTripPrice( distance: ValidNumber ): Promise<Option<TripPrice>> {
-		//TODO: obtener moneda del usuario
+		// Se asume que se calcula en dolares y luego se transforma a la moneda del usuario
 		const result = await this.tripRepository.calculateTripPrice( distance,
 			newCurrency( {
 				value: 'USD'
@@ -82,9 +82,7 @@ export class TripService {
 		endLocation: Street,
 		startDate: Date
 	} ): Promise<boolean> {
-		//TODO: driver email fijo
-		// const driver = this.authService.currentDriver
-		const driver = await this.driverService.getDriver()
+		const driver = await this.driverService.currentDriver
 		if ( driver.isNone() ) {
 			console.log( 'driver none' )
 			return false

@@ -42,10 +42,6 @@ export class DriverService {
 
 	currentDriver: Option<Driver> = None
 
-	async getDriver(): Promise<Option<Driver>> {
-		return this.currentDriver
-	}
-
 	async driverRegister(
 		id: DriverCarID,
 		documents: {

@@ -18,6 +18,7 @@ export class ChatService {
 	async createChat(): Promise<Option<ChatID>> {
 		const result = await createChat( this.chatDao )
 		if ( result.isErr() ) {
+			console.log( 'error. create chat service', result.unwrapErr() )
 			return None
 		}
 		return Some( result.unwrap().id )

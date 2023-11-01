@@ -4,8 +4,11 @@ import {
 } from '@angular/core'
 import * as mapboxgl from 'mapbox-gl'
 import {
+	Err,
 	None,
+	Ok,
 	Option,
+	Result,
 	Some
 } from 'oxide.ts'
 import {
@@ -134,7 +137,7 @@ export class MapService implements OnDestroy {
 	}
 
 	async addRouteMap( pageKey: string, inicio: Position,
-		final: Position ): Promise<Option<Direction>>
+		final: Position ): Promise<Result<Direction, Error[]>>
 	{
 		const directionResult = await this.directionService.getDirection( inicio,
 			final )
@@ -142,17 +145,15 @@ export class MapService implements OnDestroy {
 
 		if ( directionResult.isErr() ) {
 			console.log( 'get direction. map service' )
-			console.log( directionResult.unwrapErr() )
-			return None
+			return Err( directionResult.unwrapErr() )
 		}
 		const result = await this.mapRepository.addRouteMap( pageKey,
 			directionResult.unwrap().coordinates )
 
 		if ( result.isErr() ) {
 			console.log( 'add route map. map service' )
-			console.log( result.unwrapErr() )
-			return None
+			return Err( [ result.unwrapErr() ] )
 		}
-		return Some( directionResult.unwrap() )
+		return Ok( directionResult.unwrap() )
 	}
 }
