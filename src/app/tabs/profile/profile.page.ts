@@ -9,6 +9,7 @@ import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { LabeledIconComponent } from 'src/app/shared/components/labeled-icon/labeled-icon.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { DriverService } from 'src/app/shared/services/driver.service'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { User } from 'src/package/user/domain/models/user'
@@ -35,6 +36,7 @@ import {MatIconModule} from "@angular/material/icon";
 export class ProfilePage implements ViewDidEnter {
 
 	constructor( private authService: AuthService,
+		private driverService: DriverService,
 		private router: Router )
 	{
 	}
@@ -48,9 +50,11 @@ export class ProfilePage implements ViewDidEnter {
 			this.edad      =
 				new Date().getFullYear() - this.passenger.birthDay.value.getFullYear()
 			this.profile_label = `Bienvenido ${this.passenger.name.value}`
+
+			if ( this.driverService.currentDriver.isSome() ){
+				this.driver = this.driverService.currentDriver.unwrap()
+			}
 		}
-
-
 	}
 	profile_label = 'Perfil'
 	edad: number | undefined

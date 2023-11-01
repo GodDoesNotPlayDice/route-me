@@ -71,11 +71,11 @@ export class PublishPage implements ViewDidEnter {
 	async addRoute() {
 		const start = this.inicioInput.mapLocationControl.value!
 		const end   = this.salidaInput.mapLocationControl.value!
-		//TODO: result error en agregar path a mapa
 		const dir   = await this.map.addRouteMap( this.pageKey, start.center,
 			end.center )
-		if ( dir.isNone() ) {
+		if ( dir.isErr() ) {
 			console.log( 'error. add route. publish page' )
+			console.log( dir.unwrapErr() )
 		}
 		else {
 			const formatoDistancia = new Intl.NumberFormat('en', { minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(dir.unwrap().distance.value / 1000)

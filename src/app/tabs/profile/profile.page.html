@@ -3,63 +3,66 @@
 		leadNameIcon=""
 		[label]="profile_label">
 		<mat-icon
-				(click)="onLogout()"
-				fontIcon='logout'></mat-icon>
+			(click)="onLogout()"
+			fontIcon='logout'></mat-icon>
 	</app-app-bar-clone>
-	<div class="flex items-center flex-col my-5 gap-6">
-		<div class="flex">
-			<img class="rounded-full w-32"
-				src="https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png">
-		</div>
-		<div *ngIf="passenger"
-			class="flex flex-col gap-2 font-gotham text-center text-xl">
-			<div class="flex justify-center gap-2">
-				<div>{{passenger.name.value | titlecase}}</div>
-				<div>{{passenger.lastName.value | titlecase}}</div>
+	<div *ngIf="passenger">
+		<div class="flex items-center flex-col my-5 gap-6">
+			<div class="flex">
+				<img class="rounded-full w-32"
+					src="https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png">
 			</div>
-			<div>{{edad}} años</div>
-			<div>{{passenger.phone.value}}</div>
+			<div
+				class="flex flex-col gap-2 font-gotham text-center text-xl">
+				<div class="flex justify-center gap-2">
+					<div>{{passenger.name.value | titlecase}}</div>
+					<div>{{passenger.lastName.value | titlecase}}</div>
+				</div>
+				<div>{{edad}} años</div>
+				<div>{{passenger.phone.value}}</div>
+				<div class="flex justify-center font-gotham text-base">
+					5.0 - 4 Opiniones
+				</div>
+			</div>
+		</div>
+		<div *ngIf="driver && driver.enabled">
+			<app-divider></app-divider>
+			<div class="flex flex-wrap w-full px-2 justify-evenly">
+				<div *ngFor="let doc of driver.documents">
+					<app-labeled-icon
+						[enabled]="doc.enabled"
+						iconName="add-circle-outline"
+						position="row"
+						[textLabel]="doc.name.value"></app-labeled-icon>
+				</div>
+			</div>
+		</div>
+		<app-divider></app-divider>
+		<div class="px-2 flex flex-col gap-7">
+			<div>
+				<div class="font-gotham text-xl">
+					Sobre Mi
+				</div>
+				<div class="text-gray-700 text-base font-normal">
+					{{passenger.description.value}}
+				</div>
+			</div>
+			<ng-container *ngIf="passenger.preferences.length > 0">
+				<div class="font-gotham text-xl">
+					Preferencias
+				</div>
+				<div class="flex justify-evenly">
+					<div *ngFor="let pref of passenger.preferences">
+						<app-labeled-icon position="col"
+							[iconName]="pref.icon.value"
+							[textLabel]="pref.name.value"
+						></app-labeled-icon>
+					</div>
+				</div>
+			</ng-container>
 		</div>
 	</div>
-	<app-divider></app-divider>
-	<div class="flex flex-col gap-4">
-		<div class="flex justify-evenly">
-			<app-labeled-icon iconName="add-circle-outline"
-				position="row"
-				textLabel="Documento"></app-labeled-icon>
-			<app-labeled-icon iconName="add-circle-outline"
-				position="row"
-				textLabel="Documento"></app-labeled-icon>
-		</div>
-		<div class="flex justify-center font-gotham text-base">
-			5.0 - 4 Opiniones
-		</div>
-	</div>
-	<app-divider></app-divider>
-	<div *ngIf="passenger"
-		class="px-2 flex flex-col gap-7">
-		<div class="font-gotham text-xl">
-			Sobre Mi
-		</div>
-		<div class="text-gray-700 text-base font-normal">
-			{{passenger.description.value}}
-		</div>
-		<div class="font-gotham text-xl">
-			Preferencias
-		</div>
-		<div class="flex justify-evenly">
-			<app-labeled-icon iconName="add-circle-outline"
-				position="col"
-				textLabel="Con musica"></app-labeled-icon>
-			<app-labeled-icon iconName="add-circle-outline"
-				position="col"
-				textLabel="Con musica"></app-labeled-icon>
-			<app-labeled-icon iconName="add-circle-outline"
-				position="col"
-				textLabel="Con musica"></app-labeled-icon>
-			<app-labeled-icon iconName="add-circle-outline"
-				position="col"
-				textLabel="Con musica"></app-labeled-icon>
-		</div>
+	<div *ngIf="!passenger">
+		No hay información
 	</div>
 </ion-content>

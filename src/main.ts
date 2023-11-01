@@ -57,6 +57,8 @@ import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
 import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
 import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
+import { PreferenceDao } from 'src/package/preference/domain/dao/preference-dao'
+import { PreferenceDaoFirebase } from 'src/package/preference/infrastructure/preference-dao-firebase'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
@@ -95,11 +97,15 @@ bootstrapApplication( AppComponent, {
 		{
 			provide   : DriverCarDao,
 			useFactory: ( firebase: AngularFireDatabase ) => {
-				// useFactory: ( http: HttpClient ) => {
-				// 	return new DriverCarDaoApi( http )
 					return new DriverCarDaoFirebase( firebase )
 			},
-			// deps      : [ HttpClient ]
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : PreferenceDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new PreferenceDaoFirebase( firebase )
+			},
 			deps      : [ AngularFireDatabase ]
 		},
 		{

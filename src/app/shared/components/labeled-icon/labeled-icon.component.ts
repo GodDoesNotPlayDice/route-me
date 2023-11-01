@@ -22,4 +22,5 @@ export class LabeledIconComponent {
 	@Input() position: LabeledIconPositionType = 'row'
 	@Input() textLabel: string                 = ''
 	@Input() iconName: string                  = 'logo-ionic'
+	@Input() enabled: boolean                  = false
 }
