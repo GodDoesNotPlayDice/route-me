@@ -21,6 +21,7 @@ import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-butt
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { LoadingService } from 'src/app/shared/services/loading.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
@@ -46,6 +47,7 @@ export class Step1Page implements ViewDidEnter {
 
 	constructor( private store: Store<AppState>,
 		private alertService: AlertService,
+		private loadingService : LoadingService,
 		private toastService: ToastService,
 		private router: Router,
 		private auth: AuthService )
@@ -96,8 +98,9 @@ export class Step1Page implements ViewDidEnter {
 		//TODO: si esta el check de mantener sesion, guardar en localstorage
 		const email    = this.userInput.textControl.value!
 		const password = this.passwordInput.textControl.value!
+		await this.loadingService.showLoading( 'Guardando')
 		const result   = await this.auth.userRegister( email, password )
-
+		await this.loadingService.dismissLoading()
 		if ( result ) {
 			this.store.dispatch( notifyStep() )
 			await this.router.navigate( [ '/register/step2' ] )

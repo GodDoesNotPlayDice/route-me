@@ -25,7 +25,11 @@ import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-butt
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { TripService } from 'src/app/shared/services/trip.service'
+import { createPreference } from 'src/package/preference/application/create-preference'
+import { PreferenceDao } from 'src/package/preference/domain/dao/preference-dao'
+import { newPreference } from 'src/package/preference/domain/models/preference'
 import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
+import { preferenceSeeds } from 'src/test/app/stubs/seed/preference-seeds'
 
 @Component( {
 	standalone : true,
@@ -51,6 +55,7 @@ export class LoginPage implements ViewDidEnter {
 		private router: Router,
 		private tripService : TripService,
 		private alertService: AlertService,
+		private prefDao : PreferenceDao
 	)
 	{}
 

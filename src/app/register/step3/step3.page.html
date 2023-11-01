@@ -13,7 +13,11 @@
 				<app-input-area #area
 					label="Sobre mi"
 					placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
-				<app-multiple-selector-input
+				<div *ngIf="loadingPreferences">
+					<div>Cargando preferencias...</div>
+					<ion-spinner name="dots"></ion-spinner>
+				</div>
+				<app-multiple-selector-input *ngIf="!loadingPreferences && preferences.length > 0"
 					label="Preferencia al viajar"
 					[databaseList]="preferences"
 					placeholder="Elegir"

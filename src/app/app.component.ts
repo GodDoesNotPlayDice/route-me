@@ -9,6 +9,7 @@ import {
 } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
 import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
+import { PreferenceService } from 'src/app/shared/services/preference.service'
 import { UrlService } from 'src/app/shared/services/url.service'
 import {
 	Dropdown,

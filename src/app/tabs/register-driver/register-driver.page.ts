@@ -1,6 +1,5 @@
 import {
 	Component,
-	OnInit,
 	ViewChild
 } from '@angular/core'
 import { CommonModule } from '@angular/common'
@@ -17,6 +16,7 @@ import { DividerComponent } from 'src/app/shared/components/divider/divider.comp
 import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { DriverService } from 'src/app/shared/services/driver.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 
 @Component( {
 	selector   : 'app-register-driver',
@@ -27,7 +27,9 @@ import { DriverService } from 'src/app/shared/services/driver.service'
 		FilledButtonComponent, CarModelSelectorComponent, DividerComponent ]
 } )
 export class RegisterDriverPage implements ViewDidEnter {
-	constructor( private driverService: DriverService ) { }
+	constructor( private driverService: DriverService,
+		private toastService: ToastService
+	) { }
 
 	@ViewChild( 'licencia' ) licenceInput !: FileInputComponent
 	@ViewChild( 'registro' ) registerInput !: FileInputComponent
@@ -58,7 +60,6 @@ export class RegisterDriverPage implements ViewDidEnter {
 	async buttonClick() {
 		this.formGroup.updateValueAndValidity()
 		this.formGroup.markAllAsTouched()
-		console.log( 'formGroup', this.formGroup.value )
 
 		if ( !this.formGroup.valid )
 		{
@@ -86,6 +87,22 @@ export class RegisterDriverPage implements ViewDidEnter {
 				}
 			]
 		)
+
+		if ( result ){
+			await this.toastService.presentToast( {
+				message : 'Registro exitoso',
+				duration: 1500,
+				position: 'bottom'
+			} )
+			this.reset()
+			this.waitForEnable = true
+		}else {
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
+		}
 	}
 
 	private reset() {

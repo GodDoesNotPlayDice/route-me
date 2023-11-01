@@ -19,8 +19,9 @@ import { InputAreaComponent } from 'src/app/shared/components/input-area/input-a
 import { MultipleSelectorInputComponent } from 'src/app/shared/components/multiple-selector-input/multiple-selector-input.component'
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { LoadingService } from 'src/app/shared/services/loading.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
-import { UserPreferenceService } from 'src/app/shared/services/user-preference.service'
+import { PreferenceService } from 'src/app/shared/services/preference.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import {
 	clearStep,
@@ -48,47 +49,57 @@ export class Step3Page implements ViewDidEnter {
 
 	constructor( private store: Store<AppState>, private router: Router,
 		private toastService: ToastService,
-		private userPreferenceService: UserPreferenceService,
+		private loadingService: LoadingService,
+		private preferenceService: PreferenceService,
 		private auth: AuthService )
-	{
-		this.preferences = this.userPreferenceService.getPreferences()
-		                       .map(
-			                       ( preference ): MultipleSelectorData => ( {
-				                       id      : preference.id.value,
-				                       name    : preference.name.value,
-				                       icon    : preference.icon.value,
-				                       source  : preference.source.value,
-				                       selected: false
-			                       } ) )
-	}
+	{}
 
 	@ViewChild( 'appBar' ) appBar !: AppBarCloneComponent
 	@ViewChild( 'area' ) areaInput !: InputAreaComponent
 	@ViewChild( 'preference' ) preferenceInput !: MultipleSelectorInputComponent
 
-	formGroup!: FormGroup
+	// formGroup!: FormGroup
 
-	readonly preferences: MultipleSelectorData[] = []
+	loadingPreferences: boolean         = false
+	preferences: MultipleSelectorData[] = []
 
-	ionViewDidEnter() {
-		this.formGroup = new FormGroup( [
-			this.areaInput.textControl,
-			this.preferenceInput.multipleSelectorControl
-		] )
+	async ionViewDidEnter() {
+		this.loadingPreferences = true
+
+		const prefs      = await this.preferenceService.getPreferences()
+		this.preferences = prefs.map(
+			( preference ): MultipleSelectorData => ( {
+				id      : preference.id.value,
+				name    : preference.name.value,
+				icon    : preference.icon.value,
+				source  : preference.source.value,
+				selected: false
+			} ) )
+
+		this.loadingPreferences = false
+
+		// this.formGroup = new FormGroup( [
+		// 	this.areaInput.textControl,
+		// 	this.preferenceInput.multipleSelectorControl
+		// ] )
 	}
 
 	async submit() {
-		this.formGroup.updateValueAndValidity()
-		this.formGroup.markAllAsTouched()
+		// this.formGroup.updateValueAndValidity()
+		// this.formGroup.markAllAsTouched()
+		//
+		// if ( !this.formGroup.valid ) {
+		// 	return
+		// }
 
-		if ( !this.formGroup.valid ) {
-			return
-		}
+		await this.loadingService.showLoading( 'Guardando' )
 
 		const updated = await this.auth.updatePassenger( {
 			description: this.areaInput.textControl.value!,
 			preferences: this.preferenceInput.multipleSelectorControl.value!
 		} )
+
+		await this.loadingService.dismissLoading()
 
 		if ( !updated ) {
 			await this.toastService.presentToast( {
@@ -98,7 +109,6 @@ export class Step3Page implements ViewDidEnter {
 			} )
 			return
 		}
-
 		this.store.dispatch( notifyStep() )
 		await this.router.navigate( [ '/tabs/home' ] )
 		this.store.dispatch( clearStep() )

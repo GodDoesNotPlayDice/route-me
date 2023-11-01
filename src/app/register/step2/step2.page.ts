@@ -22,6 +22,7 @@ import { SingleSelectorInputComponent } from 'src/app/shared/components/single-s
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
+import { LoadingService } from 'src/app/shared/services/loading.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import { notifyStep } from 'src/app/shared/state/stepper/step.actions'
@@ -50,6 +51,7 @@ export class Step2Page implements ViewDidEnter {
 
 	constructor( private store: Store<AppState>,
 		private toastService: ToastService,
+		private loadingService : LoadingService,
 		private countryService: CountryPhoneCodeService,
 		private auth: AuthService,
 		private router: Router )
@@ -116,6 +118,7 @@ export class Step2Page implements ViewDidEnter {
 			return
 		}
 
+		await this.loadingService.showLoading( 'Guardando')
 		const result = await this.auth.registerPassenger( {
 			name    : this.userInput.textControl.value!,
 			lastName: this.lastNameInput.textControl.value!,
@@ -124,6 +127,7 @@ export class Step2Page implements ViewDidEnter {
 			birthDay: this.dateSelectorInput.dateControl.value!,
 			gender  : this.radioButtonInput.radioControl.value!
 		} )
+		await this.loadingService.dismissLoading()
 
 		if ( result ) {
 			this.store.dispatch( notifyStep() )
