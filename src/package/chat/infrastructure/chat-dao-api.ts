@@ -16,7 +16,7 @@ export class ChatDaoApi implements ChatDao {
 	private url = environment.apiUrl
 
 	async getAll(): Promise<Result<Chat[], Error[]>> {
-		return Err( [ new ApiOperationException( 'chat get all  api' ) ] )
+		return Err( [ new ApiOperationException( 'chat get all api' ) ] )
 	}
 
 	async getById( id: ChatID ): Promise<Result<Chat, Error[]>> {

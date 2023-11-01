@@ -22,13 +22,12 @@ export const createChat = async ( dao: ChatDao ): Promise<Result<Chat, Error[]>>
 		id      : id.unwrap(),
 		messages: []
 	}
-	//TODO: comentado temporal, por trip service create
 
-	// const result     = await dao.create( chat )
-	//
-	// if ( result.isErr() ) {
-	//   return Err( result.unwrapErr() )
-	// }
+	const result     = await dao.create( chat )
+
+	if ( result.isErr() ) {
+	  return Err( result.unwrapErr() )
+	}
 
 	return Ok( chat )
 }
