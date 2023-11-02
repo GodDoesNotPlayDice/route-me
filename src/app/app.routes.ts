@@ -5,7 +5,7 @@ import { CanRegisterGuard } from 'src/app/shared/guard/can-register.guard'
 export const routes: Routes = [
 	{
 		path      : '',
-		redirectTo: 'login',
+		redirectTo: 'test',
 		pathMatch : 'full'
 	},
 	{
@@ -40,6 +40,10 @@ export const routes: Routes = [
 		path         : 'chat',
 		canActivate  : [ CanLoginGuard ],
 		loadComponent: () => import('./chat/chat.page').then( m => m.ChatPage )
+	},
+	{
+		path: 'test',
+		loadComponent: () => import('./test/test.page').then( m => m.TestPage)
 	},
 	{
 		path         : '**',

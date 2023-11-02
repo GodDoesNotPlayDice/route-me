@@ -15,8 +15,14 @@ import {
 	AngularFireDatabase,
 	AngularFireDatabaseModule
 } from '@angular/fire/compat/database'
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
-import { AngularFireStorageModule } from '@angular/fire/compat/storage'
+import {
+	AngularFirestore,
+	AngularFirestoreModule
+} from '@angular/fire/compat/firestore'
+import {
+	AngularFireStorage,
+	AngularFireStorageModule
+} from '@angular/fire/compat/storage'
 import {
 	FormsModule,
 	ReactiveFormsModule
@@ -53,6 +59,8 @@ import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver
 import { DriverDocumentDaoFirebase } from 'src/package/driver-document/infrastructure/driver-document-dao-firebase'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { DriverDaoFirebase } from 'src/package/driver/infrastructure/driver-dao-firebase'
+import { ImageUploadRepository } from 'src/package/image-upload-api/domain/repository/image-upload-repository'
+import { ImageUploadFirestorage } from 'src/package/image-upload-api/infrastructure/image-upload-firestorage'
 import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
 import { IpDaoIpApi } from 'src/package/ip-api/infrastructure/ipapi/ip-dao-ip-api'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
@@ -146,6 +154,13 @@ bootstrapApplication( AppComponent, {
 				return new TripRepositoryApi( http )
 			},
 			deps      : [ HttpClient ]
+		},
+		{
+			provide   : ImageUploadRepository,
+			useFactory: ( fireStorage: AngularFireStorage ) => {
+				return new ImageUploadFirestorage( fireStorage )
+			},
+			deps      : [ AngularFireStorage ]
 		},
 		{
 			provide   : CountryDao,
