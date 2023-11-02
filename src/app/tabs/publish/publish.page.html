@@ -11,8 +11,11 @@
 				placeholder="Destino"></app-map-location-input>
 			<app-date-time-selector #date
 				label="Fecha Inicio"></app-date-time-selector>
-			<div *ngIf="distance && simulatedPrice">
+			<div *ngIf="distance && simulatedPrice && !loadingPrice">
 				Precio estimado: {{ simulatedPrice }} por {{ distance }} km
+			</div>
+			<div *ngIf="!distance && !simulatedPrice && loadingPrice">
+				Cargando precio estimado...
 			</div>
 		</div>
 		<app-adaptative-button class="w-full"

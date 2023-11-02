@@ -42,6 +42,8 @@ import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { ChatDaoFirebase } from 'src/package/chat/infrastructure/chat-dao-firebase'
 import { CountryDao } from 'src/package/country-api/domain/dao/country-dao'
 import { CountryDaoRestCountries } from 'src/package/country-api/infrastructure/rest-countries/country-dao-rest-countries'
+import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
+import { CurrencyDaoCurrencyExchange } from 'src/package/currency-api/infrastructure/currency-exchange/currency-dao-currency-exchange'
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
@@ -51,6 +53,8 @@ import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver
 import { DriverDocumentDaoFirebase } from 'src/package/driver-document/infrastructure/driver-document-dao-firebase'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { DriverDaoFirebase } from 'src/package/driver/infrastructure/driver-dao-firebase'
+import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
+import { IpDaoIpApi } from 'src/package/ip-api/infrastructure/ipapi/ip-dao-ip-api'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
@@ -182,6 +186,20 @@ bootstrapApplication( AppComponent, {
 			provide   : DirectionRepository,
 			useFactory: ( http: HttpClient ) => {
 				return new DirectionMapBox( http )
+			},
+			deps      : [ HttpClient ]
+		},
+		{
+			provide   : IpDao,
+			useFactory: ( http: HttpClient ) => {
+				return new IpDaoIpApi( http )
+			},
+			deps      : [ HttpClient ]
+		},
+		{
+			provide   : CurrencyDao,
+			useFactory: ( http: HttpClient ) => {
+				return new CurrencyDaoCurrencyExchange( http )
 			},
 			deps      : [ HttpClient ]
 		},

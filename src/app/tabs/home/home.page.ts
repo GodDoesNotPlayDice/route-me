@@ -7,7 +7,6 @@ import {
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
-import { DriverService } from 'src/app/shared/services/driver.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'

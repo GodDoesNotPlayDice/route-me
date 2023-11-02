@@ -25,10 +25,14 @@ import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-butt
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { TripService } from 'src/app/shared/services/trip.service'
+import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
+import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
 import { createPreference } from 'src/package/preference/application/create-preference'
 import { PreferenceDao } from 'src/package/preference/domain/dao/preference-dao'
 import { newPreference } from 'src/package/preference/domain/models/preference'
 import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
+import { newMoney } from 'src/package/shared/domain/models/money'
+import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 import { preferenceSeeds } from 'src/test/app/stubs/seed/preference-seeds'
 
 @Component( {
@@ -53,9 +57,7 @@ export class LoginPage implements ViewDidEnter {
 	constructor(
 		private authService: AuthService,
 		private router: Router,
-		private tripService : TripService,
 		private alertService: AlertService,
-		private prefDao : PreferenceDao
 	)
 	{}
 
