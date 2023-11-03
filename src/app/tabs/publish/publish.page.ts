@@ -5,6 +5,8 @@ import {
 	ViewChild
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
+import { MatButtonModule } from '@angular/material/button'
+import { MatIconModule } from '@angular/material/icon'
 import {
 	IonicModule,
 	ViewDidEnter
@@ -27,13 +29,15 @@ import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 	selector   : 'app-publish',
 	templateUrl: './publish.page.html',
 	styleUrls  : [ './publish.page.scss' ],
-	imports    : [
+	imports: [
 		IonicModule,
 		CommonModule,
 		InputTextComponent,
 		AdaptativeButtonComponent,
 		MapLocationInputComponent,
-		DateTimeSelectorComponent
+		DateTimeSelectorComponent,
+		MatIconModule,
+		MatButtonModule
 	]
 } )
 export class PublishPage implements ViewDidEnter {
@@ -71,6 +75,8 @@ export class PublishPage implements ViewDidEnter {
 			}
 			return null
 		} )
+
+		await this.map.autoFollow()
 	}
 
 	async addRoute() {

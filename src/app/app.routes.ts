@@ -5,7 +5,7 @@ import { CanRegisterGuard } from 'src/app/shared/guard/can-register.guard'
 export const routes: Routes = [
 	{
 		path      : '',
-		redirectTo: 'test',
+		redirectTo: 'login',
 		pathMatch : 'full'
 	},
 	{

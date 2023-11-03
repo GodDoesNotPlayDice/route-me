@@ -49,6 +49,7 @@ export class HomePage implements ViewDidEnter {
 				const formatedEndLocationName = `${ endSplitted[ 0 ] }, ${ endSplitted[ 1 ] }, ${ endSplitted[ 3 ] }`
 
 				return {
+					id							 : trip.id.value,
 					currency				 : trip.price.currency.value,
 					cost             : trip.price.amount.value,
 					date             : trip.startDate.toLocaleString(),

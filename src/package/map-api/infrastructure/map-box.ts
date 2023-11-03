@@ -174,7 +174,6 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	async init( key: string, divElement: HTMLDivElement,
 		center: Position | null ): Promise<Result<mapboxgl.Map, Error>> {
 		try {
-
 			const map = new mapboxgl.Map( {
 				container  : divElement.id,
 				accessToken: environment.mapBoxApiKey,

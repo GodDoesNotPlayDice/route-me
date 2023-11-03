@@ -102,8 +102,9 @@ export class MapService implements OnDestroy {
 		return true
 	}
 
-	async autoFollow( center: Position ): Promise<boolean> {
-		const result = await this.mapRepository.autoFollow( center )
+	async autoFollow( center?: Position ): Promise<boolean> {
+		if (this.lastPosition === null) return false
+		const result = await this.mapRepository.autoFollow( center ?? this.lastPosition)
 		if ( result.isErr() ) {
 			console.log( 'auto follow. map service' )
 			console.log( result.unwrapErr() )

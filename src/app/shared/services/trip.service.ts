@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import {
 	None,
 	Option,
+	Result,
 	Some
 } from 'oxide.ts'
 import { AuthService } from 'src/app/shared/services/auth.service'
@@ -17,8 +18,10 @@ import {
 import { Street } from 'src/package/street-api/domain/models/street'
 import { createTrip } from 'src/package/trip/application/create-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
+import { getTripByID } from 'src/package/trip/application/get-trip-by-id'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
 import {
 	newTripPrice,
 	TripPrice
@@ -40,6 +43,10 @@ export class TripService {
 		private authService: AuthService
 	)
 	{ }
+
+	async getTripByID( id: TripID ): Promise<Result<Trip, Error[]>>{
+		return await getTripByID( this.tripDao, id )
+	}
 
 	async getAllTrips(): Promise<Trip[]> {
 		const result = await getAllTrips( this.tripDao )
