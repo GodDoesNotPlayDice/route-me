@@ -16,9 +16,12 @@ import {
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component'
+import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.pipe'
+import { AlertService } from 'src/app/shared/services/alert.service'
 import { MapService } from 'src/app/shared/services/map.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { UrlService } from 'src/app/shared/services/url.service'
+import { Trip } from 'src/package/trip/domain/models/trip'
 
 @Component( {
 	standalone : true,
@@ -30,7 +33,8 @@ import { UrlService } from 'src/app/shared/services/url.service'
 		AdaptativeButtonComponent,
 		DividerComponent,
 		ItemListComponent,
-		RouterLink
+		RouterLink,
+		ParseLocationNamePipe
 	],
 	styleUrls  : [ './trip-details.page.scss' ]
 } )
@@ -39,11 +43,14 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 	constructor( private urlService: UrlService,
 		private map: MapService,
 		private tripService: TripService,
+		private alertService: AlertService,
 		private router: Router )
 	{}
 
 	@ViewChild( 'dmap' ) divElementElementRef!: ElementRef<HTMLDivElement>
-	prevHref: string = '/tabs/home'
+	prevHref: string  = '/tabs/home'
+	trip: Trip | null = null
+	loading : boolean = false
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( 'detail', this.divElementElementRef.nativeElement )
@@ -54,9 +61,10 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 			this.prevHref = url
 		} )
 
+		this.loading = true
 		const state = this.router.getCurrentNavigation()?.extras.state
-		const id = state?.['id'] ?? null
-		if ( id === null ){
+		const id    = state?.['id'] ?? null
+		if ( id === null ) {
 			await this.router.navigate( [ this.prevHref ] )
 			return
 		}
@@ -65,7 +73,23 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 			value: id
 		} )
 
-		console.log( 'result')
-		console.log( result)
+		if ( result.isErr() ) {
+			await this.alertService.presentAlert( {
+				header : 'Fallo al cargar el viaje',
+				message: `Intente nuevamente`,
+				buttons: [
+					{
+						text   : 'Devolverse',
+						handler: async () => {
+							await this.router.navigate( [ this.prevHref ] )
+						}
+					}
+				]
+			} )
+		}
+		else {
+			this.trip = result.unwrap()
+		}
+		this.loading = false
 	}
 }

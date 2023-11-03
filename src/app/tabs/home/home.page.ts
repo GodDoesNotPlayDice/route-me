@@ -8,9 +8,13 @@ import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-c
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 import { TripService } from 'src/app/shared/services/trip.service'
+import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
+import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
+import { newMoney } from 'src/package/shared/domain/models/money'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
+import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 
 @Component( {
 	standalone : true,
@@ -27,7 +31,8 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 } )
 export class HomePage implements ViewDidEnter {
 
-	constructor( private trip: TripService ) {}
+	constructor( private trip: TripService,
+		private ipDao : IpDao, private currencyDao : CurrencyDao) {}
 
 
 	info: DriverCardInfo[] = []
@@ -41,6 +46,11 @@ export class HomePage implements ViewDidEnter {
 		const result = await this.trip.getAllByState( TripStateEnum.Open )
 
 		if ( result.length > 0 ) {
+				const resultIP = await this.ipDao.getIp()
+				const resultCurrency = await this.currencyDao.getCurrencyExchange(
+					'USD',
+					resultIP.unwrap().currency,
+				)
 			this.info = result.map( ( trip ): DriverCardInfo => {
 				const startSplitted = trip.startLocation.name.value.split( ',' )
 				const formatedStartLocationName = `${ startSplitted[ 0 ] }, ${ startSplitted[ 1 ] }, ${ startSplitted[ 3 ] }`
@@ -48,10 +58,17 @@ export class HomePage implements ViewDidEnter {
 				const endSplitted = trip.endLocation.name.value.split( ',' )
 				const formatedEndLocationName = `${ endSplitted[ 0 ] }, ${ endSplitted[ 1 ] }, ${ endSplitted[ 3 ] }`
 
+				const amountUSD = trip.price.amount.value
+				const targetAmount = amountUSD * resultCurrency.unwrap().value
+				const parsedAmount = new Intl.NumberFormat(
+					resultIP.unwrap().languages[0], {
+						style   : 'currency',
+						currency: resultIP.unwrap().currency
+					} ).format( targetAmount )
 				return {
 					id							 : trip.id.value,
-					currency				 : trip.price.currency.value,
-					cost             : trip.price.amount.value,
+					currency				 : resultIP.unwrap().currency,
+					cost             : parsedAmount,
 					date             : trip.startDate.toLocaleString(),
 					state            : trip.state,
 					endLocationName  : formatedEndLocationName,

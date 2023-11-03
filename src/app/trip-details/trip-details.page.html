@@ -6,27 +6,27 @@
 			</ion-buttons>
 			<ion-title>Trip Details</ion-title>
 		</div>
-		<div class="flex flex-col gap-4">
+		<div *ngIf="trip !== null" class="flex flex-col gap-4">
 			<div class="flex flex-col gap-6 px-5 ">
 				<div class="flex">
 					<div class="basis-1/2">Fecha</div>
-					<div class="basis-1/2">Viernes 25 enero - 07:45</div>
+					<div class="basis-1/2">{{ trip.startDate | date:'ccc dd MMMM - HH:mm ' }}</div>
 				</div>
 				<div class="flex">
 					<div class="basis-1/2">Estado</div>
-					<div class="basis-1/2">En planificacion</div>
+					<div class="basis-1/2">{{ trip.state }}</div>
 				</div>
 				<div class="flex">
 					<div class="basis-1/2">Conductor</div>
-					<div class="basis-1/2">Nombre</div>
+					<div class="basis-1/2">{{ trip.driver.passenger.name.value }}</div>
 				</div>
 				<div class="flex">
 					<div class="basis-1/2">Inicio</div>
-					<div class="basis-1/2">Direccion Inicio</div>
+					<div class="basis-1/2">{{trip.startLocation.name.value | parseLocationName}}</div>
 				</div>
 				<div class="flex">
 					<div class="basis-1/2">Direccion Fin</div>
-					<div class="basis-1/2">Direccion Destino</div>
+					<div class="basis-1/2">{{trip.endLocation.name.value}}</div>
 				</div>
 				<div class="flex justify-center gap-4">
 					<app-adaptative-button text_color="text-white"

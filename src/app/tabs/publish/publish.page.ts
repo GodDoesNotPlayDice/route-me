@@ -96,12 +96,12 @@ export class PublishPage implements ViewDidEnter {
 				resultIP.unwrap().currency,
 			)
 			this.distance = +(dir.unwrap().distance.value / 1000).toFixed(3)
-			const amountUSD = new KilometerPricing( newMoney({value: 0.33}).unwrap(), this.distance ).calculate()
+			const amountUSD = new KilometerPricing( newMoney({value: 0.35}).unwrap(), this.distance ).calculate()
 			const targetAmount = amountUSD * resultCurrency.unwrap().value
 			this.simulatedPrice = new Intl.NumberFormat(
 				resultIP.unwrap().languages[0], {
 					style   : 'currency',
-					currency: resultIP.unwrap().currency
+				 	currency: resultIP.unwrap().currency
 				} ).format( targetAmount )
 			this.loadingPrice = false
 		}
@@ -113,7 +113,7 @@ export class PublishPage implements ViewDidEnter {
 
 		if ( !this.formGroup.valid ) { return }
 
-		await this.alertService.presentAlert( {
+	await this.alertService.presentAlert( {
 			header : 'Confirma que deseas publicar el viaje',
 			message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
 			buttons: [

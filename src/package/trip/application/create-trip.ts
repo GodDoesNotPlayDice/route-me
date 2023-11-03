@@ -75,7 +75,7 @@ export const createTrip = async ( dao: TripDao,
 	}
 
 	const money = newMoney( {
-		value: 300
+		value: 0.35
 	} )
 
 	if ( money.isErr() ) {

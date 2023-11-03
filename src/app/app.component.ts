@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
 	{}
 
 	async ngOnInit() {
-		// await this.countryPhoneCode.init()
+		await this.countryPhoneCode.init()
 		this.router.events.subscribe( ( val ) => {
 			if ( val instanceof NavigationEnd ) {
 				this.urlService.setPreviousUrl( val.url )
