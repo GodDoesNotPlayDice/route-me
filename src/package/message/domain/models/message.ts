@@ -5,6 +5,7 @@ import { Email } from 'src/package/shared/domain/models/email'
 
 export interface Message {
 	id: MessageID,
+	timestamp: number
 	passengerName: PassengerName
 	passengerEmail: Email
 	content: MessageContent

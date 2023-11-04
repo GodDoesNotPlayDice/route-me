@@ -22,6 +22,7 @@ import { FilledButtonComponent } from 'src/app/shared/components/filled-button/f
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { LogoComponent } from 'src/app/shared/components/logo/logo.component'
 import { OutlinedButtonComponent } from 'src/app/shared/components/outlined-button/outlined-button.component'
+import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.pipe'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
@@ -36,12 +37,13 @@ import { newMoney } from 'src/package/shared/domain/models/money'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 import { preferenceSeeds } from 'src/test/app/stubs/seed/preference-seeds'
+import { decodeTime } from 'ulidx'
 
 @Component( {
 	standalone : true,
 	selector   : 'app-login',
 	templateUrl: './login.page.html',
-	imports    : [
+	imports: [
 		IonicModule,
 		CommonModule,
 		LogoComponent,
@@ -51,7 +53,8 @@ import { preferenceSeeds } from 'src/test/app/stubs/seed/preference-seeds'
 		FilledButtonComponent,
 		OutlinedButtonComponent,
 		FormsModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		ParseLocationNamePipe
 	],
 	styleUrls  : [ './login.page.scss' ]
 } )

@@ -92,4 +92,14 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 		}
 		this.loading = false
 	}
+
+	async onChatClick(): Promise<void> {
+		if ( this.trip === null ) return
+		await this.router.navigate( [ '/chat' ], {
+			state: {
+				tripID: this.trip.id.value,
+				chatID: this.trip.chatID.value,
+			}
+		})
+	}
 }

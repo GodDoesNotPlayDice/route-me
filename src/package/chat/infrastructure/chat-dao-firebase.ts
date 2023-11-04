@@ -4,45 +4,30 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
+import { Observable } from 'rxjs'
 import {
 	chatFromJson,
 	chatToJson
 } from 'src/package/chat/application/chat-mapper'
 import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
-import { ChatIdInvalidException } from 'src/package/chat/domain/exceptions/chat-id-invalid-exception'
+import { ChatNotFoundException } from 'src/package/chat/domain/exceptions/chat-not-found-exception'
 import { Chat } from 'src/package/chat/domain/models/chat'
-import { ChatID } from 'src/package/chat/domain/models/chat-id'
+import {
+	messageFromJson,
+	messageToJson
+} from 'src/package/message/application/message-mapper'
+import { Message } from 'src/package/message/domain/models/message'
+import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
+import { ChatID } from '../domain/models/chat-id'
 
-export class ChatDaoFirebase implements ChatDao {
+export class ChatDaoFirebase extends ChatDao {
 
-	constructor( private firebase: AngularFireDatabase ) {}
+	constructor( private firebase: AngularFireDatabase ) {
+		super()
+	}
 
 	collectionKey = 'chats'
-
-	async getAll(): Promise<Result<Chat[], Error[]>> {
-		return await this.firebase.database.ref( this.collectionKey )
-		                 .get()
-		                 .then( async ( snapshot ) => {
-			                 const error: Error[]            = []
-			                 const preferences: Chat[] = []
-			                 for ( let value of Object.values( snapshot.val() ) ) {
-				                 const preference = chatFromJson( value as Record<string, any> )
-				                 if ( preference.isErr() ) {
-					                 error.push( ...preference.unwrapErr() )
-					                 break
-				                 }
-				                 preferences.push( preference.unwrap() )
-			                 }
-			                 if ( error.length > 0 ) {
-				                 return Err( error )
-			                 }
-			                 return Ok( preferences )
-		                 } )
-		                 .catch( ( error ) => {
-			                 return Err( [ new FirebaseOperationException() ] )
-		                 } )
-	}
 
 	async getById( id: ChatID ): Promise<Result<Chat, Error[]>> {
 		return await this.firebase.database.ref( this.collectionKey )
@@ -51,7 +36,7 @@ export class ChatDaoFirebase implements ChatDao {
 		                 .get()
 		                 .then( async ( snapshot ) => {
 			                 if ( snapshot.val() === null ) {
-				                 return Err( [ new ChatIdInvalidException() ] )
+				                 return Err( [ new ChatNotFoundException() ] )
 			                 }
 
 			                 const snapshotValue = Object.values(
@@ -63,18 +48,86 @@ export class ChatDaoFirebase implements ChatDao {
 				                 return Err( chat.unwrapErr() )
 			                 }
 
-			                 return Ok(chat.unwrap())
+			                 return Ok( chat.unwrap() )
 		                 } )
 		                 .catch( ( error ) => {
 			                 return Err( [ new FirebaseOperationException() ] )
 		                 } )
+	}
 
+	async close(): Promise<void> {
+		this.messagesSubject.unsubscribe()
+	}
+
+	async listen( id: ChatID ): Promise<Result<Observable<Message | null>, Error[]>> {
+		try {
+			const keySaved = await this.getKey( id )
+
+			if ( keySaved.isErr() ) {
+				return Err( [ keySaved.unwrapErr() ] )
+			}
+
+			const ref = this.firebase.database.ref(
+				`${this.collectionKey}/${ keySaved.unwrap() }/messages` )
+
+			ref.on( 'child_added', ( snapshot ) => {
+				console.log( 'child added')
+				const value   = snapshot.val()
+				console.log( value)
+				const message = messageFromJson( value )
+				if ( message.isOk() ) {
+					this.messagesSubject.next( message.unwrap() )
+				}
+			} )
+
+			return Ok( this.messagesSubject.asObservable() )
+		}
+		catch ( e ) {
+			return Err( [ new FirebaseOperationException() ] )
+		}
+	}
+
+	async sendMessage( id: ChatID,
+		message: Message ): Promise<Result<boolean, Error[]>> {
+		let completed: string | null = null
+
+		const keySaved = await this.getKey( id )
+
+		if ( keySaved.isErr() ) {
+			return Err( [ keySaved.unwrapErr() ] )
+		}
+
+		const json = messageToJson( message )
+
+		if ( json.isErr() ) {
+			return Err( [ json.unwrapErr() ] )
+		}
+
+		await this.firebase.database.ref(
+			`${ this.collectionKey }/${keySaved.unwrap()}/messages` )
+		          .push( json.unwrap(),
+			          ( error ) => {
+				          if ( !error ) {
+					          completed = 'completed'
+				          }
+				          else {
+					          console.log( 'error send msg' )
+					          console.log( error )
+				          }
+			          }
+		          )
+
+		if ( completed === null ) {
+			return Err( [ new FirebaseOperationException() ] )
+		}
+
+		return Ok( true )
 	}
 
 	async create( chat: Chat ): Promise<Result<boolean, Error[]>> {
 		let completed: string | null = null
 
-		const json                   = chatToJson( chat)
+		const json = chatToJson( chat )
 
 		if ( json.isErr() ) {
 			return Err( json.unwrapErr() )
@@ -94,5 +147,34 @@ export class ChatDaoFirebase implements ChatDao {
 		}
 
 		return Ok( true )
+	}
+
+	/**
+	 * Get firebase key by id
+	 * @throws {FirebaseKeyNotFoundException} - if key operation failed
+	 * @throws {FirebaseOperationException} - if operation failed
+	 */
+	private async getKey( id: ChatID ): Promise<Result<string, Error>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'id' )
+		                 .equalTo( id.value )
+		                 .get()
+		                 .then(
+			                 async ( snapshot ) => {
+
+				                 let key: string | null = null
+
+				                 snapshot.forEach( ( childSnapshot ) => {
+					                 key = childSnapshot.key
+				                 } )
+
+				                 if ( key === null ) {
+					                 return Err( new FirebaseKeyNotFoundException() )
+				                 }
+				                 return Ok( key )
+			                 } )
+		                 .catch( ( error ) => {
+			                 return Err( new FirebaseOperationException() )
+		                 } )
 	}
 }

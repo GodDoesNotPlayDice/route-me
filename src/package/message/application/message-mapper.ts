@@ -9,6 +9,7 @@ import { newMessageID } from 'src/package/message/domain/models/message-id'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
+import { decodeTime } from 'ulidx'
 
 /**
  * Create a json from message instance
@@ -18,6 +19,7 @@ export const messageToJson = ( message: Message ): Result<Record<string, any>, E
 	try {
 		const json: Record<string, any> = {
 			id             : message.id.value,
+			timestamp      : message.timestamp,
 			passenger_name : message.passengerName.value,
 			passenger_email: message.passengerEmail.value,
 			content        : message.content.value
@@ -81,6 +83,7 @@ export const messageFromJson = ( json: Record<string, any> ): Result<Message, Er
 
 	return Ok( {
 		id            : id.unwrap(),
+		timestamp     : decodeTime( id.unwrap().value ),
 		content       : content.unwrap(),
 		passengerName : passengerName.unwrap(),
 		passengerEmail: passengerEmail.unwrap()

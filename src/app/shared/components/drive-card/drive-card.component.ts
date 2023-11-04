@@ -27,8 +27,6 @@ export class DriveCardComponent{
 
 	async buttonClick( $event: MouseEvent ) {
 		$event.preventDefault()
-		console.log( 'click')
-		console.log( this.info.id)
 		await this.router.navigate( [ `/trip-details/` ],
 			{
 				state: {

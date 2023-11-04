@@ -7,9 +7,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ParseLocationNamePipe implements PipeTransform {
 
   transform(value: unknown, ...args: unknown[]): unknown {
-    if ( value !== 'string' ) return null
-    const startSplitted = value.split( ',' )
-    return `${ startSplitted[ 0 ] }, ${ startSplitted[ 1 ] }, ${ startSplitted[ 3 ] }`
+    if ( typeof value !== 'string' ) return null
+    const split = value.split( ',' )
+    return `${ split[ 0 ] }, ${ split[ 1 ] }, ${ split[ 3 ] }`
   }
 
 }

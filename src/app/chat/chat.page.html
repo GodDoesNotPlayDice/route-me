@@ -1,30 +1,39 @@
-<ion-header [translucent]="true">
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-back-button [defaultHref]="prevHref"></ion-back-button>
-		</ion-buttons>
-		<ion-title>N Chat</ion-title>
-	</ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-	<div class="flex flex-col h-full">
-		<div class="basis-11/12">
+	<app-app-bar-clone
+		label="Chat"
+		(leadClicked)="onBackClicked()"
+		#appBar></app-app-bar-clone>
+	<div class="flex flex-col">
+		<div class="basis-11/12 h-full">
+			<ng-container *ngFor="let msg of messages">
 			<app-bubble-chat
-				[owner]="true"
-				message="hola"
+				[owner]="passengerOwner.email.value === msg.passengerEmail.value"
+				[message]="msg.content.value"
 				urlImage="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"
-				userName="name"
+				[userName]="msg.passengerName.value"
 			></app-bubble-chat>
-			<app-bubble-chat
-				[owner]="false"
-				message="hola"
-				urlImage="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"
-				userName="name"
-			></app-bubble-chat>
+			</ng-container>
+			<div *ngIf="messages.length === 0">No hay mensajes para mostrar</div>
 		</div>
-		<div class="flex-col basis-1/12">
-			<app-chat-input></app-chat-input>
+		<div class="flex-col basis-1/12 h-full">
+			<div class="bg-gray-400 flex items-center">
+				<div class="m-2 w-full">
+					<div class="bg-white focus:z-[3] focus:text-neutral-700 focus:outline-none focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] rounded-br-md rounded-tr-md border rounded-bl-md rounded-tl-md border-solid border-neutral-300 focus:border-primary relative flex w-full flex-wrap items-center">
+						<input
+							[(ngModel)]="inputTextValue"
+							[disabled]="sendingText"
+							class="m-0 pl-3 block w-[1px] min-w-0 flex-auto bg-transparent bg-clip-padding py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out"
+							type="text"
+						/>
+						<ion-icon
+							*ngIf="!sendingText"
+							(click)="send($event)"
+							class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-4 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
+							name="send-outline"></ion-icon>
+						<ion-spinner  *ngIf="sendingText" name="dots"></ion-spinner>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </ion-content>
