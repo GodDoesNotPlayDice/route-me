@@ -6,12 +6,14 @@
 	<div class="flex flex-col">
 		<div class="basis-11/12 h-full">
 			<ng-container *ngFor="let msg of messages">
-			<app-bubble-chat
-				[owner]="passengerOwner.email.value === msg.passengerEmail.value"
-				[message]="msg.content.value"
-				urlImage="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"
-				[userName]="msg.passengerName.value"
-			></app-bubble-chat>
+				<app-bubble-chat
+					[timestamp]="msg.timestamp"
+					[userLastName]="msg.passengerLastName.value"
+					[owner]="passengerOwner.email.value === msg.passengerEmail.value"
+					[message]="msg.content.value"
+					[urlImage]="passengerOwner.image.value"
+					[userName]="msg.passengerName.value"
+				></app-bubble-chat>
 			</ng-container>
 			<div *ngIf="messages.length === 0">No hay mensajes para mostrar</div>
 		</div>
@@ -30,7 +32,8 @@
 							(click)="send($event)"
 							class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-4 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
 							name="send-outline"></ion-icon>
-						<ion-spinner  *ngIf="sendingText" name="dots"></ion-spinner>
+						<ion-spinner *ngIf="sendingText"
+							name="dots"></ion-spinner>
 					</div>
 				</div>
 			</div>

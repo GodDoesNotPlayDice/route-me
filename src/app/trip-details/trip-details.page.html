@@ -1,72 +1,123 @@
 <ion-header [translucent]="true">
 	<ion-toolbar>
-		<div class="flex w-full items-center">
-			<ion-buttons slot="start">
-				<ion-back-button [defaultHref]="prevHref"></ion-back-button>
-			</ion-buttons>
-			<ion-title>Trip Details</ion-title>
-		</div>
-		<div *ngIf="trip !== null" class="flex flex-col gap-4">
-			<div class="flex flex-col gap-6 px-5 ">
-				<div class="flex">
-					<div class="basis-1/2">Fecha</div>
-					<div class="basis-1/2">{{ trip.startDate | date:'ccc dd MMMM - HH:mm ' }}</div>
-				</div>
-				<div class="flex">
-					<div class="basis-1/2">Estado</div>
-					<div class="basis-1/2">{{ trip.state }}</div>
-				</div>
-				<div class="flex">
-					<div class="basis-1/2">Conductor</div>
-					<div class="basis-1/2">{{ trip.driver.passenger.name.value }}</div>
-				</div>
-				<div class="flex">
-					<div class="basis-1/2">Direccion Inicio</div>
-					<div class="basis-1/2">{{trip.startLocation.name.value | parseLocationName}}</div>
-				</div>
-				<div class="flex">
-					<div class="basis-1/2">Direccion Fin</div>
-					<div class="basis-1/2">{{trip.endLocation.name.value | parseLocationName}}</div>
-				</div>
-				<div class="flex justify-center gap-4">
-					<app-adaptative-button text_color="text-white"
-						color="bg-stone-800"
-						color_hover="bg-stone-800"
-						text="Reportar"
-						size="py-2.5 px-3"
-						font_size="text-sm"></app-adaptative-button>
-					<app-adaptative-button text_color="text-white"
-						color="bg-stone-800"
-						color_hover="bg-stone-700"
-						text="Compartir"
-						size="py-2.5 px-3"
-						font_size="text-sm"></app-adaptative-button>
-					<app-adaptative-button text_color="text-white"
-						(click)="onChatClick()"
-						color="bg-stone-800"
-						color_hover="bg-stone-800"
-						text="Chat"
-						size="py-2.5 px-3"
-						font_size="text-sm"></app-adaptative-button>
-					<app-adaptative-button text_color="text-white"
-						color="bg-stone-800"
-						color_hover="bg-stone-800"
-						text="Solicitar"
-						size="py-2.5 px-3"
-						font_size="text-sm"></app-adaptative-button>
-				</div>
-				<div class="flex flex-col">
-					<div>Pasajeros</div>
-					<app-divider></app-divider>
-					<div class="flex flex-col gap-4">
-						<app-item-list></app-item-list>
+		<app-app-bar-clone
+			(leadClicked)="onBackClicked()"
+			href="/tabs/home"
+			#appBar
+			label="Trip Details"
+		>
+			<div class="flex gap-6">
+				<mat-icon
+					(click)="onChatClick()">chat
+				</mat-icon>
+				<button mat-icon-button
+					[matMenuTriggerFor]="menu"
+					aria-label="Example icon-button with a menu">
+					<mat-icon>more_vert</mat-icon>
+				</button>
+				<mat-menu #menu="matMenu">
+					<button mat-menu-item>
+						<mat-icon class="">warning</mat-icon>
+						<span class="text-red-600">Reportar</span>
+					</button>
+				</mat-menu>
+			</div>
+		</app-app-bar-clone>
+		<div *ngIf="trip !== null"
+			class="flex flex-col gap-4 px-5 py-2">
+			<div class="flex">
+				<div class="basis-1/3">Fecha</div>
+				<div class="basis-2/3">{{ trip.startDate | date:'ccc dd MMMM - HH:mm ' }}</div>
+			</div>
+			<div class="flex">
+				<div class="basis-1/3">Estado</div>
+				<div class="basis-2/3">{{ trip.state }}</div>
+			</div>
+			<div class="flex">
+				<div class="basis-1/3">Conductor</div>
+				<div class="basis-2/3">{{ trip.driver.passenger.name.value }}</div>
+			</div>
+			<div class="flex">
+				<div class="basis-1/3">Direccion Inicio</div>
+				<div class="basis-2/3">{{trip.startLocation.name.value | parseLocationName}}</div>
+			</div>
+			<div class="flex">
+				<div class="basis-1/3">Direccion Fin</div>
+				<div class="basis-2/3">{{trip.endLocation.name.value | parseLocationName}}</div>
+			</div>
+			<div class="flex flex-col gap-2">
+				<div class="flex justify-between items-center">
+					<div class="font-bold font-gotham">Listado de pasajeros</div>
+					<div class="text-gray-400"
+						*ngIf="isDriver"
+						(click)="queuePassengerModalClick()">
+						({{ trip.queuePassengers.length }}
+						pasajeros en cola)
 					</div>
-					<div class="h-4"></div>
+				</div>
+				<div class="flex">
+					<div *ngIf="trip.passengers.length > 0"
+						(click)="activePassengerModalClick()"
+						class="flex basis-9/12 items-center gap-2">
+						<ng-container *ngFor="let psn of trip.passengers">
+							<app-avatar-home url="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"></app-avatar-home>
+						</ng-container>
+						<div class="basis-3/12 font-bold">(ver mas)</div>
+					</div>
+					<div *ngIf="trip.passengers.length === 0">
+						Aun no hay pasajeros en este viaje
+					</div>
 				</div>
 			</div>
 		</div>
+		<app-adaptative-button class="w-full"
+			*ngIf="!userInTrip"
+			(click)="onJoinRequestTrip()"
+			[disabled]="isPendingInPassengerQueue"
+			[text]="isPendingInPassengerQueue ? 'Solicitud enviada' : 'Unirse al Viaje'"
+			color="bg-stone-800"
+			color_hover="bg-stone-700"
+			font_size="text-xl font-gotham"
+			size="px-8 py-2 w-full"
+			text_color="text-white"></app-adaptative-button>
 	</ion-toolbar>
 </ion-header>
+<ng-template #modal1>
+	<ng-container *ngIf="trip !== null">
+		<div *ngIf="trip.queuePassengers.length === 0">No hay pasajeros pendientes
+		</div>
+		<ng-container *ngFor="let psn of trip.queuePassengers; index as i">
+			<div class="flex gap-3 items-center w-full">
+				<div
+					class="max-w-[50px] max-h-[50px] rounded-full shadow-md shadow-black/20">
+					<img class="object-fill aspect-square rounded-full"
+						[src]="psn.image.value"
+						[alt]="psn.name.value">
+				</div>
+				<div class="font-bold">
+					{{ psn.name.value }} {{ psn.lastName.value }}
+				</div>
+				<app-adaptative-button
+					(click)="onAcceptQueuePassenger(psn)"
+					text="Aceptar"
+					color="bg-blue-500"
+					color_hover="bg-blue-700"
+					font_size="text-sm"
+					size="py-2.5 px-3"
+					text_color="text-white"></app-adaptative-button>
+				<app-adaptative-button
+					(click)="onDeniedQueuePassenger(psn)"
+					text="Rechazar"
+					color="bg-red-500"
+					color_hover="bg-red-300"
+					font_size="text-sm"
+					size="py-2.5 px-3"
+					text_color="text-white"></app-adaptative-button>
+			</div>
+			<app-divider *ngIf="trip.queuePassengers.length - 1 !== i"></app-divider>
+		</ng-container>
+	</ng-container>
+</ng-template>
 <ion-content [fullscreen]="true">
 	<div id="dmap"
 		#dmap

@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common'
 import {
 	Component,
 	OnDestroy,
-	OnInit,
+	OnInit
 } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { send } from 'ionicons/icons'
 import { Observable } from 'rxjs'
 import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { BubbleChatComponent } from 'src/app/shared/components/bubble-chat/bubble-chat.component'
@@ -15,7 +14,6 @@ import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
-import { UrlService } from 'src/app/shared/services/url.service'
 import { Message } from 'src/package/message/domain/models/message'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 
@@ -24,7 +22,7 @@ import { Passenger } from 'src/package/passenger/domain/models/passenger'
 	selector   : 'app-chat',
 	templateUrl: './chat.page.html',
 	styleUrls  : [ './chat.page.scss' ],
-	imports: [
+	imports    : [
 		IonicModule,
 		CommonModule,
 		BubbleChatComponent,
@@ -34,43 +32,41 @@ import { Passenger } from 'src/package/passenger/domain/models/passenger'
 } )
 export class ChatPage implements OnInit, OnDestroy {
 
-	constructor( private urlService: UrlService,
+	constructor(
 		private chatService: ChatService,
 		private toastService: ToastService,
 		private authService: AuthService,
 		private alertService: AlertService,
 		private router: Router
-	) {}
+	)
+	{}
 
-	prevHref: string      = '/tabs/home'
-	loading: boolean      = false
-	messages: Message[]   = []
-	tripID: string | null = null
-	chatID: string | null = null
+	loading: boolean                       = false
+	messages: Message[]                    = []
+	tripID: string | null                  = null
+	chatID: string | null                  = null
 	messagesStream$: Observable<Message | null>
-	passengerOwner : Passenger
-	inputTextValue : string = ''
-	sendingText : boolean = false
-	firstSort : boolean = false
+	passengerOwner: Passenger
+	// passengersTrip : Passenger[]
+	passengersTrip: Map<string, Passenger> = new Map<string, Passenger>()
+	inputTextValue: string                 = ''
+	sendingText: boolean                   = false
+	firstSort: boolean                     = false
 
 	async ngOnInit(): Promise<void> {
 		this.passengerOwner = this.authService.currentPassenger.unwrap()
-		this.urlService.previousUrl$.subscribe( ( url ) => {
-			this.prevHref = url
-		} )
-
-		this.loading = true
-		const state  = this.router.getCurrentNavigation()?.extras.state
-		const chatID = state?.['chatID'] ?? null
-		const tripID = state?.['tripID'] ?? null
+		this.loading        = true
+		const state         = this.router.getCurrentNavigation()?.extras.state
+		const chatID        = state?.['chatID'] ?? null
+		const tripID        = state?.['tripID'] ?? null
 		if ( chatID === null || tripID === null ) {
 			await this.router.navigate( [ '/tabs/home' ] )
 			return
 		}
 
-		const chatResult = await this.chatService.getById( chatID)
+		const chatResult = await this.chatService.getById( chatID )
 
-		const messageStream = await this.chatService.listen( chatID)
+		const messageStream = await this.chatService.listen( chatID )
 
 		if ( chatResult.isErr() || messageStream.isErr() ) {
 			await this.alertService.presentAlert( {
@@ -80,15 +76,15 @@ export class ChatPage implements OnInit, OnDestroy {
 					{
 						text   : 'Devolverse',
 						handler: async () => {
-							await this.router.navigate( [ this.prevHref ] )
+							await this.router.navigate( [ '/tabs/home' ] )
 						}
 					}
 				]
 			} )
 		}
 		else {
-			this.chatID					= chatID
-			this.tripID					= tripID
+			this.chatID          = chatID
+			this.tripID          = tripID
 			//TODO: agregar fecha envio, apellido y respetar espacio chat list y input
 			this.messagesStream$ = messageStream.unwrap()
 			this.messagesStream$.subscribe( ( message ) => {
@@ -106,7 +102,7 @@ export class ChatPage implements OnInit, OnDestroy {
 	}
 
 	async onBackClicked(): Promise<void> {
-		await this.router.navigate( [ this.prevHref ], {
+		await this.router.navigate( [ '/trip-details' ], {
 			state: {
 				id: this.tripID
 			}
@@ -114,15 +110,18 @@ export class ChatPage implements OnInit, OnDestroy {
 	}
 
 	async send( $event: MouseEvent ): Promise<void> {
-		if ( this.inputTextValue.trim() === '' ) return
+		if ( this.inputTextValue.trim() === '' ) {
+			return
+		}
 		this.sendingText = true
-		const result = await this.chatService.sendMessage(this.chatID!, {
-			content: this.inputTextValue,
-			passengerName: this.passengerOwner.name,
-			passengerEmail: this.passengerOwner.email
-		})
+		const result     = await this.chatService.sendMessage( this.chatID!, {
+			content          : this.inputTextValue,
+			passengerName    : this.passengerOwner.name,
+			passengerLastName: this.passengerOwner.lastName,
+			passengerEmail   : this.passengerOwner.email
+		} )
 
-		if ( result.isErr() ){
+		if ( result.isErr() ) {
 			console.log( 'error send msg' )
 			console.log( result.unwrapErr() )
 			await this.toastService.presentToast( {
