@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core'
 import {
+	Err,
 	None,
+	Ok,
 	Option,
 	Result,
 	Some
@@ -53,14 +55,14 @@ export class TripService {
 		return result.unwrap()
 	}
 
-	async getAllByState( state: TripState ): Promise<Trip[]> {
+	async getAllByState( state: TripState ): Promise<Result<Trip[], Error[]>> {
 		const result = await this.tripDao.getAllByState( state )
 
 		if ( result.isErr() ) {
 			console.log( 'error. get all by state trip service', result.unwrapErr() )
-			return []
+			return Err(result.unwrapErr())
 		}
-		return result.unwrap()
+		return Ok(result.unwrap())
 	}
 
 	async calculateTripPrice( distance: ValidNumber ): Promise<Option<TripPrice>> {
@@ -146,15 +148,15 @@ export class TripService {
 		queuePassengers?: Passenger[]
 		passengers?: Passenger[]
 		endDate?: Date
-	} ): Promise<boolean>
+	} ): Promise<Option<Trip>>
 	{
 		const result = await updateTrip( this.tripDao, trip, props )
 
 		if ( result.isErr() ) {
 			console.log( 'update trip error' )
 			console.log( result.unwrapErr() )
-			return false
+			return None
 		}
-		return true
+		return Some(result.unwrap())
 	}
 }

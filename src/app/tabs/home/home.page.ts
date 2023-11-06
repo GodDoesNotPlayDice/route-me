@@ -37,20 +37,22 @@ export class HomePage implements ViewDidEnter {
 	info: DriverCardInfo[] = []
 
 	loading: boolean = false
+	errors: boolean = false
 
 	protected readonly filterButtonList = filterButtonList
 
 	async ionViewDidEnter(): Promise<void> {
+		console.log('home enter')
 		this.loading = true
 		const result = await this.trip.getAllByState( TripStateEnum.Open )
 
-		if ( result.length > 0 ) {
+		if ( result.isOk() && result.unwrap().length > 0 ) {
 			const resultIP       = await this.ipDao.getIp()
 			const resultCurrency = await this.currencyDao.getCurrencyExchange(
 				'USD',
 				resultIP.unwrap().currency
 			)
-			this.info            = result.map( ( trip ): DriverCardInfo => {
+			this.info            = result.unwrap().map( ( trip ): DriverCardInfo => {
 				const startSplitted             = trip.startLocation.name.value.split(
 					',' )
 				const formatedStartLocationName = `${ startSplitted[0] }, ${ startSplitted[1] }, ${ startSplitted[3] }`
@@ -82,6 +84,9 @@ export class HomePage implements ViewDidEnter {
 					} )
 				}
 			} )
+		}
+		else{
+			this.errors = true
 		}
 		this.loading = false
 	}

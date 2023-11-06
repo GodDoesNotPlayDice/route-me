@@ -67,7 +67,8 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 	{}
 
 	@ViewChild( 'dmap' ) divElementElementRef!: ElementRef<HTMLDivElement>
-	@ViewChild( 'modal1' ) modalContent: TemplateRef<ElementRef>
+	@ViewChild( 'queueModal' ) modalQueueContent: TemplateRef<ElementRef>
+	@ViewChild( 'activeModal' ) modalActiveContent: TemplateRef<ElementRef>
 	@ViewChild( 'appBar' ) appBarCloneComponent: AppBarCloneComponent
 	trip: Trip | null                  = null
 	loading: boolean                   = false
@@ -145,7 +146,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 		const modal = await this.modalController.create( {
 			component     : ListViewModalComponent,
 			componentProps: {
-				projectedContent: this.modalContent
+				projectedContent: this.modalQueueContent
 			}
 		} )
 		await modal.present()
@@ -161,7 +162,18 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 	}
 
 	async activePassengerModalClick(): Promise<void> {
+		const modal = await this.modalController.create( {
+			component     : ListViewModalComponent,
+			componentProps: {
+				projectedContent: this.modalActiveContent
+			}
+		} )
+		await modal.present()
 
+		const { data, role } = await modal.onWillDismiss()
+		if ( data === undefined ) {
+			return
+		}
 	}
 
 	async onJoinRequestTrip(): Promise<void> {
@@ -169,16 +181,14 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 			return
 		}
 
-		const newList = [ ...this.trip.queuePassengers,
-			this.authService.currentPassenger.unwrap() ]
-
 		await this.loadingService.showLoading( 'Uniendo al viaje' )
 		const result = await this.tripService.updateTrip( this.trip, {
-			queuePassengers: newList
+			queuePassengers: [ ...this.trip.queuePassengers,
+				this.authService.currentPassenger.unwrap() ]
 		} )
 		await this.loadingService.dismissLoading()
 
-		if ( result ) {
+		if ( result.isSome() ) {
 			await this.toastService.presentToast( {
 				message : 'Te has unido al viaje',
 				color   : 'success',
@@ -186,7 +196,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 				position: 'bottom'
 			} )
 			this.isPendingInPassengerQueue = true
-			this.trip.queuePassengers      = newList
+			this.trip                      = result.unwrap()
 		}
 		else {
 			await this.toastService.presentToast( {
@@ -197,11 +207,83 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 		}
 	}
 
-	public onAcceptQueuePassenger( psn: Passenger ): void {
+	async onAcceptQueuePassenger( psn: Passenger ): Promise<void> {
+		if ( this.trip === null ) {
+			return
+		}
 
+		// if(this.trip.driver.carID.)
+
+		const newListQueuePassengers = this.trip.queuePassengers.filter(
+			( passenger ) => {
+				return passenger.email.value !== psn.email.value
+			} )
+
+		await this.loadingService.showLoading( 'Aceptando pasajero' )
+		const result = await this.tripService.updateTrip( this.trip, {
+			passengers     : [ ...this.trip.passengers, psn ],
+			queuePassengers: newListQueuePassengers
+		} )
+		await this.loadingService.dismissLoading()
+
+		if ( result.isSome() ) {
+			await this.toastService.presentToast( {
+				message : 'Se ha aceptado al pasajero',
+				color   : 'success',
+				duration: 1500,
+				position: 'bottom'
+			} )
+			this.isPendingInPassengerQueue = false
+			this.userInTrip                = true
+			this.trip                      = result.unwrap()
+		}
+		else {
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
+		}
 	}
 
-	public onDeniedQueuePassenger( psn: Passenger ): void {
+	async onDeniedQueuePassenger( psn: Passenger ): Promise<void> {
+		if ( this.trip === null ) {
+			return
+		}
 
+		const newListQueuePassengers = this.trip.queuePassengers.filter(
+			( passenger ) => {
+				return passenger.email.value !== psn.email.value
+			} )
+
+		const newListPassengers = this.trip.passengers.filter( ( passenger ) => {
+			return passenger.email.value !== psn.email.value
+		} )
+
+		await this.loadingService.showLoading( 'Rechazando pasajero' )
+		const result = await this.tripService.updateTrip( this.trip, {
+			passengers     : newListPassengers,
+			queuePassengers: newListQueuePassengers
+		} )
+		await this.loadingService.dismissLoading()
+
+		if ( result.isSome() ) {
+			await this.toastService.presentToast( {
+				message : 'Se ha aceptado al pasajero',
+				color   : 'success',
+				duration: 1500,
+				position: 'bottom'
+			} )
+			this.isPendingInPassengerQueue = false
+			this.userInTrip								= false
+			this.trip = result.unwrap()
+		}
+		else {
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
+		}
 	}
 }
