@@ -6,6 +6,7 @@ import {
 import { Message } from 'src/package/message/domain/models/message'
 import { newMessageContent } from 'src/package/message/domain/models/message-content'
 import { newMessageID } from 'src/package/message/domain/models/message-id'
+import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
@@ -18,11 +19,12 @@ import { decodeTime } from 'ulidx'
 export const messageToJson = ( message: Message ): Result<Record<string, any>, Error> => {
 	try {
 		const json: Record<string, any> = {
-			id             : message.id.value,
-			timestamp      : message.timestamp,
-			passenger_name : message.passengerName.value,
-			passenger_email: message.passengerEmail.value,
-			content        : message.content.value
+			id                 : message.id.value,
+			timestamp          : message.timestamp,
+			passenger_name     : message.passengerName.value,
+			passenger_last_name: message.passengerLastName.value,
+			passenger_email    : message.passengerEmail.value,
+			content            : message.content.value
 		}
 
 		return Ok( json )
@@ -77,15 +79,24 @@ export const messageFromJson = ( json: Record<string, any> ): Result<Message, Er
 		errors.push( passengerName.unwrapErr() )
 	}
 
+	const passengerLastName = newPassengerLastName( {
+		value: json['passenger_last_name'] ?? ''
+	} )
+
+	if ( passengerLastName.isErr() ) {
+		errors.push( passengerLastName.unwrapErr() )
+	}
+
 	if ( errors.length > 0 ) {
 		return Err( errors )
 	}
 
 	return Ok( {
-		id            : id.unwrap(),
-		timestamp     : decodeTime( id.unwrap().value ),
-		content       : content.unwrap(),
-		passengerName : passengerName.unwrap(),
-		passengerEmail: passengerEmail.unwrap()
+		id               : id.unwrap(),
+		timestamp        : decodeTime( id.unwrap().value ),
+		content          : content.unwrap(),
+		passengerName    : passengerName.unwrap(),
+		passengerLastName: passengerLastName.unwrap(),
+		passengerEmail   : passengerEmail.unwrap()
 	} )
 }
