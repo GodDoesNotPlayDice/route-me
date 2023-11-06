@@ -4,7 +4,7 @@
 <!--padding variable-->
 <!--font variable-->
 
-<button class="{{ color }}  rounded-sm hover:{{ color_hover }} {{ size }}"
->
+<button [disabled]="disabled"
+	class="{{ disabled ? disabledColor : color }}  rounded-sm hover:{{ color_hover }} {{ size }}">
 	<div class="{{ font_size }} {{ text_color }}">{{ text }}</div>
 </button>

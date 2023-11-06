@@ -16,6 +16,8 @@ import { IonicModule } from '@ionic/angular'
 	]
 } )
 export class AdaptativeButtonComponent {
+	@Input() disabled: boolean                       = false
+	@Input() disabledColor: string                   = 'bg-gray-400'
 	@Input( { required: true } ) text: string        = ''
 	@Input( { required: true } ) color: string       = ''
 	@Input( { required: true } ) size: string        = ''
