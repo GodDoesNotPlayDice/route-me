@@ -16,7 +16,7 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 export const driverDocumentToJson = ( driverDocument: DriverDocument ): Result<Record<string, any>, Error> => {
 	try {
 		const json: Record<string, any> = {
-			id       : driverDocument.id.value,
+			id                : driverDocument.id.value,
 			document_name     : driverDocument.name.value,
 			document_reference: driverDocument.reference.value
 		}

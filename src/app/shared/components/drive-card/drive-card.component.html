@@ -8,8 +8,8 @@
 		</div>
 		<div class="basis-9/12 flex flex-col m-1 justify-between">
 			<div class="flex w-full items-center justify-between">
-			<div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
-			<div class="text-masterNacho-600">{{info.date | date:'dd MMM HH:mm '}}</div>
+				<div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
+				<div class="text-masterNacho-600">{{info.date | date:'dd MMM HH:mm '}}</div>
 			</div>
 			<div>Inicio: {{info.startLocationName }}</div>
 			<div>Fin: {{info.endLocationName }}</div>
@@ -20,7 +20,8 @@
 			<div *ngFor="let passenger of info.passengerUrls">
 				<app-avatar-home [url]="passenger"></app-avatar-home>
 			</div>
-			<div class="text-gray-400" *ngIf="info.passengerUrls.length === 0">
+			<div class="text-gray-400"
+				*ngIf="info.passengerUrls.length === 0">
 				Sin pasajeros
 			</div>
 		</div>

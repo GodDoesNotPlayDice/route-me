@@ -23,18 +23,18 @@ import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-c
 } )
 export class TestPage implements OnInit {
 
-	constructor( private imageService: ImageUploadService ,
-		private alert : AlertService)
+	constructor( private imageService: ImageUploadService,
+		private alert: AlertService )
 	{ }
 
 	async ngOnInit(): Promise<void> {
 		await Preferences.set( { key: 'capacitor', value: 'true' } )
 
 		const val = await Preferences.get( { key: 'capacitor' } )
-		await this.alert.presentAlert({
-			header: 'result',
-			message: `response: ${val.value}`
-		})
+		await this.alert.presentAlert( {
+			header : 'result',
+			message: `response: ${ val.value }`
+		} )
 	}
 
 	async onPhoto(): Promise<void> {

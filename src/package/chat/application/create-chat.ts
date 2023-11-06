@@ -23,10 +23,10 @@ export const createChat = async ( dao: ChatDao ): Promise<Result<Chat, Error[]>>
 		messages: []
 	}
 
-	const result     = await dao.create( chat )
+	const result = await dao.create( chat )
 
 	if ( result.isErr() ) {
-	  return Err( result.unwrapErr() )
+		return Err( result.unwrapErr() )
 	}
 
 	return Ok( chat )

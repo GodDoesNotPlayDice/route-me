@@ -14,6 +14,7 @@ import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { Chat } from 'src/package/chat/domain/models/chat'
 import { ChatID } from 'src/package/chat/domain/models/chat-id'
 import { Message } from 'src/package/message/domain/models/message'
+import { PassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { PassengerName } from 'src/package/passenger/domain/models/passenger-name'
 import { Email } from 'src/package/shared/domain/models/email'
 
@@ -44,9 +45,10 @@ export class ChatService {
 	async sendMessage( chatID: string,
 		message: {
 			passengerName: PassengerName,
+			passengerLastName: PassengerLastName,
 			passengerEmail: Email,
 			content: string,
-		}): Promise<Result<boolean, Error[]>> {
+		} ): Promise<Result<boolean, Error[]>> {
 		return await sendMessageToChat( this.chatDao, chatID, message )
 	}
 

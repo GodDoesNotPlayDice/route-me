@@ -1,24 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import {
+	ComponentFixture,
+	TestBed,
+	waitForAsync
+} from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component';
+import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component'
 
-describe('FileInputComponent', () => {
-  let component: FileInputComponent;
-  let fixture: ComponentFixture<FileInputComponent>;
+describe( 'FileInputComponent', () => {
+	let component: FileInputComponent
+	let fixture: ComponentFixture<FileInputComponent>
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ FileInputComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+	beforeEach( waitForAsync( () => {
+		TestBed.configureTestingModule( {
+			declarations: [ FileInputComponent ],
+			imports     : [ IonicModule.forRoot() ]
+		} )
+		       .compileComponents()
 
-    fixture = TestBed.createComponent(FileInputComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+		fixture = TestBed.createComponent( FileInputComponent )
+		component = fixture.componentInstance
+		fixture.detectChanges()
+	} ) )
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+	it( 'should create', () => {
+		expect( component )
+			.toBeTruthy()
+	} )
+} )

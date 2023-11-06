@@ -1,16 +1,10 @@
-import {
-	Injectable,
-} from '@angular/core'
+import { Injectable } from '@angular/core'
 import {
 	None,
 	Option,
 	Some
 } from 'oxide.ts'
-import {
-	filter,
-	first,
-	takeWhile
-} from 'rxjs'
+import { first } from 'rxjs'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import { createDriver } from 'src/package/driver/application/create-driver'
@@ -30,9 +24,9 @@ export class DriverService {
 		// private driverDocumentDao : DriverDocumentDao
 	)
 	{
-		this.authService.userChange$.pipe(first(
+		this.authService.userChange$.pipe( first(
 			( user ) => user !== null
-		))
+		) )
 		    .subscribe( async ( user ) => {
 			    if ( user !== null ) {
 				    await this.getByEmail( user.email )
@@ -73,8 +67,8 @@ export class DriverService {
 		const result = await this.driverDao.getByEmail( email )
 
 		if ( result.isErr() ) {
-			console.log(result.unwrapErr())
-			console.log( 'get driver error')
+			console.log( result.unwrapErr() )
+			console.log( 'get driver error' )
 			return false
 		}
 

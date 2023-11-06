@@ -13,16 +13,16 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * Create currency exchange instance from json
  * @throws {CurrencyInvalidException} - if ip is invalid
  */
-export const currencyFromJson = ( value : any ): Result<CurrencyExchange, Error> => {
-	const currencyExchange = newCurrencyExchange({
-		value: value,
-	})
+export const currencyFromJson = ( value: any ): Result<CurrencyExchange, Error> => {
+	const currencyExchange = newCurrencyExchange( {
+		value: value
+	} )
 
 	if ( currencyExchange.isErr() ) {
-		return Err(currencyExchange.unwrapErr())
+		return Err( currencyExchange.unwrapErr() )
 	}
 
-	return Ok( currencyExchange.unwrap())
+	return Ok( currencyExchange.unwrap() )
 }
 
 /**
@@ -32,7 +32,7 @@ export const currencyFromJson = ( value : any ): Result<CurrencyExchange, Error>
 export const currencyToJson = ( currency: CurrencyExchange ): Result<Record<string, any>, Error> => {
 	try {
 		const json: Record<string, any> = {
-			value: currency.value,
+			value: currency.value
 		}
 
 		return Ok( json )

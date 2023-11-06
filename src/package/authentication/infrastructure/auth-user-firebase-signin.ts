@@ -131,7 +131,7 @@ export class AuthUserFirebaseSignin implements AuthUserRepository {
 	 */
 	async sendResetPassword( email: Email ): Promise<Result<boolean, Error>> {
 		try {
-			await this.auth.sendPasswordResetEmail( email.value)
+			await this.auth.sendPasswordResetEmail( email.value )
 			return Ok( true )
 		}
 		catch ( e ) {

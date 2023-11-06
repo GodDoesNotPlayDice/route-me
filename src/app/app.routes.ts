@@ -9,7 +9,7 @@ export const routes: Routes = [
 		pathMatch : 'full'
 	},
 	{
-		canActivate : [ CanRegisterGuard ],
+		canActivate  : [ CanRegisterGuard ],
 		path         : 'login',
 		loadComponent: () => import('./login/login.page').then( m => m.LoginPage )
 	},
@@ -25,7 +25,7 @@ export const routes: Routes = [
 			m => m.routes )
 	},
 	{
-		canActivate : [ CanRegisterGuard ],
+		canActivate  : [ CanRegisterGuard ],
 		path         : 'reset-password',
 		loadComponent: () => import('./reset-password/reset-password.page').then(
 			m => m.ResetPasswordPage )
@@ -42,8 +42,8 @@ export const routes: Routes = [
 		loadComponent: () => import('./chat/chat.page').then( m => m.ChatPage )
 	},
 	{
-		path: 'test',
-		loadComponent: () => import('./test/test.page').then( m => m.TestPage)
+		path         : 'test',
+		loadComponent: () => import('./test/test.page').then( m => m.TestPage )
 	},
 	{
 		path         : '**',

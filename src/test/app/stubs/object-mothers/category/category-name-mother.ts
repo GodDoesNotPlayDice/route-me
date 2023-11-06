@@ -19,4 +19,4 @@ export class CategoryNameMother {
 	}
 }
 
-const categories = [ 'Eventos', 'Comunidad']
+const categories = [ 'Eventos', 'Comunidad' ]

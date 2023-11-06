@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
 	Component,
-	Input,
+	Input
 } from '@angular/core'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
@@ -19,19 +19,22 @@ import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card
 		AvatarComponent
 	]
 } )
-export class DriveCardComponent{
+export class DriveCardComponent {
 
-	constructor( private router: Router ) { }
+	constructor( private router: Router
+	)
+	{ }
 
 	@Input( { required: true } ) info: DriverCardInfo
 
 	async buttonClick( $event: MouseEvent ) {
 		$event.preventDefault()
-		await this.router.navigate( [ `/trip-details/` ],
+		await this.router.navigate( [ '/trip-details' ],
 			{
 				state: {
-				id: this.info.id,
-				} } )
+					id: this.info.id
+				}
+			} )
 	}
 }
 

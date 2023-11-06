@@ -4,14 +4,8 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import {
-	DriverCarID,
-	newDriverCarID
-} from 'src/package/driver-car/domain/models/driver-car-id'
-import {
-	DriverDocument,
-	DriverDocumentProps
-} from 'src/package/driver-document/domain/models/driver-document'
+import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
+import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
 import { newDriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
 import { newDriverDocumentName } from 'src/package/driver-document/domain/models/driver-document-name'
 import { newDriverDocumentReference } from 'src/package/driver-document/domain/models/driver-document-reference'

@@ -9,7 +9,8 @@
 			*ngIf="!loading">
 			<div *ngIf="driverCarList.length > 0"
 				class="flex flex-col w-full">
-				<div *ngIf="!firstTime" class="flex flex-col items-center">
+				<div *ngIf="!firstTime"
+					class="flex flex-col items-center">
 					<div>Selected: {{ selectedIndex + 1}}/{{ driverCarList.length }}</div>
 					<div>Model: {{ driverCarList[selectedIndex].model.value}}</div>
 					<div>Seats: {{ driverCarList[selectedIndex].seat.value}}</div>
@@ -22,9 +23,11 @@
 					</div>
 					<div class="basis-10/12 flex justify-center items-center">
 
-						<img *ngIf="!firstTime" class="object-contain aspect-square h-64"
+						<img *ngIf="!firstTime"
+							class="object-contain aspect-square h-64"
 							[src]="driverCarList[selectedIndex].image.value">
-						<div *ngIf="firstTime" class="flex flex-col justify-center items-center h-80">
+						<div *ngIf="firstTime"
+							class="flex flex-col justify-center items-center h-80">
 							Navege con las flechas para seleccionar el auto
 						</div>
 					</div>

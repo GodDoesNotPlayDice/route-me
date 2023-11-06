@@ -23,7 +23,7 @@ export class ChatDaoApi extends ChatDao {
 		return Err( [ new ApiOperationException( 'chat create api' ) ] )
 	}
 
-	async listen(id: ChatID): Promise<Result<Observable<Message | null>, Error[]>> {
+	async listen( id: ChatID ): Promise<Result<Observable<Message | null>, Error[]>> {
 		return Err( [ new ApiOperationException( 'chat listen api' ) ] )
 	}
 

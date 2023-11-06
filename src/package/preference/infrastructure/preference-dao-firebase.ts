@@ -27,7 +27,7 @@ export class PreferenceDaoFirebase implements PreferenceDao {
 	async create( preference: Preference ): Promise<Result<boolean, Error[]>> {
 		let completed: string | null = null
 
-		const json                   = preferenceToJson( preference )
+		const json = preferenceToJson( preference )
 
 		if ( json.isErr() ) {
 			return Err( [ json.unwrapErr() ] )

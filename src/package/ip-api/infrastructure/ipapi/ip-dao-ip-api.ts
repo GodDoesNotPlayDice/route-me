@@ -9,16 +9,17 @@ import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
 import { IP } from 'src/package/ip-api/domain/models/ip'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
-export class IpDaoIpApi implements IpDao{
+export class IpDaoIpApi implements IpDao {
 	constructor( private http: HttpClient ) {}
 
 	readonly url = 'https://ipapi.co/json'
 
 	async getIp(): Promise<Result<IP, Error>> {
-		const response = await this.http.get( this.url ).toPromise()
+		const response = await this.http.get( this.url )
+		                           .toPromise()
 
 		if ( response === undefined ) {
-			return Err(new UnknownException( 'ip dao. get ip. ip api' ) )
+			return Err( new UnknownException( 'ip dao. get ip. ip api' ) )
 		}
 
 		const ip = ipFromJson( response as Record<string, any> )

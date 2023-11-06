@@ -29,7 +29,7 @@ import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 	selector   : 'app-publish',
 	templateUrl: './publish.page.html',
 	styleUrls  : [ './publish.page.scss' ],
-	imports: [
+	imports    : [
 		IonicModule,
 		CommonModule,
 		InputTextComponent,
@@ -56,11 +56,11 @@ export class PublishPage implements ViewDidEnter {
 	@ViewChild( 'inicio' ) inicioInput!: MapLocationInputComponent
 
 	formGroup!: FormGroup
-	pageKey        = 'publish'
-	first: boolean = true
-	distance : number | null = null
+	pageKey                       = 'publish'
+	first: boolean                = true
+	distance: number | null       = null
 	simulatedPrice: string | null = null
-	loadingPrice : boolean = false
+	loadingPrice: boolean         = false
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
@@ -89,21 +89,23 @@ export class PublishPage implements ViewDidEnter {
 			console.log( dir.unwrapErr() )
 		}
 		else {
-			this.loadingPrice = true
-			const resultIP = await this.ipDao.getIp()
+			this.loadingPrice    = true
+			const resultIP       = await this.ipDao.getIp()
 			const resultCurrency = await this.currencyDao.getCurrencyExchange(
 				'USD',
-				resultIP.unwrap().currency,
+				resultIP.unwrap().currency
 			)
-			this.distance = +(dir.unwrap().distance.value / 1000).toFixed(3)
-			const amountUSD = new KilometerPricing( newMoney({value: 0.35}).unwrap(), this.distance ).calculate()
-			const targetAmount = amountUSD * resultCurrency.unwrap().value
-			this.simulatedPrice = new Intl.NumberFormat(
+			this.distance        =
+				+( dir.unwrap().distance.value / 1000 ).toFixed( 3 )
+			const amountUSD      = new KilometerPricing( newMoney( { value: 0.35 } )
+				.unwrap(), this.distance ).calculate()
+			const targetAmount   = amountUSD * resultCurrency.unwrap().value
+			this.simulatedPrice  = new Intl.NumberFormat(
 				resultIP.unwrap().languages[0], {
 					style   : 'currency',
-				 	currency: resultIP.unwrap().currency
+					currency: resultIP.unwrap().currency
 				} ).format( targetAmount )
-			this.loadingPrice = false
+			this.loadingPrice    = false
 		}
 	}
 
@@ -113,7 +115,7 @@ export class PublishPage implements ViewDidEnter {
 
 		if ( !this.formGroup.valid ) { return }
 
-	await this.alertService.presentAlert( {
+		await this.alertService.presentAlert( {
 			header : 'Confirma que deseas publicar el viaje',
 			message: `El viaje comenzara: ${ this.dateInput.dateControl.value!.toLocaleString() }`,
 			buttons: [
@@ -125,7 +127,7 @@ export class PublishPage implements ViewDidEnter {
 					handler: async () => {
 						const result = await this.tripService.create( {
 							endLocation  : this.salidaInput.mapLocationControl.value!,
-							distance		 : this.distance!,
+							distance     : this.distance!,
 							startLocation: this.inicioInput.mapLocationControl.value!,
 							startDate    : this.dateInput.dateControl.value!
 						} )

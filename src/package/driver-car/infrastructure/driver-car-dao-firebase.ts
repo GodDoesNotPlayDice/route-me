@@ -22,7 +22,7 @@ export class DriverCarDaoFirebase implements DriverCarDao {
 	async create( driver: DriverCar ): Promise<Result<boolean, Error>> {
 		let completed: string | null = null
 
-		const json = driverCarToJson( driver)
+		const json = driverCarToJson( driver )
 
 		if ( json.isErr() ) {
 			return Err( json.unwrapErr() )
@@ -48,10 +48,11 @@ export class DriverCarDaoFirebase implements DriverCarDao {
 		return await this.firebase.database.ref( this.collectionKey )
 		                 .get()
 		                 .then( async ( snapshot ) => {
-			                 const error: Error[] = []
-			                 const driverCars: DriverCar[]  = []
+			                 const error: Error[]          = []
+			                 const driverCars: DriverCar[] = []
 			                 for ( let value of Object.values( snapshot.val() ) ) {
-				                 const driverCar = driverCarFromJson( value as Record<string, any> )
+				                 const driverCar = driverCarFromJson(
+					                 value as Record<string, any> )
 				                 if ( driverCar.isErr() ) {
 					                 error.push( ...driverCar.unwrapErr() )
 					                 break

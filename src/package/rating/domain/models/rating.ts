@@ -6,7 +6,10 @@ import {
 	Email,
 	EmailProps
 } from 'src/package/shared/domain/models/email'
-import { ValidNumber, ValidNumberProps } from 'src/package/shared/domain/models/valid-number'
+import {
+	ValidNumber,
+	ValidNumberProps
+} from 'src/package/shared/domain/models/valid-number'
 
 export interface Rating {
 	id: RatingID

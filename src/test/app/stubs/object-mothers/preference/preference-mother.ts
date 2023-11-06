@@ -11,13 +11,13 @@ import { preferenceSeeds } from 'src/test/app/stubs/seed/preference-seeds'
 
 export class PreferenceMother {
 	static random(): Result<Preference, Error[]> {
-		return Ok( faker.helpers.arrayElement( preferenceSeeds ))
+		return Ok( faker.helpers.arrayElement( preferenceSeeds ) )
 	}
 
 	static invalid(): Result<Preference, Error[]> {
 		return newPreference( {
-			name: '',
-			icon: '',
+			name  : '',
+			icon  : '',
 			source: ''
 		} )
 	}

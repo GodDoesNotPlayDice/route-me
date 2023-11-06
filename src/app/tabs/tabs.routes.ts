@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router'
-import { CanLoginGuard } from 'src/app/shared/guard'
 import { CanDriverGuard } from 'src/app/shared/guard/can-driver.guard'
 import { TabsPage } from './tabs.page'
 
@@ -23,7 +22,7 @@ export const routes: Routes = [
 					m => m.SearchPage )
 			},
 			{
-				canActivate : [ CanDriverGuard ],
+				canActivate  : [ CanDriverGuard ],
 				path         : 'publish',
 				loadComponent: () => import('./publish/publish.page').then(
 					m => m.PublishPage )
@@ -39,8 +38,9 @@ export const routes: Routes = [
 					m => m.ProfilePage )
 			},
 			{
-				path: 'register-driver',
-				loadComponent: () => import('./register-driver/register-driver.page').then( m => m.RegisterDriverPage)
+				path         : 'register-driver',
+				loadComponent: () => import('./register-driver/register-driver.page').then(
+					m => m.RegisterDriverPage )
 			}
 		]
 	},

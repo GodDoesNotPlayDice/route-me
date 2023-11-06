@@ -40,7 +40,7 @@ export interface PreferenceProps {
  * @throws {PreferenceNameInvalidException} - if name is invalid
  * @throws {PreferenceIconInvalidException} - if icon is invalid
  */
-export const newPreference = ( props: PreferenceProps): Result<Preference, Error[]> => {
+export const newPreference = ( props: PreferenceProps ): Result<Preference, Error[]> => {
 	const err: Error[] = []
 	const id           = newPreferenceID( {
 		value: ulid()
@@ -79,9 +79,9 @@ export const newPreference = ( props: PreferenceProps): Result<Preference, Error
 	}
 
 	return Ok( {
-		id  : id.unwrap(),
-		name: name.unwrap(),
-		icon: icon.unwrap(),
+		id    : id.unwrap(),
+		name  : name.unwrap(),
+		icon  : icon.unwrap(),
 		source: source.unwrap()
 	} )
 }

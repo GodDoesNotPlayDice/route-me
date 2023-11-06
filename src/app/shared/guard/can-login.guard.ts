@@ -13,7 +13,10 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 	providedIn: 'root'
 } )
 export class CanLoginGuard implements CanActivate {
-	constructor( private auth: AuthService, private router: Router ) {}
+	constructor( private auth: AuthService,
+		private router: Router
+	)
+	{}
 
 	canActivate(
 		route: ActivatedRouteSnapshot,

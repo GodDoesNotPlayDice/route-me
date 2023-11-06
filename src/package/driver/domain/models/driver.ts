@@ -9,8 +9,8 @@ import { Trip } from 'src/package/trip/domain/models/trip'
 export interface Driver {
 	id: DriverID
 	passenger: Passenger
-	enabled : ValidBoolean
-	activeTrip : Option<Trip>
+	enabled: ValidBoolean
+	activeTrip: Option<Trip>
 	documents: DriverDocument[]
 	carID: DriverCarID
 }

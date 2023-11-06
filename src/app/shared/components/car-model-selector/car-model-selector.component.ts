@@ -25,13 +25,14 @@ export class CarModelSelectorComponent implements OnInit {
 
 	constructor( private driverCarService: DriverCarService ) { }
 
-	readonly carControl = new FormControl<DriverCar | null>( null, [ Validators.required ] )
+	readonly carControl = new FormControl<DriverCar | null>( null,
+		[ Validators.required ] )
 
 	firstTime: boolean         = true
 	loading: boolean           = false
 	selectedIndex: number      = 0
 	driverCarList: DriverCar[] = []
-	label: string = 'Modelo de auto'
+	label: string              = 'Modelo de auto'
 
 	async ngOnInit(): Promise<void> {
 		this.loading    = true
@@ -52,7 +53,7 @@ export class CarModelSelectorComponent implements OnInit {
 		else if ( this.selectedIndex < this.driverCarList.length - 1 ) {
 			this.selectedIndex++
 		}
-		this.carControl.patchValue( this.driverCarList[ this.selectedIndex ] )
+		this.carControl.patchValue( this.driverCarList[this.selectedIndex] )
 		this.carControl.updateValueAndValidity()
 	}
 
@@ -66,12 +67,12 @@ export class CarModelSelectorComponent implements OnInit {
 		else if ( this.selectedIndex > 0 ) {
 			this.selectedIndex--
 		}
-		this.carControl.patchValue( this.driverCarList[ this.selectedIndex ] )
+		this.carControl.patchValue( this.driverCarList[this.selectedIndex] )
 		this.carControl.updateValueAndValidity()
 	}
 
-	reset(){
-		this.firstTime = true
+	reset() {
+		this.firstTime     = true
 		this.selectedIndex = 0
 		this.carControl.reset()
 	}

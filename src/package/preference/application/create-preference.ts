@@ -28,25 +28,25 @@ export const createPreference = async ( dao: PreferenceDao,
 		err.push( id.unwrapErr() )
 	}
 
-	const icon = newPreferenceIcon({
+	const icon = newPreferenceIcon( {
 		value: props.icon
-	})
+	} )
 
 	if ( icon.isErr() ) {
 		err.push( icon.unwrapErr() )
 	}
 
-	const source = newPreferenceSource({
+	const source = newPreferenceSource( {
 		value: props.source
-	})
+	} )
 
 	if ( source.isErr() ) {
 		err.push( source.unwrapErr() )
 	}
 
-	const name = newPreferenceName({
+	const name = newPreferenceName( {
 		value: props.name
-	})
+	} )
 
 	if ( name.isErr() ) {
 		err.push( name.unwrapErr() )
@@ -57,10 +57,10 @@ export const createPreference = async ( dao: PreferenceDao,
 	}
 
 	const result: Preference = {
-		id: id.unwrap(),
-		icon: icon.unwrap(),
+		id    : id.unwrap(),
+		icon  : icon.unwrap(),
 		source: source.unwrap(),
-		name: name.unwrap()
+		name  : name.unwrap()
 	}
 
 	const response = await dao.create( result )

@@ -3,10 +3,7 @@ import {
 	Component,
 	ViewChild
 } from '@angular/core'
-import {
-	FormGroup,
-	FormsModule
-} from '@angular/forms'
+import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import {
 	IonicModule,
@@ -20,8 +17,8 @@ import { MultipleSelectorInputComponent } from 'src/app/shared/components/multip
 import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
-import { ToastService } from 'src/app/shared/services/toast.service'
 import { PreferenceService } from 'src/app/shared/services/preference.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import {
 	clearStep,
@@ -47,7 +44,9 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
 } )
 export class Step3Page implements ViewDidEnter {
 
-	constructor( private store: Store<AppState>, private router: Router,
+	constructor(
+		private store: Store<AppState>,
+		private router: Router,
 		private toastService: ToastService,
 		private loadingService: LoadingService,
 		private preferenceService: PreferenceService,

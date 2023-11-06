@@ -68,12 +68,12 @@ export class ChatDaoFirebase extends ChatDao {
 			}
 
 			const ref = this.firebase.database.ref(
-				`${this.collectionKey}/${ keySaved.unwrap() }/messages` )
+				`${ this.collectionKey }/${ keySaved.unwrap() }/messages` )
 
 			ref.on( 'child_added', ( snapshot ) => {
-				console.log( 'child added')
-				const value   = snapshot.val()
-				console.log( value)
+				console.log( 'child added' )
+				const value = snapshot.val()
+				console.log( value )
 				const message = messageFromJson( value )
 				if ( message.isOk() ) {
 					this.messagesSubject.next( message.unwrap() )
@@ -104,7 +104,7 @@ export class ChatDaoFirebase extends ChatDao {
 		}
 
 		await this.firebase.database.ref(
-			`${ this.collectionKey }/${keySaved.unwrap()}/messages` )
+			`${ this.collectionKey }/${ keySaved.unwrap() }/messages` )
 		          .push( json.unwrap(),
 			          ( error ) => {
 				          if ( !error ) {

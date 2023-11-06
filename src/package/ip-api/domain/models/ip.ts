@@ -19,7 +19,7 @@ export const IpSchema = z.object( {
 	country_code        : z.string(),
 	country_calling_code: z.string(),
 	currency            : z.string(),
-	languages           : z.array(z.string())
+	languages           : z.array( z.string() )
 } )
 
 type IpType = z.infer<typeof IpSchema>

@@ -4,8 +4,8 @@ import {
 	Result
 } from 'oxide.ts'
 import { Rating } from 'src/package/rating/domain/models/rating'
-import { RatingValueMother } from 'src/test/app/stubs/object-mothers/rating/rating-value-mother'
 import { RatingIdMother } from 'src/test/app/stubs/object-mothers/rating/rating-id-mother'
+import { RatingValueMother } from 'src/test/app/stubs/object-mothers/rating/rating-value-mother'
 import { EmailMother } from 'src/test/app/stubs/object-mothers/shared/email-mother'
 
 export class RatingMother {

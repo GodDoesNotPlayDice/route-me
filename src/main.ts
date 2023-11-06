@@ -1,10 +1,13 @@
+import { registerLocaleData } from '@angular/common'
 import {
 	HttpClient,
 	HttpClientModule
 } from '@angular/common/http'
+import localeEs from '@angular/common/locales/es'
 import {
 	enableProdMode,
-	importProvidersFrom
+	importProvidersFrom,
+	LOCALE_ID
 } from '@angular/core'
 import { AngularFireModule } from '@angular/fire/compat'
 import {
@@ -15,10 +18,7 @@ import {
 	AngularFireDatabase,
 	AngularFireDatabaseModule
 } from '@angular/fire/compat/database'
-import {
-	AngularFirestore,
-	AngularFirestoreModule
-} from '@angular/fire/compat/firestore'
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import {
 	AngularFireStorage,
 	AngularFireStorageModule
@@ -33,6 +33,7 @@ import {
 	provideRouter,
 	RouteReuseStrategy
 } from '@angular/router'
+import { environment } from '@env/environment'
 import {
 	IonicModule,
 	IonicRouteStrategy
@@ -53,7 +54,6 @@ import { CurrencyDaoCurrencyExchange } from 'src/package/currency-api/infrastruc
 import { DirectionRepository } from 'src/package/direction-api/domain/repository/direction-repository'
 import { DirectionMapBox } from 'src/package/direction-api/infrastructure/mapbox/direction-map-box'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
-import { DriverCarDaoApi } from 'src/package/driver-car/infrastructure/driver-car-dao-api'
 import { DriverCarDaoFirebase } from 'src/package/driver-car/infrastructure/driver-car-dao-firebase'
 import { DriverDocumentDao } from 'src/package/driver-document/domain/dao/driver-document-dao'
 import { DriverDocumentDaoFirebase } from 'src/package/driver-document/infrastructure/driver-document-dao-firebase'
@@ -77,21 +77,20 @@ import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
 import { LocationDaoFirebase } from 'src/package/trip-location/infrastructure/location-dao-firebase'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripRepository } from 'src/package/trip/domain/repository/trip-repository'
-import { TripDaoApi } from 'src/package/trip/infrastructure/trip-dao-api'
 import { TripDaoFirebase } from 'src/package/trip/infrastructure/trip-dao-firebase'
 import { TripRepositoryApi } from 'src/package/trip/infrastructure/trip-repository-api'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { UserDaoFirebase } from 'src/package/user/infrastructure/user-dao-firebase'
-import { environment } from './environments/environment'
-
 
 if ( environment.production ) {
 	enableProdMode()
 }
+registerLocaleData( localeEs, 'es' )
 
 bootstrapApplication( AppComponent, {
 	providers: [
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+		{ provide: LOCALE_ID, useValue: 'es' },
 		{
 			provide   : AuthUserRepository,
 			useFactory: ( auth: AngularFireAuth, firebase: AngularFireDatabase ) => {
@@ -109,7 +108,7 @@ bootstrapApplication( AppComponent, {
 		{
 			provide   : DriverCarDao,
 			useFactory: ( firebase: AngularFireDatabase ) => {
-					return new DriverCarDaoFirebase( firebase )
+				return new DriverCarDaoFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
 		},

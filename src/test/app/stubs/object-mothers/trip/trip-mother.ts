@@ -46,7 +46,8 @@ export class TripMother {
 			                                    .unwrap(),
 			state        : TripStateMother.random()
 			                              .unwrap(),
-			feeMethod: TripFeeMethodMother.random().unwrap(),
+			feeMethod    : TripFeeMethodMother.random()
+			                                  .unwrap(),
 			category     : Some( CategoryMother.random()
 			                                   .unwrap() ),
 			chatID       : ChatIDMother.random()

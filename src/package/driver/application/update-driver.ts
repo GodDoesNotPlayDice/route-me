@@ -25,7 +25,8 @@ export const updateDriver = async ( dao: DriverDao, driver: Driver, props: {
 
 	let driverDocuments: DriverDocument[] = []
 	if ( props.documents !== undefined &&
-		props.documents.length > 0 ) {
+		props.documents.length > 0 )
+	{
 		for ( const doc of props.documents ) {
 			const docID = newDriverDocumentID( {
 				value: doc.id
@@ -75,10 +76,10 @@ export const updateDriver = async ( dao: DriverDao, driver: Driver, props: {
 		documents : driverDocuments
 	}
 
-	const result = await dao.update(newDriver)
+	const result = await dao.update( newDriver )
 
 	if ( result.isErr() ) {
-		return Err( [result.unwrapErr()] )
+		return Err( [ result.unwrapErr() ] )
 	}
 
 	return Ok( newDriver )

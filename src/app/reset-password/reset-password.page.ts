@@ -27,8 +27,10 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 } )
 export class ResetPasswordPage implements ViewDidEnter {
 
-	constructor( private router: Router,
-		private auth: AuthService )
+	constructor(
+		private router: Router,
+		private auth: AuthService
+	)
 	{}
 
 	@ViewChild( 'user' ) emailInput!: InputTextComponent

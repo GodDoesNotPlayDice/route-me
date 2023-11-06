@@ -14,7 +14,7 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
 	selector   : 'app-multiple-selector-item',
 	templateUrl: './multiple-selector-item.component.html',
 	styleUrls  : [ './multiple-selector-item.component.scss' ],
-	imports: [
+	imports    : [
 		IonicModule,
 		CommonModule,
 		MatIconModule

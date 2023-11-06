@@ -19,4 +19,4 @@ export class DriverDocumentNameMother {
 	}
 }
 
-const names = [ 'Licencia', 'Registro', 'Antecedentes', 'Historial']
+const names = [ 'Licencia', 'Registro', 'Antecedentes', 'Historial' ]

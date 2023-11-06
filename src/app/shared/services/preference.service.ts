@@ -8,6 +8,7 @@ import { Preference } from 'src/package/preference/domain/models/preference'
 export class PreferenceService {
 
 	constructor( private preferenceDao: PreferenceDao ) {}
+
 	preferences: Preference[] = []
 
 	async getPreferences(): Promise<Preference[]> {

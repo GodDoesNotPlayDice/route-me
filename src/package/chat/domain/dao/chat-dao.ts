@@ -11,7 +11,7 @@ export abstract class ChatDao {
 
 	protected messagesSubject = new BehaviorSubject<Message | null>( null )
 
-	abstract listen(id: ChatID): Promise<Result<Observable<Message | null>, Error[]>>
+	abstract listen( id: ChatID ): Promise<Result<Observable<Message | null>, Error[]>>
 
 	abstract close(): Promise<void>
 
@@ -20,5 +20,5 @@ export abstract class ChatDao {
 
 	abstract create( chat: Chat ): Promise<Result<boolean, Error[]>>
 
-	abstract getById( id : ChatID ): Promise<Result<Chat, Error[]>>
+	abstract getById( id: ChatID ): Promise<Result<Chat, Error[]>>
 }

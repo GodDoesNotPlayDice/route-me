@@ -25,10 +25,11 @@ import {
 export class FileInputComponent {
 	constructor( private actionSheetCtrl: ActionSheetController ) {}
 
-	value = ''
-	@Input({ required: true }) label: string
-	@Input({ required: true }) placeholder: string
-	readonly fileControl = new FormControl( 'test', [Validators.required])
+	value                = ''
+	@Input( { required: true } ) label: string
+	@Input( { required: true } ) placeholder: string
+	readonly fileControl = new FormControl( 'test', [ Validators.required ] )
+
 	async presentActionSheet() {
 		const actionSheet = await this.actionSheetCtrl.create( {
 			header : 'Actions',
@@ -57,7 +58,7 @@ export class FileInputComponent {
 		await actionSheet.present()
 	}
 
-	reset(){
+	reset() {
 		this.value = ''
 		this.fileControl.reset()
 	}

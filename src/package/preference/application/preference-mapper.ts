@@ -45,7 +45,7 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
 
 	const source = newPreferenceSource( {
 		value: json['source'] ?? ''
-	})
+	} )
 
 	if ( source.isErr() ) {
 		errors.push( source.unwrapErr() )
@@ -56,9 +56,9 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
 	}
 
 	return Ok( {
-		id  : id.unwrap(),
-		name: name.unwrap(),
-		icon: icon.unwrap(),
+		id    : id.unwrap(),
+		name  : name.unwrap(),
+		icon  : icon.unwrap(),
 		source: source.unwrap()
 	} )
 }
@@ -70,9 +70,9 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
 export const preferenceToJson = ( preference: Preference ): Result<Record<string, any>, Error> => {
 	try {
 		const json: Record<string, any> = {
-			id  : preference.id.value,
-			name: preference.name.value,
-			icon: preference.icon.value,
+			id    : preference.id.value,
+			name  : preference.name.value,
+			icon  : preference.icon.value,
 			source: preference.source.value
 		}
 		return Ok( json )

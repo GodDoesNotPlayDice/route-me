@@ -5,11 +5,8 @@ import {
 import * as mapboxgl from 'mapbox-gl'
 import {
 	Err,
-	None,
 	Ok,
-	Option,
-	Result,
-	Some
+	Result
 } from 'oxide.ts'
 import {
 	BehaviorSubject,
@@ -103,8 +100,11 @@ export class MapService implements OnDestroy {
 	}
 
 	async autoFollow( center?: Position ): Promise<boolean> {
-		if (this.lastPosition === null) return false
-		const result = await this.mapRepository.autoFollow( center ?? this.lastPosition)
+		if ( this.lastPosition === null ) {
+			return false
+		}
+		const result = await this.mapRepository.autoFollow(
+			center ?? this.lastPosition )
 		if ( result.isErr() ) {
 			console.log( 'auto follow. map service' )
 			console.log( result.unwrapErr() )

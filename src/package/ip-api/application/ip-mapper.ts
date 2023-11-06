@@ -14,21 +14,21 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {IpInvalidException} - if ip is invalid
  */
 export const ipFromJson = ( json: Record<string, any> ): Result<IP, Error> => {
-	const langArray : string[] = json['languages'].split(',')
+	const langArray: string[] = json['languages'].split( ',' )
 
-	const ip = newIp({
-		languages: langArray,
-		currency: json['currency'],
+	const ip = newIp( {
+		languages           : langArray,
+		currency            : json['currency'],
 		country_calling_code: json['country_calling_code'],
-		country_code: json['country_code'],
-		country_name: json['country_name']
-	})
+		country_code        : json['country_code'],
+		country_name        : json['country_name']
+	} )
 
 	if ( ip.isErr() ) {
-		return Err(ip.unwrapErr())
+		return Err( ip.unwrapErr() )
 	}
 
-	return Ok( ip.unwrap())
+	return Ok( ip.unwrap() )
 }
 
 /**
@@ -38,11 +38,11 @@ export const ipFromJson = ( json: Record<string, any> ): Result<IP, Error> => {
 export const ipToJson = ( ip: IP ): Result<Record<string, any>, Error> => {
 	try {
 		const json: Record<string, any> = {
-			country_name:         ip.country_name,
-			country_code:         ip.country_code,
+			country_name        : ip.country_name,
+			country_code        : ip.country_code,
 			country_calling_code: ip.country_calling_code,
-			currency:             ip.currency,
-			languages:            ip.languages,
+			currency            : ip.currency,
+			languages           : ip.languages
 		}
 
 		return Ok( json )

@@ -1,8 +1,8 @@
+import { CommonModule } from '@angular/common'
 import {
 	Component,
 	ViewChild
 } from '@angular/core'
-import { CommonModule } from '@angular/common'
 import {
 	FormGroup,
 	FormsModule
@@ -29,7 +29,8 @@ import { ToastService } from 'src/app/shared/services/toast.service'
 export class RegisterDriverPage implements ViewDidEnter {
 	constructor( private driverService: DriverService,
 		private toastService: ToastService
-	) { }
+	)
+	{ }
 
 	@ViewChild( 'licencia' ) licenceInput !: FileInputComponent
 	@ViewChild( 'registro' ) registerInput !: FileInputComponent
@@ -88,7 +89,7 @@ export class RegisterDriverPage implements ViewDidEnter {
 			]
 		)
 
-		if ( result ){
+		if ( result ) {
 			await this.toastService.presentToast( {
 				message : 'Registro exitoso',
 				duration: 1500,
@@ -96,7 +97,8 @@ export class RegisterDriverPage implements ViewDidEnter {
 			} )
 			this.reset()
 			this.waitForEnable = true
-		}else {
+		}
+		else {
 			await this.toastService.presentToast( {
 				message : 'Hubo un problema. Intente denuevo',
 				duration: 1500,

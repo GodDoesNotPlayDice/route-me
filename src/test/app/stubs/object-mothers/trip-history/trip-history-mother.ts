@@ -11,7 +11,7 @@ import { TripMother } from 'src/test/app/stubs/object-mothers/trip/trip-mother'
 
 export class TripHistoryMother {
 	static random( minRadiusInKm: number = 0.5,
-		maxRadiusInKm: number = 10 ): Result<TripHistory, Error[]> {
+		maxRadiusInKm: number              = 10 ): Result<TripHistory, Error[]> {
 		const trips = faker.helpers.multiple( () => TripMother.random(
 			ValidNumberMother.random( minRadiusInKm, maxRadiusInKm )
 			                 .unwrap().value )

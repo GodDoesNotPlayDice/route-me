@@ -1,4 +1,3 @@
-
 export interface MultipleSelectorData {
 	id: string
 	name: string

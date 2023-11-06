@@ -51,7 +51,7 @@ export class Step2Page implements ViewDidEnter {
 
 	constructor( private store: Store<AppState>,
 		private toastService: ToastService,
-		private loadingService : LoadingService,
+		private loadingService: LoadingService,
 		private countryService: CountryPhoneCodeService,
 		private auth: AuthService,
 		private router: Router )
@@ -118,7 +118,7 @@ export class Step2Page implements ViewDidEnter {
 			return
 		}
 
-		await this.loadingService.showLoading( 'Guardando')
+		await this.loadingService.showLoading( 'Guardando' )
 		const result = await this.auth.registerPassenger( {
 			name    : this.userInput.textControl.value!,
 			lastName: this.lastNameInput.textControl.value!,

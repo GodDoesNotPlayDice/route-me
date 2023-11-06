@@ -7,7 +7,8 @@ import { PreferenceIconInvalidException } from 'src/package/preference/domain/ex
 import { z } from 'zod'
 
 export const PreferenceIconSchema = z.object( {
-	value: z.string().min(1)
+	value: z.string()
+	        .min( 1 )
 } )
 
 type PreferenceIconType = z.infer<typeof PreferenceIconSchema>

@@ -11,7 +11,8 @@ export interface CurrencyExchangeProps {
 }
 
 export const CurrencyExchangeSchema = z.object( {
-	value        : z.number().nonnegative(),
+	value: z.number()
+	        .nonnegative()
 } )
 
 type CurrencyExchangeType = z.infer<typeof CurrencyExchangeSchema>
@@ -24,7 +25,7 @@ export interface CurrencyExchange extends CurrencyExchangeType {}
  */
 export const newCurrencyExchange = ( props: CurrencyExchangeProps ): Result<CurrencyExchange, Error> => {
 	const result = CurrencyExchangeSchema.safeParse( {
-		value: props.value,
+		value: props.value
 	} )
 
 	if ( !result.success ) {

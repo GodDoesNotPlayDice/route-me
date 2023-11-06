@@ -8,15 +8,12 @@ import {
 	BehaviorSubject,
 	Observable
 } from 'rxjs'
-import { DriverService } from 'src/app/shared/services/driver.service'
 import { createUser } from 'src/package/authentication/application/create-user'
 import { deleteAccount } from 'src/package/authentication/application/delete-account'
 import { loginUser } from 'src/package/authentication/application/login-user'
 import { logoutUser } from 'src/package/authentication/application/logout-user'
 import { sendResetPassword } from 'src/package/authentication/application/send-reset-password'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
-import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
-import { Driver } from 'src/package/driver/domain/models/driver'
 import { createPassenger } from 'src/package/passenger/application/create-passenger'
 import { deletePassenger } from 'src/package/passenger/application/delete-passenger'
 import { updatePassenger } from 'src/package/passenger/application/update-passenger'
@@ -35,7 +32,7 @@ export class AuthService {
 	constructor(
 		private authRepository: AuthUserRepository,
 		private userDao: UserDao,
-		private passengerDao: PassengerDao,
+		private passengerDao: PassengerDao
 	)
 	{ }
 

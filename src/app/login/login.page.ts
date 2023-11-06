@@ -3,7 +3,6 @@ import {
 	Component,
 	ViewChild
 } from '@angular/core'
-import { AngularFireAuth } from '@angular/fire/compat/auth'
 import {
 	FormGroup,
 	FormsModule,
@@ -26,24 +25,12 @@ import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
-import { TripService } from 'src/app/shared/services/trip.service'
-import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
-import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
-import { createPreference } from 'src/package/preference/application/create-preference'
-import { PreferenceDao } from 'src/package/preference/domain/dao/preference-dao'
-import { newPreference } from 'src/package/preference/domain/models/preference'
-import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
-import { newMoney } from 'src/package/shared/domain/models/money'
-import { newTripID } from 'src/package/trip/domain/models/trip-id'
-import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
-import { preferenceSeeds } from 'src/test/app/stubs/seed/preference-seeds'
-import { decodeTime } from 'ulidx'
 
 @Component( {
 	standalone : true,
 	selector   : 'app-login',
 	templateUrl: './login.page.html',
-	imports: [
+	imports    : [
 		IonicModule,
 		CommonModule,
 		LogoComponent,
@@ -62,8 +49,8 @@ export class LoginPage implements ViewDidEnter {
 	constructor(
 		private authService: AuthService,
 		private router: Router,
-		private loadingService : LoadingService,
-		private alertService: AlertService,
+		private loadingService: LoadingService,
+		private alertService: AlertService
 	)
 	{}
 
@@ -95,7 +82,7 @@ export class LoginPage implements ViewDidEnter {
 
 		// si el checkbox esta marcado
 		// this.checkbox.checkboxControl.value
-		await this.loadingService.showLoading('Iniciando sesión')
+		await this.loadingService.showLoading( 'Iniciando sesión' )
 		const result = await this.authService.userLogin(
 			this.userInput.textControl.value!,
 			this.passwordInput.textControl.value!
@@ -103,7 +90,7 @@ export class LoginPage implements ViewDidEnter {
 		await this.loadingService.dismissLoading()
 
 		if ( result ) {
-			await this.router.navigate( [ '/tabs' ] )
+			await this.router.navigate( [ '/tabs/home' ] )
 		}
 		else {
 
@@ -119,4 +106,3 @@ export class LoginPage implements ViewDidEnter {
 		this.checkbox.reset()
 	}
 }
-

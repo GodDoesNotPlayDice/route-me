@@ -47,7 +47,7 @@ export class Step1Page implements ViewDidEnter {
 
 	constructor( private store: Store<AppState>,
 		private alertService: AlertService,
-		private loadingService : LoadingService,
+		private loadingService: LoadingService,
 		private toastService: ToastService,
 		private router: Router,
 		private auth: AuthService )
@@ -98,8 +98,8 @@ export class Step1Page implements ViewDidEnter {
 		//TODO: si esta el check de mantener sesion, guardar en localstorage
 		const email    = this.userInput.textControl.value!
 		const password = this.passwordInput.textControl.value!
-		await this.loadingService.showLoading( 'Guardando')
-		const result   = await this.auth.userRegister( email, password )
+		await this.loadingService.showLoading( 'Guardando' )
+		const result = await this.auth.userRegister( email, password )
 		await this.loadingService.dismissLoading()
 		if ( result ) {
 			this.store.dispatch( notifyStep() )

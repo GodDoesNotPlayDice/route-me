@@ -1,16 +1,17 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing'
 
-import { DriverCarService } from 'src/app/shared/services/driver-car.service';
+import { DriverCarService } from 'src/app/shared/services/driver-car.service'
 
-describe('DriverCarService', () => {
-  let service: DriverCarService;
+describe( 'DriverCarService', () => {
+	let service: DriverCarService
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DriverCarService);
-  });
+	beforeEach( () => {
+		TestBed.configureTestingModule( {} )
+		service = TestBed.inject( DriverCarService )
+	} )
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+	it( 'should be created', () => {
+		expect( service )
+			.toBeTruthy()
+	} )
+} )

@@ -7,7 +7,8 @@ import { PreferenceSourceInvalidException } from 'src/package/preference/domain/
 import { z } from 'zod'
 
 export const PreferenceSourceSchema = z.object( {
-	value: z.string().min(3)
+	value: z.string()
+	        .min( 3 )
 } )
 
 type PreferenceSourceType = z.infer<typeof PreferenceSourceSchema>

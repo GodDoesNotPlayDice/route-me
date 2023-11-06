@@ -16,7 +16,6 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
 import { Email } from 'src/package/shared/domain/models/email'
 import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
-import { TripID } from 'src/package/trip/domain/models/trip-id'
 
 export class DriverDaoFirebase implements DriverDao {
 	constructor( private firebase: AngularFireDatabase ) {

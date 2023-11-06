@@ -3,12 +3,10 @@ import {
 	Component,
 	EventEmitter,
 	Input,
-	OnInit,
 	Output
 } from '@angular/core'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { UrlService } from 'src/app/shared/services/url.service'
 
 @Component( {
 	standalone : true,
@@ -20,19 +18,12 @@ import { UrlService } from 'src/app/shared/services/url.service'
 		CommonModule
 	]
 } )
-export class AppBarCloneComponent implements OnInit {
+export class AppBarCloneComponent {
 
-	constructor( private urlService: UrlService,
-		private router: Router )
+	constructor(
+		private router: Router
+	)
 	{}
-
-	ngOnInit(): void {
-		if ( this.href === null ) {
-			this.urlService.previousUrl$.subscribe( ( url ) => {
-				this.href = url
-			} )
-		}
-	}
 
 	@Input() href: string | null              = null
 	@Input() leadNameIcon: string             = 'arrow-back-outline'
@@ -44,6 +35,8 @@ export class AppBarCloneComponent implements OnInit {
 	}
 
 	async backPage() {
-		await this.router.navigate( [ this.href ] )
+		if ( this.href !== null ) {
+			await this.router.navigate( [ this.href ] )
+		}
 	}
 }
