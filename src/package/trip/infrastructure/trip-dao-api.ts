@@ -65,7 +65,9 @@ export class TripDaoApi implements TripDao {
 				return Err( tripJsonResult.unwrapErr() )
 			}
 
-			const response = await this.http.post( `${this.url}/trip/create`, tripJsonResult.unwrap() ).toPromise()
+			const response = await this.http.post( `${ this.url }/trip/create`,
+				tripJsonResult.unwrap() )
+			                           .toPromise()
 
 			const result = response !== undefined
 			return Ok( result )

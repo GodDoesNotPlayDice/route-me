@@ -190,8 +190,10 @@ export class TripDaoFirebase implements TripDao {
 			return Err( json.unwrapErr() )
 		}
 
-		await this.firebase.database.ref( this.collectionKey )
-		          .child( keySaved.unwrap() )
+		console.log( 'json.unwrap()' )
+		console.log( json.unwrap() )
+		await this.firebase.database.ref(
+			`${ this.collectionKey }/${ keySaved.unwrap() }` )
 		          .set( json.unwrap(),
 			          ( error ) => {
 				          if ( !error ) {

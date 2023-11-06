@@ -32,7 +32,8 @@ export const updateTrip = async ( dao: TripDao,
 	const newTrip: Trip = {
 		id             : trip.id,
 		description    : description.unwrap(),
-		category       : props.category === undefined ? trip.category : Some( props.category ),
+		category       : props.category === undefined ? trip.category : Some(
+			props.category ),
 		feeMethod      : trip.feeMethod,
 		chatID         : trip.chatID,
 		driver         : trip.driver,

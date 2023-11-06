@@ -15,9 +15,7 @@ import { Trip } from 'src/package/trip/domain/models/trip'
 import { newTripDescription } from 'src/package/trip/domain/models/trip-description'
 import { newTripFeeMethod } from 'src/package/trip/domain/models/trip-fee-method'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
-import {
-	newTripPrice
-} from 'src/package/trip/domain/models/trip-price'
+import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
 import { newTripState } from 'src/package/trip/domain/models/trip-state'
 import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 import { ulid } from 'ulidx'
@@ -107,20 +105,20 @@ export const createTrip = async ( dao: TripDao,
 	}
 
 	const result: Trip = {
-		id           : id.unwrap(),
-		driver       : props.driver,
-		chatID       : props.chatID,
-		endLocation  : props.endLocation,
-		startLocation: props.startLocation,
-		feeMethod    : fee.unwrap(),
-		price        : price.unwrap(),
-		startDate    : startDate.unwrap().value,
-		endDate      : end.unwrap().value,
-		description  : description.unwrap(),
-		state        : state.unwrap(),
+		id             : id.unwrap(),
+		driver         : props.driver,
+		chatID         : props.chatID,
+		endLocation    : props.endLocation,
+		startLocation  : props.startLocation,
+		feeMethod      : fee.unwrap(),
+		price          : price.unwrap(),
+		startDate      : startDate.unwrap().value,
+		endDate        : end.unwrap().value,
+		description    : description.unwrap(),
+		state          : state.unwrap(),
 		queuePassengers: [],
-		passengers   : [],
-		category     : None
+		passengers     : [],
+		category       : None
 	}
 
 	const response = await dao.create( result )

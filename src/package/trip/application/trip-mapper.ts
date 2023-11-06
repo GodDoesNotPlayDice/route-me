@@ -112,7 +112,7 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 
 	let category: Option<Category> = None
 	if ( json['category'] !== undefined ) {
-		const categoryResult = categoryFromJson( json['category'] ?? '')
+		const categoryResult = categoryFromJson( json['category'] ?? '' )
 
 		if ( categoryResult.isErr() ) {
 			err.push( ...categoryResult.unwrapErr() )
@@ -204,20 +204,20 @@ export const tripFromJSON = ( json: Record<string, any> ): Result<Trip, Error[]>
 	}
 
 	return Ok( {
-		price        : price.unwrap(),
-		description  : description.unwrap(),
-		category     : category,
-		state        : state.unwrap(),
-		feeMethod    : feeMethod.unwrap(),
-		id           : id.unwrap(),
-		startDate    : startDate.unwrap().value,
-		endDate      : endDate.unwrap().value,
-		driver       : driver.unwrap(),
-		chatID       : chatID.unwrap(),
-		passengers   : passenger,
+		price          : price.unwrap(),
+		description    : description.unwrap(),
+		category       : category,
+		state          : state.unwrap(),
+		feeMethod      : feeMethod.unwrap(),
+		id             : id.unwrap(),
+		startDate      : startDate.unwrap().value,
+		endDate        : endDate.unwrap().value,
+		driver         : driver.unwrap(),
+		chatID         : chatID.unwrap(),
+		passengers     : passenger,
 		queuePassengers: queuePassengers,
-		startLocation: locationStart.unwrap(),
-		endLocation  : locationEnd.unwrap()
+		startLocation  : locationStart.unwrap(),
+		endLocation    : locationEnd.unwrap()
 	} )
 }
 
@@ -284,6 +284,8 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 			json['end_location'] = endLocation.unwrap()
 		}
 
+		console.log( 'trip.passengers' )
+		console.log( trip.passengers )
 		const passengers: Record<string, any>[] = []
 		for ( const passenger of trip.passengers ) {
 			const passengerResult = passengerToJson( passenger )
@@ -304,7 +306,7 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 		}
 
 		const queuePassengers: Record<string, any>[] = []
-		for ( const passenger of trip.passengers ) {
+		for ( const passenger of trip.queuePassengers ) {
 			const passengerResult = passengerToJson( passenger )
 
 			if ( passengerResult.isErr() ) {
@@ -321,6 +323,7 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 		else {
 			json['queue_passengers'] = null
 		}
+
 
 		if ( err.length > 0 ) {
 			return Err( err )
