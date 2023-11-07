@@ -71,6 +71,8 @@ import { PositionRepository } from 'src/package/position-api/domain/repository/p
 import { Geolocation } from 'src/package/position-api/infrastructure/capacitor/geolocation'
 import { PreferenceDao } from 'src/package/preference/domain/dao/preference-dao'
 import { PreferenceDaoFirebase } from 'src/package/preference/infrastructure/preference-dao-firebase'
+import { RatingDao } from 'src/package/rating/domain/dao/rating-dao'
+import { RatingDaoFirebase } from 'src/package/rating/infrastructure/rating-dao-firebase'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
 import { TripInProgressDao } from 'src/package/trip-in-progress/domain/dao/trip-in-progress-dao'
@@ -146,6 +148,13 @@ bootstrapApplication( AppComponent, {
 			provide   : PassengerDao,
 			useFactory: ( firebase: AngularFireDatabase ) => {
 				return new PassengerDaoFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : RatingDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new RatingDaoFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
 		},

@@ -5,6 +5,7 @@ import {
 } from 'oxide.ts'
 import { Rating } from 'src/package/rating/domain/models/rating'
 import { newRatingID } from 'src/package/rating/domain/models/rating-id'
+import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
@@ -41,7 +42,7 @@ export const ratingFromJson = ( json: Record<string, any> ): Result<Rating, Erro
 		err.push( senderEmail.unwrapErr() )
 	}
 
-	const value = newValidNumber( {
+	const value = newRatingValue( {
 		value: json['value'] ?? ''
 	} )
 

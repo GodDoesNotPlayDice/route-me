@@ -421,4 +421,8 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		} )
 		await this.loadingService.dismissLoading()
 	}
+
+	async onReportPassenger( psn: Passenger ): Promise<void> {
+
+	}
 }

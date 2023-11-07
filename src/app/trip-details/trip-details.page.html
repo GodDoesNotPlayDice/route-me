@@ -121,7 +121,8 @@
 					<mat-icon>more_vert</mat-icon>
 				</button>
 				<mat-menu #menuPsn="matMenu">
-					<button mat-menu-item>
+					<button mat-menu-item
+					(click)="onReportPassenger(psn)">
 						<mat-icon class="">warning</mat-icon>
 						<span class="text-red-600">Reportar</span>
 					</button>
