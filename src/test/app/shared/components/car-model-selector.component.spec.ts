@@ -18,7 +18,7 @@ describe( 'CarModelSelectorComponent', () => {
 		} )
 		       .compileComponents()
 
-		fixture = TestBed.createComponent( CarModelSelectorComponent )
+		fixture   = TestBed.createComponent( CarModelSelectorComponent )
 		component = fixture.componentInstance
 		fixture.detectChanges()
 	} ) )

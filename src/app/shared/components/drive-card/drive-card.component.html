@@ -17,8 +17,8 @@
 	</div>
 	<div class="flex justify-between items-center gap-2">
 		<div class="flex items-center basis-5/12">
-			<div *ngFor="let passenger of info.passengerUrls">
-				<app-avatar-home [url]="passenger"></app-avatar-home>
+			<div *ngFor="let passengerUrl of info.passengerUrls">
+				<app-avatar-home [url]="passengerUrl"></app-avatar-home>
 			</div>
 			<div class="text-gray-400"
 				*ngIf="info.passengerUrls.length === 0">

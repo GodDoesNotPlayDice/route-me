@@ -16,6 +16,7 @@ import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
+import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
 import { CheckboxInputComponent } from 'src/app/shared/components/checkbox-input/checkbox-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
@@ -41,7 +42,8 @@ import { LoadingService } from 'src/app/shared/services/loading.service'
 		OutlinedButtonComponent,
 		FormsModule,
 		ReactiveFormsModule,
-		ParseLocationNamePipe
+		ParseLocationNamePipe,
+		AvatarComponent
 	],
 	styleUrls  : [ './login.page.scss' ]
 } )

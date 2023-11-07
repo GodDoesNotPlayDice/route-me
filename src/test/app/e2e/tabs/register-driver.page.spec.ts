@@ -9,7 +9,7 @@ describe( 'RegisterDriverPage', () => {
 	let fixture: ComponentFixture<RegisterDriverPage>
 
 	beforeEach( async () => {
-		fixture = TestBed.createComponent( RegisterDriverPage )
+		fixture   = TestBed.createComponent( RegisterDriverPage )
 		component = fixture.componentInstance
 		fixture.detectChanges()
 	} )

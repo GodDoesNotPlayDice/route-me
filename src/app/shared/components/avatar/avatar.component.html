@@ -1,6 +1,9 @@
 <div
 	class="max-w-[30px] max-h-[30px] rounded-full shadow-md shadow-black/20">
 	<img class="object-fill aspect-square rounded-full"
+		*ngIf="url !== ''"
 		[src]="url"
 		alt="">
+	<div class="w-[30px] h-[30px] bg-white rounded-full object-fill"
+		*ngIf="url === ''"></div>
 </div>

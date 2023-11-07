@@ -224,8 +224,8 @@ bootstrapApplication( AppComponent, {
 			},
 			deps      : [ HttpClient ]
 		},
-		importProvidersFrom(
-			[ IonicModule.forRoot( {} ),
+		importProvidersFrom( [
+				IonicModule.forRoot( {} ),
 				FormsModule,
 				ReactiveFormsModule,
 				HttpClientModule,

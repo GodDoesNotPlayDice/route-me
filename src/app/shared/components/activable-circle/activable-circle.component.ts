@@ -51,14 +51,12 @@ export class ActivableCircleComponent implements OnInit, OnChanges {
 		if ( event.target instanceof HTMLCanvasElement ) {
 			return
 		}
-		if ( event.target instanceof Element ) {
-			if ( event.target.id === this.id ) {
-				this.isActive = !this.isActive
-				this.iconName =
-					this.isActive ? this.iconNameEnabled : this.iconNameDisabled
-				this.isActiveChange.emit( this.isActive )
-				return
-			}
+		if ( event.target instanceof Element && event.target.id === this.id ) {
+			this.isActive = !this.isActive
+			this.iconName =
+				this.isActive ? this.iconNameEnabled : this.iconNameDisabled
+			this.isActiveChange.emit( this.isActive )
+			return
 		}
 		this.isActive = false
 	}
