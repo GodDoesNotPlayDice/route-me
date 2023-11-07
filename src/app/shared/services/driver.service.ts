@@ -1,16 +1,11 @@
-import {
-	Injectable,
-	OnDestroy
-} from '@angular/core'
+import { Injectable } from '@angular/core'
 import {
 	None,
 	Option,
 	Some
 } from 'oxide.ts'
 import {
-	BehaviorSubject,
 	first,
-	Observable,
 	Subscription
 } from 'rxjs'
 import { AuthService } from 'src/app/shared/services/auth.service'
@@ -25,6 +20,8 @@ import { updateDriver } from 'src/package/driver/application/update-driver'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { Email } from 'src/package/shared/domain/models/email'
+import { upsertTripInProgress } from 'src/package/trip-in-progress/application/upsert-trip-in-progress'
+import { TripInProgressDao } from 'src/package/trip-in-progress/domain/dao/trip-in-progress-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
@@ -32,9 +29,9 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 	providedIn: 'root'
 } )
 export class DriverService {
-
 	constructor(
 		private driverDao: DriverDao,
+		private inProgressDao: TripInProgressDao,
 		private authService: AuthService,
 		private driverCarDao: DriverCarDao,
 		private positionService: PositionService
@@ -51,9 +48,7 @@ export class DriverService {
 		    } )
 	}
 
-	// private activeTripUpdate = new BehaviorSubject<Trip | null>( null )
-
-	// public activeTripUpdate$: Observable<Trip | null> = this.activeTripUpdate.asObservable()
+	private updateActiveTrip: Subscription
 
 	currentDriver: Option<Driver> = None
 
@@ -108,14 +103,30 @@ export class DriverService {
 		return Some( result.unwrap() )
 	}
 
-	private async checkActiveTripSignal( result: Driver ): Promise<boolean> {
-		if ( result.activeTrip.isSome() && result.activeTrip.unwrap().state ===
+	private async checkActiveTripSignal( updatedDriver: Driver ): Promise<boolean> {
+		if ( updatedDriver.activeTrip.isSome() &&
+			updatedDriver.activeTrip.unwrap().state ===
 			TripStateEnum.Progress )
 		{
-			this.positionService.newPosition$.subscribe( (value) => {
-					if ( !value ) return
+			this.updateActiveTrip = this.positionService.newPosition$.subscribe( async ( value ) => {
+					if ( !value ) {
+						return
+					}
+					const activeTrip = updatedDriver.activeTrip.unwrap()
+					const result     = await upsertTripInProgress( this.inProgressDao, {
+						id           : activeTrip.id,
+						status       : activeTrip.state,
+						startLocation: activeTrip.startLocation,
+						endLocation  : activeTrip.endLocation,
+						latitude     : value.lat,
+						longitude    : value.lng
+					} )
+
+				if ( result.isErr()){
+					console.log('upsert active trip. driver')
+					console.log(result.unwrapErr())
+				}
 				} )
-			//TODO: mandar a trip progress table
 			return true
 		}
 		return false

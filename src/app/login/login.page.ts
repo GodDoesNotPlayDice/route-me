@@ -83,7 +83,7 @@ export class LoginPage implements ViewDidEnter {
 		}
 
 		// si el checkbox esta marcado
-		// this.checkbox.checkboxControl.value
+ 	// this.checkbox.checkboxControl.value
 		await this.loadingService.showLoading( 'Iniciando sesión' )
 		const result = await this.authService.userLogin(
 			this.userInput.textControl.value!,
@@ -95,7 +95,6 @@ export class LoginPage implements ViewDidEnter {
 			await this.router.navigate( [ '/tabs/home' ] )
 		}
 		else {
-
 			await this.alertService.presentAlert( {
 				header   : 'Error',
 				subHeader: 'Credenciales no existen',

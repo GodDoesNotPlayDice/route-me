@@ -12,6 +12,8 @@ import {
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { LoadingService } from 'src/app/shared/services/loading.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 
 @Component( {
 	standalone : true,
@@ -29,6 +31,8 @@ export class ResetPasswordPage implements ViewDidEnter {
 
 	constructor(
 		private router: Router,
+		private loadingService: LoadingService,
+		private toastService: ToastService,
 		private auth: AuthService
 	)
 	{}
@@ -53,14 +57,24 @@ export class ResetPasswordPage implements ViewDidEnter {
 			return
 		}
 
+		await this.loadingService.showLoading( 'Enviando peticion' )
 		const result = await this.auth.resetPasswordSend(
 			this.emailInput.textControl.value! )
-
+		await this.loadingService.dismissLoading()
 		if ( result ) {
-			await this.router.navigate( [ '/login' ] )
+			await this.toastService.presentToast( {
+				message : 'Se envio la peticion. Se envio un correo en caso de existir',
+				color   : 'success',
+				duration: 2000,
+				position: 'bottom'
+			} )
 		}
 		else {
-			console.log( 'reset failed' )
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
 		}
 	}
 }

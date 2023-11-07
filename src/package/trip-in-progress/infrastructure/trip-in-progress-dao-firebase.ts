@@ -47,6 +47,32 @@ export class TripInProgressDaoFirebase implements TripInProgressDao {
 		return Ok( true )
 	}
 
+	async delete( id: TripID ): Promise<Result<boolean, Error[]>> {
+		const keySaved = await this.getKey( id )
+
+		if ( keySaved.isErr() ) {
+			return Err( [keySaved.unwrapErr()] )
+		}
+
+		let completed: string | null = null
+
+		await this.firebase.database.ref( this.collectionKey )
+		          .child( keySaved.unwrap() )
+		          .remove(
+			          ( error ) => {
+				          if ( !error ) {
+					          completed = 'completed'
+				          }
+			          }
+		          )
+
+		if ( completed === null ) {
+			return Err( [new FirebaseOperationException( 'delete' )] )
+		}
+
+		return Ok( true )
+	}
+
 	async create( trip: TripInProgress ): Promise<Result<boolean, Error[]>> {
 		let completed: string | null = null
 		const json                   = tripInProgressToJSON( trip )
@@ -78,14 +104,15 @@ export class TripInProgressDaoFirebase implements TripInProgressDao {
 			const createResult = await this.create( trip )
 
 			if ( createResult.isErr() ) {
-				return Err( [ ...updateResult.unwrapErr(), ...createResult.unwrapErr() ] )
+				return Err(
+					[ ...updateResult.unwrapErr(), ...createResult.unwrapErr() ] )
 			}
-			else{
+			else {
 				return Ok( createResult.unwrap() )
 			}
 		}
 		else {
-			return Ok(updateResult.unwrap())
+			return Ok( updateResult.unwrap() )
 		}
 	}
 

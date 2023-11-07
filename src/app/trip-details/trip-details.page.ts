@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common'
 import {
 	Component,
 	ElementRef,
+	OnDestroy,
 	OnInit,
 	TemplateRef,
 	ViewChild
@@ -55,7 +56,7 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 	],
 	styleUrls  : [ './trip-details.page.scss' ]
 } )
-export class TripDetailsPage implements OnInit, ViewDidEnter {
+export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 
 	constructor(
 		private map: MapService,
@@ -84,6 +85,10 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( 'detail', this.divElementElementRef.nativeElement )
+	}
+
+	async ngOnDestroy(): Promise<void> {
+		await this.map.removeRouteMap('detail')
 	}
 
 	async ngOnInit(): Promise<void> {
@@ -143,6 +148,17 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 				this.isPendingInPassengerQueue = true
 			}
 		} )
+
+		if ( this.isTripStarted && (this.userInTrip || this.isDriver) ) {
+			const start = this.trip.startLocation.position
+			const end = this.trip.endLocation.position
+			const dir   = await this.map.addRouteMap( 'detail', start, end )
+			if ( dir.isErr() ){
+				console.log('error add route. trip detail')
+				console.log(dir.unwrapErr())
+			}
+		}
+
 		this.loading = false
 	}
 

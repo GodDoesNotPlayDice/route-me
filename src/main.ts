@@ -73,6 +73,8 @@ import { PreferenceDao } from 'src/package/preference/domain/dao/preference-dao'
 import { PreferenceDaoFirebase } from 'src/package/preference/infrastructure/preference-dao-firebase'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
+import { TripInProgressDao } from 'src/package/trip-in-progress/domain/dao/trip-in-progress-dao'
+import { TripInProgressDaoFirebase } from 'src/package/trip-in-progress/infrastructure/trip-in-progress-dao-firebase'
 import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
 import { LocationDaoFirebase } from 'src/package/trip-location/infrastructure/location-dao-firebase'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
@@ -97,6 +99,13 @@ bootstrapApplication( AppComponent, {
 				return new AuthUserFirebaseSignin( auth, firebase )
 			},
 			deps      : [ AngularFireAuth, AngularFireDatabase ]
+		},
+		{
+			provide   : TripInProgressDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new TripInProgressDaoFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
 		},
 		{
 			provide   : DriverDao,
