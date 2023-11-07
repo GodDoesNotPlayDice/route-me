@@ -21,8 +21,7 @@ import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card
 } )
 export class DriveCardComponent {
 
-	constructor( private router: Router
-	)
+	constructor( private router: Router )
 	{ }
 
 	@Input( { required: true } ) info: DriverCardInfo

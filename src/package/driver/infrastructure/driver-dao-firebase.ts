@@ -102,7 +102,6 @@ export class DriverDaoFirebase implements DriverDao {
 			return Err( json.unwrapErr() )
 		}
 
-		console.log( 'pre update' )
 		await this.firebase.database.ref( this.collectionKey )
 		          .child( keySaved.unwrap() )
 		          .set( json.unwrap(),

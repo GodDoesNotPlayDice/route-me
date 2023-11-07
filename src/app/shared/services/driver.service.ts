@@ -8,10 +8,13 @@ import {
 	Some
 } from 'oxide.ts'
 import {
+	BehaviorSubject,
 	first,
+	Observable,
 	Subscription
 } from 'rxjs'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { PositionService } from 'src/app/shared/services/position.service'
 import { getDriverCarById } from 'src/package/driver-car/application/get-driver-car-by-id'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
 import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
@@ -28,12 +31,13 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 @Injectable( {
 	providedIn: 'root'
 } )
-export class DriverService implements OnDestroy {
+export class DriverService {
 
 	constructor(
 		private driverDao: DriverDao,
 		private authService: AuthService,
-		private driverCarDao: DriverCarDao
+		private driverCarDao: DriverCarDao,
+		private positionService: PositionService
 		// private driverDocumentDao : DriverDocumentDao
 	)
 	{
@@ -47,7 +51,10 @@ export class DriverService implements OnDestroy {
 		    } )
 	}
 
-	private sub: Subscription
+	// private activeTripUpdate = new BehaviorSubject<Trip | null>( null )
+
+	// public activeTripUpdate$: Observable<Trip | null> = this.activeTripUpdate.asObservable()
+
 	currentDriver: Option<Driver> = None
 
 	async driverRegister(
@@ -105,6 +112,9 @@ export class DriverService implements OnDestroy {
 		if ( result.activeTrip.isSome() && result.activeTrip.unwrap().state ===
 			TripStateEnum.Progress )
 		{
+			this.positionService.newPosition$.subscribe( (value) => {
+					if ( !value ) return
+				} )
 			//TODO: mandar a trip progress table
 			return true
 		}
@@ -124,9 +134,5 @@ export class DriverService implements OnDestroy {
 
 		this.currentDriver = Some( result.unwrap() )
 		return true
-	}
-
-	public ngOnDestroy(): void {
-		this.sub.unsubscribe()
 	}
 }
