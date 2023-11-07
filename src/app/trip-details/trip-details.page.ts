@@ -26,12 +26,14 @@ import { ListViewModalComponent } from 'src/app/shared/components/list-view-moda
 import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.pipe'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
+import { DriverService } from 'src/app/shared/services/driver.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
 import { MapService } from 'src/app/shared/services/map.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { Trip } from 'src/package/trip/domain/models/trip'
+import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
 	standalone : true,
@@ -59,6 +61,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 		private map: MapService,
 		private modalController: ModalController,
 		private tripService: TripService,
+		private driverService: DriverService,
 		private loadingService: LoadingService,
 		private alertService: AlertService,
 		private toastService: ToastService,
@@ -74,6 +77,9 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 	loading: boolean                   = false
 	userInTrip: boolean                = false
 	isDriver: boolean                  = false
+	isTripFull: boolean                = false
+	isTripStarted: boolean             = false
+	isTripFinished: boolean            = false
 	isPendingInPassengerQueue: boolean = false
 
 	async ionViewDidEnter(): Promise<void> {
@@ -106,9 +112,21 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 					}
 				]
 			} )
+			return
 		}
-		else {
-			this.trip = result.unwrap()
+		this.trip = result.unwrap()
+
+		if ( this.trip.state === TripStateEnum.Progress ) {
+			this.isTripStarted = true
+		}
+		else if ( this.trip.state === TripStateEnum.Completed ) {
+			this.isTripFinished = true
+		}
+
+		if ( this.trip.passengers.length >=
+			this.trip.driver.driverCar.seat.value )
+		{
+			this.isTripFull = true
 		}
 
 		const passengerEmail = this.authService.currentPassenger.unwrap().email.value
@@ -181,22 +199,43 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 			return
 		}
 
+		//TODO: verificaciones como estas deberian ir en backend
+		const thisPassenger = this.authService.currentPassenger.unwrap()
+
+		const isPassengerInQueue = this.trip.queuePassengers.some(
+			( passenger ) => {
+				return passenger.email.value === thisPassenger.email.value
+			} )
+
+		const isPassengerInPassengers = this.trip.passengers.some(
+			( passenger ) => {
+				return passenger.email.value === thisPassenger.email.value
+			} )
+
+		if ( isPassengerInQueue || isPassengerInPassengers ) {
+			await this.toastService.presentToast( {
+				message : 'Ya estas en el viaje',
+				duration: 1500,
+				position: 'bottom'
+			} )
+			return
+		}
+
 		await this.loadingService.showLoading( 'Uniendo al viaje' )
 		const result = await this.tripService.updateTrip( this.trip, {
-			queuePassengers: [ ...this.trip.queuePassengers,
-				this.authService.currentPassenger.unwrap() ]
+			queuePassengers: [ ...this.trip.queuePassengers, thisPassenger ]
 		} )
 		await this.loadingService.dismissLoading()
 
 		if ( result.isSome() ) {
+			this.isPendingInPassengerQueue = true
+			this.trip                      = result.unwrap()
 			await this.toastService.presentToast( {
 				message : 'Te has unido al viaje',
 				color   : 'success',
 				duration: 1500,
 				position: 'bottom'
 			} )
-			this.isPendingInPassengerQueue = true
-			this.trip                      = result.unwrap()
 		}
 		else {
 			await this.toastService.presentToast( {
@@ -211,8 +250,6 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 		if ( this.trip === null ) {
 			return
 		}
-
-		// if(this.trip.driver.carID.)
 
 		const newListQueuePassengers = this.trip.queuePassengers.filter(
 			( passenger ) => {
@@ -236,6 +273,12 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 			this.isPendingInPassengerQueue = false
 			this.userInTrip                = true
 			this.trip                      = result.unwrap()
+
+			if ( this.trip.passengers.length >=
+				this.trip.driver.driverCar.seat.value )
+			{
+				this.isTripFull = true
+			}
 		}
 		else {
 			await this.toastService.presentToast( {
@@ -275,8 +318,8 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 				position: 'bottom'
 			} )
 			this.isPendingInPassengerQueue = false
-			this.userInTrip								= false
-			this.trip = result.unwrap()
+			this.userInTrip                = false
+			this.trip                      = result.unwrap()
 		}
 		else {
 			await this.toastService.presentToast( {
@@ -285,5 +328,81 @@ export class TripDetailsPage implements OnInit, ViewDidEnter {
 				position: 'bottom'
 			} )
 		}
+	}
+
+	async onStartTrip(): Promise<void> {
+		if ( this.trip === null ) {
+			return
+		}
+
+		await this.loadingService.showLoading( 'Iniciando Viaje' )
+		const result = await this.tripService.updateTrip( this.trip, {
+			queuePassengers: [],
+
+			state: TripStateEnum.Progress
+		} )
+		if ( result.isSome() ) {
+			const resultDriver     = await this.driverService.driverUpdate( {
+				activeTrip: result.unwrap()
+			} )
+			const resultTripDriver = await this.tripService.updateTrip( this.trip, {
+				driver: resultDriver.unwrap()
+			} )
+			if ( resultDriver.isSome() ) {
+
+				await this.toastService.presentToast( {
+					message : 'Se iniciado el viaje',
+					color   : 'success',
+					duration: 1500,
+					position: 'bottom'
+				} )
+				this.trip          = result.unwrap()
+				this.isTripStarted = true
+				await this.loadingService.dismissLoading()
+				return
+			}
+		}
+		await this.toastService.presentToast( {
+			message : 'Hubo un problema. Intente denuevo',
+			duration: 1500,
+			position: 'bottom'
+		} )
+		await this.loadingService.dismissLoading()
+	}
+
+	async finishTrip(): Promise<void> {
+		if ( this.trip === null ) {
+			return
+		}
+		await this.loadingService.showLoading( 'Terminando Viaje' )
+		const resultDriver = await this.driverService.driverUpdate( {
+			activeTrip: undefined
+		} )
+		if ( resultDriver.isSome() ) {
+			const result = await this.tripService.updateTrip( this.trip, {
+				state : TripStateEnum.Completed,
+				driver: resultDriver.unwrap()
+			} )
+			if ( result.isSome() ) {
+				await this.toastService.presentToast( {
+					message : 'Se terminado el viaje',
+					color   : 'success',
+					duration: 1500,
+					position: 'bottom'
+				} )
+				this.isTripFinished = true
+
+				this.trip = result.unwrap()
+				await this.loadingService.dismissLoading()
+				return
+			}
+		}
+
+		await this.toastService.presentToast( {
+			message : 'Hubo un problema. Intente denuevo',
+			duration: 1500,
+			position: 'bottom'
+		} )
+		await this.loadingService.dismissLoading()
 	}
 }

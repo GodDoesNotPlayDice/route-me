@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core'
+import { Store } from '@ngrx/store'
 import {
 	Err,
 	None,
@@ -11,7 +12,9 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LocationService } from 'src/app/shared/services/location.service'
+import { AppState } from 'src/app/shared/state/app.state'
 import { Category } from 'src/package/category/domain/models/category'
+import { Driver } from 'src/package/driver/domain/models/driver'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { newCurrency } from 'src/package/shared/domain/models/currency'
 import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
@@ -35,9 +38,10 @@ export class TripService {
 		private tripDao: TripDao,
 		private tripRepository: TripRepository,
 		private chatService: ChatService,
-		private driverService: DriverService,
+		private store: Store<AppState>,
 		private locationService: LocationService,
-		private authService: AuthService
+		private authService: AuthService,
+		private driverService: DriverService
 	)
 	{ }
 
@@ -60,9 +64,9 @@ export class TripService {
 
 		if ( result.isErr() ) {
 			console.log( 'error. get all by state trip service', result.unwrapErr() )
-			return Err(result.unwrapErr())
+			return Err( result.unwrapErr() )
 		}
-		return Ok(result.unwrap())
+		return Ok( result.unwrap() )
 	}
 
 	async calculateTripPrice( distance: ValidNumber ): Promise<Option<TripPrice>> {
@@ -123,7 +127,6 @@ export class TripService {
 			return false
 		}
 
-
 		const result = await createTrip( this.tripDao, {
 			startDate    : props.startDate,
 			chatID       : chat.unwrap(),
@@ -138,6 +141,25 @@ export class TripService {
 			console.log( 'create fail' )
 			return false
 		}
+		//TODO: smell
+		const resultDriver = await this.driverService.driverUpdate( {
+			activeTrip: result.unwrap()
+		} )
+
+		if ( resultDriver.isNone() ) {
+			console.log( 'update driver. trip service' )
+			return false
+		}
+
+		const resultTrip = await this.updateTrip( result.unwrap(), {
+			driver: resultDriver.unwrap()
+		} )
+
+		if ( resultTrip.isNone() ) {
+			console.log( 'update trip. trip service' )
+			return false
+		}
+
 		return true
 	}
 
@@ -145,6 +167,7 @@ export class TripService {
 		description?: string
 		category?: Category
 		state?: TripState
+		driver?: Driver
 		queuePassengers?: Passenger[]
 		passengers?: Passenger[]
 		endDate?: Date
@@ -157,6 +180,7 @@ export class TripService {
 			console.log( result.unwrapErr() )
 			return None
 		}
-		return Some(result.unwrap())
+
+		return Some( result.unwrap() )
 	}
 }

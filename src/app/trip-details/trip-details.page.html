@@ -6,7 +6,8 @@
 			#appBar
 			label="Trip Details"
 		>
-			<div class="flex gap-6">
+			<div class="flex gap-6"
+				*ngIf="userInTrip">
 				<mat-icon
 					(click)="onChatClick()">chat
 				</mat-icon>
@@ -48,32 +49,52 @@
 				<div class="flex justify-between items-center">
 					<div class="font-bold font-gotham">Listado de pasajeros</div>
 					<div class="text-gray-400"
-						*ngIf="isDriver"
+						*ngIf="isDriver && !isTripStarted"
 						(click)="queuePassengerModalClick()">
 						({{ trip.queuePassengers.length }}
 						pasajeros en cola)
 					</div>
 				</div>
-				<div class="flex">
-					<div *ngIf="trip.passengers.length > 0"
-						(click)="activePassengerModalClick()"
-						class="w-full flex basis-9/12 items-center gap-2">
+				<div class="flex gap-2 justify-between"
+					*ngIf="trip.passengers.length > 0"
+					(click)="activePassengerModalClick()">
+					<div class="flex basis-9/12 gap-2 items-center">
 						<ng-container *ngFor="let psn of trip.passengers">
-							<app-avatar-home url="https://media.discordapp.net/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png?width=416&height=445"></app-avatar-home>
+							<app-avatar-home [url]="psn.image.value"></app-avatar-home>
 						</ng-container>
-						<div class="basis-3/12 font-bold">(ver mas)</div>
 					</div>
-					<div *ngIf="trip.passengers.length === 0">
-						Aun no hay pasajeros en este viaje
+					<div class="flex basis-3/12 items-center justify-end font-bold">(ver
+						mas)
 					</div>
+				</div>
+				<div *ngIf="trip.passengers.length === 0">
+					Aun no hay pasajeros en este viaje
 				</div>
 			</div>
 		</div>
 		<app-adaptative-button class="w-full"
-			*ngIf="!userInTrip"
+			*ngIf="!userInTrip && !isDriver && !isTripStarted"
 			(click)="onJoinRequestTrip()"
 			[disabled]="isPendingInPassengerQueue"
 			[text]="isPendingInPassengerQueue ? 'Solicitud enviada' : 'Unirse al Viaje'"
+			color="bg-stone-800"
+			color_hover="bg-stone-700"
+			font_size="text-xl font-gotham"
+			size="px-8 py-2 w-full"
+			text_color="text-white"></app-adaptative-button>
+		<app-adaptative-button class="w-full"
+			*ngIf="isDriver && !isTripStarted"
+			(click)="onStartTrip()"
+			text="Comenzar Viaje"
+			color="bg-stone-800"
+			color_hover="bg-stone-700"
+			font_size="text-xl font-gotham"
+			size="px-8 py-2 w-full"
+			text_color="text-white"></app-adaptative-button>
+		<app-adaptative-button class="w-full"
+			*ngIf="isDriver && isTripStarted && !isTripFinished"
+			(click)="finishTrip()"
+			text="Terminar Viaje"
 			color="bg-stone-800"
 			color_hover="bg-stone-700"
 			font_size="text-xl font-gotham"
@@ -114,6 +135,9 @@
 	<ng-container *ngIf="trip !== null">
 		<div *ngIf="trip.queuePassengers.length === 0">No hay pasajeros pendientes
 		</div>
+		<div *ngIf="isTripFull">El listado de pasajeros actual esta lleno. No puedes
+			aceptar mas pasajeros
+		</div>
 		<ng-container *ngFor="let psn of trip.queuePassengers; index as i">
 			<div class="flex gap-3 items-center w-full">
 				<div
@@ -127,6 +151,7 @@
 				</div>
 				<app-adaptative-button
 					(click)="onAcceptQueuePassenger(psn)"
+					[disabled]="isTripFull"
 					text="Aceptar"
 					color="bg-blue-500"
 					color_hover="bg-blue-700"

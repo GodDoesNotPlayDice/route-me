@@ -1,10 +1,11 @@
 <ion-content [fullscreen]="true">
-	<app-app-bar-clone
-		label="Chat"
-		(leadClicked)="onBackClicked()"
-		#appBar></app-app-bar-clone>
-	<div class="flex flex-col">
-		<div class="basis-11/12 h-full">
+	<div class="h-full flex flex-col">
+		<app-app-bar-clone
+			label="Chat"
+			(leadClicked)="onBackClicked()"
+			class="basis-14 z-50"
+			#appBar></app-app-bar-clone>
+		<div class="basis-full overflow-y-auto">
 			<ng-container *ngFor="let msg of messages">
 				<app-bubble-chat
 					[timestamp]="msg.timestamp"

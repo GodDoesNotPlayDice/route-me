@@ -7,6 +7,7 @@ import {
 import { FormGroup } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
+import { Router } from '@angular/router'
 import {
 	IonicModule,
 	ViewDidEnter
@@ -16,6 +17,7 @@ import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-s
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
+import { DriverService } from 'src/app/shared/services/driver.service'
 import { MapService } from 'src/app/shared/services/map.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripService } from 'src/app/shared/services/trip.service'
@@ -45,6 +47,8 @@ export class PublishPage implements ViewDidEnter {
 	constructor( private map: MapService,
 		private toastService: ToastService,
 		private tripService: TripService,
+		private router: Router,
+		private driverService: DriverService,
 		private ipDao: IpDao,
 		private currencyDao: CurrencyDao,
 		private alertService: AlertService )
@@ -61,9 +65,42 @@ export class PublishPage implements ViewDidEnter {
 	distance: number | null       = null
 	simulatedPrice: string | null = null
 	loadingPrice: boolean         = false
+	canPublish: boolean           = true
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
+
+		this.canPublish = this.driverService.currentDriver.unwrap()
+		                      .activeTrip
+		                      .isNone()
+
+		if ( !this.canPublish ) {
+			await this.alertService.presentAlert( {
+				header         : 'Advertencia',
+				backdropDismiss: false,
+				message        : 'Ya tienes un viaje activo',
+				buttons        : [ {
+					text   : 'Volver al inicio',
+					handler: async () => {
+						await this.router.navigate( [ '/tabs/home' ] )
+					}
+				},
+					{
+						text   : 'Ir al viaje activo',
+						handler: async () => {
+							await this.router.navigate( [ '/trip-details' ],
+								{
+									state: {
+										id: this.driverService.currentDriver.unwrap()
+										        .activeTrip
+										        .unwrap().id.value
+									}
+								} )
+						}
+					}
+				]
+			} )
+		}
 
 		this.formGroup = new FormGroup( {
 			date : this.dateInput.dateControl,
@@ -113,7 +150,10 @@ export class PublishPage implements ViewDidEnter {
 		this.formGroup.updateValueAndValidity()
 		this.formGroup.markAllAsTouched()
 
-		if ( !this.formGroup.valid ) { return }
+		if ( !
+			this.formGroup.valid
+		)
+		{ return }
 
 		await this.alertService.presentAlert( {
 			header : 'Confirma que deseas publicar el viaje',
@@ -152,7 +192,9 @@ export class PublishPage implements ViewDidEnter {
 		} )
 	}
 
-	private async reset(): Promise<void> {
+	private async reset()
+		:
+		Promise<void> {
 		await this.map.removeRouteMap( this.pageKey )
 		await this.map.removeRouteMarker( this.pageKey, this.inicioInput.id )
 		await this.map.removeRouteMarker( this.pageKey, this.salidaInput.id )

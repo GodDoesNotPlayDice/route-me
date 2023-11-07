@@ -8,8 +8,8 @@ import {
 	Camera,
 	CameraResultType
 } from '@capacitor/camera'
-import { Preferences } from '@capacitor/preferences'
 import { IonicModule } from '@ionic/angular'
+import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { ImageUploadService } from 'src/app/shared/services/image-upload.service'
 import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-conversion'
@@ -19,7 +19,7 @@ import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-c
 	templateUrl: './test.page.html',
 	styleUrls  : [ './test.page.scss' ],
 	standalone : true,
-	imports    : [ IonicModule, CommonModule, FormsModule ]
+	imports    : [ IonicModule, CommonModule, FormsModule, AppBarCloneComponent ]
 } )
 export class TestPage implements OnInit {
 
@@ -28,13 +28,13 @@ export class TestPage implements OnInit {
 	{ }
 
 	async ngOnInit(): Promise<void> {
-		await Preferences.set( { key: 'capacitor', value: 'true' } )
-
-		const val = await Preferences.get( { key: 'capacitor' } )
-		await this.alert.presentAlert( {
-			header : 'result',
-			message: `response: ${ val.value }`
-		} )
+		// await Preferences.set( { key: 'capacitor', value: 'true' } )
+		//
+		// const val = await Preferences.get( { key: 'capacitor' } )
+		// await this.alert.presentAlert( {
+		// 	header : 'result',
+		// 	message: `response: ${ val.value }`
+		// } )
 	}
 
 	async onPhoto(): Promise<void> {

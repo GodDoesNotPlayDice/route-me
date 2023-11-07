@@ -189,10 +189,7 @@ export class AuthService {
 
 	async checkUserEmail( email: string ): Promise<boolean> {
 		const existResult = await getUserByEmail( this.userDao, email )
-		if ( existResult.isErr() ) {
-			return false
-		}
-		return true
+		return !existResult.isErr()
 	}
 
 	async resetPasswordSend( email: string ): Promise<boolean> {
