@@ -9,6 +9,7 @@ import {
 	driverToJson
 } from 'src/package/driver/application/driver-mapper'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
+import { DriverIdInvalidException } from 'src/package/driver/domain/exceptions/driver-id-invalid-exception'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/email-not-found-exception'
@@ -64,7 +65,7 @@ export class DriverDaoFirebase implements DriverDao {
 		                 .get()
 		                 .then( async ( snapshot ) => {
 			                 if ( snapshot.val() === null ) {
-				                 return Err( [ new EmailNotFoundException() ] )
+				                 return Err( [ new DriverIdInvalidException() ] )
 			                 }
 
 			                 const snapshotValue = Object.values(
@@ -101,10 +102,13 @@ export class DriverDaoFirebase implements DriverDao {
 			return Err( json.unwrapErr() )
 		}
 
+		console.log( 'pre update' )
 		await this.firebase.database.ref( this.collectionKey )
 		          .child( keySaved.unwrap() )
 		          .set( json.unwrap(),
 			          ( error ) => {
+				          console.log( 'possible error' )
+				          console.log( error )
 				          if ( !error ) {
 					          completed = 'completed'
 				          }

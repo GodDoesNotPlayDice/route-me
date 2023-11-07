@@ -4,7 +4,7 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
+import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
 import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
 import { newDriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
 import { newDriverDocumentName } from 'src/package/driver-document/domain/models/driver-document-name'
@@ -22,7 +22,7 @@ import { ulid } from 'ulidx'
 export const createDriver = async ( dao: DriverDao,
 	props: {
 		passenger: Passenger,
-		carID: DriverCarID,
+		driverCar: DriverCar,
 		documents: {
 			name: string
 			reference: string
@@ -94,7 +94,7 @@ export const createDriver = async ( dao: DriverDao,
 		enabled   : enabled.unwrap(),
 		activeTrip: None,
 		passenger : props.passenger,
-		carID     : props.carID,
+		driverCar : props.driverCar,
 		documents : driverDocuments
 	}
 

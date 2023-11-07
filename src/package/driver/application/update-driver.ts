@@ -4,82 +4,33 @@ import {
 	Result,
 	Some
 } from 'oxide.ts'
-import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
-import {
-	DriverDocument,
-	DriverDocumentProps
-} from 'src/package/driver-document/domain/models/driver-document'
-import { newDriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
-import { newDriverDocumentName } from 'src/package/driver-document/domain/models/driver-document-name'
-import { newDriverDocumentReference } from 'src/package/driver-document/domain/models/driver-document-reference'
+import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
+import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { Trip } from 'src/package/trip/domain/models/trip'
 
 export const updateDriver = async ( dao: DriverDao, driver: Driver, props: {
-	documents?: DriverDocumentProps[]
+	documents?: DriverDocument[]
 	activeTrip?: Trip
-	carID?: DriverCarID
+	driverCar?: DriverCar
 } ): Promise<Result<Driver, Error[]>> => {
-	const error: Error[] = []
-
-	let driverDocuments: DriverDocument[] = []
-	if ( props.documents !== undefined &&
-		props.documents.length > 0 )
-	{
-		for ( const doc of props.documents ) {
-			const docID = newDriverDocumentID( {
-				value: doc.id
-			} )
-
-			if ( docID.isErr() ) {
-				error.push( docID.unwrapErr() )
-			}
-
-			const name = newDriverDocumentName( {
-				value: doc.name
-			} )
-
-			if ( name.isErr() ) {
-				error.push( name.unwrapErr() )
-			}
-
-			const ref = newDriverDocumentReference( {
-				value: doc.reference
-			} )
-
-			if ( ref.isErr() ) {
-				error.push( ref.unwrapErr() )
-			}
-
-			if ( error.length > 0 ) {
-				break
-			}
-
-			driverDocuments.push( {
-				id       : docID.unwrap(),
-				name     : name.unwrap(),
-				reference: ref.unwrap()
-			} )
-		}
-	}
-	else {
-		driverDocuments = driver.documents
-	}
 	const newDriver: Driver = {
 		id        : driver.id,
 		enabled   : driver.enabled,
+		passenger : driver.passenger,
 		activeTrip: props.activeTrip === undefined ? driver.activeTrip : Some(
 			props.activeTrip ),
-		passenger : driver.passenger,
-		carID     : props.carID ?? driver.carID,
-		documents : driverDocuments
+		driverCar : props.driverCar ?? driver.driverCar,
+		documents : props.documents ?? driver.documents
 	}
 
 	const result = await dao.update( newDriver )
 
 	if ( result.isErr() ) {
-		return Err( [ result.unwrapErr() ] )
+		console.log( 'error update driver' )
+		console.log( result.unwrapErr() )
+		return Err( [ ...result.unwrapErr() ] )
 	}
 
 	return Ok( newDriver )

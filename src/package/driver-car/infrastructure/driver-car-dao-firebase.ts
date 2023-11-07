@@ -9,7 +9,9 @@ import {
 	driverCarToJson
 } from 'src/package/driver-car/application/driver-car-mapper'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
+import { DriverCarIDInvalidException } from 'src/package/driver-car/domain/exceptions/driver-car-id-invalid-exception'
 import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
+import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 
 export class DriverCarDaoFirebase implements DriverCarDao {
@@ -63,6 +65,33 @@ export class DriverCarDaoFirebase implements DriverCarDao {
 				                 return Err( error )
 			                 }
 			                 return Ok( driverCars )
+		                 } )
+		                 .catch( ( error ) => {
+			                 return Err( [ new FirebaseOperationException() ] )
+		                 } )
+
+	}
+
+	async getByID( id: DriverCarID ): Promise<Result<DriverCar, Error[]>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'id' )
+		                 .equalTo( id.value )
+		                 .get()
+		                 .then( async ( snapshot ) => {
+			                 if ( snapshot.val() === null ) {
+				                 return Err( [ new DriverCarIDInvalidException() ] )
+			                 }
+
+			                 const snapshotValue = Object.values(
+				                 snapshot.val() )[0] as Record<string, any>
+
+			                 const driver = driverCarFromJson( snapshotValue )
+
+			                 if ( driver.isErr() ) {
+				                 return Err( driver.unwrapErr() )
+			                 }
+
+			                 return Ok( driver.unwrap() )
 		                 } )
 		                 .catch( ( error ) => {
 			                 return Err( [ new FirebaseOperationException() ] )
