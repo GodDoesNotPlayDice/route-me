@@ -18,6 +18,8 @@ import {
 	ModalController,
 	ViewDidEnter
 } from '@ionic/angular'
+import { Subscription } from 'rxjs'
+import { ActivableCircleComponent } from 'src/app/shared/components/activable-circle/activable-circle.component'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
@@ -30,11 +32,14 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
+import { TripInProgressService } from 'src/app/shared/services/trip-in-progress.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
+import { ulid } from 'ulidx'
 
 @Component( {
 	standalone : true,
@@ -52,17 +57,19 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 		AppBarCloneComponent,
 		AvatarComponent,
 		MatIconModule,
-		MatMenuModule
+		MatMenuModule,
+		ActivableCircleComponent
 	],
 	styleUrls  : [ './trip-details.page.scss' ]
 } )
 export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
-
 	constructor(
 		private map: MapService,
 		private modalController: ModalController,
 		private tripService: TripService,
+		private tripInProgressService: TripInProgressService,
 		private driverService: DriverService,
+		private positionService: PositionService,
 		private loadingService: LoadingService,
 		private alertService: AlertService,
 		private toastService: ToastService,
@@ -82,13 +89,65 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 	isTripStarted: boolean             = false
 	isTripFinished: boolean            = false
 	isPendingInPassengerQueue: boolean = false
+	private tripChange: Subscription
+	//TODO: si queremos marcar la posicion del pasajero visualizador
+	private positionChange: Subscription
+
+	private pageKey: string = 'detail'
 
 	async ionViewDidEnter(): Promise<void> {
-		await this.map.init( 'detail', this.divElementElementRef.nativeElement )
+		await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
+
+		this.positionChange =
+			this.positionService.newPosition$.subscribe( async ( value ) => {
+				if ( value == null ) { return }
+				await this.map.autoFollow( this.pageKey, value )
+			} )
+
+		if ( this.trip ) {
+			const result1 = await this.map.addRouteMarker( this.pageKey, ulid(),
+				this.trip.startLocation.position, 'red' )
+			const result2 = await this.map.addRouteMarker( this.pageKey, ulid(),
+				this.trip.endLocation.position, 'orange' )
+			await this.checkTripInProgress()
+		}
+	}
+
+	private async checkTripInProgress(): Promise<void> {
+		if ( this.trip && this.isTripStarted ) {
+			const listenResult = await this.tripInProgressService.listen(
+				this.trip.id.value )
+			if ( listenResult.isErr() ) {
+				console.log( 'trip listen error. details' )
+				console.log( listenResult.unwrapErr() )
+				return
+			}
+
+			const resultRoute = await this.map.addRouteMap( this.pageKey,
+				this.trip.startLocation.position,
+				this.trip.endLocation.position )
+			console.log( 'resultRoute', resultRoute )
+
+			this.tripChange = listenResult.unwrap()
+			                              .subscribe( async ( value ) => {
+				                              if ( value === null ) {
+					                              return
+				                              }
+				                              await this.map.addUserMarker(
+					                              'detail', {
+						                              lat: value.latitude,
+						                              lng: value.longitude
+					                              }, 'blue'
+				                              )
+			                              } )
+		}
 	}
 
 	async ngOnDestroy(): Promise<void> {
-		await this.map.removeRouteMap('detail')
+		await this.map.removeMap( 'detail' )
+		this.tripChange.unsubscribe()
+		this.positionChange.unsubscribe()
+		await this.tripInProgressService.close(this.trip!.id)
 	}
 
 	async ngOnInit(): Promise<void> {
@@ -106,9 +165,10 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 
 		if ( result.isErr() ) {
 			await this.alertService.presentAlert( {
-				header : 'Fallo al cargar el viaje',
-				message: `Intente nuevamente`,
-				buttons: [
+				header         : 'Fallo al cargar el viaje',
+				message        : `Intente nuevamente`,
+				backdropDismiss: false,
+				buttons        : [
 					{
 						text   : 'Devolverse',
 						handler: async () => {
@@ -148,16 +208,6 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 				this.isPendingInPassengerQueue = true
 			}
 		} )
-
-		if ( this.isTripStarted && (this.userInTrip || this.isDriver) ) {
-			const start = this.trip.startLocation.position
-			const end = this.trip.endLocation.position
-			const dir   = await this.map.addRouteMap( 'detail', start, end )
-			if ( dir.isErr() ){
-				console.log('error add route. trip detail')
-				console.log(dir.unwrapErr())
-			}
-		}
 
 		this.loading = false
 	}
@@ -354,17 +404,19 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		await this.loadingService.showLoading( 'Iniciando Viaje' )
 		const result = await this.tripService.updateTrip( this.trip, {
 			queuePassengers: [],
-
-			state: TripStateEnum.Progress
+			state          : TripStateEnum.Progress
 		} )
 		if ( result.isSome() ) {
+			this.trip = result.unwrap()
+			await this.checkTripInProgress()
 			const resultDriver     = await this.driverService.driverUpdate( {
 				activeTrip: result.unwrap()
 			} )
 			const resultTripDriver = await this.tripService.updateTrip( this.trip, {
 				driver: resultDriver.unwrap()
 			} )
-			if ( resultDriver.isSome() ) {
+			if ( resultDriver.isSome() && resultTripDriver.isSome() ) {
+				this.trip = resultTripDriver.unwrap()
 
 				await this.toastService.presentToast( {
 					message : 'Se iniciado el viaje',
@@ -400,6 +452,10 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 				driver: resultDriver.unwrap()
 			} )
 			if ( result.isSome() ) {
+				const removeResult = await this.tripInProgressService.removeTripInProgress(
+					this.trip.id )
+				this.tripChange.unsubscribe()
+
 				await this.toastService.presentToast( {
 					message : 'Se terminado el viaje',
 					color   : 'success',

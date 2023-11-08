@@ -119,3 +119,20 @@ export class HomePage implements ViewDidEnter {
 		$event.target.complete()
 	}
 }
+
+const filterButtonList: FilterButtonData[] = [
+	{
+		name : 'Comunidad',
+		image: 'https://cdn.discordapp.com/attachments/982116594543099924/1148053857335787640/community_1.png'
+	},
+	{
+		name : 'Eventos',
+		image: 'https://cdn.discordapp.com/attachments/982116594543099924/1148051128655814716/event.png'
+	},
+	{
+		name : 'Viajes',
+		image: 'https://cdn.discordapp.com/attachments/982116594543099924/1148051316388679740/travel-bag.png'
+	}
+]
+
+

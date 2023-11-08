@@ -4,7 +4,10 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
-import { Observable } from 'rxjs'
+import {
+	BehaviorSubject,
+	Observable
+} from 'rxjs'
 import {
 	chatFromJson,
 	chatToJson
@@ -25,6 +28,7 @@ export class ChatDaoFirebase extends ChatDao {
 
 	constructor( private firebase: AngularFireDatabase ) {
 		super()
+		this.messagesSubject = new BehaviorSubject<Message | null>( null )
 	}
 
 	collectionKey = 'chats'
@@ -55,8 +59,17 @@ export class ChatDaoFirebase extends ChatDao {
 		                 } )
 	}
 
-	async close(): Promise<void> {
+	async close( id: ChatID ): Promise<Result<boolean, Error[]>> {
 		this.messagesSubject.unsubscribe()
+		const keySaved = await this.getKey( id )
+
+		if ( keySaved.isErr() ) {
+			return Err( [ keySaved.unwrapErr() ] )
+		}
+		this.firebase.database.ref(
+			`${ this.collectionKey }/${ keySaved.unwrap() }/messages` )
+		    .off(  )
+		return Ok( true )
 	}
 
 	async listen( id: ChatID ): Promise<Result<Observable<Message | null>, Error[]>> {
@@ -71,9 +84,7 @@ export class ChatDaoFirebase extends ChatDao {
 				`${ this.collectionKey }/${ keySaved.unwrap() }/messages` )
 
 			ref.on( 'child_added', ( snapshot ) => {
-				console.log( 'child added' )
-				const value = snapshot.val()
-				console.log( value )
+				const value   = snapshot.val()
 				const message = messageFromJson( value )
 				if ( message.isOk() ) {
 					this.messagesSubject.next( message.unwrap() )
@@ -169,11 +180,14 @@ export class ChatDaoFirebase extends ChatDao {
 				                 } )
 
 				                 if ( key === null ) {
+					                 console.log( 'for key null' )
 					                 return Err( new FirebaseKeyNotFoundException() )
 				                 }
 				                 return Ok( key )
 			                 } )
 		                 .catch( ( error ) => {
+			                 console.log( 'for key error' )
+			                 console.log( error )
 			                 return Err( new FirebaseOperationException() )
 		                 } )
 	}

@@ -13,6 +13,7 @@ import { RatingIdInvalidException } from 'src/package/rating/domain/exceptions/r
 import { Rating } from 'src/package/rating/domain/models/rating'
 import { RatingID } from 'src/package/rating/domain/models/rating-id'
 import { Email } from 'src/package/shared/domain/models/email'
+import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 
 export class RatingDaoFirebase implements RatingDao {

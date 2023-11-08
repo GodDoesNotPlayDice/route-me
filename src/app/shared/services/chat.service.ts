@@ -12,7 +12,10 @@ import { listenChat } from 'src/package/chat/application/listenChat'
 import { sendMessageToChat } from 'src/package/chat/application/sendMessageToChat'
 import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { Chat } from 'src/package/chat/domain/models/chat'
-import { ChatID } from 'src/package/chat/domain/models/chat-id'
+import {
+	ChatID,
+	newChatID
+} from 'src/package/chat/domain/models/chat-id'
 import { Message } from 'src/package/message/domain/models/message'
 import { PassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { PassengerName } from 'src/package/passenger/domain/models/passenger-name'
@@ -38,8 +41,21 @@ export class ChatService {
 		return await listenChat( this.chatDao, chatID )
 	}
 
-	async close(): Promise<void> {
-		await this.chatDao.close()
+	async close( id: string ): Promise<boolean> {
+		const idResult = newChatID( {
+			value: id
+		} )
+
+		if ( idResult.isErr() ) {
+			return false
+		}
+
+		const result = await this.chatDao.close( idResult.unwrap() )
+		if ( result.isErr() ) {
+			console.log( 'error. close chat service', result.unwrapErr() )
+			return false
+		}
+		return true
 	}
 
 	async sendMessage( chatID: string,

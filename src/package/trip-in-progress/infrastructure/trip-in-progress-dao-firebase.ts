@@ -7,15 +7,86 @@ import {
 import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { TripInProgressDao } from 'src/package/trip-in-progress/domain/dao/trip-in-progress-dao'
+import { TripInProgressInvalidException } from 'src/package/trip-in-progress/domain/exceptions/trip-in-progress-invalid-exception'
 import { TripInProgress } from 'src/package/trip-in-progress/domain/models/trip-in-progress'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
-import { tripInProgressToJSON } from '../application/trip-in-progress-mapper'
+import {
+	tripInProgressFromJSON,
+	tripInProgressToJSON
+} from '../application/trip-in-progress-mapper'
+import { Observable } from 'rxjs'
+import { Trip } from 'src/package/trip/domain/models/trip'
 
-export class TripInProgressDaoFirebase implements TripInProgressDao {
+export class TripInProgressDaoFirebase extends TripInProgressDao {
 	constructor( private firebase: AngularFireDatabase ) {
+		super()
 	}
 
 	collectionKey = 'tripsinprogress'
+
+	async listen(id: TripID): Promise<Result<Observable<TripInProgress | null>, Error[]>> {
+		try {
+			const keySaved = await this.getKey( id )
+
+			if ( keySaved.isErr() ) {
+				return Err( [ keySaved.unwrapErr() ] )
+			}
+
+			const ref = this.firebase.database.ref(
+				`${ this.collectionKey }/${ keySaved.unwrap() }` )
+
+			ref.on( 'value', ( snapshot ) => {
+
+				const value = snapshot.val()
+				const trip = tripInProgressFromJSON( value )
+				if ( trip.isOk() ) {
+					this.tripChange.next( trip.unwrap() )
+				}
+			} )
+
+			return Ok( this.tripChange.asObservable() )
+		}
+		catch ( e ) {
+			return Err( [ new FirebaseOperationException() ] )
+		}
+	}
+	async close(id: TripID): Promise<Result<boolean, Error[]>> {
+		const keySaved = await this.getKey( id )
+
+		if ( keySaved.isErr() ) {
+			return Err( [ keySaved.unwrapErr() ] )
+		}
+
+		this.tripChange.unsubscribe()
+		this.firebase.database.ref( `${ this.collectionKey }/${ keySaved.unwrap() }` ).off()
+		return Ok( true )
+	}
+
+	async getByID(trip: TripID): Promise<Result<TripInProgress, Error[]>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'id' )
+		                 .equalTo( trip.value )
+		                 .get()
+		                 .then( async ( snapshot ) => {
+			                 if ( snapshot.val() === null ) {
+				                 return Err( [ new TripInProgressInvalidException() ] )
+			                 }
+
+			                 const snapshotValue = Object.values(
+				                 snapshot.val() )[0] as Record<string, any>
+
+			                 const trip = tripInProgressFromJSON( snapshotValue )
+
+			                 if ( trip.isErr() ) {
+				                 return Err( trip.unwrapErr() )
+			                 }
+
+			                 return Ok( trip.unwrap() )
+		                 } )
+		                 .catch( ( error ) => {
+			                 return Err( [ new FirebaseOperationException() ] )
+		                 } )
+	}
 
 	async update( trip: TripInProgress ): Promise<Result<boolean, Error[]>> {
 		const keySaved = await this.getKey( trip.id )
@@ -35,8 +106,6 @@ export class TripInProgressDaoFirebase implements TripInProgressDao {
 		          .child( keySaved.unwrap() )
 		          .set( json.unwrap(),
 			          ( error ) => {
-				          console.log( 'possible error' )
-				          console.log( error )
 				          if ( !error ) {
 					          completed = 'completed'
 				          }

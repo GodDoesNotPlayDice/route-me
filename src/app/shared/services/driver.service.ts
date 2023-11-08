@@ -1,4 +1,7 @@
-import { Injectable } from '@angular/core'
+import {
+	Injectable,
+	OnDestroy
+} from '@angular/core'
 import {
 	None,
 	Option,
@@ -10,6 +13,7 @@ import {
 } from 'rxjs'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { PositionService } from 'src/app/shared/services/position.service'
+import { TripInProgressService } from 'src/app/shared/services/trip-in-progress.service'
 import { getDriverCarById } from 'src/package/driver-car/application/get-driver-car-by-id'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
 import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
@@ -19,38 +23,64 @@ import { createDriver } from 'src/package/driver/application/create-driver'
 import { updateDriver } from 'src/package/driver/application/update-driver'
 import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { Driver } from 'src/package/driver/domain/models/driver'
+import { DriverID } from 'src/package/driver/domain/models/driver-id'
 import { Email } from 'src/package/shared/domain/models/email'
-import { upsertTripInProgress } from 'src/package/trip-in-progress/application/upsert-trip-in-progress'
-import { TripInProgressDao } from 'src/package/trip-in-progress/domain/dao/trip-in-progress-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
-import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Injectable( {
 	providedIn: 'root'
 } )
-export class DriverService {
+export class DriverService implements OnDestroy {
 	constructor(
 		private driverDao: DriverDao,
-		private inProgressDao: TripInProgressDao,
+		private inProgressService: TripInProgressService,
 		private authService: AuthService,
 		private driverCarDao: DriverCarDao,
 		private positionService: PositionService
 		// private driverDocumentDao : DriverDocumentDao
 	)
 	{
-		this.authService.userChange$.pipe( first(
+		this.userChange = this.authService.userChange$.pipe( first(
 			( user ) => user !== null
 		) )
-		    .subscribe( async ( user ) => {
-			    if ( user !== null ) {
-				    await this.getByEmail( user.email )
-			    }
-		    } )
+		                      .subscribe( async ( user ) => {
+			                      if ( user !== null ) {
+				                      await this.getByEmail( user.email )
+			                      }
+		                      } )
 	}
 
-	private updateActiveTrip: Subscription
-
 	currentDriver: Option<Driver> = None
+	private updateActiveTrip: Subscription
+	private driverChange: Subscription
+	private userChange: Subscription
+
+	async enableDriverChangeListen( id: DriverID ): Promise<void> {
+		const result = await this.driverDao.listen( id )
+
+		if ( result.isErr() ) {
+			console.log( 'driver listen error' )
+			console.log( result.unwrapErr() )
+			return
+		}
+
+		this.driverChange = result.unwrap()
+		                          .subscribe( ( value ) => {
+			                          if ( value === null ) {
+				                          return
+			                          }
+			                          this.currentDriver = Some( value )
+		                          } )
+		console.log( 'driver change listen enabled' )
+	}
+
+	async ngOnDestroy(): Promise<void> {
+		this.updateActiveTrip.unsubscribe()
+		this.driverChange.unsubscribe()
+		this.userChange.unsubscribe()
+		if ( this.currentDriver.isNone() ) return
+		await this.driverDao.close(this.currentDriver.unwrap().id)
+	}
 
 	async driverRegister(
 		id: DriverCarID,
@@ -80,6 +110,8 @@ export class DriverService {
 			return false
 		}
 
+		await this.enableDriverChangeListen( result.unwrap().id )
+
 		this.currentDriver = Some( result.unwrap() )
 		return true
 	}
@@ -99,37 +131,16 @@ export class DriverService {
 			return None
 		}
 
-		await this.checkActiveTripSignal( result.unwrap() )
-		return Some( result.unwrap() )
-	}
-
-	private async checkActiveTripSignal( updatedDriver: Driver ): Promise<boolean> {
-		if ( updatedDriver.activeTrip.isSome() &&
-			updatedDriver.activeTrip.unwrap().state ===
-			TripStateEnum.Progress )
+		if ( result.unwrap()
+		           .activeTrip
+		           .isSome() )
 		{
-			this.updateActiveTrip = this.positionService.newPosition$.subscribe( async ( value ) => {
-					if ( !value ) {
-						return
-					}
-					const activeTrip = updatedDriver.activeTrip.unwrap()
-					const result     = await upsertTripInProgress( this.inProgressDao, {
-						id           : activeTrip.id,
-						status       : activeTrip.state,
-						startLocation: activeTrip.startLocation,
-						endLocation  : activeTrip.endLocation,
-						latitude     : value.lat,
-						longitude    : value.lng
-					} )
-
-				if ( result.isErr()){
-					console.log('upsert active trip. driver')
-					console.log(result.unwrapErr())
-				}
-				} )
-			return true
+			await this.inProgressService.checkActiveTripSignal( result.unwrap()
+			                                                          .activeTrip
+			                                                          .unwrap() )
 		}
-		return false
+
+		return Some( result.unwrap() )
 	}
 
 	async getByEmail( email: Email ): Promise<boolean> {
@@ -141,7 +152,15 @@ export class DriverService {
 			return false
 		}
 
-		await this.checkActiveTripSignal( result.unwrap() )
+		if ( result.unwrap()
+		           .activeTrip
+		           .isSome() )
+		{
+			await this.inProgressService.checkActiveTripSignal( result.unwrap()
+			                                                          .activeTrip
+			                                                          .unwrap() )
+		}
+		await this.enableDriverChangeListen( result.unwrap().id )
 
 		this.currentDriver = Some( result.unwrap() )
 		return true

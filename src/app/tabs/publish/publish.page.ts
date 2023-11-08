@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common'
 import {
 	Component,
 	ElementRef,
+	OnDestroy,
+	OnInit,
 	ViewChild
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
@@ -12,13 +14,16 @@ import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
+import { Subscription } from 'rxjs'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-selector/date-time-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
+import { LocationService } from 'src/app/shared/services/location.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
@@ -42,13 +47,14 @@ import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 		MatButtonModule
 	]
 } )
-export class PublishPage implements ViewDidEnter {
+export class PublishPage implements ViewDidEnter, OnDestroy {
 
 	constructor( private map: MapService,
 		private toastService: ToastService,
 		private tripService: TripService,
 		private router: Router,
 		private driverService: DriverService,
+		private positionService: PositionService,
 		private ipDao: IpDao,
 		private currencyDao: CurrencyDao,
 		private alertService: AlertService )
@@ -66,9 +72,22 @@ export class PublishPage implements ViewDidEnter {
 	simulatedPrice: string | null = null
 	loadingPrice: boolean         = false
 	canPublish: boolean           = true
+	private positionChange: Subscription
+
+	async ngOnDestroy(): Promise<void> {
+		await this.map.removeMap(this.pageKey)
+		this.positionChange.unsubscribe()
+	}
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
+
+		this.positionChange = this.positionService.newPosition$.subscribe( async ( value ) => {
+			if ( value == null ) { return }
+			await this.map.autoFollow(this.pageKey,value)
+			await this.map.addUserMarker( this.pageKey)
+		})
+
 
 		this.canPublish = this.driverService.currentDriver.unwrap()
 		                      .activeTrip
@@ -113,7 +132,7 @@ export class PublishPage implements ViewDidEnter {
 			return null
 		} )
 
-		await this.map.autoFollow()
+		await this.map.autoFollow(this.pageKey)
 	}
 
 	async addRoute() {

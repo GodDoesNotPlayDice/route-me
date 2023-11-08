@@ -33,7 +33,6 @@ export class MapService implements OnDestroy {
 					return
 				}
 				this.lastPosition = value
-				await this.autoFollow( { lat: value.lat, lng: value.lng } )
 			} )
 	}
 
@@ -48,6 +47,9 @@ export class MapService implements OnDestroy {
 
 	public markerClick$: Observable<Position | null> = this.markerClick.asObservable()
 
+	async removeMap( key: string ): Promise<Result<boolean, Error>> {
+		return await this.mapRepository.removeMap( key )
+	}
 
 	async removeRouteMarker( pageKey: string,
 		locationKey: string ): Promise<boolean> {
@@ -75,7 +77,8 @@ export class MapService implements OnDestroy {
 		return true
 	}
 
-	async init( key: string, divElement: HTMLDivElement ): Promise<boolean> {
+	async init( key: string, divElement: HTMLDivElement,
+		owner: boolean = true ): Promise<boolean> {
 		const mapEntry = await this.mapRepository.init( key, divElement,
 			this.lastPosition )
 
@@ -85,25 +88,14 @@ export class MapService implements OnDestroy {
 			return false
 		}
 
-		if ( this.lastPosition !== null ) {
-			await this.autoFollow( this.lastPosition )
-			await this.addUserMarker( key, this.lastPosition, mapEntry.unwrap() )
-		}
-
-		mapEntry.unwrap()
-		        .on( 'click', ( e ) => {
-			        const { lat, lng } = e.lngLat
-			        this.markerClick.next( { lat: lat, lng: lng } )
-		        } )
-
 		return true
 	}
 
-	async autoFollow( center?: Position ): Promise<boolean> {
+	async autoFollow(key: string, center?: Position ): Promise<boolean> {
 		if ( this.lastPosition === null ) {
 			return false
 		}
-		const result = await this.mapRepository.autoFollow(
+		const result = await this.mapRepository.autoFollow(key,
 			center ?? this.lastPosition )
 		if ( result.isErr() ) {
 			console.log( 'auto follow. map service' )
@@ -113,11 +105,12 @@ export class MapService implements OnDestroy {
 		return true
 	}
 
-	private async addUserMarker( pageKey: string, center: Position,
-		map: mapboxgl.Map ): Promise<boolean> {
-		const result = await this.mapRepository.addUserMarker( pageKey, center,
-			map )
-
+	async addUserMarker( pageKey: string, center ?: Position, color: string = 'black' ): Promise<boolean> {
+		if ( center === undefined || this.lastPosition === null ) {
+			return false
+		}
+		const result = await this.mapRepository.addUserMarker( pageKey,
+			this.lastPosition, color )
 		if ( result.isErr() ) {
 			console.log( 'add user marker. map service' )
 			console.log( result.unwrapErr() )

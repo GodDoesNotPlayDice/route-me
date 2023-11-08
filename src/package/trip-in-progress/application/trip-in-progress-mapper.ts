@@ -41,7 +41,7 @@ export const tripInProgressFromJSON = ( json: Record<string, any> ): Result<Trip
 	}
 
 	const state = newTripState( {
-		value: json['state'] ?? ''
+		value: json['status'] ?? ''
 	} )
 
 	if ( state.isErr() ) {

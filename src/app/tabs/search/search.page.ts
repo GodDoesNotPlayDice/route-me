@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common'
 import {
 	Component,
 	ElementRef,
+	OnDestroy,
 	ViewChild
 } from '@angular/core'
 import {
@@ -24,7 +25,7 @@ import { MapService } from 'src/app/shared/services/map.service'
 		InputTextComponent
 	]
 } )
-export class SearchPage implements ViewDidEnter {
+export class SearchPage implements ViewDidEnter, OnDestroy {
 
 	constructor( private map: MapService ) {}
 
@@ -33,5 +34,9 @@ export class SearchPage implements ViewDidEnter {
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( 'search', this.divElementElementRef.nativeElement )
+	}
+
+	async ngOnDestroy(): Promise<void> {
+		await this.map.removeMap('search')
 	}
 }

@@ -7,7 +7,7 @@ import {
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { Observable } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { BubbleChatComponent } from 'src/app/shared/components/bubble-chat/bubble-chat.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
@@ -45,7 +45,7 @@ export class ChatPage implements OnInit, OnDestroy {
 	messages: Message[]                    = []
 	tripID: string | null                  = null
 	chatID: string | null                  = null
-	messagesStream$: Observable<Message | null>
+	private messagesChange: Subscription
 	passengerOwner: Passenger
 	// passengersTrip : Passenger[]
 	passengersTrip: Map<string, Passenger> = new Map<string, Passenger>()
@@ -85,9 +85,7 @@ export class ChatPage implements OnInit, OnDestroy {
 		else {
 			this.chatID          = chatID
 			this.tripID          = tripID
-			//TODO: agregar fecha envio, apellido y respetar espacio chat list y input
-			this.messagesStream$ = messageStream.unwrap()
-			this.messagesStream$.subscribe( ( message ) => {
+				this.messagesChange = messageStream.unwrap().subscribe( ( message ) => {
 				if ( message !== null ) {
 					this.messages.push( message )
 					this.messages.sort( ( a, b ) => a.timestamp - b.timestamp )
@@ -98,7 +96,8 @@ export class ChatPage implements OnInit, OnDestroy {
 	}
 
 	async ngOnDestroy(): Promise<void> {
-		await this.chatService.close()
+		await this.chatService.close(this.chatID!)
+		this.messagesChange.unsubscribe()
 	}
 
 	async onBackClicked(): Promise<void> {

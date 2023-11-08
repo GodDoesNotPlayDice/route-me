@@ -4,6 +4,7 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
+import { Observable } from 'rxjs'
 import {
 	driverFromJson,
 	driverToJson
@@ -12,17 +13,58 @@ import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { DriverIdInvalidException } from 'src/package/driver/domain/exceptions/driver-id-invalid-exception'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { DriverID } from 'src/package/driver/domain/models/driver-id'
-import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/email-not-found-exception'
-import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { Email } from 'src/package/shared/domain/models/email'
 import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 
-export class DriverDaoFirebase implements DriverDao {
+export class DriverDaoFirebase extends DriverDao {
 	constructor( private firebase: AngularFireDatabase ) {
+		super()
 	}
 
 	collectionKey = 'drivers'
+
+	async listen( id: DriverID ): Promise<Result<Observable<Driver | null>, Error[]>> {
+		try {
+			const keySaved = await this.getKey( id )
+
+			if ( keySaved.isErr() ) {
+				return Err( [ keySaved.unwrapErr() ] )
+			}
+
+			const ref = this.firebase.database.ref(
+				`${ this.collectionKey }/${ keySaved.unwrap() }` )
+
+			ref.on( 'value', ( snapshot ) => {
+
+				const value  = snapshot.val()
+				const driver = driverFromJson( value )
+				if ( driver.isOk() ) {
+					this.driverChange.next( driver.unwrap() )
+				}
+			} )
+
+			return Ok( this.driverChange.asObservable() )
+		}
+		catch ( e ) {
+			return Err( [ new FirebaseOperationException() ] )
+		}
+	}
+
+	async close( id: DriverID ): Promise<Result<boolean, Error[]>> {
+		const keySaved = await this.getKey( id )
+
+		if ( keySaved.isErr() ) {
+			return Err( [ keySaved.unwrapErr() ] )
+		}
+
+		this.firebase.database.ref(
+			`${ this.collectionKey }/${ keySaved.unwrap() }` )
+		    .off(  )
+
+		this.driverChange.unsubscribe()
+		return Ok( true )
+	}
 
 	/**
 	 * Create a driver
@@ -106,8 +148,6 @@ export class DriverDaoFirebase implements DriverDao {
 		          .child( keySaved.unwrap() )
 		          .set( json.unwrap(),
 			          ( error ) => {
-				          console.log( 'possible error' )
-				          console.log( error )
 				          if ( !error ) {
 					          completed = 'completed'
 				          }
