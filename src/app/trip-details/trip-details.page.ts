@@ -32,11 +32,14 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { PassengerTripService } from 'src/app/shared/services/passenger-trip.service'
 import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
+import { TripHistoryService } from 'src/app/shared/services/trip-history.service'
 import { TripInProgressService } from 'src/app/shared/services/trip-in-progress.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { newTripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 import { ulid } from 'ulidx'
@@ -65,6 +68,8 @@ import { ulid } from 'ulidx'
 export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 	constructor(
 		private map: MapService,
+		private tripHistoryService: TripHistoryService,
+		private passengerTripService: PassengerTripService,
 		private modalController: ModalController,
 		private tripService: TripService,
 		private tripInProgressService: TripInProgressService,
@@ -147,15 +152,17 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		await this.map.removeMap( 'detail' )
 		this.tripChange.unsubscribe()
 		this.positionChange.unsubscribe()
-		await this.tripInProgressService.close(this.trip!.id)
+		await this.tripInProgressService.close( this.trip!.id )
 	}
+
+	private returnPath: string = '/tabs/home'
 
 	async ngOnInit(): Promise<void> {
 		this.loading = true
 		const state  = this.router.getCurrentNavigation()?.extras.state
 		const id     = state?.['id'] ?? null
 		if ( id === null ) {
-			await this.router.navigate( [ '/tabs/home' ] )
+			await this.router.navigate( [ this.returnPath ] )
 			return
 		}
 
@@ -172,7 +179,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 					{
 						text   : 'Devolverse',
 						handler: async () => {
-							await this.router.navigate( [ '/tabs/home' ] )
+							await this.router.navigate( [ this.returnPath ] )
 						}
 					}
 				]
@@ -291,9 +298,23 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		const result = await this.tripService.updateTrip( this.trip, {
 			queuePassengers: [ ...this.trip.queuePassengers, thisPassenger ]
 		} )
-		await this.loadingService.dismissLoading()
 
 		if ( result.isSome() ) {
+			const ptResult = await this.passengerTripService.create( {
+				tripID   : result.unwrap().id,
+				state    : result.unwrap().state,
+				userEmail: this.authService.currentPassenger.unwrap().email
+			} )
+			if ( ptResult.isErr() ) {
+				await this.toastService.presentToast( {
+					message : 'Hubo un problema. Intente denuevo',
+					duration: 1500,
+					position: 'bottom'
+				} )
+				await this.loadingService.dismissLoading()
+				return
+			}
+
 			this.isPendingInPassengerQueue = true
 			this.trip                      = result.unwrap()
 			await this.toastService.presentToast( {
@@ -310,6 +331,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 				position: 'bottom'
 			} )
 		}
+		await this.loadingService.dismissLoading()
 	}
 
 	async onAcceptQueuePassenger( psn: Passenger ): Promise<void> {
@@ -330,6 +352,18 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		await this.loadingService.dismissLoading()
 
 		if ( result.isSome() ) {
+			const deleteResult = await this.passengerTripService.deleteAll( psn.email,
+				TripStateEnum.Open )
+
+			if ( deleteResult.isErr() ) {
+				await this.toastService.presentToast( {
+					message : 'Hubo un problema. Intente denuevo',
+					duration: 1500,
+					position: 'bottom'
+				} )
+				return
+			}
+
 			await this.toastService.presentToast( {
 				message : 'Se ha aceptado al pasajero',
 				color   : 'success',
@@ -374,9 +408,21 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			passengers     : newListPassengers,
 			queuePassengers: newListQueuePassengers
 		} )
-		await this.loadingService.dismissLoading()
 
 		if ( result.isSome() ) {
+			const deleteResult = await this.passengerTripService.delete(
+				result.unwrap().id, this.authService.currentPassenger.unwrap().email )
+
+			if ( deleteResult.isErr() ) {
+				await this.toastService.presentToast( {
+					message : 'Hubo un problema. Intente denuevo',
+					duration: 1500,
+					position: 'bottom'
+				} )
+				await this.loadingService.dismissLoading()
+				return
+			}
+
 			await this.toastService.presentToast( {
 				message : 'Se ha aceptado al pasajero',
 				color   : 'success',
@@ -394,6 +440,8 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 				position: 'bottom'
 			} )
 		}
+		await this.loadingService.dismissLoading()
+
 	}
 
 	async onStartTrip(): Promise<void> {
@@ -407,6 +455,8 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			state          : TripStateEnum.Progress
 		} )
 		if ( result.isSome() ) {
+			//TODO: eliminar de open near trips
+			//TODO: actualizar passenger trip, el state
 			this.trip = result.unwrap()
 			await this.checkTripInProgress()
 			const resultDriver     = await this.driverService.driverUpdate( {
@@ -443,29 +493,77 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			return
 		}
 		await this.loadingService.showLoading( 'Terminando Viaje' )
+
+
 		const resultDriver = await this.driverService.driverUpdate( {
 			activeTrip: undefined
 		} )
+		//TODO: intentar reducir lectura de codigo
 		if ( resultDriver.isSome() ) {
-			const result = await this.tripService.updateTrip( this.trip, {
-				state : TripStateEnum.Completed,
-				driver: resultDriver.unwrap()
-			} )
-			if ( result.isSome() ) {
+			const result = await this.tripService.removeTrip( this.trip.id )
+
+			if ( result.isErr() ) {
+				console.log( 'result err finish trip', result.unwrapErr() )
+			}
+
+			if ( result ) {
+				this.trip.state           = TripStateEnum.Completed
+				const driverHistoryResult = await this.tripHistoryService.create( {
+					trip     : this.trip,
+					userEmail: resultDriver.unwrap().passenger.email,
+					id       : newTripHistoryID( {
+						value: ulid()
+					} )
+						.unwrap()
+				} )
+				if ( driverHistoryResult.isErr() ) {
+					console.log( 'driverHistoryResult', driverHistoryResult.unwrapErr() )
+				}
+
+				const passengerTripProgressDeleteErrors: Error[] = []
+				for ( let passenger of this.trip.passengers ) {
+					const passengerTripProgressDeleteResult = await this.passengerTripService.delete(
+						this.trip.id, passenger.email )
+					const historyResult                     = await this.tripHistoryService.create(
+						{
+							trip     : this.trip,
+							userEmail: passenger.email,
+							id       : newTripHistoryID( {
+								value: ulid()
+							} )
+								.unwrap()
+						} )
+					if ( historyResult.isErr() ) {
+						console.log( 'passengerHistoryResult', historyResult.unwrapErr() )
+					}
+					if ( passengerTripProgressDeleteResult.isErr() ) {
+						passengerTripProgressDeleteErrors.push(
+							passengerTripProgressDeleteResult.unwrapErr() )
+					}
+				}
+
+				if ( passengerTripProgressDeleteErrors.length > 0 ) {
+					console.log( 'passengerTripProgressDeleteErrors',
+						passengerTripProgressDeleteErrors )
+					await this.toastService.presentToast( {
+						message : 'Hubo un problema. Intente denuevo',
+						duration: 1500,
+						position: 'bottom'
+					} )
+					await this.loadingService.dismissLoading()
+					return
+				}
+
 				const removeResult = await this.tripInProgressService.removeTripInProgress(
 					this.trip.id )
-				this.tripChange.unsubscribe()
-
-				await this.toastService.presentToast( {
-					message : 'Se terminado el viaje',
-					color   : 'success',
-					duration: 1500,
-					position: 'bottom'
-				} )
+				if ( removeResult.isErr() ) {
+					console.log( 'remove trip in progress result',
+						removeResult.unwrapErr() )
+				}
 				this.isTripFinished = true
-
-				this.trip = result.unwrap()
+				this.trip           = null
 				await this.loadingService.dismissLoading()
+				await this.router.navigate( [ this.returnPath ] )
 				return
 			}
 		}
@@ -479,6 +577,6 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 	}
 
 	async onReportPassenger( psn: Passenger ): Promise<void> {
-
+		//TODO: abrir report modal y enviar segun slider el reporte
 	}
 }
