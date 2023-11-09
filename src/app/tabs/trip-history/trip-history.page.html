@@ -12,11 +12,15 @@
 	</ion-header>
 	<div class="p-2.5 w-full mx-auto flex flex-col gap-4">
 		<div class="font-gotham text-xl">En Curso</div>
-		<div *ngFor="let card of progressDrivers">
+		<div *ngFor="let card of progressTrips">
+			<app-drive-card [info]="card"></app-drive-card>
+		</div>
+		<div class="font-gotham text-xl">Esperando aprobacion</div>
+		<div *ngFor="let card of openTrips">
 			<app-drive-card [info]="card"></app-drive-card>
 		</div>
 		<div class="font-gotham text-xl">Completados</div>
-		<div *ngFor="let card of completedDrivers">
+		<div *ngFor="let card of completedTrips">
 			<app-drive-card [info]="card"></app-drive-card>
 		</div>
 	</div>
