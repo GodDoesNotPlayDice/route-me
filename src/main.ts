@@ -40,7 +40,6 @@ import {
 } from '@ionic/angular'
 import { IonicStorageModule } from '@ionic/storage-angular'
 import { StoreModule } from '@ngrx/store'
-import { createClient } from '@supabase/supabase-js'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
@@ -66,6 +65,8 @@ import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
 import { IpDaoIpApi } from 'src/package/ip-api/infrastructure/ipapi/ip-dao-ip-api'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
+import { NearTripRepository } from 'src/package/near-trip/domain/repository/near-trip-repository'
+import { NearTripRepositoryFirebase } from 'src/package/near-trip/infrastructure/near-trip-repository-firebase'
 import { PassengerTripDao } from 'src/package/passenger-trip/domain/dao/passenger-trip-dao'
 import { PassengerTripDaoFirebase } from 'src/package/passenger-trip/infrastructure/passenger-trip-dao-firebase'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
@@ -100,13 +101,13 @@ bootstrapApplication( AppComponent, {
 	providers: [
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 		{ provide: LOCALE_ID, useValue: 'es' },
-		{
-			provide   : 'Supabase',
-			useFactory: () => {
-				return createClient( environment.supabaseUrl, environment.supabaseKey )
-
-			}
-		},
+		// {
+		// 	provide   : 'Supabase',
+		// 	useFactory: () => {
+		// 		return createClient( environment.supabaseUrl, environment.supabaseKey )
+		//
+		// 	}
+		// },
 		{
 			provide   : AuthUserRepository,
 			useFactory: ( auth: AngularFireAuth, firebase: AngularFireDatabase ) => {
@@ -125,6 +126,13 @@ bootstrapApplication( AppComponent, {
 			provide   : PassengerTripDao,
 			useFactory: ( firebase: AngularFireDatabase ) => {
 				return new PassengerTripDaoFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : NearTripRepository,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new NearTripRepositoryFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
 		},

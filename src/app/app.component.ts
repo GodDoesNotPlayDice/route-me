@@ -6,10 +6,6 @@ import {
 	OnInit
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import {
-	RealtimeChannel,
-	SupabaseClient
-} from '@supabase/supabase-js'
 import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
 import {
 	Dropdown,
@@ -29,10 +25,9 @@ import {
 	styleUrls  : [ 'app.component.scss' ]
 } )
 export class AppComponent implements OnInit, OnDestroy {
-	private chan: RealtimeChannel
 
 	constructor(
-		@Inject( 'Supabase' ) private supa: SupabaseClient<any, 'public', any>,
+		// @Inject( 'Supabase' ) private supa: SupabaseClient<any, 'public', any>,
 		private countryPhoneCode: CountryPhoneCodeService )
 	{
 	}
@@ -43,6 +38,5 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	async ngOnDestroy(): Promise<void> {
-		await this.chan.unsubscribe()
 	}
 }

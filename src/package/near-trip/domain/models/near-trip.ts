@@ -9,6 +9,6 @@ export interface NearTrip {
 	endLocationName: TripLocationName
 	price: TripPrice
 	startDate: ValidDate
-	latitude: number,
+	latitude: number
 	longitude: number
 }

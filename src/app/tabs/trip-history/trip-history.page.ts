@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { CurrencyService } from 'src/app/shared/services/currency.service'
+import { LoadingService } from 'src/app/shared/services/loading.service'
 import { PassengerTripService } from 'src/app/shared/services/passenger-trip.service'
 import { TripHistoryService } from 'src/app/shared/services/trip-history.service'
 import { TripService } from 'src/app/shared/services/trip.service'
@@ -28,6 +29,7 @@ export class TripHistoryPage implements OnInit {
 
 	constructor(
 		private currencyService: CurrencyService,
+		private loadingService: LoadingService,
 		private authService: AuthService,
 		private tripService: TripService,
 		private tripHistoryService: TripHistoryService,
@@ -40,6 +42,7 @@ export class TripHistoryPage implements OnInit {
 	completedTrips: DriverCardInfo[] = []
 
 	async ngOnInit(): Promise<void> {
+		await this.loadingService.showLoading('Cargando historial de viajes')
 		const activeTrips = await this.passengerTripService.getAllByEmail(
 			this.authService.currentPassenger.unwrap().email )
 
@@ -124,5 +127,6 @@ export class TripHistoryPage implements OnInit {
 				} )
 			}
 		}
+		await this.loadingService.dismissLoading()
 	}
 }
