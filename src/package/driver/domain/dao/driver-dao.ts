@@ -18,5 +18,5 @@ export abstract class DriverDao {
 
 	abstract listen( id: DriverID ): Promise<Result<Observable<Driver | null>, Error[]>>
 
-	abstract close(id: DriverID): Promise<Result<boolean, Error[]>>
+	abstract close( id: DriverID ): Promise<Result<boolean, Error[]>>
 }

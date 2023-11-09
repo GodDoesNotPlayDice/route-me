@@ -1,18 +1,8 @@
 import {
 	Err,
-	None,
 	Ok,
 	Result
 } from 'oxide.ts'
-import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
-import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
-import { newDriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
-import { newDriverDocumentName } from 'src/package/driver-document/domain/models/driver-document-name'
-import { newDriverDocumentReference } from 'src/package/driver-document/domain/models/driver-document-reference'
-import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
-import { Driver } from 'src/package/driver/domain/models/driver'
-import { newDriverID } from 'src/package/driver/domain/models/driver-id'
-import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { RatingDao } from 'src/package/rating/domain/dao/rating-dao'
 import { Rating } from 'src/package/rating/domain/models/rating'
 import { newRatingID } from 'src/package/rating/domain/models/rating-id'
@@ -21,7 +11,6 @@ import {
 	RatingValue
 } from 'src/package/rating/domain/models/rating-value'
 import { Email } from 'src/package/shared/domain/models/email'
-import { newValidBoolean } from 'src/package/shared/domain/models/valid-bool'
 import { ulid } from 'ulidx'
 
 /**
@@ -30,8 +19,8 @@ import { ulid } from 'ulidx'
 export const createRating = async ( dao: RatingDao,
 	props: {
 		value: number,
-		senderEmail : Email,
-		userEmail : Email,
+		senderEmail: Email,
+		userEmail: Email,
 	}
 ): Promise<Result<RatingValue, Error[]>> => {
 	const error: Error[] = []
@@ -44,11 +33,11 @@ export const createRating = async ( dao: RatingDao,
 		error.push( id.unwrapErr() )
 	}
 
-	const value = newRatingValue({
+	const value = newRatingValue( {
 		value: props.value
-	})
+	} )
 
-	if ( value.isErr() ){
+	if ( value.isErr() ) {
 		error.push( value.unwrapErr() )
 	}
 
@@ -57,33 +46,34 @@ export const createRating = async ( dao: RatingDao,
 	}
 
 	const rating: Rating = {
-		id        : id.unwrap(),
+		id         : id.unwrap(),
 		senderEmail: props.senderEmail,
-		userEmail: props.userEmail,
-		value: value.unwrap()
+		userEmail  : props.userEmail,
+		value      : value.unwrap()
 	}
 
-	const result = await dao.create( rating)
+	const result = await dao.create( rating )
 
 	if ( result.isErr() ) {
 		error.push( ...result.unwrapErr() )
 		return Err( error )
 	}
 
-	const values = await dao.getByEmail(rating.userEmail)
+	const values = await dao.getByEmail( rating.userEmail )
 
-	if ( values.isErr() ){
+	if ( values.isErr() ) {
 		error.push( ...values.unwrapErr() )
-		return Err(error)
+		return Err( error )
 	}
 
-	const sum = values.unwrap().reduce((acc, curr) => acc + curr.value.value, 0)
+	const sum = values.unwrap()
+	                  .reduce( ( acc, curr ) => acc + curr.value.value, 0 )
 
 	const driverRating = sum / values.unwrap().length
 
-	const valueResult = newRatingValue({
+	const valueResult = newRatingValue( {
 		value: driverRating
-	})
+	} )
 
 	if ( valueResult.isErr() ) {
 		error.push( valueResult.unwrapErr() )

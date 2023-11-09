@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
+import { Router } from '@angular/router'
 import {
 	IonicModule,
 	ViewDidEnter
@@ -7,6 +8,7 @@ import {
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
+import { CurrencyService } from 'src/app/shared/services/currency.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
 import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
@@ -31,6 +33,8 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 export class HomePage implements ViewDidEnter {
 
 	constructor( private trip: TripService,
+		private router: Router,
+		private currencyService: CurrencyService,
 		private ipDao: IpDao, private currencyDao: CurrencyDao )
 	{}
 
@@ -60,28 +64,12 @@ export class HomePage implements ViewDidEnter {
 			this.loading = false
 			return
 		}
-		const resultIP       = await this.ipDao.getIp()
-		const resultCurrency = await this.currencyDao.getCurrencyExchange(
-			'USD',
-			resultIP.unwrap().currency
-		)
+		const currencyResult = await this.currencyService.fetchCurrency()
 
 		this.info    = result.unwrap()
 		                     .map( ( trip ): DriverCardInfo => {
-			                     const startSplitted             = trip.startLocation.name.value.split(
-				                     ',' )
-			                     const formatedStartLocationName = `${ startSplitted[0] }, ${ startSplitted[1] }, ${ startSplitted[3] }`
-			                     const endSplitted               = trip.endLocation.name.value.split(
-				                     ',' )
-			                     const formatedEndLocationName   = `${ endSplitted[0] }, ${ endSplitted[1] }, ${ endSplitted[3] }`
-			                     const amountUSD                 = trip.price.amount.value
-			                     const targetAmount              = amountUSD *
-				                     resultCurrency.unwrap().value
-			                     const parsedAmount              = new Intl.NumberFormat(
-				                     resultIP.unwrap().languages[0], {
-					                     style   : 'currency',
-					                     currency: resultIP.unwrap().currency
-				                     } ).format( targetAmount )
+			                     const parsedAmount = this.currencyService.parseCurrency(
+				                     trip.price.amount.value, currencyResult.unwrap() )
 
 			                     const urlsList = trip.passengers.map(
 				                     ( passenger ) => {
@@ -97,12 +85,12 @@ export class HomePage implements ViewDidEnter {
 
 			                     return {
 				                     id               : trip.id.value,
-				                     currency         : resultIP.unwrap().currency,
+				                     currency         : currencyResult.unwrap().currency,
 				                     cost             : parsedAmount,
-				                     date             : trip.startDate.toLocaleString(),
+				                     date             : trip.startDate,
 				                     state            : trip.state,
-				                     endLocationName  : formatedEndLocationName,
-				                     startLocationName: formatedStartLocationName,
+				                     endLocationName  : trip.endLocation.name.value,
+				                     startLocationName: trip.startLocation.name.value,
 				                     driverAvatar     : {
 					                     name: trip.driver.passenger.name.value,
 					                     url : trip.driver.passenger.image.value

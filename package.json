@@ -37,6 +37,7 @@
     "@ionic/storage-angular": "^4.0.0",
     "@material-tailwind/html": "^2.0.0",
     "@ngrx/store": "^16.2.0",
+    "@supabase/supabase-js": "^2.38.4",
     "firebase": "^9.23.0",
     "geofire": "^6.0.0",
     "ionicons": "^7.0.0",

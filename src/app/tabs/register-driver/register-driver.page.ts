@@ -71,6 +71,8 @@ export class RegisterDriverPage implements ViewDidEnter {
 			this.carInput.carControl.value!.id,
 			[
 				{
+					//TODO: habilitar files
+					//TODO: se podria hacer driver document name enum
 					name     : 'Licencia',
 					reference: this.licenceInput.fileControl.value!
 				},

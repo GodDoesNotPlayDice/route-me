@@ -53,7 +53,7 @@ export const tripInProgressFromJSON = ( json: Record<string, any> ): Result<Trip
 		lat: json['latitude'] ?? ''
 	} )
 
-	if ( pos.isErr() ){
+	if ( pos.isErr() ) {
 		err.push( pos.unwrapErr() )
 	}
 
@@ -66,8 +66,8 @@ export const tripInProgressFromJSON = ( json: Record<string, any> ): Result<Trip
 		startLocation: locationStart.unwrap(),
 		endLocation  : locationEnd.unwrap(),
 		status       : state.unwrap(),
-		latitude     :pos.unwrap().lat,
-		longitude    :pos.unwrap().lng
+		latitude     : pos.unwrap().lat,
+		longitude    : pos.unwrap().lng
 	} )
 }
 

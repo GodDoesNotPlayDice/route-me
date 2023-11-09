@@ -32,11 +32,12 @@ export class SearchPage implements ViewDidEnter, OnDestroy {
 	@ViewChild( 'search' ) searchInput!: SearchInputComponent
 	@ViewChild( 'smap' ) divElementElementRef!: ElementRef<HTMLDivElement>
 
+//TODO: tomar near trips (pasarlos a home tambien)
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( 'search', this.divElementElementRef.nativeElement )
 	}
 
 	async ngOnDestroy(): Promise<void> {
-		await this.map.removeMap('search')
+		await this.map.removeMap( 'search' )
 	}
 }

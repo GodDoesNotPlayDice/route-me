@@ -4,6 +4,7 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
+import { Observable } from 'rxjs'
 import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { TripInProgressDao } from 'src/package/trip-in-progress/domain/dao/trip-in-progress-dao'
@@ -14,8 +15,6 @@ import {
 	tripInProgressFromJSON,
 	tripInProgressToJSON
 } from '../application/trip-in-progress-mapper'
-import { Observable } from 'rxjs'
-import { Trip } from 'src/package/trip/domain/models/trip'
 
 export class TripInProgressDaoFirebase extends TripInProgressDao {
 	constructor( private firebase: AngularFireDatabase ) {
@@ -24,7 +23,7 @@ export class TripInProgressDaoFirebase extends TripInProgressDao {
 
 	collectionKey = 'tripsinprogress'
 
-	async listen(id: TripID): Promise<Result<Observable<TripInProgress | null>, Error[]>> {
+	async listen( id: TripID ): Promise<Result<Observable<TripInProgress | null>, Error[]>> {
 		try {
 			const keySaved = await this.getKey( id )
 
@@ -38,7 +37,7 @@ export class TripInProgressDaoFirebase extends TripInProgressDao {
 			ref.on( 'value', ( snapshot ) => {
 
 				const value = snapshot.val()
-				const trip = tripInProgressFromJSON( value )
+				const trip  = tripInProgressFromJSON( value )
 				if ( trip.isOk() ) {
 					this.tripChange.next( trip.unwrap() )
 				}
@@ -50,7 +49,8 @@ export class TripInProgressDaoFirebase extends TripInProgressDao {
 			return Err( [ new FirebaseOperationException() ] )
 		}
 	}
-	async close(id: TripID): Promise<Result<boolean, Error[]>> {
+
+	async close( id: TripID ): Promise<Result<boolean, Error[]>> {
 		const keySaved = await this.getKey( id )
 
 		if ( keySaved.isErr() ) {
@@ -58,11 +58,13 @@ export class TripInProgressDaoFirebase extends TripInProgressDao {
 		}
 
 		this.tripChange.unsubscribe()
-		this.firebase.database.ref( `${ this.collectionKey }/${ keySaved.unwrap() }` ).off()
+		this.firebase.database.ref(
+			`${ this.collectionKey }/${ keySaved.unwrap() }` )
+		    .off()
 		return Ok( true )
 	}
 
-	async getByID(trip: TripID): Promise<Result<TripInProgress, Error[]>> {
+	async getByID( trip: TripID ): Promise<Result<TripInProgress, Error[]>> {
 		return await this.firebase.database.ref( this.collectionKey )
 		                 .orderByChild( 'id' )
 		                 .equalTo( trip.value )
@@ -120,7 +122,7 @@ export class TripInProgressDaoFirebase extends TripInProgressDao {
 		const keySaved = await this.getKey( id )
 
 		if ( keySaved.isErr() ) {
-			return Err( [keySaved.unwrapErr()] )
+			return Err( [ keySaved.unwrapErr() ] )
 		}
 
 		let completed: string | null = null
@@ -136,7 +138,7 @@ export class TripInProgressDaoFirebase extends TripInProgressDao {
 		          )
 
 		if ( completed === null ) {
-			return Err( [new FirebaseOperationException( 'delete' )] )
+			return Err( [ new FirebaseOperationException( 'delete' ) ] )
 		}
 
 		return Ok( true )

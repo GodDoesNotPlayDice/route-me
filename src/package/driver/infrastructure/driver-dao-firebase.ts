@@ -60,7 +60,7 @@ export class DriverDaoFirebase extends DriverDao {
 
 		this.firebase.database.ref(
 			`${ this.collectionKey }/${ keySaved.unwrap() }` )
-		    .off(  )
+		    .off()
 
 		this.driverChange.unsubscribe()
 		return Ok( true )

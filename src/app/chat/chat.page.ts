@@ -7,7 +7,7 @@ import {
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
-import { Observable, Subscription } from 'rxjs'
+import { Subscription } from 'rxjs'
 import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { BubbleChatComponent } from 'src/app/shared/components/bubble-chat/bubble-chat.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
@@ -83,20 +83,23 @@ export class ChatPage implements OnInit, OnDestroy {
 			} )
 		}
 		else {
-			this.chatID          = chatID
-			this.tripID          = tripID
-				this.messagesChange = messageStream.unwrap().subscribe( ( message ) => {
-				if ( message !== null ) {
-					this.messages.push( message )
-					this.messages.sort( ( a, b ) => a.timestamp - b.timestamp )
-				}
-			} )
+			this.chatID         = chatID
+			this.tripID         = tripID
+			this.messagesChange = messageStream.unwrap()
+			                                   .subscribe( ( message ) => {
+				                                   if ( message !== null ) {
+					                                   this.messages.push( message )
+					                                   this.messages.sort(
+						                                   ( a, b ) => a.timestamp -
+							                                   b.timestamp )
+				                                   }
+			                                   } )
 		}
 		this.loading = false
 	}
 
 	async ngOnDestroy(): Promise<void> {
-		await this.chatService.close(this.chatID!)
+		await this.chatService.close( this.chatID! )
 		this.messagesChange.unsubscribe()
 	}
 

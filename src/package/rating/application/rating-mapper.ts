@@ -8,7 +8,6 @@ import { newRatingID } from 'src/package/rating/domain/models/rating-id'
 import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
-import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
 
 /**
  * Create a rating instance from json

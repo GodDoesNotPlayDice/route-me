@@ -25,7 +25,7 @@ export const upsertTripInProgress = async ( dao: TripInProgressDao,
 		latitude     : props.latitude,
 		longitude    : props.longitude,
 		startLocation: props.startLocation,
-		endLocation  : props.endLocation,
+		endLocation  : props.endLocation
 	}
 
 	const result = await dao.upsert( newTrip )

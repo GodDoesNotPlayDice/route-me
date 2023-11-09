@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common'
 import {
 	Component,
-	OnInit
+	OnDestroy,
+	OnInit,
+	ViewChild
 } from '@angular/core'
+import { AngularFireDatabase } from '@angular/fire/compat/database'
 import { FormsModule } from '@angular/forms'
 import {
 	Camera,
@@ -21,11 +24,14 @@ import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-c
 	standalone : true,
 	imports    : [ IonicModule, CommonModule, FormsModule, AppBarCloneComponent ]
 } )
-export class TestPage implements OnInit {
+export class TestPage implements OnInit, OnDestroy {
 
 	constructor( private imageService: ImageUploadService,
+		private firebase: AngularFireDatabase,
 		private alert: AlertService )
 	{ }
+
+	@ViewChild( 'appBar' ) appbar!: AppBarCloneComponent
 
 	async ngOnInit(): Promise<void> {
 		// await Preferences.set( { key: 'capacitor', value: 'true' } )
@@ -35,6 +41,17 @@ export class TestPage implements OnInit {
 		// 	header : 'result',
 		// 	message: `response: ${ val.value }`
 		// } )
+
+		const ref = this.firebase.database.ref( `fake` )
+
+		ref.on( 'child_added', ( snapshot ) => {
+			console.log( 'snapshot' )
+			console.log( snapshot.val() )
+		} )
+	}
+
+	public ngOnDestroy(): void {
+		// this.firebase.database.ref( `fake` ).off()
 	}
 
 	async onPhoto(): Promise<void> {
@@ -50,5 +67,9 @@ export class TestPage implements OnInit {
 			console.log( 'url' )
 			console.log( result.unwrap() )
 		}
+	}
+
+	async backClick(): Promise<void> {
+		await this.appbar.backPage()
 	}
 }

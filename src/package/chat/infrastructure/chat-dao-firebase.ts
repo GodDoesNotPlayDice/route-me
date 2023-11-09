@@ -68,7 +68,7 @@ export class ChatDaoFirebase extends ChatDao {
 		}
 		this.firebase.database.ref(
 			`${ this.collectionKey }/${ keySaved.unwrap() }/messages` )
-		    .off(  )
+		    .off()
 		return Ok( true )
 	}
 

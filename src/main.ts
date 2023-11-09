@@ -40,6 +40,7 @@ import {
 } from '@ionic/angular'
 import { IonicStorageModule } from '@ionic/storage-angular'
 import { StoreModule } from '@ngrx/store'
+import { createClient } from '@supabase/supabase-js'
 import { AppComponent } from 'src/app/app.component'
 import { routes } from 'src/app/app.routes'
 import { ROOT_REDUCERS } from 'src/app/shared/state/app.state'
@@ -65,6 +66,8 @@ import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
 import { IpDaoIpApi } from 'src/package/ip-api/infrastructure/ipapi/ip-dao-ip-api'
 import { MapRepository } from 'src/package/map-api/domain/repository/map-repository'
 import { MapBox } from 'src/package/map-api/infrastructure/map-box'
+import { PassengerTripDao } from 'src/package/passenger-trip/domain/dao/passenger-trip-dao'
+import { PassengerTripDaoFirebase } from 'src/package/passenger-trip/infrastructure/passenger-trip-dao-firebase'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { PassengerDaoFirebase } from 'src/package/passenger/infrastructure/passenger-dao-firebase'
 import { PositionRepository } from 'src/package/position-api/domain/repository/position-repository'
@@ -75,6 +78,8 @@ import { RatingDao } from 'src/package/rating/domain/dao/rating-dao'
 import { RatingDaoFirebase } from 'src/package/rating/infrastructure/rating-dao-firebase'
 import { StreetRepository } from 'src/package/street-api/domain/repository/street-repository'
 import { StreetMapBox } from 'src/package/street-api/infrastructure/map-box/street-map-box'
+import { TripHistoryDao } from 'src/package/trip-history/domain/dao/trip-history-dao'
+import { TripHistoryDaoFirebase } from 'src/package/trip-history/infrastructure/trip-history-dao-firebase'
 import { TripInProgressDao } from 'src/package/trip-in-progress/domain/dao/trip-in-progress-dao'
 import { TripInProgressDaoFirebase } from 'src/package/trip-in-progress/infrastructure/trip-in-progress-dao-firebase'
 import { LocationDao } from 'src/package/trip-location/domain/dao/location-dao'
@@ -96,6 +101,13 @@ bootstrapApplication( AppComponent, {
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 		{ provide: LOCALE_ID, useValue: 'es' },
 		{
+			provide   : 'Supabase',
+			useFactory: () => {
+				return createClient( environment.supabaseUrl, environment.supabaseKey )
+
+			}
+		},
+		{
 			provide   : AuthUserRepository,
 			useFactory: ( auth: AngularFireAuth, firebase: AngularFireDatabase ) => {
 				return new AuthUserFirebaseSignin( auth, firebase )
@@ -106,6 +118,13 @@ bootstrapApplication( AppComponent, {
 			provide   : TripInProgressDao,
 			useFactory: ( firebase: AngularFireDatabase ) => {
 				return new TripInProgressDaoFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : PassengerTripDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new PassengerTripDaoFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
 		},
@@ -162,6 +181,13 @@ bootstrapApplication( AppComponent, {
 			provide   : TripDao,
 			useFactory: ( firebase: AngularFireDatabase ) => {
 				return new TripDaoFirebase( firebase )
+			},
+			deps      : [ AngularFireDatabase ]
+		},
+		{
+			provide   : TripHistoryDao,
+			useFactory: ( firebase: AngularFireDatabase ) => {
+				return new TripHistoryDaoFirebase( firebase )
 			},
 			deps      : [ AngularFireDatabase ]
 		},
