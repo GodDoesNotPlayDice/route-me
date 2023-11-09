@@ -3,7 +3,6 @@ import {
 	Component,
 	ElementRef,
 	OnDestroy,
-	OnInit,
 	ViewChild
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
@@ -20,8 +19,9 @@ import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-s
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
+import { CurrencyService } from 'src/app/shared/services/currency.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
-import { LocationService } from 'src/app/shared/services/location.service'
+import { LoadingService } from 'src/app/shared/services/loading.service'
 import { MapService } from 'src/app/shared/services/map.service'
 import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
@@ -50,6 +50,8 @@ import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 export class PublishPage implements ViewDidEnter, OnDestroy {
 
 	constructor( private map: MapService,
+		private loadingService: LoadingService,
+		private currencyService: CurrencyService,
 		private toastService: ToastService,
 		private tripService: TripService,
 		private router: Router,
@@ -75,18 +77,19 @@ export class PublishPage implements ViewDidEnter, OnDestroy {
 	private positionChange: Subscription
 
 	async ngOnDestroy(): Promise<void> {
-		await this.map.removeMap(this.pageKey)
+		await this.map.removeMap( this.pageKey )
 		this.positionChange.unsubscribe()
 	}
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
 
-		this.positionChange = this.positionService.newPosition$.subscribe( async ( value ) => {
-			if ( value == null ) { return }
-			await this.map.autoFollow(this.pageKey,value)
-			await this.map.addUserMarker( this.pageKey)
-		})
+		this.positionChange =
+			this.positionService.newPosition$.subscribe( async ( value ) => {
+				if ( value == null ) { return }
+				await this.map.autoFollow( this.pageKey, value )
+				await this.map.addUserMarker( this.pageKey )
+			} )
 
 
 		this.canPublish = this.driverService.currentDriver.unwrap()
@@ -132,7 +135,7 @@ export class PublishPage implements ViewDidEnter, OnDestroy {
 			return null
 		} )
 
-		await this.map.autoFollow(this.pageKey)
+		await this.map.autoFollow( this.pageKey )
 	}
 
 	async addRoute() {
@@ -145,23 +148,17 @@ export class PublishPage implements ViewDidEnter, OnDestroy {
 			console.log( dir.unwrapErr() )
 		}
 		else {
-			this.loadingPrice    = true
-			const resultIP       = await this.ipDao.getIp()
-			const resultCurrency = await this.currencyDao.getCurrencyExchange(
-				'USD',
-				resultIP.unwrap().currency
-			)
-			this.distance        =
-				+( dir.unwrap().distance.value / 1000 ).toFixed( 3 )
-			const amountUSD      = new KilometerPricing( newMoney( { value: 0.35 } )
+			this.loadingPrice = true
+
+			const currencyResult = await this.currencyService.fetchCurrency()
+
+			this.distance = +( dir.unwrap().distance.value / 1000 ).toFixed( 3 )
+
+			const amountUSD     = new KilometerPricing( newMoney( { value: 0.35 } )
 				.unwrap(), this.distance ).calculate()
-			const targetAmount   = amountUSD * resultCurrency.unwrap().value
-			this.simulatedPrice  = new Intl.NumberFormat(
-				resultIP.unwrap().languages[0], {
-					style   : 'currency',
-					currency: resultIP.unwrap().currency
-				} ).format( targetAmount )
-			this.loadingPrice    = false
+			this.simulatedPrice =
+				this.currencyService.parseCurrency( amountUSD, currencyResult.unwrap() )
+			this.loadingPrice   = false
 		}
 	}
 
@@ -184,6 +181,8 @@ export class PublishPage implements ViewDidEnter, OnDestroy {
 				{
 					text   : 'Publicar',
 					handler: async () => {
+						//TODO: enviar a open near trips
+						await this.loadingService.showLoading( 'Creando viaje' )
 						const result = await this.tripService.create( {
 							endLocation  : this.salidaInput.mapLocationControl.value!,
 							distance     : this.distance!,
@@ -196,6 +195,7 @@ export class PublishPage implements ViewDidEnter, OnDestroy {
 								duration: 1500,
 								position: 'bottom'
 							} )
+							this.canPublish = false
 							await this.reset()
 						}
 						else {
@@ -205,6 +205,7 @@ export class PublishPage implements ViewDidEnter, OnDestroy {
 								position: 'bottom'
 							} )
 						}
+						await this.loadingService.dismissLoading()
 					}
 				}
 			]

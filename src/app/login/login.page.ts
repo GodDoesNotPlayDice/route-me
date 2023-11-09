@@ -83,7 +83,7 @@ export class LoginPage implements ViewDidEnter {
 		}
 
 		// si el checkbox esta marcado
- 	// this.checkbox.checkboxControl.value
+		// this.checkbox.checkboxControl.value
 		await this.loadingService.showLoading( 'Iniciando sesión' )
 		const result = await this.authService.userLogin(
 			this.userInput.textControl.value!,
