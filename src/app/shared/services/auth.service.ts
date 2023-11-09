@@ -30,7 +30,7 @@ import { User } from 'src/package/user/domain/models/user'
 @Injectable( {
 	providedIn: 'root'
 } )
-export class AuthService implements OnDestroy{
+export class AuthService implements OnDestroy {
 
 	constructor(
 		private authRepository: AuthUserRepository,

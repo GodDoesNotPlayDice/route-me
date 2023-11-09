@@ -32,7 +32,7 @@ export class TripInProgressService {
 
 	private updateActiveTrip: Subscription
 
-	async getTripInProgressById( id: TripID ): Promise<Result<TripInProgress, Error[]>>{
+	async getTripInProgressById( id: TripID ): Promise<Result<TripInProgress, Error[]>> {
 		return await getTripInProgressById( this.inProgressDao, id )
 	}
 
@@ -40,9 +40,9 @@ export class TripInProgressService {
 		return await listenTripInProgress( this.inProgressDao, tripID )
 	}
 
-	async close(id: TripID): Promise<void> {
-		const result = await this.inProgressDao.close(id)
-		console.log('close trip in progress. service',result)
+	async close( id: TripID ): Promise<void> {
+		const result = await this.inProgressDao.close( id )
+		console.log( 'close trip in progress. service', result )
 	}
 
 	async checkActiveTripSignal( tripActive: Trip ): Promise<boolean> {

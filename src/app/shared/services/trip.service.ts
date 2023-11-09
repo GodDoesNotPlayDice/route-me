@@ -20,6 +20,7 @@ import { newCurrency } from 'src/package/shared/domain/models/currency'
 import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
 import { Street } from 'src/package/street-api/domain/models/street'
 import { createTrip } from 'src/package/trip/application/create-trip'
+import { deleteTrip } from 'src/package/trip/application/delete-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
 import { getTripByID } from 'src/package/trip/application/get-trip-by-id'
 import { updateTrip } from 'src/package/trip/application/update-trip'
@@ -58,6 +59,11 @@ export class TripService {
 		}
 		return result.unwrap()
 	}
+
+	async removeTrip( id: TripID ): Promise<Result<boolean, Error>> {
+		return await deleteTrip( this.tripDao, id )
+	}
+
 
 	async getAllByState( state: TripState ): Promise<Result<Trip[], Error[]>> {
 		const result = await this.tripDao.getAllByState( state )

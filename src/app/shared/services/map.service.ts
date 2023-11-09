@@ -88,14 +88,20 @@ export class MapService implements OnDestroy {
 			return false
 		}
 
+		mapEntry.unwrap()
+		        .on( 'click', ( e ) => {
+			        const { lat, lng } = e.lngLat
+			        this.markerClick.next( { lat: lat, lng: lng } )
+		        } )
+
 		return true
 	}
 
-	async autoFollow(key: string, center?: Position ): Promise<boolean> {
+	async autoFollow( key: string, center?: Position ): Promise<boolean> {
 		if ( this.lastPosition === null ) {
 			return false
 		}
-		const result = await this.mapRepository.autoFollow(key,
+		const result = await this.mapRepository.autoFollow( key,
 			center ?? this.lastPosition )
 		if ( result.isErr() ) {
 			console.log( 'auto follow. map service' )
@@ -105,7 +111,8 @@ export class MapService implements OnDestroy {
 		return true
 	}
 
-	async addUserMarker( pageKey: string, center ?: Position, color: string = 'black' ): Promise<boolean> {
+	async addUserMarker( pageKey: string, center ?: Position,
+		color: string = 'black' ): Promise<boolean> {
 		if ( center === undefined || this.lastPosition === null ) {
 			return false
 		}

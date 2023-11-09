@@ -78,8 +78,10 @@ export class DriverService implements OnDestroy {
 		this.updateActiveTrip.unsubscribe()
 		this.driverChange.unsubscribe()
 		this.userChange.unsubscribe()
-		if ( this.currentDriver.isNone() ) return
-		await this.driverDao.close(this.currentDriver.unwrap().id)
+		if ( this.currentDriver.isNone() ) {
+			return
+		}
+		await this.driverDao.close( this.currentDriver.unwrap().id )
 	}
 
 	async driverRegister(
