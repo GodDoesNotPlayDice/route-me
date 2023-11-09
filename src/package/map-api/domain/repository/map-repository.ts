@@ -12,9 +12,13 @@ export abstract class MapRepository<Mp, Mr> {
 	abstract init( key: string, divElement: HTMLDivElement,
 		center: Position | null ): Promise<Result<Mp, Error>>
 
-	abstract removeMap( key: string): Promise<Result<boolean, Error>>
-	abstract autoFollow( key: string, center: Position): Promise<Result<boolean, Error>>
-	abstract addUserMarker( pageKey: string, center: Position, color : string ): Promise<Result<boolean, Error>>
+	abstract removeMap( key: string ): Promise<Result<boolean, Error>>
+
+	abstract autoFollow( key: string,
+		center: Position ): Promise<Result<boolean, Error>>
+
+	abstract addUserMarker( pageKey: string, center: Position,
+		color: string ): Promise<Result<boolean, Error>>
 
 	abstract addRouteMap( pageKey: string,
 		coordinates: Geometry ): Promise<Result<boolean, Error>>

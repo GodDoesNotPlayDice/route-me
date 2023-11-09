@@ -1,5 +1,6 @@
 import {
 	Err,
+	None,
 	Ok,
 	Result,
 	Some
@@ -19,7 +20,7 @@ export const updateDriver = async ( dao: DriverDao, driver: Driver, props: {
 		id        : driver.id,
 		enabled   : driver.enabled,
 		passenger : driver.passenger,
-		activeTrip: props.activeTrip === undefined ? driver.activeTrip : Some(
+		activeTrip: props.activeTrip === undefined ? None : Some(
 			props.activeTrip ),
 		driverCar : props.driverCar ?? driver.driverCar,
 		documents : props.documents ?? driver.documents

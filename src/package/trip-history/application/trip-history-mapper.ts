@@ -4,13 +4,13 @@ import {
 	Result
 } from 'oxide.ts'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newEmail } from 'src/package/shared/domain/models/email'
 import { TripHistory } from 'src/package/trip-history/domain/models/trip-history'
 import { newTripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
 import {
 	tripFromJSON,
 	tripToJSON
 } from 'src/package/trip/application/trip-mapper'
-import { Trip } from 'src/package/trip/domain/models/trip'
 
 /**
  * Create a json from trip history instance
@@ -21,23 +21,17 @@ export const tripHistoryToJson = ( tripHistory: TripHistory ): Result<Record<str
 		const err: Error[] = []
 
 		const json: Record<string, any> = {
-			id: tripHistory.id.value
+			id        : tripHistory.id.value,
+			user_email: tripHistory.userEmail.value
 		}
 
-		const trips: Record<string, any>[] = []
-		for ( const trip of tripHistory.trips ) {
-			const tripResult = tripToJSON( trip )
+		const trip = tripToJSON( tripHistory.trip )
 
-			if ( tripResult.isErr() ) {
-				err.push( ...tripResult.unwrapErr() )
-			}
-			else {
-				trips.push( tripResult.unwrap() )
-			}
+		if ( trip.isErr() ) {
+			err.push( ...trip.unwrapErr() )
 		}
-
-		if ( trips.length > 0 ) {
-			json['trips'] = trips
+		else {
+			json['trip'] = trip.unwrap()
 		}
 
 		if ( err.length > 0 ) {
@@ -79,19 +73,18 @@ export const tripHistoryFromJson = ( json: Record<string, any> ): Result<TripHis
 		error.push( id.unwrapErr() )
 	}
 
-	const trips: Trip[] = []
+	const email = newEmail( {
+		value: json['email'] ?? ''
+	} )
 
-	if ( json['trips'] !== undefined ) {
-		for ( const trip of Object.values( json['trips'] ) ) {
-			const tripResult = tripFromJSON( trip as Record<string, any> )
+	if ( email.isErr() ) {
+		error.push( email.unwrapErr() )
+	}
 
-			if ( tripResult.isErr() ) {
-				error.push( ...tripResult.unwrapErr() )
-			}
-			else {
-				trips.push( tripResult.unwrap() )
-			}
-		}
+	const trip = tripFromJSON( json['trip'] )
+
+	if ( trip.isErr() ) {
+		error.push( ...trip.unwrapErr() )
 	}
 
 	if ( error.length > 0 ) {
@@ -99,7 +92,8 @@ export const tripHistoryFromJson = ( json: Record<string, any> ): Result<TripHis
 	}
 
 	return Ok( {
-		id   : id.unwrap(),
-		trips: trips
+		id       : id.unwrap(),
+		userEmail: email.unwrap(),
+		trip     : trip.unwrap()
 	} )
 }
