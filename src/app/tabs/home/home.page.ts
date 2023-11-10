@@ -1,20 +1,23 @@
 import { CommonModule } from '@angular/common'
-import { Component } from '@angular/core'
-import { Router } from '@angular/router'
+import {
+	Component,
+	OnDestroy
+} from '@angular/core'
 import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
+import { Subscription } from 'rxjs'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
 import { SearchLauncherComponent } from 'src/app/shared/components/search-launcher/search-launcher.component'
 import { CurrencyService } from 'src/app/shared/services/currency.service'
-import { TripService } from 'src/app/shared/services/trip.service'
-import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
-import { IpDao } from 'src/package/ip-api/domain/dao/ip-dao'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
+import { PositionService } from 'src/app/shared/services/position.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
+import { Position } from 'src/package/position-api/domain/models/position'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
-import { TripNotMatchStateException } from 'src/package/trip/domain/exceptions/trip-not-match-state-exception'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 
 @Component( {
@@ -30,37 +33,57 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 		DriveCardComponent
 	]
 } )
-export class HomePage implements ViewDidEnter {
+export class HomePage implements ViewDidEnter, OnDestroy {
 
-	constructor( private trip: TripService,
-		private router: Router,
-		private currencyService: CurrencyService,
-		private ipDao: IpDao, private currencyDao: CurrencyDao )
+	constructor(
+		private toastService: ToastService,
+		private nearTripService: NearTripService,
+		private positionService: PositionService,
+		private currencyService: CurrencyService
+	)
 	{}
-
 
 	info: DriverCardInfo[] = []
 
-	loading: boolean = false
-	errors: boolean  = false
+	canFetch: boolean = false
+	loading: boolean  = false
+	errors: boolean   = false
 
 	protected readonly filterButtonList = filterButtonList
+	private positionChange: Subscription
 
-	async ionViewDidEnter(): Promise<void> {
-		await this.loadOpenTrips()
+	async ngOnDestroy(): Promise<void> {
+		this.positionChange.unsubscribe()
 	}
 
-	private async loadOpenTrips(): Promise<void> {
+	async ionViewDidEnter(): Promise<void> {
+		this.canFetch         = true
+		const initialPosition = this.positionService.lastPosition
+
+		if ( initialPosition !== null ) {
+			await this.loadOpenTrips( initialPosition )
+
+			this.canFetch = false
+		}
+
+		this.positionChange =
+			this.positionService.newPosition$.subscribe( async value => {
+				if ( value !== null && this.canFetch ) {
+					await this.loadOpenTrips( value )
+					this.canFetch = false
+				}
+			} )
+	}
+
+	private async loadOpenTrips( center: Position ): Promise<void> {
 		this.loading = true
-		const result = await this.trip.getAllByState( TripStateEnum.Open )
+		console.log( '-----load open trips-----' )
+		const result = await this.nearTripService.getNearTrips( center, 10 )
 
 		if ( result.isErr() ) {
-			const notMatch = result.unwrapErr()
-			                       .some( ( err ) => err instanceof
-				                       TripNotMatchStateException )
-			if ( !notMatch ) {
-				this.errors = true
-			}
+			console.log( 'load open trips err' )
+			console.log( result.unwrapErr() )
+			this.errors  = true
 			this.loading = false
 			return
 		}
@@ -71,12 +94,12 @@ export class HomePage implements ViewDidEnter {
 			                     const parsedAmount = this.currencyService.parseCurrency(
 				                     trip.price.amount.value, currencyResult.unwrap() )
 
-			                     const urlsList = trip.passengers.map(
-				                     ( passenger ) => {
-					                     return passenger.image.value
+			                     const urlsList = trip.passengersImages.map(
+				                     ( image ) => {
+					                     return image.value
 				                     } )
 
-			                     const totalSeat       = trip.driver.driverCar.seat.value
+			                     const totalSeat       = trip.seat.value
 			                     const blankUrlsEmptys = totalSeat - 1 -
 				                     urlsList.length
 			                     for ( let i = 0; i < blankUrlsEmptys; i++ ) {
@@ -88,12 +111,12 @@ export class HomePage implements ViewDidEnter {
 				                     currency         : currencyResult.unwrap().currency,
 				                     cost             : parsedAmount,
 				                     date             : trip.startDate,
-				                     state            : trip.state,
-				                     endLocationName  : trip.endLocation.name.value,
-				                     startLocationName: trip.startLocation.name.value,
+				                     state            : TripStateEnum.Open,
+				                     endLocationName  : trip.endLocationName.value,
+				                     startLocationName: trip.startLocationName.value,
 				                     driverAvatar     : {
-					                     name: trip.driver.passenger.name.value,
-					                     url : trip.driver.passenger.image.value
+					                     name: `${ trip.driverName.value } ${ trip.driverLastName.value }`,
+					                     url : trip.driverImage.value
 				                     },
 				                     passengerUrls    : urlsList
 			                     }
@@ -102,7 +125,16 @@ export class HomePage implements ViewDidEnter {
 	}
 
 	async handleRefresh( $event: CustomEvent ): Promise<void> {
-		await this.loadOpenTrips()
+		if ( this.positionService.lastPosition !== null ) {
+			await this.loadOpenTrips( this.positionService.lastPosition )
+		}
+		else {
+			await this.toastService.presentToast( {
+				message : 'No se puede recargar los viajes ahora mismo. Intente mas tarde',
+				duration: 1500,
+				position: 'bottom'
+			} )
+		}
 		// @ts-ignore
 		$event.target.complete()
 	}
