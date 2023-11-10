@@ -13,6 +13,7 @@ import { TripStateNotMatchException } from 'src/package/passenger-trip/domain/ex
 import { PassengerTrip } from 'src/package/passenger-trip/domain/models/passenger-trip'
 import { EmailNotFoundException } from 'src/package/shared/domain/exceptions/email-not-found-exception'
 import { Email } from 'src/package/shared/domain/models/email'
+import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
@@ -47,6 +48,61 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 		}
 
 		return Ok( true )
+	}
+
+	async getByEmailAndID( id: TripID,
+		email: Email ): Promise<Result<PassengerTrip, Error[]>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'trip_id' )
+		                 .equalTo( id.value )
+		                 .get()
+		                 .then( async ( snapshot ) => {
+			                 const error: Error[] = []
+			                 for ( let value of Object.values( snapshot.val() ) ) {
+				                 const json = value as Record<string, any>
+				                 if ( json['user_email'] === email.value ) {
+					                 const passengerTrip = passengerTripFromJSON( json )
+					                 if ( passengerTrip.isErr() ) {
+						                 error.push( ...passengerTrip.unwrapErr() )
+						                 break
+					                 }
+					                 return Ok( passengerTrip.unwrap() )
+				                 }
+			                 }
+			                 error.push( new EmailNotFoundException() )
+			                 return Err( error )
+		                 } )
+		                 .catch( ( error ) => {
+			                 return Err( [ new FirebaseOperationException() ] )
+		                 } )
+
+	}
+
+	async getByID( id: TripID ): Promise<Result<PassengerTrip[], Error[]>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'trip_id' )
+		                 .equalTo( id.value )
+		                 .get()
+		                 .then( async ( snapshot ) => {
+			                 const error: Error[]       = []
+			                 const psn: PassengerTrip[] = []
+			                 for ( let value of Object.values( snapshot.val() ) ) {
+				                 const psnResult = passengerTripFromJSON(
+					                 value as Record<string, any> )
+				                 if ( psnResult.isErr() ) {
+					                 error.push( ...psnResult.unwrapErr() )
+					                 break
+				                 }
+				                 psn.push( psnResult.unwrap() )
+			                 }
+			                 if ( error.length > 0 ) {
+				                 return Err( error )
+			                 }
+			                 return Ok( psn )
+		                 } )
+		                 .catch( ( error ) => {
+			                 return Err( [ new FirebaseOperationException() ] )
+		                 } )
 	}
 
 	async delete( id: TripID, email: Email ): Promise<Result<boolean, Error>> {
@@ -88,6 +144,7 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 		                 .equalTo( email.value )
 		                 .get()
 		                 .then( async ( snapshot ) => {
+			                 console.log( snapshot.val() )
 			                 if ( snapshot.val() === null ) {
 				                 return Err( [ new EmailNotFoundException() ] )
 			                 }
@@ -110,6 +167,34 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 		                 .catch( ( error ) => {
 			                 return Err( [ new FirebaseOperationException() ] )
 		                 } )
+	}
+
+	async update( passengerTrip: PassengerTrip ): Promise<Result<boolean, Error[]>> {
+		const keySaved = await this.getKey( passengerTrip.tripID )
+
+		if ( keySaved.isErr() ) {
+			return Err( [ keySaved.unwrapErr() ] )
+		}
+		let completed: string | null = null
+
+		const json = passengerTripToJSON( passengerTrip )
+
+		if ( json.isErr() ) {
+			return Err( json.unwrapErr() )
+		}
+
+		await this.firebase.database.ref( this.collectionKey )
+		          .child( keySaved.unwrap() )
+		          .set( json.unwrap(),
+			          ( error ) => {
+				          if ( !error ) {
+					          completed = 'completed'
+				          }
+			          } )
+		if ( completed === null ) {
+			return Err( [ new FirebaseOperationException() ] )
+		}
+		return Ok( true )
 	}
 
 	async deleteAll( email: Email,
@@ -154,6 +239,30 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 		                 } )
 		                 .catch( ( error ) => {
 			                 return Err( [ new FirebaseOperationException() ] )
+		                 } )
+	}
+
+	private async getKey( id: TripID ): Promise<Result<string, Error>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'trip_id' )
+		                 .equalTo( id.value )
+		                 .get()
+		                 .then(
+			                 async ( snapshot ) => {
+
+				                 let key: string | null = null
+
+				                 snapshot.forEach( ( childSnapshot ) => {
+					                 key = childSnapshot.key
+				                 } )
+
+				                 if ( key === null ) {
+					                 return Err( new FirebaseKeyNotFoundException() )
+				                 }
+				                 return Ok( key )
+			                 } )
+		                 .catch( ( error ) => {
+			                 return Err( new FirebaseOperationException() )
 		                 } )
 	}
 }

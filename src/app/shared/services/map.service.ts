@@ -64,11 +64,12 @@ export class MapService implements OnDestroy {
 	}
 
 	async addRouteMarker( pageKey: string, locationKey: string,
-		center: Position, color: string ): Promise<boolean>
+		center: Position, color: string, html ?: string,
+		openFunction ?: ( toggleMarker: () => void ) => void ): Promise<boolean>
 	{
 		const result = await this.mapRepository.addRouteMarker( pageKey,
 			locationKey,
-			center, color )
+			center, color, html, openFunction )
 		if ( result.isErr() ) {
 			console.log( 'add route marker. map service' )
 			console.log( result.unwrapErr() )
@@ -112,12 +113,17 @@ export class MapService implements OnDestroy {
 	}
 
 	async addUserMarker( pageKey: string, center ?: Position,
-		color: string = 'black' ): Promise<boolean> {
+		color: string = 'black', html ?: string ): Promise<boolean> {
 		if ( center === undefined || this.lastPosition === null ) {
 			return false
 		}
+
+		if ( html === undefined ) {
+			html = `<div class="text-red-500">Esta es tu posicion</div>`
+		}
+
 		const result = await this.mapRepository.addUserMarker( pageKey,
-			this.lastPosition, color )
+			this.lastPosition, color, html )
 		if ( result.isErr() ) {
 			console.log( 'add user marker. map service' )
 			console.log( result.unwrapErr() )

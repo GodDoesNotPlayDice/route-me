@@ -1,12 +1,16 @@
 import { AngularFireDatabase } from '@angular/fire/compat/database'
-import { ref } from 'firebase/database'
-import { GeoFire } from 'geofire'
+import { DataSnapshot } from '@angular/fire/compat/database/interfaces'
+// import { GeoFire } from 'geofire'
+import * as geofire from 'geofire-common'
 import {
 	Err,
 	Ok,
 	Result
 } from 'oxide.ts'
-import { nearTripToJson } from 'src/package/near-trip/application/near-trip-mapper'
+import {
+	nearTripFromJson,
+	nearTripToJson
+} from 'src/package/near-trip/application/near-trip-mapper'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
 import { NearTripRepository } from 'src/package/near-trip/domain/repository/near-trip-repository'
 import { Position } from 'src/package/position-api/domain/models/position'
@@ -15,26 +19,75 @@ import { FirebaseOperationException } from 'src/package/shared/infrastructure/ex
 import { TripID } from 'src/package/trip/domain/models/trip-id'
 
 export class NearTripRepositoryFirebase implements NearTripRepository {
+	constructor( private firebase: AngularFireDatabase ) {}
 
-	constructor( private firebase: AngularFireDatabase ) {
-		this.geoFire = new GeoFire( ref( this.firebase.database, this.collectionKey ) )
-	}
-
-	private geoFire: GeoFire
 	collectionKey = 'neartrips'
 
 	async getNearTrips( center: Position,
-		radius: number ): Promise<Result<NearTrip[], Error[]>> {
-		const geoQuery = this.geoFire.query({
-		  // center: [ -33.030484, -71.537360 ],
-			center: [ center.lat, center.lng],
-		  radius: radius
-		})
-		// @ts-ignore
-		geoQuery.on("ready", () => {
-			console.log('ready')
-		})
-		return Err( [ new FirebaseOperationException() ] )
+		radiusInKm: number ): Promise<Result<NearTrip[], Error[]>> {
+		const radiusInM                       = radiusInKm * 1000
+		const bounds                          = geofire.geohashQueryBounds(
+			[ center.lat, center.lng ], radiusInM )
+		let promises: Promise<DataSnapshot>[] = []
+		for ( const b of bounds ) {
+			const q = this.firebase.database.ref( this.collectionKey )
+			              .orderByChild( 'geohash' )
+			              .startAt( b[0] )
+			              .endAt( b[1] )
+
+			promises.push( q.get() )
+		}
+
+		const response: Result<NearTrip[], Error[]> = await Promise.all( promises )
+		                                                           .then(
+			                                                           ( snapshots ) => {
+				                                                           const matchingDocs: NearTrip[] = []
+				                                                           const errors: Error[]          = []
+				                                                           for ( const snap of snapshots ) {
+					                                                           snap.forEach(
+						                                                           ( child ) => {
+							                                                           const value        = child.val()
+							                                                           const distanceInKm = geofire.distanceBetween(
+								                                                           [ value.latitude,
+									                                                           value.longitude ],
+								                                                           [ center.lat,
+									                                                           center.lng ] )
+							                                                           const distanceInM  = distanceInKm *
+								                                                           1000
+							                                                           if ( distanceInM <=
+								                                                           radiusInM )
+							                                                           {
+								                                                           const nearTrip = nearTripFromJson(
+									                                                           value )
+								                                                           if ( nearTrip.isErr() ) {
+									                                                           errors.push(
+										                                                           ...nearTrip.unwrapErr() )
+								                                                           }
+								                                                           matchingDocs.push(
+									                                                           nearTrip.unwrap() )
+							                                                           }
+						                                                           } )
+				                                                           }
+				                                                           if ( errors.length >
+					                                                           0 )
+				                                                           {
+					                                                           return Err(
+						                                                           errors )
+				                                                           }
+				                                                           return Ok(
+					                                                           matchingDocs )
+			                                                           } )
+		                                                           .catch(
+			                                                           ( error ) => {
+				                                                           return Err(
+					                                                           [ new FirebaseOperationException() ] )
+			                                                           } )
+
+		if ( response.isErr() ) {
+			return Err( response.unwrapErr() )
+		}
+
+		return Ok( response.unwrap() )
 	}
 
 	async delete( id: TripID ): Promise<Result<boolean, Error>> {
@@ -63,17 +116,22 @@ export class NearTripRepositoryFirebase implements NearTripRepository {
 		return Ok( true )
 	}
 
-	async create( nearTrip: NearTrip ): Promise<Result<boolean, Error[]>> {
+	async create( nearTrip: NearTrip ): Promise<Result<boolean, Error>> {
 		let completed: string | null = null
 
-		const json = nearTripToJson( nearTrip )
+		const jsonResult = nearTripToJson( nearTrip )
 
-		if ( json.isErr() ) {
-			return Err( [ json.unwrapErr() ] )
+		if ( jsonResult.isErr() ) {
+			return Err( jsonResult.unwrapErr() )
 		}
 
+		const json      = jsonResult.unwrap()
+		const hash      = geofire.geohashForLocation(
+			[ nearTrip.latitude, nearTrip.longitude ] )
+		json['geohash'] = hash
+
 		await this.firebase.database.ref( this.collectionKey )
-		          .push( json.unwrap(),
+		          .push( json,
 			          ( error ) => {
 				          if ( !error ) {
 					          completed = 'completed'
@@ -82,9 +140,43 @@ export class NearTripRepositoryFirebase implements NearTripRepository {
 		          )
 
 		if ( completed === null ) {
-			return Err( [ new FirebaseOperationException() ] )
+			return Err( new FirebaseOperationException() )
 		}
 
+		return Ok( true )
+	}
+
+	async update( nearTrip: NearTrip ): Promise<Result<boolean, Error>> {
+		const keySaved = await this.getKey( nearTrip.id )
+
+		if ( keySaved.isErr() ) {
+			return Err( keySaved.unwrapErr() )
+		}
+		let completed: string | null = null
+
+		const jsonResult = nearTripToJson( nearTrip )
+
+
+		if ( jsonResult.isErr() ) {
+			return Err( jsonResult.unwrapErr() )
+		}
+
+		const json      = jsonResult.unwrap()
+		const hash      = geofire.geohashForLocation(
+			[ nearTrip.latitude, nearTrip.longitude ] )
+		json['geohash'] = hash
+
+		await this.firebase.database.ref(
+			`${ this.collectionKey }/${ keySaved.unwrap() }` )
+		          .set( json,
+			          ( error ) => {
+				          if ( !error ) {
+					          completed = 'completed'
+				          }
+			          } )
+		if ( completed === null ) {
+			return Err( new FirebaseOperationException() )
+		}
 		return Ok( true )
 	}
 

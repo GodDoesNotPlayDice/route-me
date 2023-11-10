@@ -5,7 +5,11 @@ import { TripID } from 'src/package/trip/domain/models/trip-id'
 
 export abstract class NearTripRepository {
 	abstract getNearTrips( center: Position,
-		radius: number ): Promise<Result<NearTrip[], Error[]>>
-	abstract create( nearTrip: NearTrip ): Promise<Result<boolean, Error[]>>
+		radiusInKm: number ): Promise<Result<NearTrip[], Error[]>>
+
+	abstract create( nearTrip: NearTrip ): Promise<Result<boolean, Error>>
+
+	abstract update( nearTrip: NearTrip ): Promise<Result<boolean, Error>>
+
 	abstract delete( id: TripID ): Promise<Result<boolean, Error>>
 }

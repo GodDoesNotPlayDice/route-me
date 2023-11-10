@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LocationService } from 'src/app/shared/services/location.service'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
 import { AppState } from 'src/app/shared/state/app.state'
 import { Category } from 'src/package/category/domain/models/category'
 import { Driver } from 'src/package/driver/domain/models/driver'
@@ -37,6 +38,7 @@ import { TripRepository } from 'src/package/trip/domain/repository/trip-reposito
 export class TripService {
 	constructor(
 		private tripDao: TripDao,
+		private nearTripService: NearTripService,
 		private tripRepository: TripRepository,
 		private chatService: ChatService,
 		private store: Store<AppState>,
@@ -165,6 +167,24 @@ export class TripService {
 			console.log( 'update trip. trip service' )
 			return false
 		}
+
+		const tripWrap = resultTrip.unwrap()
+		await this.nearTripService.create( {
+			longitude        : tripWrap.startLocation.position.lng,
+			latitude         : tripWrap.startLocation.position.lat,
+			driverLastName   : tripWrap.driver.passenger.lastName,
+			driverName       : tripWrap.driver.passenger.name,
+			driverImage      : tripWrap.driver.passenger.image,
+			price            : tripWrap.price,
+			id               : tripWrap.id,
+			seat             : tripWrap.driver.driverCar.seat,
+			passengersImages : tripWrap.passengers.map( ( passenger ) => {
+				return passenger.image
+			} ),
+			startLocationName: tripWrap.startLocation.name,
+			startDate        : tripWrap.startDate,
+			endLocationName  : tripWrap.endLocation.name
+		} )
 
 		return true
 	}

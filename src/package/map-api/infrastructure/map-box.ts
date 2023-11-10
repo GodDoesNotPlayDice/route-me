@@ -102,7 +102,9 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	 * @throws {MarkerNotFoundException} - if marker not found
 	 */
 	async addRouteMarker( pageKey: string, locationKey: string,
-		center: Position, color: string ): Promise<Result<boolean, Error>> {
+		center: Position, color: string,
+		html ?: string,
+		openFunction ?: ( toggleMarker: () => void ) => void ): Promise<Result<boolean, Error>> {
 
 		if ( !this.routeMarkers.has( pageKey ) ) {
 			this.routeMarkers.set( pageKey, new Map() )
@@ -122,10 +124,22 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 		if ( mapEntry === undefined ) {
 			return Err( new MapNotFoundException() )
 		}
-
 		const newLocationMarker = new mapboxgl.Marker( { color: color } )
 			.setLngLat( [ center.lng, center.lat ] )
 			.addTo( mapEntry )
+
+		if ( html !== undefined ) {
+			newLocationMarker.setPopup(
+				new mapboxgl.Popup( { offset: 25 } ).setHTML( html )
+				                                    .on( 'open', () => {
+					                                    openFunction?.( () => {
+						                                    newLocationMarker.togglePopup()
+					                                    } )
+				                                    } )
+			)
+		}
+		newLocationMarker.addTo( mapEntry )
+
 		pageMarkers.set( locationKey, newLocationMarker )
 
 		return Ok( true )
@@ -136,7 +150,8 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	 * Add user marker
 	 */
 	async addUserMarker( pageKey: string,
-		center: Position, color: string ): Promise<Result<boolean, Error>> {
+		center: Position, color: string,
+		html ?: string ): Promise<Result<boolean, Error>> {
 		const mapEntry = this.maps.get( pageKey )
 
 		if ( mapEntry === undefined ) {
@@ -151,7 +166,15 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 
 		const newUserMark = new mapboxgl.Marker( { color: color } )
 			.setLngLat( [ center.lng, center.lat ] )
-			.addTo( mapEntry )
+
+		if ( html !== undefined ) {
+			newUserMark.setPopup(
+				new mapboxgl.Popup( { offset: 25 } )
+					.setHTML( html )
+			)
+		}
+
+		newUserMark.addTo( mapEntry )
 
 		this.userMarkers.set( pageKey, newUserMark )
 		return Ok( true )

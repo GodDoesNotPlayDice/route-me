@@ -4,7 +4,9 @@ import { Position } from 'src/package/position-api/domain/models/position'
 
 export abstract class MapRepository<Mp, Mr> {
 	abstract addRouteMarker( pageKey: string, locationKey: string,
-		center: Position, color: string ): Promise<Result<boolean, Error>>
+		center: Position, color: string, html ?: string,
+		openFunction ?: ( toggleMarker: () => void ) => void
+	): Promise<Result<boolean, Error>>
 
 	abstract removeRouteMarker( pageKey: string,
 		locationKey: string ): Promise<Result<boolean, Error>>
@@ -18,7 +20,7 @@ export abstract class MapRepository<Mp, Mr> {
 		center: Position ): Promise<Result<boolean, Error>>
 
 	abstract addUserMarker( pageKey: string, center: Position,
-		color: string ): Promise<Result<boolean, Error>>
+		color: string, html ?: string ): Promise<Result<boolean, Error>>
 
 	abstract addRouteMap( pageKey: string,
 		coordinates: Geometry ): Promise<Result<boolean, Error>>
