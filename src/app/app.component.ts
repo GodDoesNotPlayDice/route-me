@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common'
 import {
 	Component,
-	Inject,
 	OnDestroy,
 	OnInit
 } from '@angular/core'

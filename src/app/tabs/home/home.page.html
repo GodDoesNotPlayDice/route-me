@@ -17,7 +17,7 @@
 				*ngIf="loading">
 				<ion-spinner name="dots"></ion-spinner>
 			</div>
-			<div *ngIf="info.length === 0 && !loading">
+			<div *ngIf="info.length === 0 && !loading && !errors">
 				No hay nada por mostrar
 			</div>
 			<div *ngIf="!loading && errors">

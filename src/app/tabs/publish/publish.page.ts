@@ -181,7 +181,6 @@ export class PublishPage implements ViewDidEnter, OnDestroy {
 				{
 					text   : 'Publicar',
 					handler: async () => {
-						//TODO: enviar a open near trips
 						await this.loadingService.showLoading( 'Creando viaje' )
 						const result = await this.tripService.create( {
 							endLocation  : this.salidaInput.mapLocationControl.value!,

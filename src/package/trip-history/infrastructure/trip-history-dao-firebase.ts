@@ -55,7 +55,7 @@ export class TripHistoryDaoFirebase implements TripHistoryDao {
 	 */
 	async getAll( email: Email ): Promise<Result<TripHistory[], Error[]>> {
 		return await this.firebase.database.ref( this.collectionKey )
-		                 .orderByChild( 'email' )
+		                 .orderByChild( 'user_email' )
 		                 .equalTo( email.value )
 		                 .get()
 		                 .then( async ( snapshot ) => {
@@ -76,6 +76,8 @@ export class TripHistoryDaoFirebase implements TripHistoryDao {
 			                 return Ok( tripHistories )
 		                 } )
 		                 .catch( ( error ) => {
+			                 console.log( 'error' )
+			                 console.log( error )
 			                 return Err( [ new FirebaseOperationException() ] )
 		                 } )
 	}

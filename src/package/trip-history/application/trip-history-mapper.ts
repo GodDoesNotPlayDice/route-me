@@ -74,7 +74,7 @@ export const tripHistoryFromJson = ( json: Record<string, any> ): Result<TripHis
 	}
 
 	const email = newEmail( {
-		value: json['email'] ?? ''
+		value: json['user_email'] ?? ''
 	} )
 
 	if ( email.isErr() ) {

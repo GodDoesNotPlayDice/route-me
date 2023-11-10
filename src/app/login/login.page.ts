@@ -26,6 +26,7 @@ import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
 
 @Component( {
 	standalone : true,
@@ -50,6 +51,7 @@ import { LoadingService } from 'src/app/shared/services/loading.service'
 export class LoginPage implements ViewDidEnter {
 	constructor(
 		private authService: AuthService,
+		private nearTripService: NearTripService,
 		private router: Router,
 		private loadingService: LoadingService,
 		private alertService: AlertService
