@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common'
+import { Component } from '@angular/core'
 import {
-	Component,
-	OnInit
-} from '@angular/core'
-import { IonicModule } from '@ionic/angular'
+	IonicModule,
+	ViewDidEnter
+} from '@ionic/angular'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { CurrencyService } from 'src/app/shared/services/currency.service'
-import { LoadingService } from 'src/app/shared/services/loading.service'
 import { PassengerTripService } from 'src/app/shared/services/passenger-trip.service'
+import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripHistoryService } from 'src/app/shared/services/trip-history.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
@@ -25,11 +25,11 @@ import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
 		DriveCardComponent
 	]
 } )
-export class TripHistoryPage implements OnInit {
+export class TripHistoryPage implements ViewDidEnter {
 
 	constructor(
+		private toastService: ToastService,
 		private currencyService: CurrencyService,
-		private loadingService: LoadingService,
 		private authService: AuthService,
 		private tripService: TripService,
 		private tripHistoryService: TripHistoryService,
@@ -41,18 +41,37 @@ export class TripHistoryPage implements OnInit {
 	progressTrips: DriverCardInfo[]  = []
 	completedTrips: DriverCardInfo[] = []
 
-	async ngOnInit(): Promise<void> {
-		await this.loadingService.showLoading('Cargando historial de viajes')
-		const activeTrips = await this.passengerTripService.getAllByEmail(
-			this.authService.currentPassenger.unwrap().email )
+	openLoading: boolean      = false
+	progressLoading: boolean  = false
+	completedLoading: boolean = false
+
+	openLoadError: boolean      = false
+	progressLoadError: boolean  = false
+	completedLoadError: boolean = false
+
+	async ionViewDidEnter(): Promise<void> {
+		this.openLoading      = true
+		this.progressLoading  = true
+		this.completedLoading = true
 
 		const currencyResult = await this.currencyService.fetchCurrency()
 
 		if ( currencyResult.isErr() ) {
 			console.log( currencyResult.unwrapErr() )
 			console.log( 'Error fetching currency. trip history' )
+			await this.toastService.presentToast( {
+				message : 'Error en la conexion. Intente mas tarde',
+				duration: 1500,
+				position: 'bottom'
+			} )
+			// this.openLoadError      = true
+			// this.progressLoadError  = true
+			// this.completedLoadError = true
 			return
 		}
+
+		const activeTrips = await this.passengerTripService.getAllByEmail(
+			this.authService.currentPassenger.unwrap().email )
 
 		if ( activeTrips.isOk() ) {
 			for ( const passengerTrip of activeTrips.unwrap() ) {
@@ -103,6 +122,15 @@ export class TripHistoryPage implements OnInit {
 				}
 			}
 		}
+		else {
+			console.log( 'active trips err' )
+			console.log( activeTrips.unwrapErr() )
+			// this.openLoadError     = true
+			// this.progressLoadError = true
+		}
+
+		this.openLoading     = false
+		this.progressLoading = false
 
 		const completedTripsResult = await this.tripHistoryService.getAll(
 			this.authService.currentPassenger.unwrap().email )
@@ -127,6 +155,11 @@ export class TripHistoryPage implements OnInit {
 				} )
 			}
 		}
-		await this.loadingService.dismissLoading()
+		else {
+			console.log( 'completed trips err' )
+			console.log( completedTripsResult.unwrapErr() )
+			// this.completedLoadError = true
+		}
+		this.completedLoading = false
 	}
 }
