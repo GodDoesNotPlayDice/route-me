@@ -26,12 +26,14 @@ import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.compone
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component'
 import { ListViewModalComponent } from 'src/app/shared/components/list-view-modal/list-view-modal.component'
+import { ReportModalComponent } from 'src/app/shared/components/report-modal/report-modal.component'
 import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.pipe'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
 import { PassengerTripService } from 'src/app/shared/services/passenger-trip.service'
 import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
@@ -67,6 +69,8 @@ import { ulid } from 'ulidx'
 } )
 export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 	constructor(
+		private modalCtrl: ModalController,
+		private nearTripService: NearTripService,
 		private map: MapService,
 		private tripHistoryService: TripHistoryService,
 		private passengerTripService: PassengerTripService,
@@ -95,7 +99,6 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 	isTripFinished: boolean            = false
 	isPendingInPassengerQueue: boolean = false
 	private tripChange: Subscription
-	//TODO: si queremos marcar la posicion del pasajero visualizador
 	private positionChange: Subscription
 
 	private pageKey: string = 'detail'
@@ -349,20 +352,10 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			passengers     : [ ...this.trip.passengers, psn ],
 			queuePassengers: newListQueuePassengers
 		} )
-		await this.loadingService.dismissLoading()
 
 		if ( result.isSome() ) {
-			const deleteResult = await this.passengerTripService.deleteAll( psn.email,
+			await this.passengerTripService.deleteAll( psn.email,
 				TripStateEnum.Open )
-
-			if ( deleteResult.isErr() ) {
-				await this.toastService.presentToast( {
-					message : 'Hubo un problema. Intente denuevo',
-					duration: 1500,
-					position: 'bottom'
-				} )
-				return
-			}
 
 			await this.toastService.presentToast( {
 				message : 'Se ha aceptado al pasajero',
@@ -387,6 +380,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 				position: 'bottom'
 			} )
 		}
+		await this.loadingService.dismissLoading()
 	}
 
 	async onDeniedQueuePassenger( psn: Passenger ): Promise<void> {
@@ -454,10 +448,32 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			queuePassengers: [],
 			state          : TripStateEnum.Progress
 		} )
+		console.log( '------------------------------' )
+		console.log( 'tablas involucradas, trip, passengerTrip, nearTrip, driver' )
+		console.log( '------------------------------' )
 		if ( result.isSome() ) {
-			//TODO: eliminar de open near trips
-			//TODO: actualizar passenger trip, el state
 			this.trip = result.unwrap()
+			console.log( 'pre update' )
+			const psnResult = await this.passengerTripService.getByID( this.trip.id )
+
+			if ( psnResult.isErr() ) {
+				console.log( 'psnResult', psnResult.unwrapErr() )
+			}
+			else {
+				for ( const passengerTrip of psnResult.unwrap() ) {
+					const updatePsnResult = await this.passengerTripService.update(
+						passengerTrip, TripStateEnum.Progress )
+					if ( updatePsnResult.isErr() ) {
+						console.log( 'updatePsnResult err', updatePsnResult.unwrapErr() )
+					}
+				}
+			}
+			console.log( 'post update' )
+
+			const nearTripDelete = await this.nearTripService.delete( this.trip.id )
+			if ( nearTripDelete.isErr() ) {
+				console.log( 'nearTripDelete', nearTripDelete.unwrapErr() )
+			}
 			await this.checkTripInProgress()
 			const resultDriver     = await this.driverService.driverUpdate( {
 				activeTrip: result.unwrap()
@@ -578,5 +594,14 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 
 	async onReportPassenger( psn: Passenger ): Promise<void> {
 		//TODO: abrir report modal y enviar segun slider el reporte
+		const modal = await this.modalCtrl.create( {
+			component     : ReportModalComponent,
+			componentProps: {
+				emailUser: psn.email
+			}
+		} )
+		await modal.present()
+
+		const { data, role } = await modal.onWillDismiss()
 	}
 }
