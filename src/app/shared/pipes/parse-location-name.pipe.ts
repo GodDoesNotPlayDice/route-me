@@ -10,13 +10,15 @@ import {
 export class ParseLocationNamePipe implements PipeTransform {
 
 	transform( value: unknown, ...args: unknown[] ): unknown {
-		console.log('value parse pipe')
-		console.log(value)
 		if ( typeof value !== 'string' ) {
 			return null
 		}
-		const split = value.split( ',' )
-		return `${ split[0] }, ${ split[1] }, ${ split[3] }`
+		return transformLocationName( value )
 	}
 
+}
+
+export function transformLocationName( value: string ): string {
+	const split = value.split( ',' )
+	return `${ split[0] }, ${ split[1] }, ${ split[3] }`
 }

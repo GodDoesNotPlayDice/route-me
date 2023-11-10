@@ -18,7 +18,7 @@ describe( 'ReportModalComponent', () => {
 		} )
 		       .compileComponents()
 
-		fixture = TestBed.createComponent( ReportModalComponent )
+		fixture   = TestBed.createComponent( ReportModalComponent )
 		component = fixture.componentInstance
 		fixture.detectChanges()
 	} ) )
