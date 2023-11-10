@@ -16,5 +16,5 @@ import { IonicModule } from '@ionic/angular'
 	]
 } )
 export class AvatarComponent {
-	@Input( { required: true } ) url!: string
+	@Input( { required: true } ) url: string
 }

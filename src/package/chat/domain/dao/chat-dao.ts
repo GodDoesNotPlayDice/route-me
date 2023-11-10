@@ -13,7 +13,7 @@ export abstract class ChatDao {
 
 	abstract listen( id: ChatID ): Promise<Result<Observable<Message | null>, Error[]>>
 
-	abstract close(): Promise<void>
+	abstract close( id: ChatID ): Promise<Result<boolean, Error[]>>
 
 	abstract sendMessage( id: ChatID,
 		message: Message ): Promise<Result<boolean, Error[]>>

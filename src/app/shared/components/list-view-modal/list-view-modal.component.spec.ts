@@ -18,7 +18,7 @@ describe( 'ListViewModalComponent', () => {
 		} )
 		       .compileComponents()
 
-		fixture = TestBed.createComponent( ListViewModalComponent )
+		fixture   = TestBed.createComponent( ListViewModalComponent )
 		component = fixture.componentInstance
 		fixture.detectChanges()
 	} ) )

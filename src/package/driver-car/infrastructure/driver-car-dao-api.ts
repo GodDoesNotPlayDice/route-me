@@ -6,6 +6,7 @@ import {
 } from 'oxide.ts'
 import { DriverCarDao } from 'src/package/driver-car/domain/dao/driver-car-dao'
 import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
+import { DriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
 import { ApiOperationException } from 'src/package/shared/infrastructure/exceptions/api-operation-exception'
 
 export class DriverCarDaoApi implements DriverCarDao {
@@ -19,6 +20,10 @@ export class DriverCarDaoApi implements DriverCarDao {
 	}
 
 	async getAll(): Promise<Result<DriverCar[], Error[]>> {
+		return Err( [ new ApiOperationException() ] )
+	}
+
+	async getByID( id: DriverCarID ): Promise<Result<DriverCar, Error[]>> {
 		return Err( [ new ApiOperationException() ] )
 	}
 }

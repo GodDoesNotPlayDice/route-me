@@ -11,13 +11,59 @@
 		</ion-toolbar>
 	</ion-header>
 	<div class="p-2.5 w-full mx-auto flex flex-col gap-4">
+
 		<div class="font-gotham text-xl">En Curso</div>
-		<div *ngFor="let card of progressDrivers">
-			<app-drive-card [info]="card"></app-drive-card>
+		<div class="w-full flex justify-center items-center"
+			*ngIf="openLoading">
+			<ion-spinner name="dots"></ion-spinner>
 		</div>
+		<ng-container *ngIf="progressTrips.length > 0">
+			<div *ngFor="let card of progressTrips">
+				<app-drive-card [info]="card"></app-drive-card>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="progressTrips.length === 0 && !progressLoading && !progressLoadError">
+			<div>No hay viajes en curso</div>
+		</ng-container>
+		<ng-container *ngIf="progressTrips.length === 0 && !progressLoading && progressLoadError">
+			<div>No se ha podido cargar los viaje en curso. Intente nuevamente</div>
+		</ng-container>
+
+		<div class="font-gotham text-xl">Esperando aprobacion</div>
+		<div class="w-full flex justify-center items-center"
+			*ngIf="progressLoading">
+			<ion-spinner name="dots"></ion-spinner>
+		</div>
+		<ng-container *ngIf="openTrips.length > 0">
+			<div *ngFor="let card of openTrips">
+				<app-drive-card [info]="card"></app-drive-card>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="openTrips.length === 0 && !openLoading && !openLoadError">
+			<div>No hay viajes pendientes de aprobacion</div>
+		</ng-container>
+		<ng-container *ngIf="progressTrips.length === 0 && !openLoading && openLoadError">
+			<div>No se ha podido cargar los viajes pendientes de aprobacion. Intente
+				nuevamente
+			</div>
+		</ng-container>
+
 		<div class="font-gotham text-xl">Completados</div>
-		<div *ngFor="let card of completedDrivers">
-			<app-drive-card [info]="card"></app-drive-card>
+		<div class="w-full flex justify-center items-center"
+			*ngIf="completedLoading">
+			<ion-spinner name="dots"></ion-spinner>
 		</div>
+		<ng-container *ngIf="completedTrips.length > 0">
+			<div *ngFor="let card of completedTrips">
+				<app-drive-card [info]="card"></app-drive-card>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="completedTrips.length === 0 && !completedLoading && !completedLoadError">
+			<div>No has completado ningun viaje aun</div>
+		</ng-container>
+		<ng-container *ngIf="completedTrips.length === 0 && !completedLoading && completedLoadError">
+			<div>No se ha podido cargar los viajes completados. Intente nuevamente
+			</div>
+		</ng-container>
 	</div>
 </ion-content>

@@ -6,7 +6,10 @@ import {
 	Result,
 	Some
 } from 'oxide.ts'
-import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
+import {
+	driverCarFromJson,
+	driverCarToJson
+} from 'src/package/driver-car/application/driver-car-mapper'
 import {
 	driverDocumentFromJson,
 	driverDocumentToJson
@@ -34,7 +37,6 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
 	try {
 		const json: Record<string, any> = {
 			id     : driver.id.value,
-			car_id : driver.carID.value,
 			enabled: driver.enabled.value
 		}
 
@@ -72,6 +74,15 @@ export const driverToJson = ( driver: Driver ): Result<Record<string, any>, Erro
 		}
 		else {
 			json['active_trip'] = null
+		}
+
+		const driverCar = driverCarToJson( driver.driverCar )
+
+		if ( driverCar.isErr() ) {
+			err.push( driverCar.unwrapErr() )
+		}
+		else {
+			json['driver_car'] = driverCar.unwrap()
 		}
 
 		const passenger = passengerToJson( driver.passenger )
@@ -147,12 +158,10 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 		}
 	}
 
-	const car = newDriverCarID( {
-		value: json['car_id']
-	} )
+	const driverCar = driverCarFromJson( json['driver_car'] )
 
-	if ( car.isErr() ) {
-		err.push( car.unwrapErr() )
+	if ( driverCar.isErr() ) {
+		err.push( ...driverCar.unwrapErr() )
 	}
 
 	const passenger = passengerFromJson( json['passenger'] )
@@ -187,7 +196,7 @@ export const driverFromJson = ( json: Record<string, any> ): Result<Driver, Erro
 
 	return Ok( {
 			id        : driverID.unwrap(),
-			carID     : car.unwrap(),
+			driverCar : driverCar.unwrap(),
 			passenger : passenger.unwrap(),
 			activeTrip: activeTrip,
 			enabled   : enabled.unwrap(),

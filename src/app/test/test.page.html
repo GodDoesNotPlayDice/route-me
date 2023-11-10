@@ -1,12 +1,11 @@
-<ion-header [translucent]="true">
-	<ion-toolbar>
-		<ion-title>test</ion-title>
-	</ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-	<button class="w-20 h-20 bg-blue-400"
-		(click)="onPhoto()">
-		foto
-	</button>
+	<div class="h-full flex flex-col">
+		<app-app-bar-clone
+			class="basis-14 z-50"
+			href="/login"
+			label="test"
+			(leadClicked)="backClick()"
+			#appBar
+		></app-app-bar-clone>
+	</div>
 </ion-content>

@@ -5,6 +5,7 @@ import {
 	Some
 } from 'oxide.ts'
 import { Category } from 'src/package/category/domain/models/category'
+import { Driver } from 'src/package/driver/domain/models/driver'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
@@ -15,6 +16,7 @@ export const updateTrip = async ( dao: TripDao,
 	trip: Trip, props: {
 		description?: string
 		category?: Category
+		driver?: Driver
 		state?: TripState
 		queuePassengers?: Passenger[]
 		passengers?: Passenger[]
@@ -36,11 +38,11 @@ export const updateTrip = async ( dao: TripDao,
 			props.category ),
 		feeMethod      : trip.feeMethod,
 		chatID         : trip.chatID,
-		driver         : trip.driver,
 		endLocation    : trip.endLocation,
 		price          : trip.price,
 		startDate      : trip.startDate,
 		startLocation  : trip.startLocation,
+		driver         : props.driver ?? trip.driver,
 		state          : props.state ?? trip.state,
 		queuePassengers: props.queuePassengers ?? trip.queuePassengers,
 		passengers     : props.passengers ?? trip.passengers,

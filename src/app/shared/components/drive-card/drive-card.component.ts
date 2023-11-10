@@ -6,6 +6,7 @@ import {
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
 import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
+import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.pipe'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 
 @Component( {
@@ -16,13 +17,13 @@ import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card
 	imports    : [
 		IonicModule,
 		CommonModule,
-		AvatarComponent
+		AvatarComponent,
+		ParseLocationNamePipe
 	]
 } )
 export class DriveCardComponent {
 
-	constructor( private router: Router
-	)
+	constructor( private router: Router )
 	{ }
 
 	@Input( { required: true } ) info: DriverCardInfo

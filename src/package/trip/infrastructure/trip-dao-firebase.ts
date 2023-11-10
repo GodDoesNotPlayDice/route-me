@@ -12,6 +12,7 @@ import {
 } from 'src/package/trip/application/trip-mapper'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { TripNotFoundException } from 'src/package/trip/domain/exceptions/trip-not-found-exception'
+import { TripNotMatchStateException } from 'src/package/trip/domain/exceptions/trip-not-match-state-exception'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripID } from 'src/package/trip/domain/models/trip-id'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
@@ -122,7 +123,7 @@ export class TripDaoFirebase implements TripDao {
 		                 .get()
 		                 .then( async ( snapshot ) => {
 			                 if ( snapshot.val() === null ) {
-				                 return Err( [ new TripNotFoundException() ] )
+				                 return Err( [ new TripNotMatchStateException() ] )
 			                 }
 			                 const error: Error[] = []
 			                 const trips: Trip[]  = []
@@ -190,8 +191,6 @@ export class TripDaoFirebase implements TripDao {
 			return Err( json.unwrapErr() )
 		}
 
-		console.log( 'json.unwrap()' )
-		console.log( json.unwrap() )
 		await this.firebase.database.ref(
 			`${ this.collectionKey }/${ keySaved.unwrap() }` )
 		          .set( json.unwrap(),

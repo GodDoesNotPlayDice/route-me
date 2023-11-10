@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common'
 import {
 	Component,
-	OnInit
+	OnDestroy,
+	OnInit,
+	ViewChild
 } from '@angular/core'
+import { AngularFireDatabase } from '@angular/fire/compat/database'
 import { FormsModule } from '@angular/forms'
 import {
 	Camera,
 	CameraResultType
 } from '@capacitor/camera'
-import { Preferences } from '@capacitor/preferences'
 import { IonicModule } from '@ionic/angular'
+import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/app-bar-clone.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { ImageUploadService } from 'src/app/shared/services/image-upload.service'
 import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-conversion'
@@ -19,22 +22,36 @@ import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-c
 	templateUrl: './test.page.html',
 	styleUrls  : [ './test.page.scss' ],
 	standalone : true,
-	imports    : [ IonicModule, CommonModule, FormsModule ]
+	imports    : [ IonicModule, CommonModule, FormsModule, AppBarCloneComponent ]
 } )
-export class TestPage implements OnInit {
+export class TestPage implements OnInit, OnDestroy {
 
 	constructor( private imageService: ImageUploadService,
+		private firebase: AngularFireDatabase,
 		private alert: AlertService )
 	{ }
 
-	async ngOnInit(): Promise<void> {
-		await Preferences.set( { key: 'capacitor', value: 'true' } )
+	@ViewChild( 'appBar' ) appbar!: AppBarCloneComponent
 
-		const val = await Preferences.get( { key: 'capacitor' } )
-		await this.alert.presentAlert( {
-			header : 'result',
-			message: `response: ${ val.value }`
+	async ngOnInit(): Promise<void> {
+		// await Preferences.set( { key: 'capacitor', value: 'true' } )
+		//
+		// const val = await Preferences.get( { key: 'capacitor' } )
+		// await this.alert.presentAlert( {
+		// 	header : 'result',
+		// 	message: `response: ${ val.value }`
+		// } )
+
+		const ref = this.firebase.database.ref( `fake` )
+
+		ref.on( 'child_added', ( snapshot ) => {
+			console.log( 'snapshot' )
+			console.log( snapshot.val() )
 		} )
+	}
+
+	public ngOnDestroy(): void {
+		// this.firebase.database.ref( `fake` ).off()
 	}
 
 	async onPhoto(): Promise<void> {
@@ -50,5 +67,9 @@ export class TestPage implements OnInit {
 			console.log( 'url' )
 			console.log( result.unwrap() )
 		}
+	}
+
+	async backClick(): Promise<void> {
+		await this.appbar.backPage()
 	}
 }

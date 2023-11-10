@@ -1,4 +1,7 @@
-import { Injectable } from '@angular/core'
+import {
+	Injectable,
+	OnDestroy
+} from '@angular/core'
 import {
 	None,
 	Option,
@@ -27,7 +30,7 @@ import { User } from 'src/package/user/domain/models/user'
 @Injectable( {
 	providedIn: 'root'
 } )
-export class AuthService {
+export class AuthService implements OnDestroy {
 
 	constructor(
 		private authRepository: AuthUserRepository,
@@ -42,6 +45,10 @@ export class AuthService {
 	private userChange = new BehaviorSubject<User | null>( null )
 
 	public userChange$: Observable<User | null> = this.userChange.asObservable()
+
+	public ngOnDestroy(): void {
+		this.userChange.unsubscribe()
+	}
 
 	async userLogin( email: string,
 		password: string ): Promise<boolean> {
@@ -189,10 +196,7 @@ export class AuthService {
 
 	async checkUserEmail( email: string ): Promise<boolean> {
 		const existResult = await getUserByEmail( this.userDao, email )
-		if ( existResult.isErr() ) {
-			return false
-		}
-		return true
+		return !existResult.isErr()
 	}
 
 	async resetPasswordSend( email: string ): Promise<boolean> {

@@ -11,14 +11,14 @@
 				<div class="text-base font-gotham">{{info.driverAvatar.name}}</div>
 				<div class="text-masterNacho-600">{{info.date | date:'dd MMM HH:mm '}}</div>
 			</div>
-			<div>Inicio: {{info.startLocationName }}</div>
-			<div>Fin: {{info.endLocationName }}</div>
+			<div>Inicio: {{info.startLocationName | parseLocationName }}</div>
+			<div>Fin: {{info.endLocationName | parseLocationName}}</div>
 		</div>
 	</div>
 	<div class="flex justify-between items-center gap-2">
 		<div class="flex items-center basis-5/12">
-			<div *ngFor="let passenger of info.passengerUrls">
-				<app-avatar-home [url]="passenger"></app-avatar-home>
+			<div *ngFor="let passengerUrl of info.passengerUrls">
+				<app-avatar-home [url]="passengerUrl"></app-avatar-home>
 			</div>
 			<div class="text-gray-400"
 				*ngIf="info.passengerUrls.length === 0">
@@ -29,8 +29,17 @@
 		<button
 			(click)="buttonClick($event)"
 			type="button"
-			class="basis-4/12 tracking-wider font-light py-0.5 inline-block w-full text-sm rounded bg-indigoBlack-500 uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] ">
-			Solicitar
+			[ngClass]="{
+				'bg-green-500': info.state === 'Completed',
+				'bg-yellow-600': info.state === 'Progress',
+				'bg-indigoBlack-500': info.state === 'Open',
+			}"
+			class="basis-4/12 tracking-wider font-light py-0.5 inline-block w-full text-sm rounded uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] ">
+			<ng-container [ngSwitch]="info.state">
+				<div *ngSwitchCase="'Completed'">Completado</div>
+				<div *ngSwitchCase="'Progress'">En Proceso</div>
+				<div *ngSwitchDefault>Disponible</div>
+			</ng-container>
 		</button>
 	</div>
 </div>

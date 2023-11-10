@@ -284,8 +284,6 @@ export const tripToJSON = ( trip: Trip ): Result<Record<string, any>, Error[]> =
 			json['end_location'] = endLocation.unwrap()
 		}
 
-		console.log( 'trip.passengers' )
-		console.log( trip.passengers )
 		const passengers: Record<string, any>[] = []
 		for ( const passenger of trip.passengers ) {
 			const passengerResult = passengerToJson( passenger )

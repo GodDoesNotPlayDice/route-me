@@ -42,6 +42,8 @@ export class RegisterDriverPage implements ViewDidEnter {
 
 	formGroup!: FormGroup
 
+
+	//TODO: vincular files img
 	async ionViewDidEnter() {
 		if ( this.driverService.currentDriver.isSome() &&
 			!this.driverService.currentDriver.unwrap().enabled )
@@ -71,6 +73,8 @@ export class RegisterDriverPage implements ViewDidEnter {
 			this.carInput.carControl.value!.id,
 			[
 				{
+					//TODO: habilitar files
+					//TODO: se podria hacer driver document name enum
 					name     : 'Licencia',
 					reference: this.licenceInput.fileControl.value!
 				},

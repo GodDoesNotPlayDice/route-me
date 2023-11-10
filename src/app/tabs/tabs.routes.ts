@@ -9,7 +9,7 @@ export const routes: Routes = [
 		children : [
 			{
 				path      : '',
-				redirectTo: '/tabs/home',
+				redirectTo: '/tabs/search',
 				pathMatch : 'full'
 			},
 			{

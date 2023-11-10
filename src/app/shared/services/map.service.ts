@@ -33,7 +33,6 @@ export class MapService implements OnDestroy {
 					return
 				}
 				this.lastPosition = value
-				await this.autoFollow( { lat: value.lat, lng: value.lng } )
 			} )
 	}
 
@@ -48,6 +47,9 @@ export class MapService implements OnDestroy {
 
 	public markerClick$: Observable<Position | null> = this.markerClick.asObservable()
 
+	async removeMap( key: string ): Promise<Result<boolean, Error>> {
+		return await this.mapRepository.removeMap( key )
+	}
 
 	async removeRouteMarker( pageKey: string,
 		locationKey: string ): Promise<boolean> {
@@ -62,11 +64,12 @@ export class MapService implements OnDestroy {
 	}
 
 	async addRouteMarker( pageKey: string, locationKey: string,
-		center: Position, color: string ): Promise<boolean>
+		center: Position, color: string, html ?: string,
+		openFunction ?: ( toggleMarker: () => void ) => void ): Promise<boolean>
 	{
 		const result = await this.mapRepository.addRouteMarker( pageKey,
 			locationKey,
-			center, color )
+			center, color, html, openFunction )
 		if ( result.isErr() ) {
 			console.log( 'add route marker. map service' )
 			console.log( result.unwrapErr() )
@@ -75,7 +78,8 @@ export class MapService implements OnDestroy {
 		return true
 	}
 
-	async init( key: string, divElement: HTMLDivElement ): Promise<boolean> {
+	async init( key: string, divElement: HTMLDivElement,
+		owner: boolean = true ): Promise<boolean> {
 		const mapEntry = await this.mapRepository.init( key, divElement,
 			this.lastPosition )
 
@@ -83,11 +87,6 @@ export class MapService implements OnDestroy {
 			console.log( 'init. map service' )
 			console.log( mapEntry.unwrapErr() )
 			return false
-		}
-
-		if ( this.lastPosition !== null ) {
-			await this.autoFollow( this.lastPosition )
-			await this.addUserMarker( key, this.lastPosition, mapEntry.unwrap() )
 		}
 
 		mapEntry.unwrap()
@@ -99,11 +98,11 @@ export class MapService implements OnDestroy {
 		return true
 	}
 
-	async autoFollow( center?: Position ): Promise<boolean> {
+	async autoFollow( key: string, center?: Position ): Promise<boolean> {
 		if ( this.lastPosition === null ) {
 			return false
 		}
-		const result = await this.mapRepository.autoFollow(
+		const result = await this.mapRepository.autoFollow( key,
 			center ?? this.lastPosition )
 		if ( result.isErr() ) {
 			console.log( 'auto follow. map service' )
@@ -113,11 +112,18 @@ export class MapService implements OnDestroy {
 		return true
 	}
 
-	private async addUserMarker( pageKey: string, center: Position,
-		map: mapboxgl.Map ): Promise<boolean> {
-		const result = await this.mapRepository.addUserMarker( pageKey, center,
-			map )
+	async addUserMarker( pageKey: string, center ?: Position,
+		color: string = 'black', html ?: string ): Promise<boolean> {
+		if ( center === undefined || this.lastPosition === null ) {
+			return false
+		}
 
+		if ( html === undefined ) {
+			html = `<div class="text-red-500">Esta es tu posicion</div>`
+		}
+
+		const result = await this.mapRepository.addUserMarker( pageKey,
+			this.lastPosition, color, html )
 		if ( result.isErr() ) {
 			console.log( 'add user marker. map service' )
 			console.log( result.unwrapErr() )

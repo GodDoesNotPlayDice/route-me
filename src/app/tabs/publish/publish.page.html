@@ -20,7 +20,8 @@
 		</div>
 		<app-adaptative-button class="w-full"
 			(click)="onPublish()"
-			text="Publicar Viaje"
+			[disabled]="!canPublish"
+			[text]="canPublish ? 'Publicar Viaje': 'Ya tienes un viaje publicado'"
 			color="bg-stone-800"
 			color_hover="bg-stone-700"
 			font_size="text-xl font-gotham"

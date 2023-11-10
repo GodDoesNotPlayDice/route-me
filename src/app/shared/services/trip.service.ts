@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core'
+import { Store } from '@ngrx/store'
 import {
+	Err,
 	None,
+	Ok,
 	Option,
 	Result,
 	Some
@@ -9,12 +12,16 @@ import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LocationService } from 'src/app/shared/services/location.service'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
+import { AppState } from 'src/app/shared/state/app.state'
 import { Category } from 'src/package/category/domain/models/category'
+import { Driver } from 'src/package/driver/domain/models/driver'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { newCurrency } from 'src/package/shared/domain/models/currency'
 import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
 import { Street } from 'src/package/street-api/domain/models/street'
 import { createTrip } from 'src/package/trip/application/create-trip'
+import { deleteTrip } from 'src/package/trip/application/delete-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
 import { getTripByID } from 'src/package/trip/application/get-trip-by-id'
 import { updateTrip } from 'src/package/trip/application/update-trip'
@@ -31,11 +38,13 @@ import { TripRepository } from 'src/package/trip/domain/repository/trip-reposito
 export class TripService {
 	constructor(
 		private tripDao: TripDao,
+		private nearTripService: NearTripService,
 		private tripRepository: TripRepository,
 		private chatService: ChatService,
-		private driverService: DriverService,
+		private store: Store<AppState>,
 		private locationService: LocationService,
-		private authService: AuthService
+		private authService: AuthService,
+		private driverService: DriverService
 	)
 	{ }
 
@@ -53,14 +62,19 @@ export class TripService {
 		return result.unwrap()
 	}
 
-	async getAllByState( state: TripState ): Promise<Trip[]> {
+	async removeTrip( id: TripID ): Promise<Result<boolean, Error>> {
+		return await deleteTrip( this.tripDao, id )
+	}
+
+
+	async getAllByState( state: TripState ): Promise<Result<Trip[], Error[]>> {
 		const result = await this.tripDao.getAllByState( state )
 
 		if ( result.isErr() ) {
 			console.log( 'error. get all by state trip service', result.unwrapErr() )
-			return []
+			return Err( result.unwrapErr() )
 		}
-		return result.unwrap()
+		return Ok( result.unwrap() )
 	}
 
 	async calculateTripPrice( distance: ValidNumber ): Promise<Option<TripPrice>> {
@@ -121,7 +135,6 @@ export class TripService {
 			return false
 		}
 
-
 		const result = await createTrip( this.tripDao, {
 			startDate    : props.startDate,
 			chatID       : chat.unwrap(),
@@ -136,6 +149,43 @@ export class TripService {
 			console.log( 'create fail' )
 			return false
 		}
+		//TODO: smell
+		const resultDriver = await this.driverService.driverUpdate( {
+			activeTrip: result.unwrap()
+		} )
+
+		if ( resultDriver.isNone() ) {
+			console.log( 'update driver. trip service' )
+			return false
+		}
+
+		const resultTrip = await this.updateTrip( result.unwrap(), {
+			driver: resultDriver.unwrap()
+		} )
+
+		if ( resultTrip.isNone() ) {
+			console.log( 'update trip. trip service' )
+			return false
+		}
+
+		const tripWrap = resultTrip.unwrap()
+		await this.nearTripService.create( {
+			longitude        : tripWrap.startLocation.position.lng,
+			latitude         : tripWrap.startLocation.position.lat,
+			driverLastName   : tripWrap.driver.passenger.lastName,
+			driverName       : tripWrap.driver.passenger.name,
+			driverImage      : tripWrap.driver.passenger.image,
+			price            : tripWrap.price,
+			id               : tripWrap.id,
+			seat             : tripWrap.driver.driverCar.seat,
+			passengersImages : tripWrap.passengers.map( ( passenger ) => {
+				return passenger.image
+			} ),
+			startLocationName: tripWrap.startLocation.name,
+			startDate        : tripWrap.startDate,
+			endLocationName  : tripWrap.endLocation.name
+		} )
+
 		return true
 	}
 
@@ -143,18 +193,20 @@ export class TripService {
 		description?: string
 		category?: Category
 		state?: TripState
+		driver?: Driver
 		queuePassengers?: Passenger[]
 		passengers?: Passenger[]
 		endDate?: Date
-	} ): Promise<boolean>
+	} ): Promise<Option<Trip>>
 	{
 		const result = await updateTrip( this.tripDao, trip, props )
 
 		if ( result.isErr() ) {
 			console.log( 'update trip error' )
 			console.log( result.unwrapErr() )
-			return false
+			return None
 		}
-		return true
+
+		return Some( result.unwrap() )
 	}
 }

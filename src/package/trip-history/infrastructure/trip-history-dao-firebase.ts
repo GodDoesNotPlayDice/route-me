@@ -4,6 +4,7 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
+import { Email } from 'src/package/shared/domain/models/email'
 import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
 import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 import {
@@ -14,7 +15,7 @@ import { TripHistoryDao } from 'src/package/trip-history/domain/dao/trip-history
 import { TripHistory } from 'src/package/trip-history/domain/models/trip-history'
 import { TripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
 
-export class TripHistoryFirebase implements TripHistoryDao {
+export class TripHistoryDaoFirebase implements TripHistoryDao {
 	constructor( private firebase: AngularFireDatabase ) {
 	}
 
@@ -32,7 +33,7 @@ export class TripHistoryFirebase implements TripHistoryDao {
 			return Err( json.unwrapErr() )
 		}
 		await this.firebase.database.ref( this.collectionKey )
-		          .push( json,
+		          .push( json.unwrap(),
 			          ( error ) => {
 				          if ( !error ) {
 					          completed = 'completed'
@@ -52,8 +53,10 @@ export class TripHistoryFirebase implements TripHistoryDao {
 	 * @throws {TripIdInvalidException} - if trip id is invalid
 	 * @throws {FirebaseOperationException} - if operation failed
 	 */
-	async getAll(): Promise<Result<TripHistory[], Error[]>> {
+	async getAll( email: Email ): Promise<Result<TripHistory[], Error[]>> {
 		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'user_email' )
+		                 .equalTo( email.value )
 		                 .get()
 		                 .then( async ( snapshot ) => {
 			                 const error: Error[]               = []
@@ -73,35 +76,8 @@ export class TripHistoryFirebase implements TripHistoryDao {
 			                 return Ok( tripHistories )
 		                 } )
 		                 .catch( ( error ) => {
-			                 return Err( [ new FirebaseOperationException() ] )
-		                 } )
-	}
-
-	/**
-	 * Get by id trip history
-	 * @throws {FirebaseOperationException} - if operation failed
-	 * @throws {UserIdInvalidException} - if user id is invalid
-	 * @throws {TripIdInvalidException} - if trip id is invalid
-	 * @throws {FirebaseOperationException} - if operation failed
-	 */
-	async getById( id: TripHistoryID ): Promise<Result<TripHistory, Error[]>> {
-		return await this.firebase.database.ref( this.collectionKey )
-		                 .orderByChild( 'id' )
-		                 .equalTo( id.value )
-		                 .get()
-		                 .then( async ( snapshot ) => {
-			                 const snapshotValue = Object.values(
-				                 snapshot.val() )[0] as Record<string, any>
-			                 const tripHistory   = tripHistoryFromJson(
-				                 snapshotValue )
-
-			                 if ( tripHistory.isErr() ) {
-
-				                 return Err( tripHistory.unwrapErr() )
-			                 }
-			                 return Ok( tripHistory.unwrap() )
-		                 } )
-		                 .catch( ( error ) => {
+			                 console.log( 'error' )
+			                 console.log( error )
 			                 return Err( [ new FirebaseOperationException() ] )
 		                 } )
 	}

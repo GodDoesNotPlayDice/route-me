@@ -90,7 +90,7 @@ function combineUnits( unit: Set<Unit>, texts: UnitText,
 	const formatedArray: string[] = []
 
 	Array.from( unit.values() )
-	     .map( unit => {
+	     .forEach( unit => {
 		     switch ( unit ) {
 			     case 'Hours':
 				     formatedArray.push( `${ remainings.hours } ${ texts.hours }` )
@@ -125,7 +125,7 @@ function textOfUnits(): UnitText {
 
 function formatUnitsText( begin: string,
 	combinedArray: string[] ): string {
-	combinedArray.map( ( value, index ) => {
+	combinedArray.forEach( ( value, index ) => {
 		if ( index !== 0 ) {
 			if ( index === combinedArray.length - 1 ) {
 				begin += ' y '

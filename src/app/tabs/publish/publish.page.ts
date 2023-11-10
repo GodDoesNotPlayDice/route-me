@@ -2,21 +2,28 @@ import { CommonModule } from '@angular/common'
 import {
 	Component,
 	ElementRef,
+	OnDestroy,
 	ViewChild
 } from '@angular/core'
 import { FormGroup } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
+import { Router } from '@angular/router'
 import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
+import { Subscription } from 'rxjs'
 import { AdaptativeButtonComponent } from 'src/app/shared/components/adaptative-button/adaptative-button.component'
 import { DateTimeSelectorComponent } from 'src/app/shared/components/date-time-selector/date-time-selector.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
 import { MapLocationInputComponent } from 'src/app/shared/components/map-location-input/map-location-input.component'
 import { AlertService } from 'src/app/shared/services/alert.service'
+import { CurrencyService } from 'src/app/shared/services/currency.service'
+import { DriverService } from 'src/app/shared/services/driver.service'
+import { LoadingService } from 'src/app/shared/services/loading.service'
 import { MapService } from 'src/app/shared/services/map.service'
+import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { CurrencyDao } from 'src/package/currency-api/domain/dao/currency-dao'
@@ -40,11 +47,16 @@ import { KilometerPricing } from 'src/package/trip/shared/kilometer-pricing'
 		MatButtonModule
 	]
 } )
-export class PublishPage implements ViewDidEnter {
+export class PublishPage implements ViewDidEnter, OnDestroy {
 
 	constructor( private map: MapService,
+		private loadingService: LoadingService,
+		private currencyService: CurrencyService,
 		private toastService: ToastService,
 		private tripService: TripService,
+		private router: Router,
+		private driverService: DriverService,
+		private positionService: PositionService,
 		private ipDao: IpDao,
 		private currencyDao: CurrencyDao,
 		private alertService: AlertService )
@@ -61,9 +73,56 @@ export class PublishPage implements ViewDidEnter {
 	distance: number | null       = null
 	simulatedPrice: string | null = null
 	loadingPrice: boolean         = false
+	canPublish: boolean           = true
+	private positionChange: Subscription
+
+	async ngOnDestroy(): Promise<void> {
+		await this.map.removeMap( this.pageKey )
+		this.positionChange.unsubscribe()
+	}
 
 	async ionViewDidEnter(): Promise<void> {
 		await this.map.init( this.pageKey, this.divElementElementRef.nativeElement )
+
+		this.positionChange =
+			this.positionService.newPosition$.subscribe( async ( value ) => {
+				if ( value == null ) { return }
+				await this.map.autoFollow( this.pageKey, value )
+				await this.map.addUserMarker( this.pageKey )
+			} )
+
+
+		this.canPublish = this.driverService.currentDriver.unwrap()
+		                      .activeTrip
+		                      .isNone()
+
+		if ( !this.canPublish ) {
+			await this.alertService.presentAlert( {
+				header         : 'Advertencia',
+				backdropDismiss: false,
+				message        : 'Ya tienes un viaje activo',
+				buttons        : [ {
+					text   : 'Volver al inicio',
+					handler: async () => {
+						await this.router.navigate( [ '/tabs/home' ] )
+					}
+				},
+					{
+						text   : 'Ir al viaje activo',
+						handler: async () => {
+							await this.router.navigate( [ '/trip-details' ],
+								{
+									state: {
+										id: this.driverService.currentDriver.unwrap()
+										        .activeTrip
+										        .unwrap().id.value
+									}
+								} )
+						}
+					}
+				]
+			} )
+		}
 
 		this.formGroup = new FormGroup( {
 			date : this.dateInput.dateControl,
@@ -76,7 +135,7 @@ export class PublishPage implements ViewDidEnter {
 			return null
 		} )
 
-		await this.map.autoFollow()
+		await this.map.autoFollow( this.pageKey )
 	}
 
 	async addRoute() {
@@ -89,23 +148,17 @@ export class PublishPage implements ViewDidEnter {
 			console.log( dir.unwrapErr() )
 		}
 		else {
-			this.loadingPrice    = true
-			const resultIP       = await this.ipDao.getIp()
-			const resultCurrency = await this.currencyDao.getCurrencyExchange(
-				'USD',
-				resultIP.unwrap().currency
-			)
-			this.distance        =
-				+( dir.unwrap().distance.value / 1000 ).toFixed( 3 )
-			const amountUSD      = new KilometerPricing( newMoney( { value: 0.35 } )
+			this.loadingPrice = true
+
+			const currencyResult = await this.currencyService.fetchCurrency()
+
+			this.distance = +( dir.unwrap().distance.value / 1000 ).toFixed( 3 )
+
+			const amountUSD     = new KilometerPricing( newMoney( { value: 0.35 } )
 				.unwrap(), this.distance ).calculate()
-			const targetAmount   = amountUSD * resultCurrency.unwrap().value
-			this.simulatedPrice  = new Intl.NumberFormat(
-				resultIP.unwrap().languages[0], {
-					style   : 'currency',
-					currency: resultIP.unwrap().currency
-				} ).format( targetAmount )
-			this.loadingPrice    = false
+			this.simulatedPrice =
+				this.currencyService.parseCurrency( amountUSD, currencyResult.unwrap() )
+			this.loadingPrice   = false
 		}
 	}
 
@@ -113,7 +166,10 @@ export class PublishPage implements ViewDidEnter {
 		this.formGroup.updateValueAndValidity()
 		this.formGroup.markAllAsTouched()
 
-		if ( !this.formGroup.valid ) { return }
+		if ( !
+			this.formGroup.valid
+		)
+		{ return }
 
 		await this.alertService.presentAlert( {
 			header : 'Confirma que deseas publicar el viaje',
@@ -125,6 +181,7 @@ export class PublishPage implements ViewDidEnter {
 				{
 					text   : 'Publicar',
 					handler: async () => {
+						await this.loadingService.showLoading( 'Creando viaje' )
 						const result = await this.tripService.create( {
 							endLocation  : this.salidaInput.mapLocationControl.value!,
 							distance     : this.distance!,
@@ -137,6 +194,7 @@ export class PublishPage implements ViewDidEnter {
 								duration: 1500,
 								position: 'bottom'
 							} )
+							this.canPublish = false
 							await this.reset()
 						}
 						else {
@@ -146,13 +204,16 @@ export class PublishPage implements ViewDidEnter {
 								position: 'bottom'
 							} )
 						}
+						await this.loadingService.dismissLoading()
 					}
 				}
 			]
 		} )
 	}
 
-	private async reset(): Promise<void> {
+	private async reset()
+		:
+		Promise<void> {
 		await this.map.removeRouteMap( this.pageKey )
 		await this.map.removeRouteMarker( this.pageKey, this.inicioInput.id )
 		await this.map.removeRouteMarker( this.pageKey, this.salidaInput.id )

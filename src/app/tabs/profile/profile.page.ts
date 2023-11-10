@@ -61,6 +61,8 @@ export class ProfilePage implements ViewDidEnter {
 	passenger: Passenger | undefined
 	driver: Driver | undefined
 
+	//TODO: meter algun listener
+
 	async onLogout(): Promise<void> {
 		const result = await this.authService.authLogout()
 		if ( result ) {

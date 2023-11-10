@@ -16,6 +16,7 @@ import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
+import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.component'
 import { CheckboxInputComponent } from 'src/app/shared/components/checkbox-input/checkbox-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { InputTextComponent } from 'src/app/shared/components/input-text/input-text.component'
@@ -25,6 +26,7 @@ import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.
 import { AlertService } from 'src/app/shared/services/alert.service'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { LoadingService } from 'src/app/shared/services/loading.service'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
 
 @Component( {
 	standalone : true,
@@ -41,13 +43,15 @@ import { LoadingService } from 'src/app/shared/services/loading.service'
 		OutlinedButtonComponent,
 		FormsModule,
 		ReactiveFormsModule,
-		ParseLocationNamePipe
+		ParseLocationNamePipe,
+		AvatarComponent
 	],
 	styleUrls  : [ './login.page.scss' ]
 } )
 export class LoginPage implements ViewDidEnter {
 	constructor(
 		private authService: AuthService,
+		private nearTripService: NearTripService,
 		private router: Router,
 		private loadingService: LoadingService,
 		private alertService: AlertService
@@ -93,7 +97,6 @@ export class LoginPage implements ViewDidEnter {
 			await this.router.navigate( [ '/tabs/home' ] )
 		}
 		else {
-
 			await this.alertService.presentAlert( {
 				header   : 'Error',
 				subHeader: 'Credenciales no existen',

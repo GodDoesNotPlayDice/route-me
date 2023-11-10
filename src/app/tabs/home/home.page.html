@@ -1,7 +1,6 @@
 <ion-content [fullscreen]="true">
 	<div class="flex flex-col gap-4">
 		<div class="p-2 w-full gap-3 mt-6 mx-auto flex flex-col">
-			<app-search-launcher></app-search-launcher>
 			<div class="flex gap-2 overflow-x-auto">
 				<div *ngFor="let e of filterButtonList">
 					<app-filter-button [data]="e"></app-filter-button>
@@ -9,13 +8,20 @@
 			</div>
 		</div>
 		<div class="p-2.5 w-full mx-auto flex flex-col gap-4">
+			<ion-refresher slot="fixed"
+				(ionRefresh)="handleRefresh($event)">
+				<ion-refresher-content></ion-refresher-content>
+			</ion-refresher>
 			<div class="font-gotham text-xl">Cerca de ti</div>
 			<div class="w-full flex justify-center items-center"
 				*ngIf="loading">
 				<ion-spinner name="dots"></ion-spinner>
 			</div>
-			<div *ngIf="info.length === 0">
+			<div *ngIf="info.length === 0 && !loading && !errors">
 				No hay nada por mostrar
+			</div>
+			<div *ngIf="!loading && errors">
+				Ha ocurrido un error. Intente nuevamente
 			</div>
 			<ng-container *ngIf="info.length > 0">
 				<div *ngFor="let card of info">

@@ -4,7 +4,7 @@ export interface DriverCardInfo {
 	id: string
 	cost: string
 	currency: string
-	date: string
+	date: Date
 	startLocationName: string
 	endLocationName: string
 	driverAvatar: Avatar

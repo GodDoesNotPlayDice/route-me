@@ -102,7 +102,9 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	 * @throws {MarkerNotFoundException} - if marker not found
 	 */
 	async addRouteMarker( pageKey: string, locationKey: string,
-		center: Position, color: string ): Promise<Result<boolean, Error>> {
+		center: Position, color: string,
+		html ?: string,
+		openFunction ?: ( toggleMarker: () => void ) => void ): Promise<Result<boolean, Error>> {
 
 		if ( !this.routeMarkers.has( pageKey ) ) {
 			this.routeMarkers.set( pageKey, new Map() )
@@ -122,10 +124,22 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 		if ( mapEntry === undefined ) {
 			return Err( new MapNotFoundException() )
 		}
-
 		const newLocationMarker = new mapboxgl.Marker( { color: color } )
 			.setLngLat( [ center.lng, center.lat ] )
 			.addTo( mapEntry )
+
+		if ( html !== undefined ) {
+			newLocationMarker.setPopup(
+				new mapboxgl.Popup( { offset: 25 } ).setHTML( html )
+				                                    .on( 'open', () => {
+					                                    openFunction?.( () => {
+						                                    newLocationMarker.togglePopup()
+					                                    } )
+				                                    } )
+			)
+		}
+		newLocationMarker.addTo( mapEntry )
+
 		pageMarkers.set( locationKey, newLocationMarker )
 
 		return Ok( true )
@@ -136,7 +150,13 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	 * Add user marker
 	 */
 	async addUserMarker( pageKey: string,
-		center: Position, map: mapboxgl.Map ): Promise<Result<boolean, Error>> {
+		center: Position, color: string,
+		html ?: string ): Promise<Result<boolean, Error>> {
+		const mapEntry = this.maps.get( pageKey )
+
+		if ( mapEntry === undefined ) {
+			return Err( new MapNotFoundException() )
+		}
 
 		let userMark = this.userMarkers.get( pageKey )
 
@@ -144,9 +164,17 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 			userMark.remove()
 		}
 
-		const newUserMark = new mapboxgl.Marker( { color: 'black' } )
+		const newUserMark = new mapboxgl.Marker( { color: color } )
 			.setLngLat( [ center.lng, center.lat ] )
-			.addTo( map )
+
+		if ( html !== undefined ) {
+			newUserMark.setPopup(
+				new mapboxgl.Popup( { offset: 25 } )
+					.setHTML( html )
+			)
+		}
+
+		newUserMark.addTo( mapEntry )
 
 		this.userMarkers.set( pageKey, newUserMark )
 		return Ok( true )
@@ -156,14 +184,16 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	 * Auto follow
 	 * @throws {MarkerNotFoundException} - if marker not found
 	 */
-	async autoFollow( center: Position ): Promise<Result<boolean, Error>> {
-		if ( this.userMarkers.size === 0 ) {
-			return Err( new MarkerNotFoundException() )
+	async autoFollow( key: string,
+		center: Position ): Promise<Result<boolean, Error>> {
+
+		const mapEntry = this.maps.get( key )
+
+		if ( mapEntry === undefined ) {
+			return Err( new MapNotFoundException() )
 		}
-		for ( const [ keyEntry, mapEntry ] of this.maps ) {
-			mapEntry.panTo( { lat: center.lat, lng: center.lng } )
-			await this.addUserMarker( keyEntry, center, mapEntry )
-		}
+		mapEntry.panTo( { lat: center.lat, lng: center.lng } )
+
 		return Ok( true )
 	}
 
@@ -192,5 +222,35 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 		catch ( e ) {
 			return Err( new MapNotFoundException() )
 		}
+	}
+
+	async removeMap( key: string ): Promise<Result<boolean, Error>> {
+		const mapEntry = this.maps.get( key )
+
+		if ( mapEntry === undefined ) {
+			return Err( new MapNotFoundException( 'entry' ) )
+		}
+
+		let userMark = this.userMarkers.get( key )
+
+		if ( userMark === undefined ) {
+			return Err( new MapNotFoundException( 'user mark' ) )
+		}
+
+		const routeMarkers = this.routeMarkers.get( key )
+
+		if ( routeMarkers == undefined ) {
+			return Err( new MapNotFoundException( 'route marks' ) )
+		}
+
+		mapEntry.remove()
+		this.maps.delete( key )
+		userMark.remove()
+		this.userMarkers.delete( key )
+		routeMarkers.forEach( ( value, key ) => {
+			value.remove()
+		} )
+		this.routeMarkers.delete( key )
+		return Ok( true )
 	}
 }

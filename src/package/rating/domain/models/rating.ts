@@ -3,24 +3,24 @@ import {
 	RatingIDProps
 } from 'src/package/rating/domain/models/rating-id'
 import {
+	RatingValue,
+	RatingValueProps
+} from 'src/package/rating/domain/models/rating-value'
+import {
 	Email,
 	EmailProps
 } from 'src/package/shared/domain/models/email'
-import {
-	ValidNumber,
-	ValidNumberProps
-} from 'src/package/shared/domain/models/valid-number'
 
 export interface Rating {
 	id: RatingID
-	value: ValidNumber
+	value: RatingValue
 	senderEmail: Email
 	userEmail: Email
 }
 
-export class RatingProps {
+export interface RatingProps {
 	id: RatingIDProps
-	value: ValidNumberProps
+	value: RatingValueProps
 	senderEmail: EmailProps
 	userEmail: EmailProps
 }

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import {
 	Component,
+	OnDestroy,
 	OnInit
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
@@ -22,13 +23,19 @@ import {
 	],
 	styleUrls  : [ 'app.component.scss' ]
 } )
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+
 	constructor(
+		// @Inject( 'Supabase' ) private supa: SupabaseClient<any, 'public', any>,
 		private countryPhoneCode: CountryPhoneCodeService )
-	{}
+	{
+	}
 
 	async ngOnInit() {
 		// await this.countryPhoneCode.init()
 		initTE( { Input, Dropdown, Ripple } )
+	}
+
+	async ngOnDestroy(): Promise<void> {
 	}
 }
