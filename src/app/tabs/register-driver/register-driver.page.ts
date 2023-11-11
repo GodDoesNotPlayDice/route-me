@@ -8,6 +8,10 @@ import {
 	FormsModule
 } from '@angular/forms'
 import {
+	Camera,
+	CameraResultType
+} from '@capacitor/camera'
+import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
@@ -16,7 +20,9 @@ import { DividerComponent } from 'src/app/shared/components/divider/divider.comp
 import { FileInputComponent } from 'src/app/shared/components/file-input/file-input.component'
 import { FilledButtonComponent } from 'src/app/shared/components/filled-button/filled-button.component'
 import { DriverService } from 'src/app/shared/services/driver.service'
+import { ImageUploadService } from 'src/app/shared/services/image-upload.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
+import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-conversion'
 
 @Component( {
 	selector   : 'app-register-driver',
@@ -27,8 +33,10 @@ import { ToastService } from 'src/app/shared/services/toast.service'
 		FilledButtonComponent, CarModelSelectorComponent, DividerComponent ]
 } )
 export class RegisterDriverPage implements ViewDidEnter {
-	constructor( private driverService: DriverService,
-		private toastService: ToastService
+	constructor(
+		private driverService: DriverService,
+		private toastService: ToastService,
+		private imageUploadService: ImageUploadService
 	)
 	{ }
 
@@ -69,26 +77,49 @@ export class RegisterDriverPage implements ViewDidEnter {
 			return
 		}
 
+		const licence = this.licenceInput.fileControl.value!
+		const uploadLicence = await this.imageUploadService.uploadImage(licence.blob, licence.name)
+
+		const register = this.registerInput.fileControl.value!
+		const uploadRegister = await this.imageUploadService.uploadImage(register.blob, register.name)
+
+		const record = this.recordInput.fileControl.value!
+		const uploadRecord = await this.imageUploadService.uploadImage(record.blob, record.name)
+
+		const history = this.historyInput.fileControl.value!
+		const uploadHistory = await this.imageUploadService.uploadImage(history.blob, history.name)
+
+		if ( uploadLicence.isErr() || uploadRegister.isErr() || uploadRecord.isErr() || uploadHistory.isErr() ) {
+			uploadLicence.isOk() ? await this.imageUploadService.delete(uploadLicence.unwrap()) : null
+			uploadRegister.isOk() ? await this.imageUploadService.delete(uploadRegister.unwrap()) : null
+			uploadRecord.isOk() ? await this.imageUploadService.delete(uploadRecord.unwrap()) : null
+			uploadHistory.isOk() ? await this.imageUploadService.delete(uploadHistory.unwrap()) : null
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema al subir las imagenes. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
+			return
+		}
+
 		const result = await this.driverService.driverRegister(
 			this.carInput.carControl.value!.id,
 			[
 				{
-					//TODO: habilitar files
-					//TODO: se podria hacer driver document name enum
 					name     : 'Licencia',
-					reference: this.licenceInput.fileControl.value!
+					reference: uploadLicence.unwrap()
 				},
 				{
 					name     : 'Registro',
-					reference: this.registerInput.fileControl.value!
+					reference: uploadRegister.unwrap()
 				},
 				{
 					name     : 'Antecedentes',
-					reference: this.recordInput.fileControl.value!
+					reference: uploadRecord.unwrap()
 				},
 				{
 					name     : 'Historial',
-					reference: this.historyInput.fileControl.value!
+					reference: uploadHistory.unwrap()
 				}
 			]
 		)
