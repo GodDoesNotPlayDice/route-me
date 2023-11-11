@@ -20,6 +20,7 @@ import { MapService } from 'src/app/shared/services/map.service'
 import { NearTripService } from 'src/app/shared/services/near-trip.service'
 import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
+import { Position } from 'src/package/position-api/domain/models/position'
 import { Street } from 'src/package/street-api/domain/models/street'
 
 @Component( {
@@ -66,27 +67,41 @@ export class SearchPage implements ViewDidEnter, OnDestroy {
 					await this.map.autoFollow( this.pageKey, value )
 				}
 			} )
-
 		if ( this.positionService.lastPosition !== null ) {
-			const resultInitTrips = await this.nearTripService.getNearTrips(
-				this.positionService.lastPosition, 10 )
-			if ( resultInitTrips.isErr() ) {
-				console.log( 'resultInitTrips', resultInitTrips )
-			}
-			else {
-				const currencyResult = await this.currencyService.fetchCurrency()
+			await this.setNearTripsMarkers( this.positionService.lastPosition )
+		}
+		else {
+			await this.toastService.presentToast( {
+				message : 'Hubo un problema en la busqueda de viajes cercanos. Intente denuevo',
+				duration: 1500,
+				position: 'bottom'
+			} )
+		}
+	}
 
-				if ( currencyResult.isOk() ) {
-					for ( const nearTrip of resultInitTrips.unwrap() ) {
-						const passengerLength = nearTrip.passengersImages.map(
-							( val ) => val.value !== '' ).length
-						const targetAmount    = this.currencyService.parseCurrency(
-							nearTrip.price.amount.value,
-							currencyResult.unwrap() )
-						await this.map.addRouteMarker( this.pageKey, nearTrip.id.value, {
-							lat: nearTrip.latitude,
-							lng: nearTrip.longitude
-						}, 'orange', `
+	private async setNearTripsMarkers( center: Position ): Promise<boolean> {
+		const resultInitTrips = await this.nearTripService.getNearTrips( center,
+			10 )
+		if ( resultInitTrips.isErr() ) {
+			console.log( 'resultInitTrips', resultInitTrips )
+			return false
+		}
+		else {
+			const currencyResult = await this.currencyService.fetchCurrency()
+
+			if ( currencyResult.isOk() ) {
+				for ( const nearTrip of resultInitTrips.unwrap() ) {
+					const passengerLength = nearTrip.passengersImages.map(
+						( val ) => val.value !== '' ).length
+					const targetAmount    = this.currencyService.parseCurrency(
+						nearTrip.price.amount.value,
+						currencyResult.unwrap() )
+
+					await this.map.removeAllMarkersInMap( this.pageKey )
+					await this.map.addRouteMarker( this.pageKey, nearTrip.id.value, {
+						lat: nearTrip.latitude,
+						lng: nearTrip.longitude
+					}, 'orange', `
 <div class="flex flex-col items-center">
 	<div>Desde: ${ transformLocationName( nearTrip.startLocationName.value ) }</div>
 	<div>Hacia: ${ transformLocationName( nearTrip.endLocationName.value ) }</div>
@@ -99,37 +114,31 @@ export class SearchPage implements ViewDidEnter, OnDestroy {
 </div>
 `, ( toggleMarker ) => {
 
-							const boton = document.getElementById( nearTrip.id.value )
-							if ( boton ) {
-								boton.addEventListener( 'click', async () => {
-									console.log( 'button navigate. search page' )
-									toggleMarker()
-									await this.router.navigate( [ '/trip-details' ],
-										{
-											state: {
-												id: nearTrip.id.value
-											}
-										} )
-								} )
-							}
-							else {
-								console.log( 'err button search page' )
-							}
-						} )
-					}
+						const boton = document.getElementById( nearTrip.id.value )
+						if ( boton ) {
+							boton.addEventListener( 'click', async () => {
+								console.log( 'button navigate. search page' )
+								toggleMarker()
+								await this.router.navigate( [ '/trip-details' ],
+									{
+										state: {
+											id: nearTrip.id.value
+										}
+									} )
+							} )
+						}
+						else {
+							console.log( 'err button search page' )
+						}
+					} )
 				}
-				else {
-					console.log( 'currencyResult err. search page',
-						currencyResult.unwrapErr() )
-				}
+				return true
 			}
-		}
-		else {
-			await this.toastService.presentToast( {
-				message : 'Hubo un problema en la busqueda de viajes cercanos. Intente denuevo',
-				duration: 1500,
-				position: 'bottom'
-			} )
+			else {
+				console.log( 'currencyResult err. search page',
+					currencyResult.unwrapErr() )
+				return false
+			}
 		}
 	}
 
@@ -140,24 +149,18 @@ export class SearchPage implements ViewDidEnter, OnDestroy {
 	}
 
 	async onStreetPosition( $event: Street ): Promise<void> {
-		const result = await this.nearTripService.getNearTrips( $event.center,
-			10 )
-		if ( result.isErr() ) {
-			console.log( 'error near trips. search page' )
-			console.log( result.unwrapErr() )
+		const result = await this.setNearTripsMarkers( $event.center )
+		if ( !result ) {
 			await this.toastService.presentToast( {
 				message : 'Hubo un problema en la busqueda en lugar solicitado. Intente denuevo',
 				duration: 1500,
 				position: 'bottom'
 			} )
-			return
 		}
-		this.userFocus = false
-		await this.map.autoFollow( this.pageKey, $event.center )
-		await this.map.addRouteMarker( this.pageKey, 'search-focus', $event.center,
-			'green' )
-		console.log( 'result' )
-		console.log( result.unwrap() )
-		//TODO: agregar marcadores con info
+		else {
+			this.userFocus = false
+			await this.map.autoFollow( this.pageKey, $event.center )
+			await this.map.addRouteMarker( this.pageKey, 'search-focus', $event.center, 'green' )
+		}
 	}
 }

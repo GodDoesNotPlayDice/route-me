@@ -11,6 +11,15 @@ export const DriverDocumentNameSchema = z.object( {
 	        .min( 1 )
 } )
 
+// export enum DriverDocumentNameEnum {
+// 	Licencia     = 'Licencia',
+// 	Registro     = 'Registro',
+// 	Antecedentes = 'Antecedentes',
+// 	Historial    = 'Historial',
+// }
+// export const DriverDocumentNameEnumSchema = z.nativeEnum(
+// 	DriverDocumentNameEnum )
+
 type DriverDocumentNameType = z.infer<typeof DriverDocumentNameSchema>
 
 export interface DriverDocumentName extends DriverDocumentNameType {}

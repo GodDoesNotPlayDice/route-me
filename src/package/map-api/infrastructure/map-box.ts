@@ -33,6 +33,26 @@ export class MapBox extends MapRepository<mapboxgl.Map, mapboxgl.Marker> {
 	}
 
 	/**
+	 * Remove all markers in map
+	 * @throws {MapNotFoundException} - if map not found
+	 */
+	async removeAllMarkersInMap( pageKey: string ): Promise<Result<boolean, Error>> {
+		if ( !this.routeMarkers.has( pageKey ) ) {
+			this.routeMarkers.set( pageKey, new Map() )
+		}
+		let pageMarkers = this.routeMarkers.get( pageKey )
+
+		if ( pageMarkers === undefined ) {
+			return Err( new MapNotFoundException() )
+		}
+
+		pageMarkers.forEach( ( value, key ) => {
+			value.remove()
+		} )
+		return Ok( true )
+	}
+
+	/**
 	 * Add route map
 	 * @throws {MapNotFoundException} - if map not found
 	 */

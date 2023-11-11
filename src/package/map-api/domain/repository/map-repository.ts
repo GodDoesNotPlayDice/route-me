@@ -8,8 +8,8 @@ export abstract class MapRepository<Mp, Mr> {
 		openFunction ?: ( toggleMarker: () => void ) => void
 	): Promise<Result<boolean, Error>>
 
-	abstract removeRouteMarker( pageKey: string,
-		locationKey: string ): Promise<Result<boolean, Error>>
+	abstract removeRouteMarker( pageKey: string, locationKey: string ): Promise<Result<boolean, Error>>
+	abstract removeAllMarkersInMap( pageKey: string ): Promise<Result<boolean, Error>>
 
 	abstract init( key: string, divElement: HTMLDivElement,
 		center: Position | null ): Promise<Result<Mp, Error>>

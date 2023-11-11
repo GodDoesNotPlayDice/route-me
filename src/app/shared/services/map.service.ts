@@ -51,7 +51,11 @@ export class MapService implements OnDestroy {
 		return await this.mapRepository.removeMap( key )
 	}
 
-	async removeRouteMarker( pageKey: string,
+	async removeAllMarkersInMap( pageKey: string ): Promise<Result<boolean, Error>> {
+		return await this.mapRepository.removeAllMarkersInMap( pageKey )
+	}
+
+		async removeRouteMarker( pageKey: string,
 		locationKey: string ): Promise<boolean> {
 		const result = await this.mapRepository.removeRouteMarker( pageKey,
 			locationKey )
