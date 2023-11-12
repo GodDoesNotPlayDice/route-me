@@ -15,9 +15,9 @@ import { AppBarCloneComponent } from 'src/app/shared/components/app-bar-clone/ap
 	standalone : true,
 	imports    : [ IonicModule, CommonModule, FormsModule, AppBarCloneComponent ]
 } )
-export class TestPage implements OnInit{
+export class TestPage implements OnInit {
 
-	constructor( ) { }
+	constructor() { }
 
 	@ViewChild( 'appBar' ) appbar!: AppBarCloneComponent
 

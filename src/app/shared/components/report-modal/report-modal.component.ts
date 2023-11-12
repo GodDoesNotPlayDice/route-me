@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common'
 import {
 	Component,
 	Input,
-	OnInit,
 	ViewChild
 } from '@angular/core'
 import {

@@ -1,14 +1,12 @@
 import {
 	Err,
-	None,
 	Ok,
 	Option,
 	Result,
-    Some
+	Some
 } from 'oxide.ts'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
-import { newPassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
 import { newPassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
 import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
@@ -18,8 +16,6 @@ import {
 	PreferenceProps
 } from 'src/package/preference/domain/models/preference'
 import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
-import { newEmail } from 'src/package/shared/domain/models/email'
-import { newGender } from 'src/package/shared/domain/models/gender'
 import {
 	ImageUrl,
 	newImageUrl
@@ -55,7 +51,7 @@ export const updatePassenger = async (
 
 	const err: Error[] = []
 
-	let image : Option<ImageUrl> = passenger.image
+	let image: Option<ImageUrl> = passenger.image
 	if ( partialProps.image !== undefined ) {
 		const imageResult = newImageUrl( {
 			value: partialProps.image
@@ -65,7 +61,7 @@ export const updatePassenger = async (
 			err.push( imageResult.unwrapErr() )
 		}
 		else {
-			image = Some(imageResult.unwrap())
+			image = Some( imageResult.unwrap() )
 		}
 	}
 
@@ -77,9 +73,9 @@ export const updatePassenger = async (
 		err.push( name.unwrapErr() )
 	}
 
-	const rating = newRatingValue({
+	const rating = newRatingValue( {
 		value: partialProps.rating ?? passenger.averageRating.value
-	})
+	} )
 
 	if ( rating.isErr() ) {
 		err.push( rating.unwrapErr() )

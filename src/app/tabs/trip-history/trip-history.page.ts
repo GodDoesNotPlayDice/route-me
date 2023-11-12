@@ -4,7 +4,6 @@ import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
-import { Some } from 'oxide.ts'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { CurrencyService } from 'src/app/shared/services/currency.service'
@@ -95,9 +94,14 @@ export class TripHistoryPage implements ViewDidEnter {
 						startLocationName: trip.startLocation.name.value,
 						endLocationName  : trip.endLocation.name.value,
 						state            : trip.state,
-						passengerUrls    : trip.passengers.map( passenger => passenger.image.isSome() ? passenger.image.unwrap().value : ''  ),
+						passengerUrls    : trip.passengers.map(
+							passenger => passenger.image.isSome()
+								? passenger.image.unwrap().value
+								: '' ),
 						driverAvatar     : {
-							url : trip.driver.passenger.image.isSome() ? trip.driver.passenger.image.unwrap().value : '',
+							url : trip.driver.passenger.image.isSome()
+								? trip.driver.passenger.image.unwrap().value
+								: '',
 							name: `${ trip.driver.passenger.name.value } ${ trip.driver.passenger.lastName.value }`
 						}
 					} )
@@ -112,7 +116,10 @@ export class TripHistoryPage implements ViewDidEnter {
 						startLocationName: trip.startLocation.name.value,
 						endLocationName  : trip.endLocation.name.value,
 						state            : trip.state,
-						passengerUrls    : trip.passengers.map( passenger => passenger.image.isSome() ? passenger.image.unwrap().value : ''  ),
+						passengerUrls    : trip.passengers.map(
+							passenger => passenger.image.isSome()
+								? passenger.image.unwrap().value
+								: '' ),
 						driverAvatar     : {
 							url : trip.driver.passenger.image.isSome()
 								? trip.driver.passenger.image.unwrap().value
@@ -147,7 +154,10 @@ export class TripHistoryPage implements ViewDidEnter {
 					startLocationName: tripHistory.trip.startLocation.name.value,
 					endLocationName  : tripHistory.trip.endLocation.name.value,
 					state            : tripHistory.trip.state,
-					passengerUrls    : tripHistory.trip.passengers.map( passenger => passenger.image.isSome() ? passenger.image.unwrap().value : ''  ),
+					passengerUrls    : tripHistory.trip.passengers.map(
+						passenger => passenger.image.isSome()
+							? passenger.image.unwrap().value
+							: '' ),
 					driverAvatar     : {
 						url : tripHistory.trip.driver.passenger.image.isSome()
 							? tripHistory.trip.driver.passenger.image.unwrap().value

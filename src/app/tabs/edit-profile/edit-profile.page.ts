@@ -37,7 +37,7 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
 	templateUrl: './edit-profile.page.html',
 	styleUrls  : [ './edit-profile.page.scss' ],
 	standalone : true,
-	imports: [ IonicModule, CommonModule, FormsModule, AppBarCloneComponent,
+	imports    : [ IonicModule, CommonModule, FormsModule, AppBarCloneComponent,
 		MatIconModule, InputTextComponent, InputAreaComponent,
 		MultipleSelectorInputComponent, FilledButtonComponent ]
 } )
@@ -63,16 +63,17 @@ export class EditProfilePage implements OnInit, ViewDidEnter {
 		name: string
 	} | null>( null )
 
-	loadingPreferences: boolean           = false
-	dbPreferences: MultipleSelectorData[] = []
+	loadingPreferences: boolean                 = false
+	dbPreferences: MultipleSelectorData[]       = []
 	selectedPreferences: MultipleSelectorData[] = []
 	formGroup!: FormGroup
-	passenger : Passenger
-	tempUrl: string = ''
+	passenger: Passenger
+	tempUrl: string                             = ''
+
 	async ngOnInit() {
 		this.passenger = this.authService.currentPassenger.unwrap()
 
-		this.selectedPreferences      = this.passenger.preferences.map(
+		this.selectedPreferences = this.passenger.preferences.map(
 			( preference ): MultipleSelectorData => ( {
 				id      : preference.id.value,
 				name    : preference.name.value,
@@ -130,10 +131,11 @@ export class EditProfilePage implements OnInit, ViewDidEnter {
 	async buttonClick(): Promise<void> {
 		await this.loadingService.showLoading( 'Actualizando' )
 
-		let image : string | undefined = undefined
+		let image: string | undefined = undefined
 		if ( this.fileControl.value !== null ) {
-			const img = this.fileControl.value!
-			const imgResult   = await this.imageUploadService.uploadImage( img.blob, img.name )
+			const img       = this.fileControl.value!
+			const imgResult = await this.imageUploadService.uploadImage( img.blob,
+				img.name )
 
 			if ( imgResult.isErr() ) {
 				await this.toastService.presentToast( {
@@ -147,14 +149,14 @@ export class EditProfilePage implements OnInit, ViewDidEnter {
 			image = imgResult.unwrap()
 		}
 
-		const result = await this.authService.updatePassenger({
+		const result = await this.authService.updatePassenger( {
 			preferences: this.preferenceInput.multipleSelectorControl.value!,
-			name: this.userInput.textControl.value!,
-			lastName: this.lastNameInput.textControl.value!,
-			phone: this.phoneInput.textControl.value!,
+			name       : this.userInput.textControl.value!,
+			lastName   : this.lastNameInput.textControl.value!,
+			phone      : this.phoneInput.textControl.value!,
 			description: this.areaInput.textControl.value!,
-			image: image
-		})
+			image      : image
+		} )
 
 		if ( !result ) {
 			await this.toastService.presentToast( {

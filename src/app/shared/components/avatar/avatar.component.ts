@@ -4,7 +4,6 @@ import {
 	Input
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
-import { Option } from 'oxide.ts'
 
 @Component( {
 	standalone : true,

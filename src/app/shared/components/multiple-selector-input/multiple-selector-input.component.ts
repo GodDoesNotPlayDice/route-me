@@ -30,7 +30,7 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
 		MultipleSelectorModalComponent
 	]
 } )
-export class MultipleSelectorInputComponent implements OnInit{
+export class MultipleSelectorInputComponent implements OnInit {
 	constructor( private modalCtrl: ModalController ) {}
 
 	@Input() required = false

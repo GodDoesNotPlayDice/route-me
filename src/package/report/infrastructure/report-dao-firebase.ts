@@ -1,4 +1,4 @@
-import { AngularFireDatabase } from "@angular/fire/compat/database"
+import { AngularFireDatabase } from '@angular/fire/compat/database'
 import {
 	Err,
 	Ok,
@@ -15,7 +15,7 @@ import { Report } from 'src/package/report/domain/models/report'
 import { ReportID } from 'src/package/report/domain/models/report-id'
 import { Email } from 'src/package/shared/domain/models/email'
 import { FirebaseKeyNotFoundException } from 'src/package/shared/infrastructure/exceptions/firebase-key-not-found-exception'
-import { FirebaseOperationException } from "src/package/shared/infrastructure/exceptions/firebase-operation-exception"
+import { FirebaseOperationException } from 'src/package/shared/infrastructure/exceptions/firebase-operation-exception'
 
 export class ReportDaoFirebase implements ReportDao {
 	constructor( private firebase: AngularFireDatabase ) {
@@ -87,7 +87,8 @@ export class ReportDaoFirebase implements ReportDao {
 			                 const reports: Report[] = []
 			                 for ( let value of Object.values( snapshot.val() ) ) {
 
-				                 const report = reportFromJson( value as Record<string, any> )
+				                 const report = reportFromJson(
+					                 value as Record<string, any> )
 
 				                 if ( report.isErr() ) {
 					                 error.push( ...report.unwrapErr() )
@@ -123,7 +124,8 @@ export class ReportDaoFirebase implements ReportDao {
 			                 const reports: Report[] = []
 			                 for ( let value of Object.values( snapshot.val() ) ) {
 
-				                 const report = reportFromJson( value as Record<string, any> )
+				                 const report = reportFromJson(
+					                 value as Record<string, any> )
 
 				                 if ( report.isErr() ) {
 					                 error.push( ...report.unwrapErr() )

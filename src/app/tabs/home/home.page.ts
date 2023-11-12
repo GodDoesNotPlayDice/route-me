@@ -45,7 +45,7 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 	)
 	{}
 
-	info: DriverCardInfo[] = []
+	info: DriverCardInfo[]     = []
 	infoOpen: DriverCardInfo[] = []
 
 	canFetch: boolean = false
@@ -94,37 +94,42 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 		}
 		const currencyResult = await this.currencyService.fetchCurrency()
 
-		this.infoOpen    = open.unwrap()
-		                     .map( ( trip ): DriverCardInfo => {
-			                     const parsedAmount = this.currencyService.parseCurrency(
-				                     trip.price.amount.value, currencyResult.unwrap() )
+		this.infoOpen = open.unwrap()
+		                    .map( ( trip ): DriverCardInfo => {
+			                    const parsedAmount = this.currencyService.parseCurrency(
+				                    trip.price.amount.value, currencyResult.unwrap() )
 
-			                     const urlsList : Array<string | null> = trip.passengers.map( ( passenger ) => {
-				                     return passenger.image.isSome() ? passenger.image.unwrap().value : ''
-			                     } )
+			                    const urlsList: Array<string | null> = trip.passengers.map(
+				                    ( passenger ) => {
+					                    return passenger.image.isSome()
+						                    ? passenger.image.unwrap().value
+						                    : ''
+				                    } )
 
-			                     const totalSeat       = trip.driver.driverCar.seat.value
-			                     const blankUrlsEmptys = totalSeat - 1 -
-				                     urlsList.length
-			                     for ( let i = 0; i < blankUrlsEmptys; i++ ) {
-				                     urlsList.push( null )
-			                     }
+			                    const totalSeat       = trip.driver.driverCar.seat.value
+			                    const blankUrlsEmptys = totalSeat - 1 -
+				                    urlsList.length
+			                    for ( let i = 0; i < blankUrlsEmptys; i++ ) {
+				                    urlsList.push( null )
+			                    }
 
-			                     return {
-				                     id               : trip.id.value,
-				                     currency         : currencyResult.unwrap().currency,
-				                     cost             : parsedAmount,
-				                     date             : trip.startDate,
-				                     state            : TripStateEnum.Open,
-				                     endLocationName  : trip.endLocation.name.value,
-				                     startLocationName: trip.startLocation.name.value,
-				                     driverAvatar     : {
-					                     name: `${ trip.driver.passenger.name.value } ${ trip.driver.passenger.lastName.value }`,
-					                     url : trip.driver.passenger.image.isSome() ? trip.driver.passenger.image.unwrap().value : ''
-				                     },
-				                     passengerUrls    : urlsList
-			                     }
-		                     } )
+			                    return {
+				                    id               : trip.id.value,
+				                    currency         : currencyResult.unwrap().currency,
+				                    cost             : parsedAmount,
+				                    date             : trip.startDate,
+				                    state            : TripStateEnum.Open,
+				                    endLocationName  : trip.endLocation.name.value,
+				                    startLocationName: trip.startLocation.name.value,
+				                    driverAvatar     : {
+					                    name: `${ trip.driver.passenger.name.value } ${ trip.driver.passenger.lastName.value }`,
+					                    url : trip.driver.passenger.image.isSome()
+						                    ? trip.driver.passenger.image.unwrap().value
+						                    : ''
+				                    },
+				                    passengerUrls    : urlsList
+			                    }
+		                    } )
 
 
 		this.info    = result.unwrap()
@@ -132,7 +137,8 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 			                     const parsedAmount = this.currencyService.parseCurrency(
 				                     trip.price.amount.value, currencyResult.unwrap() )
 
-			                     const urlsList : Array<string | null> = trip.passengersImages.map( ( image ) => {
+			                     const urlsList: Array<string | null> = trip.passengersImages.map(
+				                     ( image ) => {
 					                     return image.isSome() ? image.unwrap().value : ''
 				                     } )
 
@@ -153,7 +159,9 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 				                     startLocationName: trip.startLocationName.value,
 				                     driverAvatar     : {
 					                     name: `${ trip.driverName.value } ${ trip.driverLastName.value }`,
-					                     url : trip.driverImage.isSome() ? trip.driverImage.unwrap().value : ''
+					                     url : trip.driverImage.isSome()
+						                     ? trip.driverImage.unwrap().value
+						                     : ''
 				                     },
 				                     passengerUrls    : urlsList
 			                     }

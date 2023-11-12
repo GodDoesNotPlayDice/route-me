@@ -9,5 +9,6 @@ export abstract class ReportDao {
 	abstract delete( id: ReportID ): Promise<Result<boolean, Error[]>>
 
 	abstract getByFromEmail( email: Email ): Promise<Result<Report[], Error[]>>
+
 	abstract getByToEmail( email: Email ): Promise<Result<Report[], Error[]>>
 }

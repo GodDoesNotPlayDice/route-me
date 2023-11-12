@@ -11,9 +11,7 @@ import {
 	Camera,
 	CameraResultType
 } from '@capacitor/camera'
-import {
-	IonicModule
-} from '@ionic/angular'
+import { IonicModule } from '@ionic/angular'
 import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-conversion'
 
 @Component( {

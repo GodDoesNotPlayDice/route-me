@@ -1,24 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import {
+	ComponentFixture,
+	TestBed,
+	waitForAsync
+} from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { ReportModalComponent } from 'src/app/shared/components/report-modal/report-modal.component';
+import { ReportModalComponent } from 'src/app/shared/components/report-modal/report-modal.component'
 
-describe('ReportModalComponent', () => {
-  let component: ReportModalComponent;
-  let fixture: ComponentFixture<ReportModalComponent>;
+describe( 'ReportModalComponent', () => {
+	let component: ReportModalComponent
+	let fixture: ComponentFixture<ReportModalComponent>
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ReportModalComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+	beforeEach( waitForAsync( () => {
+		TestBed.configureTestingModule( {
+			declarations: [ ReportModalComponent ],
+			imports     : [ IonicModule.forRoot() ]
+		} )
+		       .compileComponents()
 
-    fixture = TestBed.createComponent(ReportModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+		fixture = TestBed.createComponent( ReportModalComponent )
+		component = fixture.componentInstance
+		fixture.detectChanges()
+	} ) )
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+	it( 'should create', () => {
+		expect( component )
+			.toBeTruthy()
+	} )
+} )

@@ -25,12 +25,12 @@ import { TripStateMother } from 'src/test/app/stubs/object-mothers/trip/trip-sta
 
 export class TripMother {
 	static random( radiusInKm: number ): Result<Trip, Error[]> {
-		const startDate     = ValidDateMother.randomNearFuture( { days: 10 } )
-		const endDate       = newEndTripDate( {
+		const startDate  = ValidDateMother.randomNearFuture( { days: 10 } )
+		const endDate    = newEndTripDate( {
 			value: startDate.unwrap().value
 		} )
-		const passengers    = faker.helpers.multiple( () => PassengerMother.random()
-		                                                                   .unwrap(),
+		const passengers = faker.helpers.multiple( () => PassengerMother.random()
+		                                                                .unwrap(),
 			{
 				count: {
 					min: 1,
@@ -38,8 +38,9 @@ export class TripMother {
 				}
 			} )
 
-		const queuePassengers    = faker.helpers.multiple( () => PassengerMother.random()
-		                                                                   .unwrap(),
+		const queuePassengers = faker.helpers.multiple(
+			() => PassengerMother.random()
+			                     .unwrap(),
 			{
 				count: {
 					min: 1,
@@ -50,23 +51,23 @@ export class TripMother {
 		const startPosition = PositionMother.random()
 		                                    .unwrap()
 		return Ok( {
-			id           : TripIDMother.random()
-			                           .unwrap(),
-			description  : TripDescriptionMother.random()
+			id             : TripIDMother.random()
+			                             .unwrap(),
+			description    : TripDescriptionMother.random()
+			                                      .unwrap(),
+			state          : TripStateMother.random()
+			                                .unwrap(),
+			feeMethod      : TripFeeMethodMother.random()
 			                                    .unwrap(),
-			state        : TripStateMother.random()
-			                              .unwrap(),
-			feeMethod    : TripFeeMethodMother.random()
-			                                  .unwrap(),
-			category     : Some( CategoryMother.random()
-			                                   .unwrap() ),
-			chatID       : ChatIDMother.random()
-			                           .unwrap(),
-			price        : TripPriceMother.random()
-			                              .unwrap(),
-			endLocation  : TripLocationMother.random( startPosition, radiusInKm )
-			                                 .unwrap(),
-			startLocation: {
+			category       : Some( CategoryMother.random()
+			                                     .unwrap() ),
+			chatID         : ChatIDMother.random()
+			                             .unwrap(),
+			price          : TripPriceMother.random()
+			                                .unwrap(),
+			endLocation    : TripLocationMother.random( startPosition, radiusInKm )
+			                                   .unwrap(),
+			startLocation  : {
 				id         : TripLocationIDMother.random()
 				                                 .unwrap(),
 				name       : TripLocationNameMother.random()
@@ -75,12 +76,12 @@ export class TripMother {
 				                                          .unwrap(),
 				position   : startPosition
 			},
-			endDate      : endDate.unwrap().value,
-			startDate    : startDate.unwrap().value,
-			driver       : DriverMother.random()
-			                           .unwrap(),
+			endDate        : endDate.unwrap().value,
+			startDate      : startDate.unwrap().value,
+			driver         : DriverMother.random()
+			                             .unwrap(),
 			queuePassengers: queuePassengers,
-			passengers   : passengers
+			passengers     : passengers
 		} )
 	}
 

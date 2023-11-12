@@ -20,8 +20,11 @@ export const updateNearTrip = async ( dao: NearTripRepository,
 		price            : nearTrip.price,
 		startDate        : nearTrip.startDate,
 		seat             : nearTrip.seat,
-		passengersImages : props.passengersImages ? props.passengersImages.map( ( x ) => Some( x ) ) : nearTrip.passengersImages,
-		driverImage      : props.driverImage ? Some(props.driverImage) : nearTrip.driverImage,
+		passengersImages : props.passengersImages ? props.passengersImages.map(
+			( x ) => Some( x ) ) : nearTrip.passengersImages,
+		driverImage      : props.driverImage
+			? Some( props.driverImage )
+			: nearTrip.driverImage,
 		driverName       : nearTrip.driverName,
 		driverLastName   : nearTrip.driverLastName,
 		longitude        : props.longitude ?? nearTrip.longitude,

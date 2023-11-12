@@ -223,22 +223,23 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			}
 		} )
 
-		if ( this.userInTrip || this.isDriver){
-			const reportedResult = await this.reportService.getByFromEmail(this.authService.currentPassenger.unwrap().email)
-			if (reportedResult.isOk()){
+		if ( this.userInTrip || this.isDriver ) {
+			const reportedResult = await this.reportService.getByFromEmail(
+				this.authService.currentPassenger.unwrap().email )
+			if ( reportedResult.isOk() ) {
 				this.reportedUsers = reportedResult.unwrap()
 
 			}
 			else {
-				console.log('error reported from user. trip detail')
-				console.log(reportedResult.unwrapErr())
+				console.log( 'error reported from user. trip detail' )
+				console.log( reportedResult.unwrapErr() )
 			}
 		}
 
 		this.loading = false
 	}
 
-	reportedUsers : Report[] = []
+	reportedUsers: Report[] = []
 
 	async onChatClick(): Promise<void> {
 		if ( this.trip === null ) {
@@ -615,7 +616,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			component     : ReportModalComponent,
 			componentProps: {
 				fromEmail: this.authService.currentPassenger.unwrap().email,
-				toEmail: psn.email
+				toEmail  : psn.email
 			}
 		} )
 		await modal.present()
@@ -628,7 +629,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			component     : RatingModalComponent,
 			componentProps: {
 				fromEmail: this.authService.currentPassenger.unwrap().email,
-				toEmail: psn.email
+				toEmail  : psn.email
 			}
 		} )
 		await modal.present()

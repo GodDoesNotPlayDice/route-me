@@ -137,7 +137,7 @@ export class AuthService implements OnDestroy {
 		if ( result.isErr() ) {
 			console.log( 'update passenger error' )
 			console.log( result.unwrapErr() )
-			return Err( result.unwrapErr())
+			return Err( result.unwrapErr() )
 		}
 
 		this.currentPassenger = Some( result.unwrap() )

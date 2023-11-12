@@ -8,10 +8,6 @@ import {
 	FormsModule
 } from '@angular/forms'
 import {
-	Camera,
-	CameraResultType
-} from '@capacitor/camera'
-import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
@@ -22,7 +18,6 @@ import { FilledButtonComponent } from 'src/app/shared/components/filled-button/f
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { ImageUploadService } from 'src/app/shared/services/image-upload.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
-import { dataURItoBlob } from 'src/package/image-upload-api/shared/utils/image-conversion'
 
 @Component( {
 	selector   : 'app-register-driver',
@@ -76,23 +71,33 @@ export class RegisterDriverPage implements ViewDidEnter {
 			return
 		}
 
-		const licence = this.licenceInput.fileControl.value!
-		const uploadLicence = await this.imageUploadService.uploadImage(licence.blob, licence.name)
+		const licence       = this.licenceInput.fileControl.value!
+		const uploadLicence = await this.imageUploadService.uploadImage(
+			licence.blob, licence.name )
 
-		const register = this.registerInput.fileControl.value!
-		const uploadRegister = await this.imageUploadService.uploadImage(register.blob, register.name)
+		const register       = this.registerInput.fileControl.value!
+		const uploadRegister = await this.imageUploadService.uploadImage(
+			register.blob, register.name )
 
-		const record = this.recordInput.fileControl.value!
-		const uploadRecord = await this.imageUploadService.uploadImage(record.blob, record.name)
+		const record       = this.recordInput.fileControl.value!
+		const uploadRecord = await this.imageUploadService.uploadImage( record.blob,
+			record.name )
 
-		const history = this.historyInput.fileControl.value!
-		const uploadHistory = await this.imageUploadService.uploadImage(history.blob, history.name)
+		const history       = this.historyInput.fileControl.value!
+		const uploadHistory = await this.imageUploadService.uploadImage(
+			history.blob, history.name )
 
-		if ( uploadLicence.isErr() || uploadRegister.isErr() || uploadRecord.isErr() || uploadHistory.isErr() ) {
-			uploadLicence.isOk() ? await this.imageUploadService.delete(uploadLicence.unwrap()) : null
-			uploadRegister.isOk() ? await this.imageUploadService.delete(uploadRegister.unwrap()) : null
-			uploadRecord.isOk() ? await this.imageUploadService.delete(uploadRecord.unwrap()) : null
-			uploadHistory.isOk() ? await this.imageUploadService.delete(uploadHistory.unwrap()) : null
+		if ( uploadLicence.isErr() || uploadRegister.isErr() ||
+			uploadRecord.isErr() || uploadHistory.isErr() )
+		{
+			uploadLicence.isOk() ? await this.imageUploadService.delete(
+				uploadLicence.unwrap() ) : null
+			uploadRegister.isOk() ? await this.imageUploadService.delete(
+				uploadRegister.unwrap() ) : null
+			uploadRecord.isOk() ? await this.imageUploadService.delete(
+				uploadRecord.unwrap() ) : null
+			uploadHistory.isOk() ? await this.imageUploadService.delete(
+				uploadHistory.unwrap() ) : null
 			await this.toastService.presentToast( {
 				message : 'Hubo un problema al subir las imagenes. Intente denuevo',
 				duration: 1500,

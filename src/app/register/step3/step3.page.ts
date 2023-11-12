@@ -103,10 +103,11 @@ export class Step3Page implements ViewDidEnter {
 	async submit() {
 		await this.loadingService.showLoading( 'Guardando' )
 
-		let image : string | undefined = undefined
+		let image: string | undefined = undefined
 		if ( this.fileControl.value !== null ) {
-			const img = this.fileControl.value!
-			const imgResult   = await this.imageUploadService.uploadImage( img.blob, img.name )
+			const img       = this.fileControl.value!
+			const imgResult = await this.imageUploadService.uploadImage( img.blob,
+				img.name )
 
 			if ( imgResult.isErr() ) {
 				await this.toastService.presentToast( {

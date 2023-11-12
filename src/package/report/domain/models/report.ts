@@ -4,7 +4,7 @@ import { Email } from 'src/package/shared/domain/models/email'
 
 export interface Report {
 	id: ReportID
-	fromUser : Email,
-	toUser : Email,
-	message : ReportMessage,
+	fromUser: Email,
+	toUser: Email,
+	message: ReportMessage,
 }

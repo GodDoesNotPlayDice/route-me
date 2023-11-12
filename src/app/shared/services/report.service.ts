@@ -1,32 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { Result } from 'oxide.ts'
 import { ReportDao } from 'src/package/report/domain/dao/report-dao'
-import { Report } from 'src/package/report/domain/models/report';
+import { Report } from 'src/package/report/domain/models/report'
 import { ReportID } from 'src/package/report/domain/models/report-id'
 import { Email } from 'src/package/shared/domain/models/email'
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable( {
+	providedIn: 'root'
+} )
 export class ReportService {
 
-  constructor(
+	constructor(
 		private reportDao: ReportDao
-  ) { }
+	)
+	{ }
 
-	async create( report: Report ): Promise<Result<boolean, Error[]>>{
-		return this.reportDao.create( report)
+	async create( report: Report ): Promise<Result<boolean, Error[]>> {
+		return this.reportDao.create( report )
 	}
 
-	async delete( id: ReportID ): Promise<Result<boolean, Error[]>>{
+	async delete( id: ReportID ): Promise<Result<boolean, Error[]>> {
 		return this.reportDao.delete( id )
 	}
 
-	async getByFromEmail( email: Email ): Promise<Result<Report[], Error[]>>{
+	async getByFromEmail( email: Email ): Promise<Result<Report[], Error[]>> {
 		return this.reportDao.getByFromEmail( email )
 	}
 
-	async getByToEmail( email: Email ): Promise<Result<Report[], Error[]>>{
-		return this.reportDao.getByToEmail( email)
+	async getByToEmail( email: Email ): Promise<Result<Report[], Error[]>> {
+		return this.reportDao.getByToEmail( email )
 	}
 }

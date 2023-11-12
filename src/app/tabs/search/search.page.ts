@@ -159,7 +159,8 @@ export class SearchPage implements ViewDidEnter, OnDestroy {
 		else {
 			this.userFocus = false
 			await this.map.autoFollow( this.pageKey, $event.center )
-			await this.map.addRouteMarker( this.pageKey, 'search-focus', $event.center, 'green' )
+			await this.map.addRouteMarker( this.pageKey, 'search-focus',
+				$event.center, 'green' )
 		}
 	}
 }

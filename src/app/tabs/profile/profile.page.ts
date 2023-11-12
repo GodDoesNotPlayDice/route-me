@@ -22,7 +22,7 @@ import { AppBarCloneComponent } from '../../shared/components/app-bar-clone/app-
 	selector   : 'app-profile',
 	templateUrl: './profile.page.html',
 	styleUrls  : [ './profile.page.scss' ],
-	imports: [
+	imports    : [
 		IonicModule,
 		CommonModule,
 		DividerComponent,
@@ -39,7 +39,8 @@ export class ProfilePage implements ViewDidEnter {
 		private authService: AuthService,
 		private driverService: DriverService,
 		private router: Router
-	) {}
+	)
+	{}
 
 	public ionViewDidEnter(): void {
 		if ( this.authService.currentUser.isSome() &&
