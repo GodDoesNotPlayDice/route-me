@@ -8,7 +8,8 @@ import { z } from 'zod'
 
 export const ReportMessageSchema = z.object( {
 	value: z.string()
-	        .max( 180 )
+	        .min(1)
+	        .max( 50 )
 } )
 
 type ReportMessageType = z.infer<typeof ReportMessageSchema>

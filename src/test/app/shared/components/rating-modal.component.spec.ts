@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RatingModalComponent } from './rating-modal.component';
+import { RatingModalComponent } from 'src/app/shared/components/rating-modal/rating-modal.component';
 
 describe('RatingModalComponent', () => {
   let component: RatingModalComponent;

@@ -126,17 +126,24 @@
 				<div class="font-bold">
 					{{ psn.name.value }} {{ psn.lastName.value }}
 				</div>
-				<button mat-icon-button
-					[matMenuTriggerFor]="menuPsn">
-					<mat-icon>more_vert</mat-icon>
-				</button>
-				<mat-menu #menuPsn="matMenu">
-					<button mat-menu-item
-						(click)="onReportPassenger(psn)">
-						<mat-icon class="">warning</mat-icon>
-						<span class="text-red-600">Reportar</span>
+				<ng-container *ngIf="userInTrip || isDriver">
+					<button mat-icon-button
+						[matMenuTriggerFor]="menuPsn">
+						<mat-icon>more_vert</mat-icon>
 					</button>
-				</mat-menu>
+					<mat-menu #menuPsn="matMenu">
+						<button mat-menu-item
+							(click)="onReportPassenger(psn)">
+							<mat-icon class="">warning</mat-icon>
+							<span class="text-red-600">Reportar</span>
+						</button>
+						<button mat-menu-item
+							(click)="onRatingPassenger(psn)">
+							<mat-icon class="">star</mat-icon>
+							<span class="text-red-600">Clasificar</span>
+						</button>
+					</mat-menu>
+				</ng-container>
 			</div>
 			<app-divider *ngIf="trip.queuePassengers.length - 1 !== i"></app-divider>
 		</ng-container>

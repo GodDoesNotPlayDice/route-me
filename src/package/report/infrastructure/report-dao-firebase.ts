@@ -73,9 +73,9 @@ export class ReportDaoFirebase implements ReportDao {
 		return Ok( true )
 	}
 
-	async getByEmail( email: Email ): Promise<Result<Report[], Error[]>> {
+	async getByFromEmail( email: Email ): Promise<Result<Report[], Error[]>> {
 		return await this.firebase.database.ref( this.collectionKey )
-		                 .orderByChild( 'email' )
+		                 .orderByChild( 'from_user' )
 		                 .equalTo( email.value )
 		                 .get()
 		                 .then( async ( snapshot ) => {
@@ -108,6 +108,43 @@ export class ReportDaoFirebase implements ReportDao {
 		                 } )
 
 	}
+
+	async getByToEmail( email: Email ): Promise<Result<Report[], Error[]>> {
+		return await this.firebase.database.ref( this.collectionKey )
+		                 .orderByChild( 'to_user' )
+		                 .equalTo( email.value )
+		                 .get()
+		                 .then( async ( snapshot ) => {
+			                 if ( snapshot.val() === null ) {
+				                 return Err( [ new ReportIdInvalidException() ] )
+			                 }
+
+			                 const error: Error[]    = []
+			                 const reports: Report[] = []
+			                 for ( let value of Object.values( snapshot.val() ) ) {
+
+				                 const report = reportFromJson( value as Record<string, any> )
+
+				                 if ( report.isErr() ) {
+					                 error.push( ...report.unwrapErr() )
+					                 break
+				                 }
+
+				                 reports.push( report.unwrap() )
+			                 }
+
+			                 if ( error.length > 0 ) {
+				                 return Err( error )
+			                 }
+
+			                 return Ok( reports )
+		                 } )
+		                 .catch( ( error ) => {
+			                 return Err( [ new FirebaseOperationException() ] )
+		                 } )
+
+	}
+
 
 	private async getKey( id: ReportID ): Promise<Result<string, Error>> {
 		return await this.firebase.database.ref( this.collectionKey )

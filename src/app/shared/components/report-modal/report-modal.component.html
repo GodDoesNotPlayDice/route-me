@@ -1,23 +1,24 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-title>Reporte de pasajero</ion-title>
+		<ion-title>Enviar Reporte</ion-title>
 		<ion-buttons slot="end">
-			<ion-button color="medium"
-				(click)="confirm()">Volver
+			<ion-button (click)="confirm()"
+				[strong]="true">Enviar
 			</ion-button>
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-	<ion-range
-		min="0"
-		max="5"
-		step="1"
-		snaps="true"
-		color="primary"
-		pin="true"
-		value="5"
-		(ionChange)="onChange($event)"
-		labelPlacement="stacked"
-		label="Valoracion"></ion-range>
+	<div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col gap-2">
+		<div>
+			Reporte realizado por: {{fromEmail.value}}
+		</div>
+		<div>
+			Reporte el correo: {{toEmail.value}}
+		</div>
+		<app-input-area #area
+			label="Mensaje de reporte"
+			placeholder="..."></app-input-area>
+	</div>
+
 </ion-content>

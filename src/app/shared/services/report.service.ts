@@ -22,7 +22,11 @@ export class ReportService {
 		return this.reportDao.delete( id )
 	}
 
-	async getByEmail( toEmail: Email ): Promise<Result<Report[], Error[]>>{
-		return this.reportDao.getByEmail( toEmail )
+	async getByFromEmail( email: Email ): Promise<Result<Report[], Error[]>>{
+		return this.reportDao.getByFromEmail( email )
+	}
+
+	async getByToEmail( email: Email ): Promise<Result<Report[], Error[]>>{
+		return this.reportDao.getByToEmail( email)
 	}
 }

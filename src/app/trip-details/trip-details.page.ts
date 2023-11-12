@@ -26,6 +26,7 @@ import { AvatarComponent } from 'src/app/shared/components/avatar/avatar.compone
 import { DividerComponent } from 'src/app/shared/components/divider/divider.component'
 import { ItemListComponent } from 'src/app/shared/components/item-list/item-list.component'
 import { ListViewModalComponent } from 'src/app/shared/components/list-view-modal/list-view-modal.component'
+import { RatingModalComponent } from 'src/app/shared/components/rating-modal/rating-modal.component'
 import { ReportModalComponent } from 'src/app/shared/components/report-modal/report-modal.component'
 import { ParseLocationNamePipe } from 'src/app/shared/pipes/parse-location-name.pipe'
 import { AlertService } from 'src/app/shared/services/alert.service'
@@ -36,11 +37,13 @@ import { MapService } from 'src/app/shared/services/map.service'
 import { NearTripService } from 'src/app/shared/services/near-trip.service'
 import { PassengerTripService } from 'src/app/shared/services/passenger-trip.service'
 import { PositionService } from 'src/app/shared/services/position.service'
+import { ReportService } from 'src/app/shared/services/report.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
 import { TripHistoryService } from 'src/app/shared/services/trip-history.service'
 import { TripInProgressService } from 'src/app/shared/services/trip-in-progress.service'
 import { TripService } from 'src/app/shared/services/trip.service'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { Report } from 'src/package/report/domain/models/report'
 import { newTripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
 import { Trip } from 'src/package/trip/domain/models/trip'
 import { TripStateEnum } from 'src/package/trip/domain/models/trip-state'
@@ -69,6 +72,7 @@ import { ulid } from 'ulidx'
 } )
 export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 	constructor(
+		private reportService: ReportService,
 		private modalCtrl: ModalController,
 		private nearTripService: NearTripService,
 		private map: MapService,
@@ -219,8 +223,22 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			}
 		} )
 
+		if ( this.userInTrip || this.isDriver){
+			const reportedResult = await this.reportService.getByFromEmail(this.authService.currentPassenger.unwrap().email)
+			if (reportedResult.isOk()){
+				this.reportedUsers = reportedResult.unwrap()
+
+			}
+			else {
+				console.log('error reported from user. trip detail')
+				console.log(reportedResult.unwrapErr())
+			}
+		}
+
 		this.loading = false
 	}
+
+	reportedUsers : Report[] = []
 
 	async onChatClick(): Promise<void> {
 		if ( this.trip === null ) {
@@ -593,9 +611,21 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 	}
 
 	async onReportPassenger( psn: Passenger ): Promise<void> {
-		//TODO: abrir report modal y enviar segun slider el reporte
 		const modal = await this.modalCtrl.create( {
 			component     : ReportModalComponent,
+			componentProps: {
+				fromEmail: this.authService.currentPassenger.unwrap().email,
+				toEmail: psn.email
+			}
+		} )
+		await modal.present()
+
+		const { data, role } = await modal.onWillDismiss()
+	}
+
+	async onRatingPassenger( psn: Passenger ): Promise<void> {
+		const modal = await this.modalCtrl.create( {
+			component     : RatingModalComponent,
 			componentProps: {
 				emailUser: psn.email
 			}

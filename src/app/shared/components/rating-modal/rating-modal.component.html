@@ -1,3 +1,23 @@
-<p>
-  rating-modal works!
-</p>
+<ion-header>
+	<ion-toolbar>
+		<ion-title>Reporte de pasajero</ion-title>
+		<ion-buttons slot="end">
+			<ion-button color="medium"
+				(click)="confirm()">Volver
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+	<ion-range
+		min="0"
+		max="5"
+		step="1"
+		snaps="true"
+		color="primary"
+		pin="true"
+		value="5"
+		(ionChange)="onChange($event)"
+		labelPlacement="stacked"
+		label="Valoracion"></ion-range>
+</ion-content>
