@@ -1,3 +1,4 @@
+import { Option } from 'oxide.ts'
 import { Avatar } from 'src/package/shared/domain/components/avatar'
 
 export interface DriverCardInfo {
@@ -9,5 +10,5 @@ export interface DriverCardInfo {
 	endLocationName: string
 	driverAvatar: Avatar
 	state: string
-	passengerUrls: string[]
+	passengerUrls: Option<string>[]
 }

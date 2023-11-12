@@ -1,7 +1,10 @@
 import {
 	Err,
+	None,
 	Ok,
-	Result
+	Option,
+	Result,
+	Some
 } from 'oxide.ts'
 import { newDriverCarSeat } from 'src/package/driver-car/domain/models/driver-car-seat'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
@@ -28,15 +31,13 @@ import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
  */
 export const nearTripToJson = ( nearTrip: NearTrip ): Result<Record<string, any>, Error> => {
 	try {
-		return Ok( {
+		const json: Record<string, any> = {
 			id                 : nearTrip.id.value,
 			start_location_name: nearTrip.startLocationName.value,
 			end_location_name  : nearTrip.endLocationName.value,
 			seat               : nearTrip.seat.value,
 			driver_name        : nearTrip.driverName.value,
 			driver_last_name   : nearTrip.driverLastName.value,
-			driver_image       : nearTrip.driverImage.value,
-			passengers_images  : nearTrip.passengersImages.map( p => p.value ),
 			price              : {
 				amount  : nearTrip.price.amount.value,
 				currency: nearTrip.price.currency.value
@@ -44,7 +45,23 @@ export const nearTripToJson = ( nearTrip: NearTrip ): Result<Record<string, any>
 			start_date         : dateToJSON( nearTrip.startDate ),
 			latitude           : nearTrip.latitude,
 			longitude          : nearTrip.longitude
-		} )
+		}
+
+		if ( nearTrip.driverImage.isSome() ) {
+			json['driver_image'] = nearTrip.driverImage.unwrap().value
+		}
+		else {
+			json['driver_image'] = null
+		}
+
+		const passengerImages: string[] = []
+		for ( const passengerImage of nearTrip.passengersImages ) {
+			passengerImages.push(
+				passengerImage.isSome() ? passengerImage.unwrap().value : '' )
+		}
+		json['passengers_images'] = passengerImages
+
+		return Ok( json )
 	}
 	catch ( e ) {
 		return Err( new UnknownException( 'error near trip to json' ) )
@@ -138,27 +155,40 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
 		err.push( driverLastName.unwrapErr() )
 	}
 
-	const driverImage = newImageUrl( {
-		value: json['driver_image'] ?? ''
-	} )
+	let driverImage: Option<ImageUrl> = None
+	if ( json['driver_image'] !== '' ) {
+		const imageResult = newImageUrl( {
+			value: json['driver_image']
+		} )
 
-	if ( driverImage.isErr() ) {
-		err.push( driverImage.unwrapErr() )
+		if ( imageResult.isErr() ) {
+			err.push( imageResult.unwrapErr() )
+		}
+		else {
+			driverImage = Some( imageResult.unwrap() )
+		}
 	}
 
+	const passengerImages: Option<ImageUrl>[] = []
 
-	const passengerImages: ImageUrl[] = []
-	if ( json['passengers_images'] ) {
-		for ( const imagePassenger of Object.values( json['passengers_images'] ) ) {
-			const imageResult = newImageUrl( {
-				value: imagePassenger as string
-			} )
-			if ( imageResult.isErr() ) {
-				err.push( imageResult.unwrapErr() )
+	const objects = Object.values( json['passengers_images'] )
+
+	if ( objects && objects.length > 0 ) {
+		for ( const imagePassenger of objects ) {
+			let passengerImage: Option<ImageUrl> = None
+			if ( imagePassenger as string !== '' ) {
+				const imageResult = newImageUrl( {
+					value: imagePassenger as string
+				} )
+				if ( imageResult.isErr() ) {
+					err.push( imageResult.unwrapErr() )
+					continue
+				}
+				else {
+					passengerImage = Some( imageResult.unwrap() )
+				}
 			}
-			else {
-				passengerImages.push( imageResult.unwrap() )
-			}
+			passengerImages.push( passengerImage )
 		}
 	}
 
@@ -174,7 +204,7 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
 			endLocationName  : endLocation.unwrap(),
 			driverLastName   : driverLastName.unwrap(),
 			driverName       : driverName.unwrap(),
-			driverImage      : driverImage.unwrap(),
+			driverImage      : driverImage,
 			passengersImages : passengerImages,
 			seat             : seat.unwrap(),
 			latitude         : position.unwrap().lat,

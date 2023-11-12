@@ -51,7 +51,6 @@ export class RegisterDriverPage implements ViewDidEnter {
 	formGroup!: FormGroup
 
 
-	//TODO: vincular files img
 	async ionViewDidEnter() {
 		if ( this.driverService.currentDriver.isSome() &&
 			!this.driverService.currentDriver.unwrap().enabled )

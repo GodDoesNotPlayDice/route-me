@@ -7,7 +7,7 @@
 	</div>
 	<div class="flex px-2 w-full gap-2"
 		*ngIf="!owner">
-		<div
+		<div *ngIf="urlImage !== ''"
 			class="max-w-[50px] max-h-[50px] rounded-full shadow-md shadow-black/20">
 			<img class="object-fill aspect-square rounded-full"
 				[src]="urlImage"

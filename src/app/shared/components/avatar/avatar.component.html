@@ -1,9 +1,13 @@
 <div
 	class="max-w-[30px] max-h-[30px] rounded-full shadow-md shadow-black/20">
-	<img class="object-fill aspect-square rounded-full"
-		*ngIf="url !== ''"
-		[src]="url"
-		alt="">
+	<ng-container *ngIf="url.isSome()">
+		<img class="object-fill aspect-square rounded-full"
+			*ngIf="url.unwrap() !== ''"
+			[src]="url"
+			alt="">
+		<ion-icon *ngIf="url.unwrap() === ''"
+			name="person-circle-outline"></ion-icon>
+	</ng-container>
 	<div class="w-[30px] h-[30px] bg-white rounded-full object-fill"
-		*ngIf="url === ''"></div>
+		*ngIf="url.isNone()"></div>
 </div>

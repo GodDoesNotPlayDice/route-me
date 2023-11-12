@@ -7,6 +7,11 @@ import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
+import {
+	None,
+	Option,
+	Some
+} from 'oxide.ts'
 import { Subscription } from 'rxjs'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
@@ -94,16 +99,15 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 			                     const parsedAmount = this.currencyService.parseCurrency(
 				                     trip.price.amount.value, currencyResult.unwrap() )
 
-			                     const urlsList = trip.passengersImages.map(
-				                     ( image ) => {
-					                     return image.value
+			                     const urlsList : Option<string>[] = trip.passengersImages.map( ( image ) => {
+					                     return image.isSome() ? Some(image.unwrap().value) : Some('')
 				                     } )
 
 			                     const totalSeat       = trip.seat.value
 			                     const blankUrlsEmptys = totalSeat - 1 -
 				                     urlsList.length
 			                     for ( let i = 0; i < blankUrlsEmptys; i++ ) {
-				                     urlsList.push( '' )
+				                     urlsList.push( None )
 			                     }
 
 			                     return {
@@ -116,7 +120,7 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 				                     startLocationName: trip.startLocationName.value,
 				                     driverAvatar     : {
 					                     name: `${ trip.driverName.value } ${ trip.driverLastName.value }`,
-					                     url : trip.driverImage.value
+					                     url : trip.driverImage.isSome() ? trip.driverImage.unwrap().value : ''
 				                     },
 				                     passengerUrls    : urlsList
 			                     }

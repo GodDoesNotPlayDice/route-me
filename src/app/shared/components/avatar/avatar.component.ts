@@ -4,6 +4,7 @@ import {
 	Input
 } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
+import { Option } from 'oxide.ts'
 
 @Component( {
 	standalone : true,
@@ -16,5 +17,5 @@ import { IonicModule } from '@ionic/angular'
 	]
 } )
 export class AvatarComponent {
-	@Input( { required: true } ) url: string
+	@Input( { required: true } ) url: Option<string>
 }

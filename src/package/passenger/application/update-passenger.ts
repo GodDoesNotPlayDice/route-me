@@ -1,7 +1,10 @@
 import {
 	Err,
+	None,
 	Ok,
-	Result
+	Option,
+	Result,
+    Some
 } from 'oxide.ts'
 import { PassengerDao } from 'src/package/passenger/domain/dao/passenger-dao'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
@@ -16,7 +19,10 @@ import {
 } from 'src/package/preference/domain/models/preference'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
-import { newImageUrl } from 'src/package/shared/domain/models/image-url'
+import {
+	ImageUrl,
+	newImageUrl
+} from 'src/package/shared/domain/models/image-url'
 import { newPhone } from 'src/package/shared/domain/models/phone'
 
 /**
@@ -58,12 +64,18 @@ export const updatePassenger = async (
 		err.push( email.unwrapErr() )
 	}
 
-	const image = newImageUrl( {
-		value: partialProps.image ?? passenger.image.value
-	} )
+	let image : Option<ImageUrl> = passenger.image
+	if ( partialProps.image !== undefined ) {
+		const imageResult = newImageUrl( {
+			value: partialProps.image
+		} )
 
-	if ( image.isErr() ) {
-		err.push( image.unwrapErr() )
+		if ( imageResult.isErr() ) {
+			err.push( imageResult.unwrapErr() )
+		}
+		else {
+			image = Some(imageResult.unwrap())
+		}
 	}
 
 	const name = newPassengerName( {
@@ -137,7 +149,7 @@ export const updatePassenger = async (
 	}
 
 	const newPassenger: Passenger = {
-		image        : image.unwrap(),
+		image        : image,
 		name         : name.unwrap(),
 		lastName     : lastName.unwrap(),
 		description  : description.unwrap(),

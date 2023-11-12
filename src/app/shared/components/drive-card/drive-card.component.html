@@ -3,8 +3,11 @@
 		<div
 			class="basis-3/12 max-w-[55px] max-h-[55px] m-1.5 rounded-full shadow-md shadow-black/20">
 			<img class="max-w-[55px] max-h-[55px] object-fill aspect-square rounded-full"
+				*ngIf="info.driverAvatar.url !== ''"
 				[src]="info.driverAvatar.url"
 				alt="">
+			<div class="w-[30px] h-[30px] bg-white rounded-full object-fill"
+				*ngIf="info.driverAvatar.url === ''"></div>
 		</div>
 		<div class="basis-9/12 flex flex-col m-1 justify-between">
 			<div class="flex w-full items-center justify-between">

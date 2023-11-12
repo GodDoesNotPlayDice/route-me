@@ -1,7 +1,10 @@
 import {
 	Err,
+	None,
 	Ok,
-	Result
+	Option,
+	Result,
+	Some
 } from 'oxide.ts'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { newPassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
@@ -18,7 +21,10 @@ import { Preference } from 'src/package/preference/domain/models/preference'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
-import { newImageUrl } from 'src/package/shared/domain/models/image-url'
+import {
+	ImageUrl,
+	newImageUrl
+} from 'src/package/shared/domain/models/image-url'
 import { newPhone } from 'src/package/shared/domain/models/phone'
 import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
 import {
@@ -38,7 +44,6 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
 			id            : passenger.id.value,
 			email         : passenger.email.value,
 			name          : passenger.name.value,
-			image         : passenger.image.value,
 			last_name     : passenger.lastName.value,
 			description   : passenger.description.value,
 			gender        : passenger.gender,
@@ -46,6 +51,13 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
 			birth_day     : dateToJSON( passenger.birthDay.value ),
 			average_rating: passenger.averageRating.value,
 			phone         : passenger.phone.value
+		}
+
+		if ( passenger.image.isSome() ) {
+			json['image'] = passenger.image.unwrap().value
+		}
+		else {
+			json['image'] = ''
 		}
 
 		const preferences: Record<string, any>[] = []
@@ -196,12 +208,18 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
 		err.push( rating.unwrapErr() )
 	}
 
-	const image = newImageUrl( {
-		value: json['image'] ?? ''
-	} )
+	let image: Option<ImageUrl> = None
+	if ( json['image'] !== '' ) {
+		const imageResult = newImageUrl( {
+			value: json['image']
+		} )
 
-	if ( image.isErr() ) {
-		err.push( image.unwrapErr() )
+		if ( imageResult.isErr() ) {
+			err.push( imageResult.unwrapErr() )
+		}
+		else {
+			image = Some( imageResult.unwrap() )
+		}
 	}
 
 	if ( err.length > 0 ) {
@@ -210,7 +228,7 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
 
 	return Ok( {
 		id           : id.unwrap(),
-		image        : image.unwrap(),
+		image        : image,
 		email        : email.unwrap(),
 		name         : name.unwrap(),
 		lastName     : lastName.unwrap(),

@@ -1,3 +1,4 @@
+import { Option } from 'oxide.ts'
 import { PassengerBirthDay } from 'src/package/passenger/domain/models/passenger-birth-day'
 import { PassengerCountry } from 'src/package/passenger/domain/models/passenger-country'
 import { PassengerDescription } from 'src/package/passenger/domain/models/passenger-description'
@@ -13,7 +14,7 @@ import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
 
 export interface Passenger {
 	id: PassengerID
-	image: ImageUrl
+	image: Option<ImageUrl>
 	name: PassengerName
 	lastName: PassengerLastName
 	description: PassengerDescription

@@ -51,7 +51,6 @@ export class ChatPage implements OnInit, OnDestroy {
 	passengersTrip: Map<string, Passenger> = new Map<string, Passenger>()
 	inputTextValue: string                 = ''
 	sendingText: boolean                   = false
-	firstSort: boolean                     = false
 
 	async ngOnInit(): Promise<void> {
 		this.passengerOwner = this.authService.currentPassenger.unwrap()

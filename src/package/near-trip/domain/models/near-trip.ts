@@ -1,3 +1,4 @@
+import { Option } from 'oxide.ts'
 import { DriverCarSeat } from 'src/package/driver-car/domain/models/driver-car-seat'
 import { PassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
 import { PassengerName } from 'src/package/passenger/domain/models/passenger-name'
@@ -17,6 +18,6 @@ export interface NearTrip {
 	seat: DriverCarSeat
 	driverName: PassengerName
 	driverLastName: PassengerLastName
-	driverImage: ImageUrl
-	passengersImages: ImageUrl[]
+	driverImage: Option<ImageUrl>
+	passengersImages: Option<ImageUrl>[]
 }

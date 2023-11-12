@@ -91,8 +91,7 @@ export class SearchPage implements ViewDidEnter, OnDestroy {
 
 			if ( currencyResult.isOk() ) {
 				for ( const nearTrip of resultInitTrips.unwrap() ) {
-					const passengerLength = nearTrip.passengersImages.map(
-						( val ) => val.value !== '' ).length
+					const passengerLength = nearTrip.passengersImages.length
 					const targetAmount    = this.currencyService.parseCurrency(
 						nearTrip.price.amount.value,
 						currencyResult.unwrap() )

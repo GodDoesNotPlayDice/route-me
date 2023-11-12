@@ -1,5 +1,6 @@
 import {
 	Err,
+	None,
 	Ok,
 	Result
 } from 'oxide.ts'
@@ -132,7 +133,7 @@ export const createPassenger = async ( dao: PassengerDao,
 
 	const passenger: Passenger = {
 		id           : id.unwrap(),
-		image        : image.unwrap(),
+		image        : None,
 		email        : props.email,
 		lastName     : lastName.unwrap(),
 		name         : name.unwrap(),

@@ -12,7 +12,7 @@
 					[userLastName]="msg.passengerLastName.value"
 					[owner]="passengerOwner.email.value === msg.passengerEmail.value"
 					[message]="msg.content.value"
-					[urlImage]="passengerOwner.image.value"
+					[urlImage]="passengerOwner.image.isNone() ? '' : passengerOwner.image.unwrap().value"
 					[userName]="msg.passengerName.value"
 				></app-bubble-chat>
 			</ng-container>
