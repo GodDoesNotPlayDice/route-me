@@ -95,13 +95,9 @@ export class TripHistoryPage implements ViewDidEnter {
 						startLocationName: trip.startLocation.name.value,
 						endLocationName  : trip.endLocation.name.value,
 						state            : trip.state,
-						passengerUrls    : trip.passengers.map(
-							passenger => passenger.image.isSome() ? Some(
-								passenger.image.unwrap().value ) : Some( '' ) ),
+						passengerUrls    : trip.passengers.map( passenger => passenger.image.isSome() ? passenger.image.unwrap().value : ''  ),
 						driverAvatar     : {
-							url : trip.driver.passenger.image.isSome()
-								? trip.driver.passenger.image.unwrap().value
-								: '',
+							url : trip.driver.passenger.image.isSome() ? trip.driver.passenger.image.unwrap().value : '',
 							name: `${ trip.driver.passenger.name.value } ${ trip.driver.passenger.lastName.value }`
 						}
 					} )
@@ -116,9 +112,7 @@ export class TripHistoryPage implements ViewDidEnter {
 						startLocationName: trip.startLocation.name.value,
 						endLocationName  : trip.endLocation.name.value,
 						state            : trip.state,
-						passengerUrls    : trip.passengers.map(
-							passenger => passenger.image.isSome() ? Some(
-								passenger.image.unwrap().value ) : Some( '' ) ),
+						passengerUrls    : trip.passengers.map( passenger => passenger.image.isSome() ? passenger.image.unwrap().value : ''  ),
 						driverAvatar     : {
 							url : trip.driver.passenger.image.isSome()
 								? trip.driver.passenger.image.unwrap().value
@@ -153,9 +147,7 @@ export class TripHistoryPage implements ViewDidEnter {
 					startLocationName: tripHistory.trip.startLocation.name.value,
 					endLocationName  : tripHistory.trip.endLocation.name.value,
 					state            : tripHistory.trip.state,
-					passengerUrls    : tripHistory.trip.passengers.map(
-						passenger => passenger.image.isSome() ? Some(
-							passenger.image.unwrap().value ) : Some( '' ) ),
+					passengerUrls    : tripHistory.trip.passengers.map( passenger => passenger.image.isSome() ? passenger.image.unwrap().value : ''  ),
 					driverAvatar     : {
 						url : tripHistory.trip.driver.passenger.image.isSome()
 							? tripHistory.trip.driver.passenger.image.unwrap().value

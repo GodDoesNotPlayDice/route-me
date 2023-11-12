@@ -17,5 +17,5 @@ import { Option } from 'oxide.ts'
 	]
 } )
 export class AvatarComponent {
-	@Input( { required: true } ) url: Option<string>
+	@Input( { required: true } ) url: string | null
 }

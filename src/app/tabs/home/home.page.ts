@@ -99,15 +99,15 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 			                     const parsedAmount = this.currencyService.parseCurrency(
 				                     trip.price.amount.value, currencyResult.unwrap() )
 
-			                     const urlsList : Option<string>[] = trip.passengersImages.map( ( image ) => {
-					                     return image.isSome() ? Some(image.unwrap().value) : Some('')
+			                     const urlsList : Array<string | null> = trip.passengersImages.map( ( image ) => {
+					                     return image.isSome() ? image.unwrap().value : ''
 				                     } )
 
 			                     const totalSeat       = trip.seat.value
 			                     const blankUrlsEmptys = totalSeat - 1 -
 				                     urlsList.length
 			                     for ( let i = 0; i < blankUrlsEmptys; i++ ) {
-				                     urlsList.push( None )
+				                     urlsList.push( null )
 			                     }
 
 			                     return {
