@@ -74,7 +74,7 @@ export class RatingDaoFirebase implements RatingDao {
 
 	async getByEmail( email: Email ): Promise<Result<Rating[], Error[]>> {
 		return await this.firebase.database.ref( this.collectionKey )
-		                 .orderByChild( 'email' )
+		                 .orderByChild( 'user_email' )
 		                 .equalTo( email.value )
 		                 .get()
 		                 .then( async ( snapshot ) => {

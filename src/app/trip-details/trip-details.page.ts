@@ -627,7 +627,8 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		const modal = await this.modalCtrl.create( {
 			component     : RatingModalComponent,
 			componentProps: {
-				emailUser: psn.email
+				fromEmail: this.authService.currentPassenger.unwrap().email,
+				toEmail: psn.email
 			}
 		} )
 		await modal.present()

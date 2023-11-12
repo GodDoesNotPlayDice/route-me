@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing'
 
 import { AppComponent } from 'src/app/app.component'
 
-//TODO: hacer object mother de, ip, near trip, passenger trip, trip in progress
 describe( 'AppComponent', () => {
 
 	beforeEach( async () => {

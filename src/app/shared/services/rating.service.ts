@@ -4,6 +4,7 @@ import {
 	Ok,
 	Result
 } from 'oxide.ts'
+import { AuthService } from 'src/app/shared/services/auth.service'
 import { createRating } from 'src/package/rating/application/create-rating'
 import { RatingDao } from 'src/package/rating/domain/dao/rating-dao'
 import { Email } from 'src/package/shared/domain/models/email'
@@ -14,7 +15,8 @@ import { Email } from 'src/package/shared/domain/models/email'
 export class RatingService {
 
 	constructor(
-		private ratingDao: RatingDao
+		private ratingDao: RatingDao,
+		private auth: AuthService
 	)
 	{ }
 
@@ -28,6 +30,15 @@ export class RatingService {
 			console.log( 'error. create rating service', result.unwrapErr() )
 			return Err( result.unwrapErr() )
 		}
+
+		const update = await this.auth.updatePassenger( {
+			rating: result.unwrap().value
+		} )
+
+		if ( update.isErr() ) {
+			return Err( update.unwrapErr() )
+		}
+
 		return Ok( true )
 	}
 }

@@ -3,8 +3,11 @@ import {
 	OnDestroy
 } from '@angular/core'
 import {
+	Err,
 	None,
+	Ok,
 	Option,
+	Result,
 	Some
 } from 'oxide.ts'
 import {
@@ -120,30 +123,25 @@ export class AuthService implements OnDestroy {
 
 
 	async updatePassenger( partialProps: {
-		email?: string,
 		image?: string,
 		name?: string,
 		lastName?: string,
 		description?: string,
 		phone?: string,
-		country?: string,
-		gender?: string
+		rating?: number,
 		preferences?: PreferenceProps[],
-	} ): Promise<boolean> {
-		if ( this.currentPassenger.isNone() ) {
-			return false
-		}
+	} ): Promise<Result<Passenger, Error[]>> {
 		const result = await updatePassenger( this.passengerDao,
 			this.currentPassenger.unwrap(), partialProps )
 
 		if ( result.isErr() ) {
 			console.log( 'update passenger error' )
 			console.log( result.unwrapErr() )
-			return false
+			return Err( result.unwrapErr())
 		}
 
 		this.currentPassenger = Some( result.unwrap() )
-		return true
+		return Ok( result.unwrap() )
 	}
 
 	async registerPassenger( props: {

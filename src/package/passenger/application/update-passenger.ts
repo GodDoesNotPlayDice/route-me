@@ -17,6 +17,7 @@ import {
 	Preference,
 	PreferenceProps
 } from 'src/package/preference/domain/models/preference'
+import { newRatingValue } from 'src/package/rating/domain/models/rating-value'
 import { newEmail } from 'src/package/shared/domain/models/email'
 import { newGender } from 'src/package/shared/domain/models/gender'
 import {
@@ -42,27 +43,17 @@ import { newPhone } from 'src/package/shared/domain/models/phone'
 export const updatePassenger = async (
 	dao: PassengerDao,
 	passenger: Passenger, partialProps: {
-		email?: string,
 		image?: string,
 		name?: string,
 		lastName?: string,
 		description?: string,
 		phone?: string,
-		country?: string,
-		gender?: string
+		rating?: number,
 		preferences?: PreferenceProps[],
 	}
 ): Promise<Result<Passenger, Error[]>> => {
 
 	const err: Error[] = []
-
-	const email = newEmail( {
-		value: partialProps.email ?? passenger.email.value
-	} )
-
-	if ( email.isErr() ) {
-		err.push( email.unwrapErr() )
-	}
 
 	let image : Option<ImageUrl> = passenger.image
 	if ( partialProps.image !== undefined ) {
@@ -84,6 +75,14 @@ export const updatePassenger = async (
 
 	if ( name.isErr() ) {
 		err.push( name.unwrapErr() )
+	}
+
+	const rating = newRatingValue({
+		value: partialProps.rating ?? passenger.averageRating.value
+	})
+
+	if ( rating.isErr() ) {
+		err.push( rating.unwrapErr() )
 	}
 
 	const lastName = newPassengerLastName( {
@@ -108,22 +107,6 @@ export const updatePassenger = async (
 
 	if ( phone.isErr() ) {
 		err.push( ...phone.unwrapErr() )
-	}
-
-	const country = newPassengerCountry( {
-		value: partialProps.country ?? passenger.country.value
-	} )
-
-	if ( country.isErr() ) {
-		err.push( country.unwrapErr() )
-	}
-
-	const gender = newGender( {
-		value: partialProps.gender ?? passenger.gender
-	} )
-
-	if ( gender.isErr() ) {
-		err.push( gender.unwrapErr() )
 	}
 
 	let preferences: Preference[] = []
@@ -154,10 +137,10 @@ export const updatePassenger = async (
 		lastName     : lastName.unwrap(),
 		description  : description.unwrap(),
 		phone        : phone.unwrap(),
-		country      : country.unwrap(),
-		email        : email.unwrap(),
-		gender       : gender.unwrap(),
-		averageRating: passenger.averageRating,
+		country      : passenger.country,
+		email        : passenger.email,
+		gender       : passenger.gender,
+		averageRating: rating.unwrap(),
 		preferences  : preferences,
 		id           : passenger.id,
 		birthDay     : passenger.birthDay

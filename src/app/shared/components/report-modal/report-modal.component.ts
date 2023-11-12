@@ -29,7 +29,7 @@ import { ulid } from 'ulidx'
 		InputAreaComponent
 	]
 } )
-export class ReportModalComponent implements OnInit {
+export class ReportModalComponent {
 
 	constructor(
 		private reportService: ReportService,
@@ -42,8 +42,6 @@ export class ReportModalComponent implements OnInit {
 	@Input( { required: true } ) fromEmail: Email
 	@Input( { required: true } ) toEmail: Email
 	@ViewChild( 'area' ) areaInput !: InputAreaComponent
-
-	ngOnInit() {}
 
 	async confirm() {
 		if ( !this.areaInput.textControl.valid ) {

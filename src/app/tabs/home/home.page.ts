@@ -7,11 +7,6 @@ import {
 	IonicModule,
 	ViewDidEnter
 } from '@ionic/angular'
-import {
-	None,
-	Option,
-	Some
-} from 'oxide.ts'
 import { Subscription } from 'rxjs'
 import { DriveCardComponent } from 'src/app/shared/components/drive-card/drive-card.component'
 import { FilterButtonComponent } from 'src/app/shared/components/filter-button/filter-button.component'
@@ -20,6 +15,7 @@ import { CurrencyService } from 'src/app/shared/services/currency.service'
 import { NearTripService } from 'src/app/shared/services/near-trip.service'
 import { PositionService } from 'src/app/shared/services/position.service'
 import { ToastService } from 'src/app/shared/services/toast.service'
+import { TripService } from 'src/app/shared/services/trip.service'
 import { Position } from 'src/package/position-api/domain/models/position'
 import { DriverCardInfo } from 'src/package/shared/domain/components/driver-card-info'
 import { FilterButtonData } from 'src/package/shared/domain/components/filter-button-data'
@@ -43,12 +39,14 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 	constructor(
 		private toastService: ToastService,
 		private nearTripService: NearTripService,
+		private tripService: TripService,
 		private positionService: PositionService,
 		private currencyService: CurrencyService
 	)
 	{}
 
 	info: DriverCardInfo[] = []
+	infoOpen: DriverCardInfo[] = []
 
 	canFetch: boolean = false
 	loading: boolean  = false
@@ -83,9 +81,11 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 	private async loadOpenTrips( center: Position ): Promise<void> {
 		this.loading = true
 		console.log( '-----load open trips-----' )
+		const open = await this.tripService.getAllByState( TripStateEnum.Open )
+
 		const result = await this.nearTripService.getNearTrips( center, 10 )
 
-		if ( result.isErr() ) {
+		if ( result.isErr() || open.isErr() ) {
 			console.log( 'load open trips err' )
 			console.log( result.unwrapErr() )
 			this.errors  = true
@@ -93,6 +93,39 @@ export class HomePage implements ViewDidEnter, OnDestroy {
 			return
 		}
 		const currencyResult = await this.currencyService.fetchCurrency()
+
+		this.infoOpen    = open.unwrap()
+		                     .map( ( trip ): DriverCardInfo => {
+			                     const parsedAmount = this.currencyService.parseCurrency(
+				                     trip.price.amount.value, currencyResult.unwrap() )
+
+			                     const urlsList : Array<string | null> = trip.passengers.map( ( passenger ) => {
+				                     return passenger.image.isSome() ? passenger.image.unwrap().value : ''
+			                     } )
+
+			                     const totalSeat       = trip.driver.driverCar.seat.value
+			                     const blankUrlsEmptys = totalSeat - 1 -
+				                     urlsList.length
+			                     for ( let i = 0; i < blankUrlsEmptys; i++ ) {
+				                     urlsList.push( null )
+			                     }
+
+			                     return {
+				                     id               : trip.id.value,
+				                     currency         : currencyResult.unwrap().currency,
+				                     cost             : parsedAmount,
+				                     date             : trip.startDate,
+				                     state            : TripStateEnum.Open,
+				                     endLocationName  : trip.endLocation.name.value,
+				                     startLocationName: trip.startLocation.name.value,
+				                     driverAvatar     : {
+					                     name: `${ trip.driver.passenger.name.value } ${ trip.driver.passenger.lastName.value }`,
+					                     url : trip.driver.passenger.image.isSome() ? trip.driver.passenger.image.unwrap().value : ''
+				                     },
+				                     passengerUrls    : urlsList
+			                     }
+		                     } )
+
 
 		this.info    = result.unwrap()
 		                     .map( ( trip ): DriverCardInfo => {

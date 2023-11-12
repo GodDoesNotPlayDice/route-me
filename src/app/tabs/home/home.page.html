@@ -28,6 +28,22 @@
 					<app-drive-card [info]="card"></app-drive-card>
 				</div>
 			</ng-container>
+			<div class="font-gotham text-xl">Viajes abiertos</div>
+			<div class="w-full flex justify-center items-center"
+				*ngIf="loading">
+				<ion-spinner name="dots"></ion-spinner>
+			</div>
+			<div *ngIf="info.length === 0 && !loading && !errors">
+				No hay nada por mostrar
+			</div>
+			<div *ngIf="!loading && errors">
+				Ha ocurrido un error. Intente nuevamente
+			</div>
+			<ng-container *ngIf="info.length > 0">
+				<div *ngFor="let card of info">
+					<app-drive-card [info]="card"></app-drive-card>
+				</div>
+			</ng-container>
 		</div>
 	</div>
 </ion-content>
