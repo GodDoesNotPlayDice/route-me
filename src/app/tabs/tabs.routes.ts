@@ -41,6 +41,10 @@ export const routes: Routes = [
 				path         : 'register-driver',
 				loadComponent: () => import('./register-driver/register-driver.page').then(
 					m => m.RegisterDriverPage )
+			},
+			{
+				path: 'edit-profile',
+				loadComponent: () => import('./edit-profile/edit-profile.page').then( m => m.EditProfilePage)
 			}
 		]
 	},
@@ -48,5 +52,5 @@ export const routes: Routes = [
 		path      : '',
 		redirectTo: '/tabs/home',
 		pathMatch : 'full'
-	}
+	},
 ]

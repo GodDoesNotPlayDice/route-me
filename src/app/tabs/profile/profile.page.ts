@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component } from '@angular/core'
 import { MatIconModule } from '@angular/material/icon'
+import { MatMenuModule } from '@angular/material/menu'
 import { Router } from '@angular/router'
 import {
 	IonicModule,
@@ -21,23 +22,24 @@ import { AppBarCloneComponent } from '../../shared/components/app-bar-clone/app-
 	selector   : 'app-profile',
 	templateUrl: './profile.page.html',
 	styleUrls  : [ './profile.page.scss' ],
-	imports    : [
+	imports: [
 		IonicModule,
 		CommonModule,
 		DividerComponent,
 		LabeledIconComponent,
 		AdaptativeButtonComponent,
 		AppBarCloneComponent,
-		MatIconModule
+		MatIconModule,
+		MatMenuModule
 	]
 } )
 export class ProfilePage implements ViewDidEnter {
 
-	constructor( private authService: AuthService,
+	constructor(
+		private authService: AuthService,
 		private driverService: DriverService,
-		private router: Router )
-	{
-	}
+		private router: Router
+	) {}
 
 	public ionViewDidEnter(): void {
 		if ( this.authService.currentUser.isSome() &&
@@ -71,5 +73,9 @@ export class ProfilePage implements ViewDidEnter {
 		else {
 			console.log( 'logout fail' )
 		}
+	}
+
+	async editClick(): Promise<void> {
+		await this.router.navigate( [ '/tabs/edit-profile' ] )
 	}
 }

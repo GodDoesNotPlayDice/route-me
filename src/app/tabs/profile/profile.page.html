@@ -2,15 +2,26 @@
 	<app-app-bar-clone
 		leadNameIcon=""
 		[label]="profile_label">
-		<mat-icon
-			(click)="onLogout()"
-			fontIcon='logout'></mat-icon>
+		<div class="flex gap-4">
+			<mat-icon
+				(click)="onLogout()"
+				fontIcon='logout'></mat-icon>
+			<ion-icon class="w-6 h-6" (click)="editClick()"
+				name="create-outline"></ion-icon>
+		</div>
 	</app-app-bar-clone>
 	<div *ngIf="passenger">
 		<div class="flex items-center flex-col my-5 gap-6">
 			<div class="flex">
-				<img class="rounded-full w-32"
-					src="https://cdn.discordapp.com/attachments/982116594543099924/1147603255032041642/5ni93d3zaera1.png">
+				<ng-container *ngIf="passenger.image.isNone()">
+					<ion-icon
+						class="h-24 w-24"
+						name="person-circle-outline"></ion-icon>
+				</ng-container>
+				<ng-container *ngIf="passenger.image.isSome()">
+					<img class="rounded-full w-32"
+						[src]="passenger.image.unwrap().value">
+				</ng-container>
 			</div>
 			<div
 				class="flex flex-col gap-2 font-gotham text-center text-xl">

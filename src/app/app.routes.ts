@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router'
-import { CanLoginGuard } from 'src/app/shared/guard'
 import { CanRegisterGuard } from 'src/app/shared/guard/can-register.guard'
+import { CanLoginGuard } from 'src/app/shared/guard/can-login.guard'
 
 export const routes: Routes = [
 	{

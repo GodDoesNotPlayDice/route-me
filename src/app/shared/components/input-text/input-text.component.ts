@@ -137,6 +137,8 @@ export class InputTextComponent implements OnInit {
 		if ( this.type === 'password' ) {
 			this.shouldToggleHidden = true
 		}
+		this.textControl.patchValue( this.value )
+		this.textControl.updateValueAndValidity()
 	}
 
 	public input( $event: Event ): void {

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
 import {
 	Component,
-	Input
+	Input,
+	OnInit
 } from '@angular/core'
 import {
 	FormControl,
@@ -29,14 +30,14 @@ import { MultipleSelectorData } from 'src/package/shared/domain/components/multi
 		MultipleSelectorModalComponent
 	]
 } )
-export class MultipleSelectorInputComponent {
+export class MultipleSelectorInputComponent implements OnInit{
 	constructor( private modalCtrl: ModalController ) {}
 
 	@Input() required = false
 	@Input( { required: true } ) label: string
 	@Input( { required: true } ) placeholder: string
 
-	selectedData: MultipleSelectorData[] = []
+	@Input() selectedData: MultipleSelectorData[] = []
 
 	@Input( { required: true } ) databaseList: MultipleSelectorData[]
 
@@ -49,6 +50,11 @@ export class MultipleSelectorInputComponent {
 			}
 			return null
 		} )
+
+	public ngOnInit(): void {
+		this.multipleSelectorControl.patchValue( this.selectedData )
+		this.multipleSelectorControl.updateValueAndValidity()
+	}
 
 	async openModal() {
 		const modal = await this.modalCtrl.create( {

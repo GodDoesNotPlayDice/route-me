@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 
-import { NearTripService } from './near-trip.service'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
 
 describe( 'NearTripService', () => {
 	let service: NearTripService

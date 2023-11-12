@@ -10,6 +10,23 @@
 		<div class="flex flex-col gap-5">
 			<app-stepper></app-stepper>
 			<form class="flex flex-col gap-5">
+				<div class="flex flex-col justify-center items-center gap-2">
+					<ng-container *ngIf="tempUrl ===''">
+						<ion-icon
+							class="h-24 w-24"
+							name="person-circle-outline"></ion-icon>
+					</ng-container>
+					<ng-container *ngIf="tempUrl !==''">
+						<img class="h-24 w-24 rounded-full"
+							[src]="tempUrl"
+							alt="Foto de perfil">
+					</ng-container>
+					<button
+						(click)="onLoadPhoto()"
+						class="bg-yellow-500 text-white h-6 w-24 rounded-full text-base"
+					>Subir foto
+					</button>
+				</div>
 				<app-input-area #area
 					label="Sobre mi"
 					placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>

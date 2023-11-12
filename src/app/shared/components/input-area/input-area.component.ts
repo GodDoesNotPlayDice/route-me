@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
 import {
 	Component,
-	Input
+	Input,
+	OnInit
 } from '@angular/core'
 import {
 	FormControl,
@@ -20,17 +21,22 @@ import { IonicModule } from '@ionic/angular'
 		ReactiveFormsModule
 	]
 } )
-export class InputAreaComponent {
+export class InputAreaComponent implements OnInit{
 	@Input() title: string       = 'Sobre Mi'
 	@Input() placeholder: string = ''
 	@Input() label: string       = ''
-	value: string                = ''
+	@Input() value: string                = ''
 
 	readonly textControl = new FormControl( '', control => {
 		// control.addValidators( Validators.required )
 		// control.addValidators( Validators.minLength( 5 ) )
 		return null
 	} )
+
+	public ngOnInit(): void {
+		this.textControl.patchValue( this.value)
+		this.textControl.updateValueAndValidity()
+	}
 
 	onChange() {
 		this.textControl.updateValueAndValidity()
