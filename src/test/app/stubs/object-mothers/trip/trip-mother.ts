@@ -37,6 +37,16 @@ export class TripMother {
 					max: 4
 				}
 			} )
+
+		const queuePassengers    = faker.helpers.multiple( () => PassengerMother.random()
+		                                                                   .unwrap(),
+			{
+				count: {
+					min: 1,
+					max: 4
+				}
+			} )
+
 		const startPosition = PositionMother.random()
 		                                    .unwrap()
 		return Ok( {
@@ -69,6 +79,7 @@ export class TripMother {
 			startDate    : startDate.unwrap().value,
 			driver       : DriverMother.random()
 			                           .unwrap(),
+			queuePassengers: queuePassengers,
 			passengers   : passengers
 		} )
 	}
