@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	async ngOnInit() {
-		// await this.countryPhoneCode.init()
+		await this.countryPhoneCode.init()
 		initTE( { Input, Dropdown, Ripple } )
 	}
 

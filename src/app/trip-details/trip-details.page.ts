@@ -209,9 +209,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		}
 
 		const passengerEmail = this.authService.currentPassenger.unwrap().email.value
-		this.userInTrip      =
-			passengerEmail === this.trip?.driver.passenger.email.value
-		this.isDriver        = this.userInTrip
+		this.isDriver        = passengerEmail === this.trip?.driver.passenger.email.value
 		this.trip?.passengers.forEach( ( passenger ) => {
 			if ( passenger.email.value === passengerEmail ) {
 				this.userInTrip = true
@@ -529,7 +527,6 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		}
 		await this.loadingService.showLoading( 'Terminando Viaje' )
 
-
 		const resultDriver = await this.driverService.driverUpdate( {
 			activeTrip: undefined
 		} )
@@ -559,8 +556,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 				for ( let passenger of this.trip.passengers ) {
 					const passengerTripProgressDeleteResult = await this.passengerTripService.delete(
 						this.trip.id, passenger.email )
-					const historyResult                     = await this.tripHistoryService.create(
-						{
+					const historyResult                     = await this.tripHistoryService.create( {
 							trip     : this.trip,
 							userEmail: passenger.email,
 							id       : newTripHistoryID( {

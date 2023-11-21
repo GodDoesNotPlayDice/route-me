@@ -89,7 +89,7 @@ export class TripHistoryPage implements ViewDidEnter {
 						id               : trip.id.value,
 						cost             : this.currencyService.parseCurrency(
 							trip.price.amount.value, currencyResult.unwrap() ),
-						currency         : trip.price.currency.value,
+						currency         : currencyResult.unwrap().currency,
 						date             : trip.startDate,
 						startLocationName: trip.startLocation.name.value,
 						endLocationName  : trip.endLocation.name.value,
@@ -111,7 +111,7 @@ export class TripHistoryPage implements ViewDidEnter {
 						id               : trip.id.value,
 						cost             : this.currencyService.parseCurrency(
 							trip.price.amount.value, currencyResult.unwrap() ),
-						currency         : trip.price.currency.value,
+						currency         : currencyResult.unwrap().currency,
 						date             : trip.startDate,
 						startLocationName: trip.startLocation.name.value,
 						endLocationName  : trip.endLocation.name.value,
@@ -149,7 +149,7 @@ export class TripHistoryPage implements ViewDidEnter {
 					id               : tripHistory.trip.id.value,
 					cost             : this.currencyService.parseCurrency(
 						tripHistory.trip.price.amount.value, currencyResult.unwrap() ),
-					currency         : tripHistory.trip.price.currency.value,
+					currency         : currencyResult.unwrap().currency,
 					date             : tripHistory.trip.startDate,
 					startLocationName: tripHistory.trip.startLocation.name.value,
 					endLocationName  : tripHistory.trip.endLocation.name.value,

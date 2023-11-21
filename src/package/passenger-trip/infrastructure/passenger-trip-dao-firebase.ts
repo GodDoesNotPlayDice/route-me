@@ -107,7 +107,7 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 
 	async delete( id: TripID, email: Email ): Promise<Result<boolean, Error>> {
 		return await this.firebase.database.ref( this.collectionKey )
-		                 .orderByChild( 'id' )
+		                 .orderByChild( 'trip_id' )
 		                 .equalTo( id.value )
 		                 .get()
 		                 .then( async ( snapshot ) => {
@@ -134,6 +134,8 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 			                 return Ok( true )
 		                 } )
 		                 .catch( ( error ) => {
+											 console.log('err')
+											 console.log(error)
 			                 return Err( new FirebaseOperationException() )
 		                 } )
 	}

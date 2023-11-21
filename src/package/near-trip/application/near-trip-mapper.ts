@@ -156,7 +156,7 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
 	}
 
 	let driverImage: Option<ImageUrl> = None
-	if ( json['driver_image'] !== '' ) {
+	if ( json['driver_image'] !== undefined ) {
 		const imageResult = newImageUrl( {
 			value: json['driver_image']
 		} )
@@ -171,12 +171,11 @@ export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, 
 
 	const passengerImages: Option<ImageUrl>[] = []
 
-	const objects = Object.values( json['passengers_images'] )
-
-	if ( objects && objects.length > 0 ) {
+	if ( json['passengers_images'] !== undefined) {
+		const objects = Object.values( json['passengers_images'] )
 		for ( const imagePassenger of objects ) {
 			let passengerImage: Option<ImageUrl> = None
-			if ( imagePassenger as string !== '' ) {
+			if ( imagePassenger !== undefined) {
 				const imageResult = newImageUrl( {
 					value: imagePassenger as string
 				} )

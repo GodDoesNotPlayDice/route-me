@@ -1,6 +1,5 @@
 import { AngularFireDatabase } from '@angular/fire/compat/database'
 import { DataSnapshot } from '@angular/fire/compat/database/interfaces'
-// import { GeoFire } from 'geofire'
 import * as geofire from 'geofire-common'
 import {
 	Err,
@@ -38,51 +37,41 @@ export class NearTripRepositoryFirebase implements NearTripRepository {
 			promises.push( q.get() )
 		}
 
-		const response: Result<NearTrip[], Error[]> = await Promise.all( promises )
-		                                                           .then(
-			                                                           ( snapshots ) => {
-				                                                           const matchingDocs: NearTrip[] = []
-				                                                           const errors: Error[]          = []
-				                                                           for ( const snap of snapshots ) {
-					                                                           snap.forEach(
-						                                                           ( child ) => {
-							                                                           const value        = child.val()
-							                                                           const distanceInKm = geofire.distanceBetween(
-								                                                           [ value.latitude,
-									                                                           value.longitude ],
-								                                                           [ center.lat,
-									                                                           center.lng ] )
-							                                                           const distanceInM  = distanceInKm *
-								                                                           1000
-							                                                           if ( distanceInM <=
-								                                                           radiusInM )
-							                                                           {
-								                                                           const nearTrip = nearTripFromJson(
-									                                                           value )
-								                                                           if ( nearTrip.isErr() ) {
-									                                                           errors.push(
-										                                                           ...nearTrip.unwrapErr() )
-								                                                           }
-								                                                           matchingDocs.push(
-									                                                           nearTrip.unwrap() )
-							                                                           }
-						                                                           } )
-				                                                           }
-				                                                           if ( errors.length >
-					                                                           0 )
-				                                                           {
-					                                                           return Err(
-						                                                           errors )
-				                                                           }
-				                                                           return Ok(
-					                                                           matchingDocs )
-			                                                           } )
-		                                                           .catch(
-			                                                           ( error ) => {
-				                                                           return Err(
-					                                                           [ new FirebaseOperationException() ] )
-			                                                           } )
 
+		const response: Result<NearTrip[], Error[]> = await Promise.all( promises )
+		 .then(
+		   ( snapshots ) => {
+		     const matchingDocs: NearTrip[] = []
+		     const errors: Error[]          = []
+		     for ( const snap of snapshots ) {
+		       snap.forEach(
+		         ( child ) => {
+		           const value        = child.val()
+		           const distanceInKm = geofire.distanceBetween( [ value.latitude, value.longitude ], [ center.lat, center.lng ] )
+		           const distanceInM  = distanceInKm * 1000
+		           if ( distanceInM <= radiusInM ) {
+		             const nearTrip = nearTripFromJson( value )
+		             if ( nearTrip.isErr() ) {
+		               errors.push( ...nearTrip.unwrapErr() )
+		             }
+		             else {
+		               matchingDocs.push( nearTrip.unwrap() )
+		             }
+		           }
+		         } )
+		     }
+		     if ( errors.length > 0 ) {
+		       return Err( errors )
+		     }
+		     return Ok( matchingDocs )
+		   } )
+		 .catch(
+		   ( error ) => {
+		     console.log(
+		       error )
+		     return Err(
+		       [ new FirebaseOperationException() ] )
+		   } )
 		if ( response.isErr() ) {
 			return Err( response.unwrapErr() )
 		}
