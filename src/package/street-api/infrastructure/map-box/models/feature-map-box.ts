@@ -3,14 +3,14 @@ import { Geometry } from 'src/package/street-api/infrastructure/map-box/models/g
 import { Properties } from 'src/package/street-api/infrastructure/map-box/models/properties-map-box'
 
 export interface Feature {
-  id: string;
-  type: string;
-  place_type: string[];
-  relevance: number;
-  properties: Properties;
-  text: string;
-  place_name: string;
-  center: number[];
-  geometry: Geometry;
-  context: Context[];
+	id: string;
+	type: string;
+	place_type: string[];
+	relevance: number;
+	properties: Properties;
+	text: string;
+	place_name: string;
+	center: number[];
+	geometry: Geometry;
+	context: Context[];
 }

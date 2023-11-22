@@ -1,139 +1,212 @@
 import { Injectable } from '@angular/core'
+import { Store } from '@ngrx/store'
 import {
-  None,
-  Option,
-  Some
+	Err,
+	None,
+	Ok,
+	Option,
+	Result,
+	Some
 } from 'oxide.ts'
 import { AuthService } from 'src/app/shared/services/auth.service'
 import { ChatService } from 'src/app/shared/services/chat.service'
 import { DriverService } from 'src/app/shared/services/driver.service'
 import { LocationService } from 'src/app/shared/services/location.service'
-import { Position } from 'src/package/position-api/domain/models/position'
+import { NearTripService } from 'src/app/shared/services/near-trip.service'
+import { AppState } from 'src/app/shared/state/app.state'
+import { Category } from 'src/package/category/domain/models/category'
+import { Driver } from 'src/package/driver/domain/models/driver'
+import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { newCurrency } from 'src/package/shared/domain/models/currency'
+import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
 import { Street } from 'src/package/street-api/domain/models/street'
 import { createTrip } from 'src/package/trip/application/create-trip'
+import { deleteTrip } from 'src/package/trip/application/delete-trip'
 import { getAllTrips } from 'src/package/trip/application/get-all-trips'
+import { getTripByID } from 'src/package/trip/application/get-trip-by-id'
+import { updateTrip } from 'src/package/trip/application/update-trip'
 import { TripDao } from 'src/package/trip/domain/dao/trip-dao'
 import { Trip } from 'src/package/trip/domain/models/trip'
-import {
-  newTripPrice,
-  TripPrice
-} from 'src/package/trip/domain/models/trip-price'
+import { TripID } from 'src/package/trip/domain/models/trip-id'
+import { TripPrice } from 'src/package/trip/domain/models/trip-price'
 import { TripState } from 'src/package/trip/domain/models/trip-state'
 import { TripRepository } from 'src/package/trip/domain/repository/trip-repository'
 
 @Injectable( {
-  providedIn: 'root'
+	providedIn: 'root'
 } )
 export class TripService {
-  constructor(
-    private tripDao: TripDao,
-    private tripRepository: TripRepository,
-    private chatService: ChatService,
-    private driverService: DriverService,
-    private locationService: LocationService,
-    private authService: AuthService
-  )
-  { }
+	constructor(
+		private tripDao: TripDao,
+		private nearTripService: NearTripService,
+		private tripRepository: TripRepository,
+		private chatService: ChatService,
+		private store: Store<AppState>,
+		private locationService: LocationService,
+		private authService: AuthService,
+		private driverService: DriverService
+	)
+	{ }
 
-  async getAllTrips(): Promise<Trip[]> {
-    const result = await getAllTrips( this.tripDao )
+	async getTripByID( id: TripID ): Promise<Result<Trip, Error[]>> {
+		return await getTripByID( this.tripDao, id )
+	}
 
-    if ( result.isErr() ) {
-      console.log( 'error. get all trip service', result.unwrapErr() )
-      return []
-    }
-    return result.unwrap()
-  }
+	async getAllTrips(): Promise<Trip[]> {
+		const result = await getAllTrips( this.tripDao )
 
-  async getAllByState( state: TripState ): Promise<Trip[]> {
-    const result = await this.tripDao.getAllByState( state )
+		if ( result.isErr() ) {
+			console.log( 'error. get all trip service', result.unwrapErr() )
+			return []
+		}
+		return result.unwrap()
+	}
 
-    if ( result.isErr() ) {
-      console.log( 'error. get all by state trip service', result.unwrapErr() )
-      return []
-    }
-    return result.unwrap()
-  }
+	async removeTrip( id: TripID ): Promise<Result<boolean, Error>> {
+		return await deleteTrip( this.tripDao, id )
+	}
 
-  async calculateTripPrice( start: Position,
-    end: Position ): Promise<Option<TripPrice>> {
 
-    const result = newTripPrice( {
-      amount  : 1000,
-      currency: 'CL'
-    } )
-    // const result = await this.tripRepository.calculateTripPrice( start, end )
-    if ( result.isErr() ) {
-      return None
-    }
-    return Some( result.unwrap() )
-  }
+	async getAllByState( state: TripState ): Promise<Result<Trip[], Error[]>> {
+		const result = await this.tripDao.getAllByState( state )
 
-  async create( props: {
-    startLocation: Street,
-    endLocation: Street,
-    startDate: Date
-  } ): Promise<boolean> {
-    //TODO: driver email fijo
-    const driver = await this.driverService.getDriver()
-    // const driver = this.authService.currentDriver
-    if ( driver.isNone() ) {
-      console.log( 'driver none' )
-      return false
-    }
+		if ( result.isErr() ) {
+			console.log( 'error. get all by state trip service', result.unwrapErr() )
+			return Err( result.unwrapErr() )
+		}
+		return Ok( result.unwrap() )
+	}
 
-    const tripPrice = await this.calculateTripPrice(
-      props.startLocation.center,
-      props.endLocation.center
-    )
+	async calculateTripPrice( distance: ValidNumber ): Promise<Option<TripPrice>> {
+		// Se asume que se calcula en dolares y luego se transforma a la moneda del usuario
+		const result = await this.tripRepository.calculateTripPrice( distance,
+			newCurrency( {
+				value: 'USD'
+			} )
+				.unwrap() )
+		if ( result.isErr() ) {
+			console.log( 'error. calculate trip price. trip service',
+				result.unwrapErr() )
+			return None
+		}
+		return Some( result.unwrap() )
+	}
 
-    if ( tripPrice.isNone() ) {
-      console.log( 'price none' )
-      return false
-    }
+	async create( props: {
+		startLocation: Street,
+		distance: number,
+		endLocation: Street,
+		startDate: Date
+	} ): Promise<boolean> {
+		const driver = this.driverService.currentDriver
+		if ( driver.isNone() ) {
+			console.log( 'driver none' )
+			return false
+		}
 
-    const startLocation = await this.locationService.createLocation( {
-      name       : props.startLocation.place.value,
-      countryCode: props.startLocation.shortCode.value,
-      position   : props.startLocation.center
-    } )
+		// const tripPrice = await this.calculateTripPrice()
 
-    if ( startLocation.isNone() ) {
-      console.log( 'start loc none' )
-      return false
-    }
+		const startLocation = await this.locationService.createLocation( {
+			name       : props.startLocation.place.value,
+			countryCode: props.startLocation.shortCode.value,
+			position   : props.startLocation.center
+		} )
 
-    const endLocation = await this.locationService.createLocation( {
-      name       : props.endLocation.place.value,
-      countryCode: props.endLocation.shortCode.value,
-      position   : props.endLocation.center
-    } )
+		if ( startLocation.isNone() ) {
+			console.log( 'start loc none' )
+			return false
+		}
 
-    if ( endLocation.isNone() ) {
-      console.log( 'end loc none' )
-      return false
-    }
+		const endLocation = await this.locationService.createLocation( {
+			name       : props.endLocation.place.value,
+			countryCode: props.endLocation.shortCode.value,
+			position   : props.endLocation.center
+		} )
 
-    const chat = await this.chatService.createChat()
+		if ( endLocation.isNone() ) {
+			console.log( 'end loc none' )
+			return false
+		}
 
-    if ( chat.isNone() ) {
-      console.log( 'chat none' )
-      return false
-    }
+		const chat = await this.chatService.createChat()
 
-    const result = await createTrip( this.tripDao, {
-      startDate    : props.startDate,
-      chatID       : chat.unwrap(),
-      price        : tripPrice.unwrap(),
-      endLocation  : endLocation.unwrap(),
-      startLocation: startLocation.unwrap(),
-      driver       : driver.unwrap()
-    } )
+		if ( chat.isNone() ) {
+			console.log( 'chat none' )
+			return false
+		}
 
-    if ( result.isErr() ) {
-      console.log( 'create fail' )
-      return false
-    }
-    return true
-  }
+		const result = await createTrip( this.tripDao, {
+			startDate    : props.startDate,
+			chatID       : chat.unwrap(),
+			distance     : props.distance,
+			endLocation  : endLocation.unwrap(),
+			startLocation: startLocation.unwrap(),
+			driver       : driver.unwrap()
+		} )
+
+		if ( result.isErr() ) {
+			console.log( result.unwrapErr() )
+			console.log( 'create fail' )
+			return false
+		}
+		//TODO: smell
+		const resultDriver = await this.driverService.driverUpdate( {
+			activeTrip: result.unwrap()
+		} )
+
+		if ( resultDriver.isNone() ) {
+			console.log( 'update driver. trip service' )
+			return false
+		}
+
+		const resultTrip = await this.updateTrip( result.unwrap(), {
+			driver: resultDriver.unwrap()
+		} )
+
+		if ( resultTrip.isNone() ) {
+			console.log( 'update trip. trip service' )
+			return false
+		}
+
+		const tripWrap = resultTrip.unwrap()
+		await this.nearTripService.create( {
+			longitude        : tripWrap.startLocation.position.lng,
+			latitude         : tripWrap.startLocation.position.lat,
+			driverLastName   : tripWrap.driver.passenger.lastName,
+			driverName       : tripWrap.driver.passenger.name,
+			driverImage      : tripWrap.driver.passenger.image,
+			price            : tripWrap.price,
+			id               : tripWrap.id,
+			seat             : tripWrap.driver.driverCar.seat,
+			passengersImages : tripWrap.passengers.map( ( passenger ) => {
+				return passenger.image
+			} ),
+			startLocationName: tripWrap.startLocation.name,
+			startDate        : tripWrap.startDate,
+			endLocationName  : tripWrap.endLocation.name
+		} )
+
+		return true
+	}
+
+	async updateTrip( trip: Trip, props: {
+		description?: string
+		category?: Category
+		state?: TripState
+		driver?: Driver
+		queuePassengers?: Passenger[]
+		passengers?: Passenger[]
+		endDate?: Date
+	} ): Promise<Option<Trip>>
+	{
+		const result = await updateTrip( this.tripDao, trip, props )
+
+		if ( result.isErr() ) {
+			console.log( 'update trip error' )
+			console.log( result.unwrapErr() )
+			return None
+		}
+
+		return Some( result.unwrap() )
+	}
 }

@@ -3,13 +3,13 @@ import { TripLocation } from 'src/package/trip-location/domain/models/trip-locat
 import { TripLocationID } from 'src/package/trip-location/domain/models/trip-location-id'
 
 export abstract class LocationDao {
-  abstract create( location: TripLocation ): Promise<Result<boolean, Error>>
+	abstract create( location: TripLocation ): Promise<Result<boolean, Error>>
 
-  abstract getById( id: TripLocationID ): Promise<Result<TripLocation, Error[]>>
+	abstract getById( id: TripLocationID ): Promise<Result<TripLocation, Error[]>>
 
-  abstract getAll(): Promise<Result<TripLocation[], Error[]>>
+	abstract getAll(): Promise<Result<TripLocation[], Error[]>>
 
-  abstract delete( id: TripLocationID ): Promise<Result<boolean, Error>>
+	abstract delete( id: TripLocationID ): Promise<Result<boolean, Error>>
 
-  abstract update( location: TripLocation ): Promise<Result<boolean, Error>>
+	abstract update( location: TripLocation ): Promise<Result<boolean, Error>>
 }

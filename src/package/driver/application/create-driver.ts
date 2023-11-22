@@ -1,12 +1,10 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	None,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { DriverCar } from 'src/package/driver-car/domain/models/driver-car'
-import { newDriverCarID } from 'src/package/driver-car/domain/models/driver-car-id'
-import { newDriverCarModel } from 'src/package/driver-car/domain/models/driver-car-model'
-import { newDriverCarSeat } from 'src/package/driver-car/domain/models/driver-car-seat'
 import { DriverDocument } from 'src/package/driver-document/domain/models/driver-document'
 import { newDriverDocumentID } from 'src/package/driver-document/domain/models/driver-document-id'
 import { newDriverDocumentName } from 'src/package/driver-document/domain/models/driver-document-name'
@@ -15,118 +13,97 @@ import { DriverDao } from 'src/package/driver/domain/dao/driver-dao'
 import { Driver } from 'src/package/driver/domain/models/driver'
 import { newDriverID } from 'src/package/driver/domain/models/driver-id'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
+import { newValidBoolean } from 'src/package/shared/domain/models/valid-bool'
 import { ulid } from 'ulidx'
 
 /**
  * Create Driver
  */
 export const createDriver = async ( dao: DriverDao,
-  props: {
-    passenger: Passenger,
-    seat: number,
-    model: string,
-    documents: {
-      id: string,
-      name: string,
-      reference: string
-    }[]
-  }
+	props: {
+		passenger: Passenger,
+		driverCar: DriverCar,
+		documents: {
+			name: string
+			reference: string
+		}[]
+	}
 ): Promise<Result<Driver, Error[]>> => {
-  const error: Error[] = []
+	const error: Error[] = []
 
-  const id = newDriverID( {
-    value: ulid()
-  } )
+	const id = newDriverID( {
+		value: ulid()
+	} )
 
-  if ( id.isErr() ) {
-    error.push( id.unwrapErr() )
-  }
+	if ( id.isErr() ) {
+		error.push( id.unwrapErr() )
+	}
 
-  const carID = newDriverCarID( {
-    value: ulid()
-  } )
+	const driverDocuments: DriverDocument[] = []
 
-  if ( carID.isErr() ) {
-    error.push( carID.unwrapErr() )
-  }
+	for ( const doc of props.documents ) {
+		const docID = newDriverDocumentID( {
+			value: ulid()
+		} )
 
-  const model = newDriverCarModel( {
-    value: props.model
-  } )
+		if ( docID.isErr() ) {
+			error.push( docID.unwrapErr() )
+		}
 
-  if ( model.isErr() ) {
-    error.push( model.unwrapErr() )
-  }
+		const name = newDriverDocumentName( {
+			value: doc.name
+		} )
 
-  const seat = newDriverCarSeat( {
-    value: props.seat
-  } )
+		if ( name.isErr() ) {
+			error.push( name.unwrapErr() )
+		}
 
-  if ( seat.isErr() ) {
-    error.push( seat.unwrapErr() )
-  }
+		const ref = newDriverDocumentReference( {
+			value: doc.reference
+		} )
 
-  const driverCar: DriverCar = {
-    id   : carID.unwrap(),
-    model: model.unwrap(),
-    seat : seat.unwrap()
-  }
+		if ( ref.isErr() ) {
+			error.push( ref.unwrapErr() )
+		}
 
-  const driverDocuments: DriverDocument[] = []
+		if ( error.length > 0 ) {
+			break
+		}
 
-  for ( const doc of props.documents ) {
-    const docID = newDriverDocumentID( {
-      value: doc.id
-    } )
+		driverDocuments.push( {
+			id       : docID.unwrap(),
+			name     : name.unwrap(),
+			reference: ref.unwrap()
+		} )
+	}
 
-    if ( docID.isErr() ) {
-      error.push( docID.unwrapErr() )
-    }
+	const enabled = newValidBoolean( {
+		value: false
+	} )
 
-    const name = newDriverDocumentName( {
-      value: doc.name
-    } )
+	if ( enabled.isErr() ) {
+		error.push( enabled.unwrapErr() )
+	}
 
-    if ( name.isErr() ) {
-      error.push( name.unwrapErr() )
-    }
+	if ( error.length > 0 ) {
+		return Err( error )
+	}
 
-    const ref = newDriverDocumentReference( {
-      value: doc.reference
-    } )
+	const driver: Driver = {
+		id        : id.unwrap(),
+		enabled   : enabled.unwrap(),
+		activeTrip: None,
+		passenger : props.passenger,
+		driverCar : props.driverCar,
+		documents : driverDocuments
+	}
 
-    if ( ref.isErr() ) {
-      error.push( ref.unwrapErr() )
-    }
+	const result = await dao.create( driver )
 
-    if ( error.length > 0 ) {
-      break
-    }
+	if ( result.isErr() ) {
+		error.push( ...result.unwrapErr() )
+		return Err( error )
+	}
 
-    driverDocuments.push( {
-      id       : docID.unwrap(),
-      name     : name.unwrap(),
-      reference: ref.unwrap()
-    } )
-  }
-
-  if ( error.length > 0 ) {
-    return Err( error )
-  }
-
-  const driver: Driver = {
-    id       : id.unwrap(),
-    passenger: props.passenger,
-    car      : driverCar,
-    documents: driverDocuments
-  }
-
-  const result = await dao.create( driver )
-
-  if ( result.isErr() ) {
-    error.push( ...result.unwrapErr() )
-    return Err( error )
-  }
-
-  return Ok( driver )
+	return Ok( driver )
 }

@@ -1,26 +1,26 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import {
-  Currency,
-  newCurrency
+	Currency,
+	newCurrency
 } from 'src/package/shared/domain/models/currency'
 import {
-  Money,
-  newMoney
+	Money,
+	newMoney
 } from 'src/package/shared/domain/models/money'
 
 
 export interface TripPrice {
-  currency: Currency,
-  amount: Money,
+	currency: Currency,
+	amount: Money,
 }
 
 export interface TripPriceProps {
-  amount: number,
-  currency: string,
+	amount: number,
+	currency: string,
 }
 
 /**
@@ -30,31 +30,31 @@ export interface TripPriceProps {
  */
 export const newTripPrice = ( props: TripPriceProps ): Result<TripPrice, Error[]> => {
 
-  const errors: Error[] = []
+	const errors: Error[] = []
 
-  const moneyResult = newMoney( {
-    value: props.amount
-  } )
+	const moneyResult = newMoney( {
+		value: props.amount
+	} )
 
-  if ( moneyResult.isErr() ) {
-    errors.push( moneyResult.unwrapErr() )
-  }
+	if ( moneyResult.isErr() ) {
+		errors.push( moneyResult.unwrapErr() )
+	}
 
-  const currencyResult = newCurrency( {
-    value: props.currency
-  } )
+	const currencyResult = newCurrency( {
+		value: props.currency
+	} )
 
-  if ( currencyResult.isErr() ) {
-    errors.push( currencyResult.unwrapErr() )
-  }
+	if ( currencyResult.isErr() ) {
+		errors.push( currencyResult.unwrapErr() )
+	}
 
-  if ( errors.length > 0 ) {
-    return Err( errors )
-  }
+	if ( errors.length > 0 ) {
+		return Err( errors )
+	}
 
-  return Ok( {
-      amount  : moneyResult.unwrap(),
-      currency: currencyResult.unwrap()
-    }
-  )
+	return Ok( {
+			amount  : moneyResult.unwrap(),
+			currency: currencyResult.unwrap()
+		}
+	)
 }

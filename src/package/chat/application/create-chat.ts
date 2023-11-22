@@ -1,7 +1,7 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { ChatDao } from 'src/package/chat/domain/dao/chat-dao'
 import { Chat } from 'src/package/chat/domain/models/chat'
@@ -10,25 +10,24 @@ import { ulid } from 'ulidx'
 
 export const createChat = async ( dao: ChatDao ): Promise<Result<Chat, Error[]>> => {
 
-  const id = newChatID( {
-    value: ulid()
-  } )
+	const id = newChatID( {
+		value: ulid()
+	} )
 
-  if ( id.isErr() ) {
-    return Err( [ id.unwrapErr() ] )
-  }
+	if ( id.isErr() ) {
+		return Err( [ id.unwrapErr() ] )
+	}
 
-  const chat: Chat = {
-    id      : id.unwrap(),
-    messages: []
-  }
-  //TODO: comentado temporal, por trip service create
+	const chat: Chat = {
+		id      : id.unwrap(),
+		messages: []
+	}
 
-  // const result     = await dao.create( chat )
-  //
-  // if ( result.isErr() ) {
-  //   return Err( result.unwrapErr() )
-  // }
+	const result = await dao.create( chat )
 
-  return Ok( chat )
+	if ( result.isErr() ) {
+		return Err( result.unwrapErr() )
+	}
+
+	return Ok( chat )
 }

@@ -1,7 +1,7 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { User } from 'src/package/user/domain/models/user'
@@ -11,11 +11,11 @@ import { User } from 'src/package/user/domain/models/user'
  * @throws {InfrastructureOperationException} - if operation failed
  */
 export const getAllUser = async ( dao: UserDao ): Promise<Result<User[], Error[]>> => {
-  const result = await dao.getAll()
+	const result = await dao.getAll()
 
-  if ( result.isErr() ) {
-    return Err( result.unwrapErr() )
-  }
+	if ( result.isErr() ) {
+		return Err( result.unwrapErr() )
+	}
 
-  return Ok( result.unwrap() )
+	return Ok( result.unwrap() )
 }

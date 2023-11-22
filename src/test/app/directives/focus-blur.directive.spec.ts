@@ -1,9 +1,9 @@
 import { FocusBlurDirective } from 'src/app/shared/directives/focus-blur.directive'
 
 describe( 'FocusBlurDirective', () => {
-  it( 'should create an instance', () => {
-    const directive = new FocusBlurDirective()
-    expect( directive )
-      .toBeTruthy()
-  } )
+	it( 'should create an instance', () => {
+		const directive = new FocusBlurDirective()
+		expect( directive )
+			.toBeTruthy()
+	} )
 } )

@@ -1,7 +1,7 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { AuthUserRepository } from 'src/package/authentication/domain/repository/auth-user-repository'
 import { newEmail } from 'src/package/shared/domain/models/email'
@@ -21,53 +21,53 @@ import { ulid } from 'ulidx'
  * @throws {InfrastructureOperationException} - if operation failed
  */
 export const createUser = async ( rep: AuthUserRepository,
-  props: {
-    email: string,
-    password: string,
-  }
+	props: {
+		email: string,
+		password: string,
+	}
 ): Promise<Result<string, Error[]>> => {
-  const error: Error[] = []
+	const error: Error[] = []
 
-  const id = newUserID( {
-    value: ulid()
-  } )
+	const id = newUserID( {
+		value: ulid()
+	} )
 
-  if ( id.isErr() ) {
-    error.push( id.unwrapErr() )
-  }
+	if ( id.isErr() ) {
+		error.push( id.unwrapErr() )
+	}
 
-  const email = newEmail( {
-    value: props.email
-  } )
+	const email = newEmail( {
+		value: props.email
+	} )
 
-  if ( email.isErr() ) {
-    error.push( email.unwrapErr() )
-  }
+	if ( email.isErr() ) {
+		error.push( email.unwrapErr() )
+	}
 
-  const password = newPassword( {
-    value: props.password
-  } )
+	const password = newPassword( {
+		value: props.password
+	} )
 
-  if ( password.isErr() ) {
-    error.push( ...password.unwrapErr() )
-  }
+	if ( password.isErr() ) {
+		error.push( ...password.unwrapErr() )
+	}
 
-  if ( error.length > 0 ) {
-    return Err( error )
-  }
+	if ( error.length > 0 ) {
+		return Err( error )
+	}
 
-  const result = await rep.registerUser(
-    {
-      id   : id.unwrap(),
-      email: email.unwrap()
-    },
-    password.unwrap()
-  )
+	const result = await rep.registerUser(
+		{
+			id   : id.unwrap(),
+			email: email.unwrap()
+		},
+		password.unwrap()
+	)
 
-  if ( result.isErr() ) {
-    error.push( ...result.unwrapErr() )
-    return Err( error )
-  }
+	if ( result.isErr() ) {
+		error.push( ...result.unwrapErr() )
+		return Err( error )
+	}
 
-  return Ok( result.unwrap() )
+	return Ok( result.unwrap() )
 }

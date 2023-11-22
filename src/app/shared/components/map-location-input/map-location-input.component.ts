@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  Input,
-  ViewChild
+	Component,
+	Input,
+	ViewChild
 } from '@angular/core'
 import {
-  FormControl,
-  ReactiveFormsModule
+	FormControl,
+	ReactiveFormsModule
 } from '@angular/forms'
 import { IonicModule } from '@ionic/angular'
 import { ActivableCircleComponent } from 'src/app/shared/components/activable-circle/activable-circle.component'
@@ -19,82 +19,82 @@ import { Street } from 'src/package/street-api/domain/models/street'
 import { ulid } from 'ulidx'
 
 @Component( {
-  standalone : true,
-  selector   : 'app-map-location-input',
-  templateUrl: './map-location-input.component.html',
-  imports    : [
-    IonicModule,
-    CommonModule,
-    ReactiveFormsModule,
-    FocusBlurDirective,
-    ActivableCircleComponent,
-    SelectInputDirective,
-    SearchLauncherComponent
-  ],
-  styleUrls  : [ './map-location-input.component.scss' ]
+	standalone : true,
+	selector   : 'app-map-location-input',
+	templateUrl: './map-location-input.component.html',
+	imports    : [
+		IonicModule,
+		CommonModule,
+		ReactiveFormsModule,
+		FocusBlurDirective,
+		ActivableCircleComponent,
+		SelectInputDirective,
+		SearchLauncherComponent
+	],
+	styleUrls  : [ './map-location-input.component.scss' ]
 } )
 export class MapLocationInputComponent {
 
-  @Input( { required: true } ) placeholder: string
-  @Input( { required: true } ) pageKey: string
-  @Input( { required: true } ) isRed: boolean
-  isFocused: boolean   = false
-  locationText: string = ''
+	@Input( { required: true } ) placeholder: string
+	@Input( { required: true } ) pageKey: string
+	@Input( { required: true } ) isRed: boolean
+	isFocused: boolean   = false
+	locationText: string = ''
 
-  id = ulid()
+	id = ulid()
 
-  @ViewChild( 'inputLocation' ) input!: HTMLInputElement
+	@ViewChild( 'inputLocation' ) input!: HTMLInputElement
 
-  constructor( private map: MapService,
-    private steetService: StreetService )
-  {
-    this.map.markerClick$.pipe()
-        .subscribe(
-          async ( position ) => {
-            if ( position !== null && this.isFocused ) {
-              const result = await this.steetService.getStreetsByPosition(
-                position )
-              if ( result.isErr() ) {
-                console.log( 'location input, street position error' )
-                console.log( result.unwrapErr() )
-                return
-              }
-              const street      = result.unwrap().streets[0]
-              this.locationText = street.place.value
-              await this.map.addRouteMarker( this.pageKey, this.id, position,
-                this.isRed ? 'red' : 'orange' )
-              this.mapLocationControl.patchValue( street )
-              this.mapLocationControl.markAllAsTouched()
-              this.mapLocationControl.updateValueAndValidity()
-              this.isFocused = false
-            }
-          } )
-  }
+	constructor( private map: MapService,
+		private steetService: StreetService )
+	{
+		this.map.markerClick$.pipe()
+		    .subscribe(
+			    async ( position ) => {
+				    if ( position !== null && this.isFocused ) {
+					    const result = await this.steetService.getStreetsByPosition(
+						    position )
+					    if ( result.isErr() ) {
+						    console.log( 'location input, street position error' )
+						    console.log( result.unwrapErr() )
+						    return
+					    }
+					    const street      = result.unwrap().streets[0]
+					    this.locationText = street.place.value
+					    await this.map.addRouteMarker( this.pageKey, this.id, position,
+						    this.isRed ? 'red' : 'orange' )
+					    this.mapLocationControl.patchValue( street )
+					    this.mapLocationControl.markAllAsTouched()
+					    this.mapLocationControl.updateValueAndValidity()
+					    this.isFocused = false
+				    }
+			    } )
+	}
 
-  readonly mapLocationControl = new FormControl<Street | null>( null,
-    control => {
-      if ( this.locationText.length === 0 && control.value === null ) {
-        return { required: true }
-      }
-      return null
-    } )
+	readonly mapLocationControl = new FormControl<Street | null>( null,
+		control => {
+			if ( this.locationText.length === 0 && control.value === null ) {
+				return { required: true }
+			}
+			return null
+		} )
 
-  onActiveChange( $event: boolean ): void {
-    this.isFocused = $event
-  }
+	onActiveChange( $event: boolean ): void {
+		this.isFocused = $event
+	}
 
-  async onStreetPosition( $event: Street ): Promise<void> {
-    await this.map.addRouteMarker( this.pageKey, this.id, $event.center,
-      this.isRed ? 'red' : 'orange' )
-    this.mapLocationControl.patchValue( $event )
-    this.mapLocationControl.markAllAsTouched()
-    this.mapLocationControl.updateValueAndValidity()
-    this.isFocused = false
-  }
+	async onStreetPosition( $event: Street ): Promise<void> {
+		await this.map.addRouteMarker( this.pageKey, this.id, $event.center,
+			this.isRed ? 'red' : 'orange' )
+		this.mapLocationControl.patchValue( $event )
+		this.mapLocationControl.markAllAsTouched()
+		this.mapLocationControl.updateValueAndValidity()
+		this.isFocused = false
+	}
 
-  reset(): void {
-    this.mapLocationControl.reset()
-    this.locationText = ''
-    this.isFocused    = false
-  }
+	reset(): void {
+		this.mapLocationControl.reset()
+		this.locationText = ''
+		this.isFocused    = false
+	}
 }

@@ -1,21 +1,21 @@
 import {
-  ComponentFixture,
-  TestBed
+	ComponentFixture,
+	TestBed
 } from '@angular/core/testing'
 import { ResetPasswordPage } from 'src/app/reset-password/reset-password.page'
 
 describe( 'ResetPasswordPage', () => {
-  let component: ResetPasswordPage
-  let fixture: ComponentFixture<ResetPasswordPage>
+	let component: ResetPasswordPage
+	let fixture: ComponentFixture<ResetPasswordPage>
 
-  beforeEach( async () => {
-    fixture   = TestBed.createComponent( ResetPasswordPage )
-    component = fixture.componentInstance
-    fixture.detectChanges()
-  } )
+	beforeEach( async () => {
+		fixture   = TestBed.createComponent( ResetPasswordPage )
+		component = fixture.componentInstance
+		fixture.detectChanges()
+	} )
 
-  it( 'should create', () => {
-    expect( component )
-      .toBeTruthy()
-  } )
+	it( 'should create', () => {
+		expect( component )
+			.toBeTruthy()
+	} )
 } )

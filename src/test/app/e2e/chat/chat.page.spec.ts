@@ -1,21 +1,21 @@
 import {
-  ComponentFixture,
-  TestBed
+	ComponentFixture,
+	TestBed
 } from '@angular/core/testing'
 import { ChatPage } from 'src/app/chat/chat.page'
 
 describe( 'ChatPage', () => {
-  let component: ChatPage
-  let fixture: ComponentFixture<ChatPage>
+	let component: ChatPage
+	let fixture: ComponentFixture<ChatPage>
 
-  beforeEach( async () => {
-    fixture   = TestBed.createComponent( ChatPage )
-    component = fixture.componentInstance
-    fixture.detectChanges()
-  } )
+	beforeEach( async () => {
+		fixture   = TestBed.createComponent( ChatPage )
+		component = fixture.componentInstance
+		fixture.detectChanges()
+	} )
 
-  it( 'should create', () => {
-    expect( component )
-      .toBeTruthy()
-  } )
+	it( 'should create', () => {
+		expect( component )
+			.toBeTruthy()
+	} )
 } )

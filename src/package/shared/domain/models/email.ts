@@ -1,22 +1,22 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { EmailInvalidException } from 'src/package/shared/domain/exceptions/email-invalid-exception'
 import { z } from 'zod'
 
 export const EmailSchema = z.object( {
-  value: z.string()
-          .email()
+	value: z.string()
+	        .email()
 } )
 
 type EmailType = z.infer<typeof EmailSchema>
 
 export interface Email extends EmailType {}
 
-interface EmailProps {
-  value: string
+export interface EmailProps {
+	value: string
 }
 
 /**
@@ -24,14 +24,14 @@ interface EmailProps {
  * @throws {EmailInvalidException} - if email is invalid
  */
 export const newEmail = ( props: EmailProps ): Result<Email, Error> => {
-  const result = EmailSchema.safeParse( {
-    value: props.value
-  } )
+	const result = EmailSchema.safeParse( {
+		value: props.value
+	} )
 
-  if ( !result.success ) {
-    return Err( new EmailInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new EmailInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

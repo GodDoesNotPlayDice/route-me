@@ -1,14 +1,14 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { PassengerCountryInvalidException } from 'src/package/passenger/domain/exceptions/passenger-country-invalid-exception'
 import { z } from 'zod'
 
 export const PassengerCountrySchema = z.object( {
-  value: z.string()
-          .min( 1 )
+	value: z.string()
+	        .min( 1 )
 } )
 
 type PassengerCountryType = z.infer<typeof PassengerCountrySchema>
@@ -16,7 +16,7 @@ type PassengerCountryType = z.infer<typeof PassengerCountrySchema>
 export interface PassengerCountry extends PassengerCountryType {}
 
 export interface PassengerCountryProps {
-  value: string
+	value: string
 }
 
 /**
@@ -24,14 +24,14 @@ export interface PassengerCountryProps {
  * @throws {PassengerCountryInvalidException} - if country is invalid
  */
 export const newPassengerCountry = ( props: PassengerCountryProps ): Result<PassengerCountry, Error> => {
-  const result = PassengerCountrySchema.safeParse( {
-    value: props.value
-  } )
+	const result = PassengerCountrySchema.safeParse( {
+		value: props.value
+	} )
 
-  if ( !result.success ) {
-    return Err( new PassengerCountryInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new PassengerCountryInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

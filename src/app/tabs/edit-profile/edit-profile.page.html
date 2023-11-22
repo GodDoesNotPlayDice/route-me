@@ -1,0 +1,66 @@
+<ion-content [fullscreen]="true">
+	<app-app-bar-clone
+		href="/tabs/profile"
+		(leadClicked)="onBack()"
+		#appBar
+		label="Editar Perfil">
+	</app-app-bar-clone>
+	<div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col gap-5 justify-between">
+		<form
+			class="flex flex-col gap-5">
+			<div class="flex flex-col justify-center items-center gap-2">
+				<ng-container *ngIf="tempUrl === ''">
+					<ng-container *ngIf="passenger.image.isNone()">
+						<ion-icon
+							class="h-24 w-24"
+							name="person-circle-outline"></ion-icon>
+					</ng-container>
+					<ng-container *ngIf="passenger.image.isSome()">
+						<img class="h-24 w-24 rounded-full"
+							[src]="passenger.image.unwrap().value"
+							alt="Foto de perfil">
+					</ng-container>
+				</ng-container>
+				<ng-container *ngIf="tempUrl !== ''">
+					<img class="h-24 w-24 rounded-full"
+						[src]="tempUrl"
+						alt="Foto de perfil">
+				</ng-container>
+				<button
+					(click)="onLoadPhoto()"
+					class="bg-yellow-500 text-white h-6 w-24 rounded-full text-base"
+				>Subir foto
+				</button>
+			</div>
+			<app-input-text #user
+				[value]="passenger.name.value"
+				placeholder="Nombre"
+				[type]="'text'"></app-input-text>
+			<app-input-text #lastName
+				[value]="passenger.lastName.value"
+				placeholder="Apellido"
+				[type]="'text'"></app-input-text>
+			<app-input-text #phone
+				[value]="passenger.phone.value"
+				placeholder="Telefono"
+				[type]="'phone'"></app-input-text>
+			<app-input-area #area
+				[value]="passenger.description.value"
+				label="Sobre mi"
+				placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
+			<div *ngIf="loadingPreferences">
+				<div>Cargando preferencias...</div>
+				<ion-spinner name="dots"></ion-spinner>
+			</div>
+			<app-multiple-selector-input *ngIf="!loadingPreferences && dbPreferences.length > 0"
+				label="Preferencia al viajar"
+				[selectedData]="selectedPreferences"
+				[databaseList]="dbPreferences"
+				placeholder="Elegir"
+				#preference></app-multiple-selector-input>
+		</form>
+	</div>
+	<app-filled-button (onClick)="buttonClick()"
+		class="my-5"
+		contentText="Actualizar"></app-filled-button>
+</ion-content>

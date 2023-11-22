@@ -1,30 +1,30 @@
 import {
-  ComponentFixture,
-  TestBed,
-  waitForAsync
+	ComponentFixture,
+	TestBed,
+	waitForAsync
 } from '@angular/core/testing'
 import { IonicModule } from '@ionic/angular'
 
 import { DateSelectorComponent } from 'src/app/shared/components/date-selector/date-selector.component'
 
 describe( 'DateSelectorComponent', () => {
-  let component: DateSelectorComponent
-  let fixture: ComponentFixture<DateSelectorComponent>
+	let component: DateSelectorComponent
+	let fixture: ComponentFixture<DateSelectorComponent>
 
-  beforeEach( waitForAsync( () => {
-    TestBed.configureTestingModule( {
-      declarations: [ DateSelectorComponent ],
-      imports     : [ IonicModule.forRoot() ]
-    } )
-           .compileComponents()
+	beforeEach( waitForAsync( () => {
+		TestBed.configureTestingModule( {
+			declarations: [ DateSelectorComponent ],
+			imports     : [ IonicModule.forRoot() ]
+		} )
+		       .compileComponents()
 
-    fixture   = TestBed.createComponent( DateSelectorComponent )
-    component = fixture.componentInstance
-    fixture.detectChanges()
-  } ) )
+		fixture   = TestBed.createComponent( DateSelectorComponent )
+		component = fixture.componentInstance
+		fixture.detectChanges()
+	} ) )
 
-  it( 'should create', () => {
-    expect( component )
-      .toBeTruthy()
-  } )
+	it( 'should create', () => {
+		expect( component )
+			.toBeTruthy()
+	} )
 } )

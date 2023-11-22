@@ -1,12 +1,13 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { Preference } from 'src/package/preference/domain/models/preference'
 import { newPreferenceIcon } from 'src/package/preference/domain/models/preference-icon'
 import { newPreferenceID } from 'src/package/preference/domain/models/preference-id'
 import { newPreferenceName } from 'src/package/preference/domain/models/preference-name'
+import { newPreferenceSource } from 'src/package/preference/domain/models/preference-source'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
 
 /**
@@ -16,41 +17,50 @@ import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-e
  * @throws {PreferenceIconInvalidException} - if icon is invalid
  */
 export const preferenceFromJson = ( json: Record<string, any> ): Result<Preference, Error[]> => {
-  const errors: Error[] = []
+	const errors: Error[] = []
 
-  const id = newPreferenceID( {
-    value: json['id'] ?? ''
-  } )
+	const id = newPreferenceID( {
+		value: json['id'] ?? ''
+	} )
 
-  if ( id.isErr() ) {
-    errors.push( id.unwrapErr() )
-  }
+	if ( id.isErr() ) {
+		errors.push( id.unwrapErr() )
+	}
 
-  const name = newPreferenceName( {
-    value: json['name'] ?? ''
-  } )
+	const name = newPreferenceName( {
+		value: json['name'] ?? ''
+	} )
 
-  if ( name.isErr() ) {
-    errors.push( name.unwrapErr() )
-  }
+	if ( name.isErr() ) {
+		errors.push( name.unwrapErr() )
+	}
 
-  const icon = newPreferenceIcon( {
-    value: json['icon'] ?? ''
-  } )
+	const icon = newPreferenceIcon( {
+		value: json['icon'] ?? ''
+	} )
 
-  if ( icon.isErr() ) {
-    errors.push( icon.unwrapErr() )
-  }
+	if ( icon.isErr() ) {
+		errors.push( icon.unwrapErr() )
+	}
 
-  if ( errors.length > 0 ) {
-    return Err( errors )
-  }
+	const source = newPreferenceSource( {
+		value: json['source'] ?? ''
+	} )
 
-  return Ok( {
-    id  : id.unwrap(),
-    name: name.unwrap(),
-    icon: icon.unwrap()
-  } )
+	if ( source.isErr() ) {
+		errors.push( source.unwrapErr() )
+	}
+
+	if ( errors.length > 0 ) {
+		return Err( errors )
+	}
+
+	return Ok( {
+		id    : id.unwrap(),
+		name  : name.unwrap(),
+		icon  : icon.unwrap(),
+		source: source.unwrap()
+	} )
 }
 
 /**
@@ -58,18 +68,19 @@ export const preferenceFromJson = ( json: Record<string, any> ): Result<Preferen
  * @throws {UnknownException} - if unknown error
  */
 export const preferenceToJson = ( preference: Preference ): Result<Record<string, any>, Error> => {
-  try {
-    const json: Record<string, any> = {
-      id  : preference.id.value,
-      name: preference.name.value,
-      icon: preference.icon.value
-    }
-    return Ok( json )
-  }
-  catch ( e ) {
-    const err = e instanceof Error
-      ? new UnknownException( e.message )
-      : new UnknownException( 'error preference to json' )
-    return Err( err )
-  }
+	try {
+		const json: Record<string, any> = {
+			id    : preference.id.value,
+			name  : preference.name.value,
+			icon  : preference.icon.value,
+			source: preference.source.value
+		}
+		return Ok( json )
+	}
+	catch ( e ) {
+		const err = e instanceof Error
+			? new UnknownException( e.message )
+			: new UnknownException( 'error preference to json' )
+		return Err( err )
+	}
 }

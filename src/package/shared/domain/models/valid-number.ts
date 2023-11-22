@@ -1,22 +1,22 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { NumberInvalidException } from 'src/package/shared/domain/exceptions/number-invalid-exception'
 import { z } from 'zod'
 
 export const ValidNumberSchema = z.object( {
-  value: z.number()
-          .nonnegative()
+	value: z.number()
+	        .gte( 0 )
 } )
 
 type ValidNumberType = z.infer<typeof ValidNumberSchema>
 
 export interface ValidNumber extends ValidNumberType {}
 
-interface ValidNumberProps {
-  value: number
+export interface ValidNumberProps {
+	value: number
 }
 
 /**
@@ -24,14 +24,14 @@ interface ValidNumberProps {
  * @throws {NumberInvalidException} - if number is invalid
  */
 export const newValidNumber = ( props: ValidNumberProps ): Result<ValidNumber, Error> => {
-  const result = ValidNumberSchema.safeParse( {
-    value: props.value
-  } )
+	const result = ValidNumberSchema.safeParse( {
+		value: props.value
+	} )
 
-  if ( !result.success ) {
-    return Err( new NumberInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new NumberInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

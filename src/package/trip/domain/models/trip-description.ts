@@ -1,13 +1,14 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { TripDescriptionInvalidException } from 'src/package/trip/domain/exceptions/trip-description-invalid-exception'
 import { z } from 'zod'
 
 export const TripDescriptionSchema = z.object( {
-  value: z.string()
+	value: z.string()
+	        .max( 180 )
 } )
 
 type TripDescriptionType = z.infer<typeof TripDescriptionSchema>
@@ -17,7 +18,7 @@ export interface TripDescription extends TripDescriptionType {
 }
 
 export interface TripDescriptionProps {
-  value: string
+	value: string
 }
 
 /**
@@ -25,14 +26,14 @@ export interface TripDescriptionProps {
  * @throws {TripDescriptionInvalidException} - if description is invalid
  */
 export const newTripDescription = ( props: TripDescriptionProps ): Result<TripDescription, Error> => {
-  const result = TripDescriptionSchema.safeParse( {
-    value: props.value
-  } )
+	const result = TripDescriptionSchema.safeParse( {
+		value: props.value
+	} )
 
-  if ( !result.success ) {
-    return Err( new TripDescriptionInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new TripDescriptionInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

@@ -1,17 +1,27 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	None,
+	Ok,
+	Option,
+	Result,
+	Some
 } from 'oxide.ts'
+import { newDriverCarSeat } from 'src/package/driver-car/domain/models/driver-car-seat'
 import { NearTrip } from 'src/package/near-trip/domain/models/near-trip'
-import { PositionInvalidException } from 'src/package/position-api/domain/exceptions/position-invalid-exception'
-import {
-  dateFromJSON,
-  dateToJSON
-} from 'src/package/shared/config/helper/date/date-mapper'
+import { newPassengerLastName } from 'src/package/passenger/domain/models/passenger-last-name'
+import { newPassengerName } from 'src/package/passenger/domain/models/passenger-name'
+import { newPosition } from 'src/package/position-api/domain/models/position'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import {
+	ImageUrl,
+	newImageUrl
+} from 'src/package/shared/domain/models/image-url'
 import { newValidDate } from 'src/package/shared/domain/models/valid-date'
-import { newLocation } from 'src/package/trip-location/domain/models/trip-location'
+import {
+	dateFromJSON,
+	dateToJSON
+} from 'src/package/shared/utils/date/date-mapper'
+import { newTripLocationName } from 'src/package/trip-location/domain/models/trip-location-name'
 import { newTripID } from 'src/package/trip/domain/models/trip-id'
 import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
 
@@ -20,23 +30,42 @@ import { newTripPrice } from 'src/package/trip/domain/models/trip-price'
  * @throws {UnknownException} - if unknown error
  */
 export const nearTripToJson = ( nearTrip: NearTrip ): Result<Record<string, any>, Error> => {
-  try {
-    return Ok( {
-      id                 : nearTrip.id.value,
-      start_location_name: nearTrip.startLocationName.value,
-      end_location_name  : nearTrip.endLocationName.value,
-      price              : {
-        amount  : nearTrip.price.amount,
-        currency: nearTrip.price.currency
-      },
-      start_date         : dateToJSON( nearTrip.startDate.value ),
-      latitude           : nearTrip.latitude,
-      longitude          : nearTrip.longitude
-    } )
-  }
-  catch ( e ) {
-    return Err( new UnknownException( 'error near trip to json' ) )
-  }
+	try {
+		const json: Record<string, any> = {
+			id                 : nearTrip.id.value,
+			start_location_name: nearTrip.startLocationName.value,
+			end_location_name  : nearTrip.endLocationName.value,
+			seat               : nearTrip.seat.value,
+			driver_name        : nearTrip.driverName.value,
+			driver_last_name   : nearTrip.driverLastName.value,
+			price              : {
+				amount  : nearTrip.price.amount.value,
+				currency: nearTrip.price.currency.value
+			},
+			start_date         : dateToJSON( nearTrip.startDate ),
+			latitude           : nearTrip.latitude,
+			longitude          : nearTrip.longitude
+		}
+
+		if ( nearTrip.driverImage.isSome() ) {
+			json['driver_image'] = nearTrip.driverImage.unwrap().value
+		}
+		else {
+			json['driver_image'] = null
+		}
+
+		const passengerImages: string[] = []
+		for ( const passengerImage of nearTrip.passengersImages ) {
+			passengerImages.push(
+				passengerImage.isSome() ? passengerImage.unwrap().value : '' )
+		}
+		json['passengers_images'] = passengerImages
+
+		return Ok( json )
+	}
+	catch ( e ) {
+		return Err( new UnknownException( 'error near trip to json' ) )
+	}
 }
 
 /**
@@ -44,86 +73,142 @@ export const nearTripToJson = ( nearTrip: NearTrip ): Result<Record<string, any>
  * @throws {TripIdInvalidException} - if trip id is invalid
  * @throws {CategoryNameInvalidException} - if category name is invalid
  * @throws {DateInvalidException} - if date is invalid
- * @throws {LocationIdInvalidException} - if location id is invalid
- * @throws {LocationNameInvalidException} - if location name is invalid
- * @throws {LocationCountryCodeInvalidException} - if location country code is invalid
+ * @throws {TripLocationIdInvalidException} - if location id is invalid
+ * @throws {TripLocationNameInvalidException} - if location name is invalid
+ * @throws {TripLocationCountryCodeInvalidException} - if location country code is invalid
  * @throws {PositionInvalidException} - if location position is invalid
  */
 export const nearTripFromJson = ( json: Record<string, any> ): Result<NearTrip, Error[]> => {
-  const err: Error[] = []
+	const err: Error[] = []
 
-  const id = newTripID( {
-    value: json['id'] ?? ''
-  } )
+	const id = newTripID( {
+		value: json['id'] ?? ''
+	} )
 
-  if ( id.isErr() ) {
-    err.push( id.unwrapErr() )
-  }
+	if ( id.isErr() ) {
+		err.push( id.unwrapErr() )
+	}
 
-  const startDate = newValidDate( {
-    value: dateFromJSON( json['startDate'] ) ?? ''
-  } )
+	const startDate = newValidDate( {
+		value: dateFromJSON( json['start_date'] ) ?? ''
+	} )
 
-  if ( startDate.isErr() ) {
-    err.push( startDate.unwrapErr() )
-  }
+	if ( startDate.isErr() ) {
+		err.push( startDate.unwrapErr() )
+	}
 
-  const price = newTripPrice( {
-    amount  : json['price']?.amount ?? '',
-    currency: json['price']?.currency ?? ''
-  } )
+	const price = newTripPrice( {
+		amount  : json['price']?.amount ?? '',
+		currency: json['price']?.currency ?? ''
+	} )
 
-  if ( price.isErr() ) {
-    err.push( ...price.unwrapErr() )
-  }
+	if ( price.isErr() ) {
+		err.push( ...price.unwrapErr() )
+	}
 
-  const startLocation = newLocation( {
-    id         : json['start_location']?.id ?? '',
-    name       : json['start_location']?.name ?? '',
-    countryCode: json['start_location']?.countryCode ?? '',
-    position   : {
-      lat: json['start_location']?.position?.latitude ?? '',
-      lng: json['start_location']?.position?.longitude ?? ''
-    }
-  } )
+	const startLocation = newTripLocationName( {
+		value: json['start_location_name'] ?? ''
+	} )
 
-  if ( startLocation.isErr() ) {
-    err.push( ...startLocation.unwrapErr() )
-  }
+	if ( startLocation.isErr() ) {
+		err.push( startLocation.unwrapErr() )
+	}
 
-  const endLocation = newLocation( {
-    id         : json['end_location']?.id ?? '',
-    name       : json['end_location']?.name ?? '',
-    countryCode: json['end_location']?.countryCode ?? '',
-    position   : {
-      lat: json['end_location']?.position?.latitude ?? '',
-      lng: json['end_location']?.position?.longitude ?? ''
-    }
-  } )
+	const endLocation = newTripLocationName( {
+		value: json['end_location_name'] ?? ''
+	} )
 
-  if ( endLocation.isErr() ) {
-    err.push( ...endLocation.unwrapErr() )
-  }
+	if ( endLocation.isErr() ) {
+		err.push( endLocation.unwrapErr() )
+	}
 
-  //TODO: revisar si se verifica
-  if ( json['latitude'] === undefined || json['longitude'] === undefined ) {
-    err.push(
-      new PositionInvalidException( 'latitude or longitude is undefined' ) )
-  }
+	const position = newPosition( {
+		lat: json['latitude'],
+		lng: json['longitude']
+	} )
 
-  if ( err.length > 0 ) {
-    return Err( err )
-  }
+	if ( position.isErr() ) {
+		err.push( position.unwrapErr() )
+	}
 
-  return Ok( {
-      id               : id.unwrap(),
-      price            : price.unwrap(),
-      startDate        : startDate.unwrap(),
-      startLocationName: startLocation.unwrap().name,
-      endLocationName  : endLocation.unwrap().name,
-      latitude         : json['latitude'],
-      longitude        : json['longitude']
-    }
-  )
+	const seat = newDriverCarSeat( {
+		value: json['seat'] ?? ''
+	} )
+
+	if ( seat.isErr() ) {
+		err.push( seat.unwrapErr() )
+	}
+
+	const driverName = newPassengerName( {
+		value: json['driver_name'] ?? ''
+	} )
+
+	if ( driverName.isErr() ) {
+		err.push( driverName.unwrapErr() )
+	}
+
+	const driverLastName = newPassengerLastName( {
+		value: json['driver_last_name'] ?? ''
+	} )
+
+	if ( driverLastName.isErr() ) {
+		err.push( driverLastName.unwrapErr() )
+	}
+
+	let driverImage: Option<ImageUrl> = None
+	if ( json['driver_image'] !== undefined ) {
+		const imageResult = newImageUrl( {
+			value: json['driver_image']
+		} )
+
+		if ( imageResult.isErr() ) {
+			err.push( imageResult.unwrapErr() )
+		}
+		else {
+			driverImage = Some( imageResult.unwrap() )
+		}
+	}
+
+	const passengerImages: Option<ImageUrl>[] = []
+
+	if ( json['passengers_images'] !== undefined) {
+		const objects = Object.values( json['passengers_images'] )
+		for ( const imagePassenger of objects ) {
+			let passengerImage: Option<ImageUrl> = None
+			if ( imagePassenger !== undefined) {
+				const imageResult = newImageUrl( {
+					value: imagePassenger as string
+				} )
+				if ( imageResult.isErr() ) {
+					err.push( imageResult.unwrapErr() )
+					continue
+				}
+				else {
+					passengerImage = Some( imageResult.unwrap() )
+				}
+			}
+			passengerImages.push( passengerImage )
+		}
+	}
+
+	if ( err.length > 0 ) {
+		return Err( err )
+	}
+
+	return Ok( {
+			id               : id.unwrap(),
+			price            : price.unwrap(),
+			startDate        : startDate.unwrap().value,
+			startLocationName: startLocation.unwrap(),
+			endLocationName  : endLocation.unwrap(),
+			driverLastName   : driverLastName.unwrap(),
+			driverName       : driverName.unwrap(),
+			driverImage      : driverImage,
+			passengersImages : passengerImages,
+			seat             : seat.unwrap(),
+			latitude         : position.unwrap().lat,
+			longitude        : position.unwrap().lng
+		}
+	)
 }
 

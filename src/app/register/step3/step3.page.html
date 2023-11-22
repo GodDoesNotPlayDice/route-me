@@ -1,27 +1,48 @@
 <ion-content [fullscreen]="true">
-  <app-app-bar-clone
-    href="/login"
-    #appBar
-    label="Registrarse"
-    (leadClicked)="leadClick()"
-  >
-  </app-app-bar-clone>
-  <div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col gap-5 justify-between">
-    <div class="flex flex-col gap-5">
-      <app-stepper></app-stepper>
-      <form class="flex flex-col gap-5">
-        <app-input-area #area
-          label="Sobre mi"
-          placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
-        <app-multiple-selector-input
-          label="Preferencia al viajar"
-          [databaseList]="preferences"
-          placeholder="Elegir"
-          #preference></app-multiple-selector-input>
-      </form>
-    </div>
-    <app-filled-button (onClick)="buttonClick()"
-      class="my-5"
-      contentText="Finalizar"></app-filled-button>
-  </div>
+	<app-app-bar-clone
+		href="/login"
+		#appBar
+		label="Registrarse"
+		(leadClicked)="leadClick()"
+	>
+	</app-app-bar-clone>
+	<div class="p-2.5 w-full h-full max-w-xs mx-auto flex flex-col gap-5 justify-between">
+		<div class="flex flex-col gap-5">
+			<app-stepper></app-stepper>
+			<form class="flex flex-col gap-5">
+				<div class="flex flex-col justify-center items-center gap-2">
+					<ng-container *ngIf="tempUrl ===''">
+						<ion-icon
+							class="h-24 w-24"
+							name="person-circle-outline"></ion-icon>
+					</ng-container>
+					<ng-container *ngIf="tempUrl !==''">
+						<img class="h-24 w-24 rounded-full"
+							[src]="tempUrl"
+							alt="Foto de perfil">
+					</ng-container>
+					<button
+						(click)="onLoadPhoto()"
+						class="bg-yellow-500 text-white h-6 w-24 rounded-full text-base"
+					>Subir foto
+					</button>
+				</div>
+				<app-input-area #area
+					label="Sobre mi"
+					placeholder="Ejemplo soy un estudiante de computacion, me gusta el futbol"></app-input-area>
+				<div *ngIf="loadingPreferences">
+					<div>Cargando preferencias...</div>
+					<ion-spinner name="dots"></ion-spinner>
+				</div>
+				<app-multiple-selector-input *ngIf="!loadingPreferences && preferences.length > 0"
+					label="Preferencia al viajar"
+					[databaseList]="preferences"
+					placeholder="Elegir"
+					#preference></app-multiple-selector-input>
+			</form>
+		</div>
+		<app-filled-button (onClick)="buttonClick()"
+			class="my-5"
+			contentText="Finalizar"></app-filled-button>
+	</div>
 </ion-content>

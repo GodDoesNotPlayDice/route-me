@@ -1,57 +1,50 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { UnknownException } from 'src/package/shared/domain/exceptions/unknown-exception'
+import { newEmail } from 'src/package/shared/domain/models/email'
 import { TripHistory } from 'src/package/trip-history/domain/models/trip-history'
 import { newTripHistoryID } from 'src/package/trip-history/domain/models/trip-history-id'
 import {
-  tripFromJSON,
-  tripToJSON
+	tripFromJSON,
+	tripToJSON
 } from 'src/package/trip/application/trip-mapper'
-import { Trip } from 'src/package/trip/domain/models/trip'
 
 /**
  * Create a json from trip history instance
  * @throws {UnknownException} - if unknown error
  */
 export const tripHistoryToJson = ( tripHistory: TripHistory ): Result<Record<string, any>, Error[]> => {
-  try {
-    const err: Error[] = []
+	try {
+		const err: Error[] = []
 
+		const json: Record<string, any> = {
+			id        : tripHistory.id.value,
+			user_email: tripHistory.userEmail.value
+		}
 
-    const json: Record<string, any> = {
-      id: tripHistory.id.value
-    }
+		const trip = tripToJSON( tripHistory.trip )
 
-    const trips: Record<string, any>[] = []
-    for ( const trip of tripHistory.trips ) {
-      const tripResult = tripToJSON( trip )
+		if ( trip.isErr() ) {
+			err.push( ...trip.unwrapErr() )
+		}
+		else {
+			json['trip'] = trip.unwrap()
+		}
 
-      if ( tripResult.isErr() ) {
-        err.push( ...tripResult.unwrapErr() )
-      }
-      else {
-        trips.push( tripResult.unwrap() )
-      }
-    }
-
-    if ( trips.length > 0 ) {
-      json['trips'] = trips
-    }
-
-    if ( err.length > 0 ) {
-      return Err( err )
-    }
-    return Ok( json )
-  }
-  catch ( e ) {
-    const err = e instanceof Error
-      ? new UnknownException( e.message )
-      : new UnknownException( 'error trip history to json' )
-    return Err( [ err ] )
-  }
+		if ( err.length > 0 ) {
+			return Err( err )
+		}
+		return Ok( json )
+	}
+	catch ( e ) {
+		const err = e instanceof Error
+			? new UnknownException( e.message )
+			: new UnknownException( 'error trip history to json' )
+		return Err( [ err ] )
+	}
 }
 
 /**
@@ -60,9 +53,8 @@ export const tripHistoryToJson = ( tripHistory: TripHistory ): Result<Record<str
  * @throws {DriverIdInvalidException} - if driver id is invalid
  * @throws {CategoryIdInvalidException} - if category id is invalid
  * @throws {ChatIdInvalidException} - if chat id is invalid
- * @throws {LocationIdInvalidException} - if location id is invalid
+ * @throws {TripLocationIdInvalidException} - if location id is invalid
  * @throws {MoneyInvalidException} - if money is invalid
- * @throws {TripSeatInvalidException} - if seat is invalid
  * @throws {TripStateInvalidException} - if state is invalid
  * @throws {TripIdInvalidException} - if trip id is invalid
  * @throws {DateInvalidException} - if date is invalid
@@ -71,37 +63,37 @@ export const tripHistoryToJson = ( tripHistory: TripHistory ): Result<Record<str
  * @throws {CurrencyInvalidException} - if currency is invalid
  */
 export const tripHistoryFromJson = ( json: Record<string, any> ): Result<TripHistory, Error[]> => {
-  const error: Error[] = []
+	const error: Error[] = []
 
-  const id = newTripHistoryID( {
-    value: json['id'] ?? ''
-  } )
+	const id = newTripHistoryID( {
+		value: json['id'] ?? ''
+	} )
 
-  if ( id.isErr() ) {
-    error.push( id.unwrapErr() )
-  }
+	if ( id.isErr() ) {
+		error.push( id.unwrapErr() )
+	}
 
-  const trips: Trip[] = []
+	const email = newEmail( {
+		value: json['user_email'] ?? ''
+	} )
 
-  if ( json['trips'] !== undefined ) {
-    for ( const trip of Object.values( json['trips'] ) ) {
-      const tripResult = tripFromJSON( trip as Record<string, any> )
+	if ( email.isErr() ) {
+		error.push( email.unwrapErr() )
+	}
 
-      if ( tripResult.isErr() ) {
-        error.push( ...tripResult.unwrapErr() )
-      }
-      else {
-        trips.push( tripResult.unwrap() )
-      }
-    }
-  }
+	const trip = tripFromJSON( json['trip'] )
 
-  if ( error.length > 0 ) {
-    return Err( error )
-  }
+	if ( trip.isErr() ) {
+		error.push( ...trip.unwrapErr() )
+	}
 
-  return Ok( {
-    id   : id.unwrap(),
-    trips: trips
-  } )
+	if ( error.length > 0 ) {
+		return Err( error )
+	}
+
+	return Ok( {
+		id       : id.unwrap(),
+		userEmail: email.unwrap(),
+		trip     : trip.unwrap()
+	} )
 }

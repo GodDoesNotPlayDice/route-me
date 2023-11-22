@@ -5,14 +5,14 @@ import { DirectionRepository } from 'src/package/direction-api/domain/repository
 import { Position } from 'src/package/position-api/domain/models/position'
 
 @Injectable( {
-  providedIn: 'root'
+	providedIn: 'root'
 } )
 export class DirectionService {
 
-  constructor( private directionRepository: DirectionRepository ) { }
+	constructor( private directionRepository: DirectionRepository ) { }
 
-  async getDirection( inicio: Position,
-    final: Position ): Promise<Result<Direction, Error>> {
-    return await this.directionRepository.getDirection( inicio, final )
-  }
+	async getDirection( inicio: Position,
+		final: Position ): Promise<Result<Direction, Error[]>> {
+		return await this.directionRepository.getDirection( inicio, final )
+	}
 }

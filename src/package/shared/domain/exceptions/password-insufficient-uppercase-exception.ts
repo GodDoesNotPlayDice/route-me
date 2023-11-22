@@ -1,6 +1,6 @@
 export class PasswordInsufficientUppercaseException extends Error {
-  constructor( message?: string ) {
-    super( message )
-    this.name = 'PasswordInsufficientUppercaseException'
-  }
+	constructor( message?: string ) {
+		super( message )
+		this.name = 'PasswordInsufficientUppercaseException'
+	}
 }

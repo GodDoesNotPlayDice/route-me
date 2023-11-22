@@ -1,29 +1,29 @@
 <div>
-  <div class="w-full">
-    <mat-form-field>
-      <mat-label>{{label}}</mat-label>
-      <input
-        [max]="dateNowDesc"
-        [min]="dateNowAsc"
-        placeholder="MM/DD/YYYY"
-        (dateInput)="onDate($event)"
-        matInput
-        #dateInput
-        [value]="dateSelected"
-        [matDatepicker]="picker">
-      <mat-datepicker-toggle matIconSuffix
-        [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div class="mt-2 text-xs text-threateningRed-500 font-gotham">
-    <div *ngIf="dateControl.invalid && (dateControl.dirty || dateControl.touched)">
-      <div *ngIf="dateControl.errors?.['required']">
-        Debes ingresar una fecha valida
-      </div>
-      <div *ngIf="dateControl.errors?.['invalid']">
-        Debes tener al menos 18 años
-      </div>
-    </div>
-  </div>
+	<div class="w-full">
+		<mat-form-field>
+			<mat-label>{{label}}</mat-label>
+			<input
+				[max]="dateNowDesc"
+				[min]="dateNowAsc"
+				placeholder="MM/DD/YYYY"
+				(dateInput)="onDate($event)"
+				matInput
+				#dateInput
+				[value]="dateSelected"
+				[matDatepicker]="picker">
+			<mat-datepicker-toggle matIconSuffix
+				[for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+	</div>
+	<div class="mt-2 text-xs text-threateningRed-500 font-gotham">
+		<div *ngIf="dateControl.invalid && (dateControl.dirty || dateControl.touched)">
+			<div *ngIf="dateControl.errors?.['required']">
+				Debes ingresar una fecha valida
+			</div>
+			<div *ngIf="dateControl.errors?.['invalid']">
+				Debes tener al menos 18 años
+			</div>
+		</div>
+	</div>
 </div>

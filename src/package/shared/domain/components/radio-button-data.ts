@@ -1,4 +1,4 @@
 export interface RadioButtonData {
-  icon: string,
-  name: string
+	icon: string,
+	name: string
 }

@@ -1,14 +1,14 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import { TripLocationIdInvalidException } from 'src/package/trip-location/domain/exception/trip-location-id-invalid-exception'
 import { z } from 'zod'
 
 export const TripLocationIDSchema = z.object( {
-  value: z.string()
-          .min( 1 )
+	value: z.string()
+	        .min( 1 )
 } )
 
 type TripLocationIDType = z.infer<typeof TripLocationIDSchema>
@@ -16,7 +16,7 @@ type TripLocationIDType = z.infer<typeof TripLocationIDSchema>
 export interface TripLocationID extends TripLocationIDType {}
 
 export interface TripLocationIDProps {
-  value: string
+	value: string
 }
 
 /**
@@ -24,14 +24,14 @@ export interface TripLocationIDProps {
  * @throws {TripLocationIdInvalidException} - if id is invalid
  */
 export const newTripLocationID = ( props: TripLocationIDProps ): Result<TripLocationID, Error> => {
-  const result = TripLocationIDSchema.safeParse( {
-    value: props.value
-  } )
+	const result = TripLocationIDSchema.safeParse( {
+		value: props.value
+	} )
 
-  if ( !result.success ) {
-    return Err( new TripLocationIdInvalidException() )
-  }
-  else {
-    return Ok( result.data )
-  }
+	if ( !result.success ) {
+		return Err( new TripLocationIdInvalidException() )
+	}
+	else {
+		return Ok( result.data )
+	}
 }

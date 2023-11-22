@@ -1,39 +1,39 @@
 import {
-  Err,
-  Ok,
-  Result
+	Err,
+	Ok,
+	Result
 } from 'oxide.ts'
 import {
-  newPosition,
-  Position,
-  PositionProps
+	newPosition,
+	Position,
+	PositionProps
 } from 'src/package/position-api/domain/models/position'
 import {
-  newTripLocationCountryCode,
-  TripLocationCountryCode
+	newTripLocationCountryCode,
+	TripLocationCountryCode
 } from 'src/package/trip-location/domain/models/trip-location-country-code'
 import {
-  newTripLocationID,
-  TripLocationID
+	newTripLocationID,
+	TripLocationID
 } from 'src/package/trip-location/domain/models/trip-location-id'
 import {
-  newTripLocationName,
-  TripLocationName
+	newTripLocationName,
+	TripLocationName
 } from 'src/package/trip-location/domain/models/trip-location-name'
 
 export interface TripLocation {
-  id: TripLocationID
-  name: TripLocationName
-  countryCode: TripLocationCountryCode
-  position: Position
+	id: TripLocationID
+	name: TripLocationName
+	countryCode: TripLocationCountryCode
+	position: Position
 }
 
 
-export interface LocationProps {
-  id: string
-  name: string
-  countryCode: string
-  position: PositionProps
+export interface TripLocationProps {
+	id: string
+	name: string
+	countryCode: string
+	position: PositionProps
 }
 
 /**
@@ -43,50 +43,50 @@ export interface LocationProps {
  * @throws {TripLocationCountryCodeInvalidException} - if country code is invalid
  * @throws {PositionInvalidException} - if position is invalid
  */
-export const newLocation = ( props: LocationProps ): Result<TripLocation, Error[]> => {
-  const err: Error[] = []
+export const newLocation = ( props: TripLocationProps ): Result<TripLocation, Error[]> => {
+	const err: Error[] = []
 
-  const id = newTripLocationID( {
-    value: props.id
-  } )
+	const id = newTripLocationID( {
+		value: props.id
+	} )
 
-  if ( id.isErr() ) {
-    err.push( id.unwrapErr() )
-  }
+	if ( id.isErr() ) {
+		err.push( id.unwrapErr() )
+	}
 
-  const name = newTripLocationName( {
-    value: props.name
-  } )
+	const name = newTripLocationName( {
+		value: props.name
+	} )
 
-  if ( name.isErr() ) {
-    err.push( name.unwrapErr() )
-  }
+	if ( name.isErr() ) {
+		err.push( name.unwrapErr() )
+	}
 
-  const countryCode = newTripLocationCountryCode( {
-    value: props.countryCode
-  } )
+	const countryCode = newTripLocationCountryCode( {
+		value: props.countryCode
+	} )
 
-  if ( countryCode.isErr() ) {
-    err.push( countryCode.unwrapErr() )
-  }
+	if ( countryCode.isErr() ) {
+		err.push( countryCode.unwrapErr() )
+	}
 
-  const position = newPosition( {
-    lat: props.position.lat,
-    lng: props.position.lng
-  } )
+	const position = newPosition( {
+		lat: props.position.lat,
+		lng: props.position.lng
+	} )
 
-  if ( position.isErr() ) {
-    err.push( position.unwrapErr() )
-  }
+	if ( position.isErr() ) {
+		err.push( position.unwrapErr() )
+	}
 
-  if ( err.length > 0 ) {
-    return Err( err )
-  }
+	if ( err.length > 0 ) {
+		return Err( err )
+	}
 
-  return Ok( {
-    id         : id.unwrap(),
-    name       : name.unwrap(),
-    countryCode: countryCode.unwrap(),
-    position   : position.unwrap()
-  } )
+	return Ok( {
+		id         : id.unwrap(),
+		name       : name.unwrap(),
+		countryCode: countryCode.unwrap(),
+		position   : position.unwrap()
+	} )
 }

@@ -1,6 +1,6 @@
 export class PassengerIdInvalidException extends Error {
-  constructor( message?: string ) {
-    super( message )
-    this.name = 'PassengerIdInvalidException'
-  }
+	constructor( message?: string ) {
+		super( message )
+		this.name = 'PassengerIdInvalidException'
+	}
 }

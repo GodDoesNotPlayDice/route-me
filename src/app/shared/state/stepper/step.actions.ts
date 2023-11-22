@@ -1,9 +1,9 @@
 import { createAction } from '@ngrx/store'
 
 export const notifyStep = createAction(
-  '[STEP] Notify STEP'
+	'[STEP] Notify STEP'
 )
 
 export const clearStep = createAction(
-  '[STEP] Clear STEP'
+	'[STEP] Clear STEP'
 )

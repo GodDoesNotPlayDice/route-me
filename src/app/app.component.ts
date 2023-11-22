@@ -1,47 +1,41 @@
 import { CommonModule } from '@angular/common'
 import {
-  Component,
-  OnInit
+	Component,
+	OnDestroy,
+	OnInit
 } from '@angular/core'
-import {
-  NavigationEnd,
-  Router
-} from '@angular/router'
 import { IonicModule } from '@ionic/angular'
 import { CountryPhoneCodeService } from 'src/app/shared/services/country-phone-code.service'
-import { UrlService } from 'src/app/shared/services/url.service'
 import {
-  Dropdown,
-  initTE,
-  Input,
-  Ripple
+	Dropdown,
+	initTE,
+	Input,
+	Ripple
 } from 'tw-elements'
 
 @Component( {
-  standalone : true,
-  selector   : 'app-root',
-  templateUrl: 'app.component.html',
-  imports    : [
-    IonicModule,
-    CommonModule
-  ],
-  styleUrls  : [ 'app.component.scss' ]
+	standalone : true,
+	selector   : 'app-root',
+	templateUrl: 'app.component.html',
+	imports    : [
+		IonicModule,
+		CommonModule
+	],
+	styleUrls  : [ 'app.component.scss' ]
 } )
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
-  constructor( private router: Router,
-    private countryPhoneCode: CountryPhoneCodeService,
-    private urlService: UrlService )
-  {}
+	constructor(
+		// @Inject( 'Supabase' ) private supa: SupabaseClient<any, 'public', any>,
+		private countryPhoneCode: CountryPhoneCodeService )
+	{
+	}
 
-  async ngOnInit() {
-    await this.countryPhoneCode.init()
-    this.router.events.subscribe( ( val ) => {
-      if ( val instanceof NavigationEnd ) {
-        this.urlService.setPreviousUrl( val.url )
-      }
-    } )
+	async ngOnInit() {
+		await this.countryPhoneCode.init()
+		initTE( { Input, Dropdown, Ripple } )
+	}
 
-    initTE( { Input, Dropdown, Ripple } )
-  }
+	async ngOnDestroy(): Promise<void> {
+	}
 }

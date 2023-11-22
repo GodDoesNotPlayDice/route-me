@@ -1,4 +1,4 @@
 export interface FilterButtonData {
-  image: string,
-  name: string
+	image: string,
+	name: string
 }
