@@ -167,6 +167,6 @@ export class Step2Page implements ViewDidEnter {
 
 	async buttonClick(): Promise<void> {
 		await this.submit()
-		this.reset()
+		//this.reset()
 	}
 }

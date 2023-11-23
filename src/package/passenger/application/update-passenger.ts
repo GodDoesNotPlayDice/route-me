@@ -21,6 +21,8 @@ import {
 	newImageUrl
 } from 'src/package/shared/domain/models/image-url'
 import { newPhone } from 'src/package/shared/domain/models/phone'
+import {newValidBoolean} from "../../shared/domain/models/valid-bool";
+import {Email} from "../../shared/domain/models/email";
 
 /**
  * Update passenger
@@ -38,12 +40,14 @@ import { newPhone } from 'src/package/shared/domain/models/phone'
  */
 export const updatePassenger = async (
 	dao: PassengerDao,
+	passengerEmail : Email,
 	passenger: Passenger, partialProps: {
 		image?: string,
 		name?: string,
 		lastName?: string,
 		description?: string,
 		phone?: string,
+		inTrip?:boolean,
 		rating?: number,
 		preferences?: PreferenceProps[],
 	}
@@ -123,6 +127,14 @@ export const updatePassenger = async (
 		preferences = passenger.preferences
 	}
 
+	const inTrip = newValidBoolean({
+		value: partialProps.inTrip ?? passenger.inTrip.value
+	})
+
+	if (inTrip.isErr()){
+		err.push(inTrip.unwrapErr())
+	}
+
 	if ( err.length > 0 ) {
 		return Err( err )
 	}
@@ -130,6 +142,7 @@ export const updatePassenger = async (
 	const newPassenger: Passenger = {
 		image        : image,
 		name         : name.unwrap(),
+		inTrip: inTrip.unwrap(),
 		lastName     : lastName.unwrap(),
 		description  : description.unwrap(),
 		phone        : phone.unwrap(),
@@ -142,7 +155,7 @@ export const updatePassenger = async (
 		birthDay     : passenger.birthDay
 	}
 
-	const result = await dao.update( newPassenger )
+	const result = await dao.update( passengerEmail, newPassenger )
 
 	if ( result.isErr() ) {
 		err.push( ...result.unwrapErr() )

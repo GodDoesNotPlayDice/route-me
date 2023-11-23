@@ -29,6 +29,7 @@ import { PreferenceProps } from 'src/package/preference/domain/models/preference
 import { getUserByEmail } from 'src/package/user/application/get-user-by-email'
 import { UserDao } from 'src/package/user/domain/dao/user-dao'
 import { User } from 'src/package/user/domain/models/user'
+import {Email} from "../../../package/shared/domain/models/email";
 
 @Injectable( {
 	providedIn: 'root'
@@ -128,11 +129,17 @@ export class AuthService implements OnDestroy {
 		lastName?: string,
 		description?: string,
 		phone?: string,
+		inTrip?: boolean,
 		rating?: number,
 		preferences?: PreferenceProps[],
+	}, passengerTarget?: {
+		email ?: Email,
+		passenger?: Passenger
 	} ): Promise<Result<Passenger, Error[]>> {
-		const result = await updatePassenger( this.passengerDao,
-			this.currentPassenger.unwrap(), partialProps )
+		const email = passengerTarget?.email ?? this.currentPassenger.unwrap().email
+		const passenger = passengerTarget?.passenger ?? this.currentPassenger.unwrap()
+
+		const result = await updatePassenger( this.passengerDao, email, passenger, partialProps )
 
 		if ( result.isErr() ) {
 			console.log( 'update passenger error' )
@@ -140,7 +147,9 @@ export class AuthService implements OnDestroy {
 			return Err( result.unwrapErr() )
 		}
 
-		this.currentPassenger = Some( result.unwrap() )
+		if (passengerTarget?.email === this.currentPassenger.unwrap().email){
+			this.currentPassenger = Some( result.unwrap() )
+		}
 		return Ok( result.unwrap() )
 	}
 

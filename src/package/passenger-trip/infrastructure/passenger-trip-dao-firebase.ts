@@ -215,6 +215,9 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 			                 let stateNotMatch            = true
 
 			                 snapshot.forEach( ( childSnapshot ) => {
+								 console.log('-----entry----')
+								 console.log(childSnapshot.val()['state'])
+								 console.log(state)
 				                 if ( childSnapshot.val()['state'] === state ) {
 					                 stateNotMatch = false
 					                 childSnapshot.ref.remove(

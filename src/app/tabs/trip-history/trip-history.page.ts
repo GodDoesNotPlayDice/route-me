@@ -53,6 +53,9 @@ export class TripHistoryPage implements ViewDidEnter {
 		this.openLoading      = true
 		this.progressLoading  = true
 		this.completedLoading = true
+		this.openTrips      = []
+		this.progressTrips  = []
+		this.completedTrips = []
 
 		const currencyResult = await this.currencyService.fetchCurrency()
 

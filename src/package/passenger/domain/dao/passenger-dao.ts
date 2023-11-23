@@ -1,6 +1,7 @@
 import { Result } from 'oxide.ts'
 import { Passenger } from 'src/package/passenger/domain/models/passenger'
 import { Email } from 'src/package/shared/domain/models/email'
+import {PassengerID} from "../models/passenger-id";
 
 export abstract class PassengerDao {
 	abstract getAll(): Promise<Result<Passenger[], Error[]>>
@@ -9,7 +10,7 @@ export abstract class PassengerDao {
 		passenger: Passenger
 	): Promise<Result<boolean, Error[]>>
 
-	abstract update( user: Passenger ): Promise<Result<boolean, Error[]>>
+	abstract update(passengerEmail : Email, passenger: Passenger ): Promise<Result<boolean, Error[]>>
 
 	abstract getByEmail( email: Email ): Promise<Result<Passenger, Error[]>>
 

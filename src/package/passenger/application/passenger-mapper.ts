@@ -31,6 +31,7 @@ import {
 	dateFromJSON,
 	dateToJSON
 } from 'src/package/shared/utils/date/date-mapper'
+import {newValidBoolean} from "../../shared/domain/models/valid-bool";
 
 /**
  * Create a json from passenger instance
@@ -50,7 +51,8 @@ export const passengerToJson = ( passenger: Passenger ): Result<Record<string, a
 			country       : passenger.country.value,
 			birth_day     : dateToJSON( passenger.birthDay.value ),
 			average_rating: passenger.averageRating.value,
-			phone         : passenger.phone.value
+			phone         : passenger.phone.value,
+			in_trip : passenger.inTrip.value
 		}
 
 		if ( passenger.image.isSome() ) {
@@ -222,6 +224,14 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
 		}
 	}
 
+	const inTrip = newValidBoolean({
+		value: json['in_trip']
+	})
+
+	if (inTrip.isErr()){
+		err.push(inTrip.unwrapErr())
+	}
+
 	if ( err.length > 0 ) {
 		return Err( err )
 	}
@@ -235,6 +245,7 @@ export const passengerFromJson = ( json: Record<string, any> ): Result<Passenger
 		description  : description.unwrap(),
 		gender       : gender.unwrap(),
 		phone        : phone.unwrap(),
+		inTrip: inTrip.unwrap(),
 		country      : country.unwrap(),
 		birthDay     : birthDay.unwrap(),
 		averageRating: rating.unwrap(),

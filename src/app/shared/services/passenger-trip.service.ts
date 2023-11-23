@@ -28,7 +28,7 @@ export class PassengerTripService {
 		return this.passengerTripDao.deleteAll( email, state )
 	}
 
-	delete( id: TripID, email: Email ): Promise<Result<boolean, Error>> {
+	async delete( id: TripID, email: Email ): Promise<Result<boolean, Error>> {
 		return this.passengerTripDao.delete( id, email )
 	}
 

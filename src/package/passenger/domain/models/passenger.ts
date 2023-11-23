@@ -11,6 +11,7 @@ import { Gender } from 'src/package/shared/domain/models/gender'
 import { ImageUrl } from 'src/package/shared/domain/models/image-url'
 import { Phone } from 'src/package/shared/domain/models/phone'
 import { ValidNumber } from 'src/package/shared/domain/models/valid-number'
+import {ValidBoolean} from "../../../shared/domain/models/valid-bool";
 
 export interface Passenger {
 	id: PassengerID
@@ -22,6 +23,7 @@ export interface Passenger {
 	country: PassengerCountry
 	birthDay: PassengerBirthDay
 	phone: Phone
+	inTrip: ValidBoolean
 	preferences: Preference[]
 	email: Email
 	averageRating: ValidNumber

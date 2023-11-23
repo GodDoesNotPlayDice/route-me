@@ -142,6 +142,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 
 			this.tripChange = listenResult.unwrap()
 			                              .subscribe( async ( value ) => {
+											  console.log("blue update")
 				                              if ( value === null ) {
 					                              return
 				                              }
@@ -229,7 +230,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 
 			}
 			else {
-				console.log( 'error reported from user. trip detail' )
+				console.log( 'omitible. error reported from user. trip detail' )
 				console.log( reportedResult.unwrapErr() )
 			}
 		}
@@ -359,6 +360,10 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			return
 		}
 
+		if( psn.inTrip.value ){
+			return
+		}
+
 		const newListQueuePassengers = this.trip.queuePassengers.filter(
 			( passenger ) => {
 				return passenger.email.value !== psn.email.value
@@ -371,8 +376,20 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		} )
 
 		if ( result.isSome() ) {
-			await this.passengerTripService.deleteAll( psn.email,
-				TripStateEnum.Open )
+			const psnTrips = await this.passengerTripService.getAllByEmail(psn.email)
+			console.log('psnTrips',psnTrips)
+			for (const psnTrip of psnTrips) {
+				if (psnTrip.tripID.value === this.trip.id.value) continue
+				await this.passengerTripService.delete(psnTrip.tripID,psn.email)
+			}
+
+			const psnUpdate = await this.authService.updatePassenger({
+				inTrip: true
+			},{
+				email: psn.email,
+				passenger: psn
+			})
+			console.log('psnUpdate',psnUpdate)
 
 			await this.toastService.presentToast( {
 				message : 'Se ha aceptado al pasajero',
@@ -465,12 +482,16 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 			queuePassengers: [],
 			state          : TripStateEnum.Progress
 		} )
+
 		console.log( '------------------------------' )
 		console.log( 'tablas involucradas, trip, passengerTrip, nearTrip, driver' )
 		console.log( '------------------------------' )
 		if ( result.isSome() ) {
+			for (let psn of this.trip.queuePassengers){
+				const r = await this.passengerTripService.delete(this.trip.id, psn.email)
+			}
+
 			this.trip = result.unwrap()
-			console.log( 'pre update' )
 			const psnResult = await this.passengerTripService.getByID( this.trip.id )
 
 			if ( psnResult.isErr() ) {
@@ -548,6 +569,7 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 					} )
 						.unwrap()
 				} )
+
 				if ( driverHistoryResult.isErr() ) {
 					console.log( 'driverHistoryResult', driverHistoryResult.unwrapErr() )
 				}

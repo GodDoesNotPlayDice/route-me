@@ -18,6 +18,7 @@ import { newImageUrl } from 'src/package/shared/domain/models/image-url'
 import { newPhone } from 'src/package/shared/domain/models/phone'
 import { newValidNumber } from 'src/package/shared/domain/models/valid-number'
 import { ulid } from 'ulidx'
+import {newValidBoolean} from "../../shared/domain/models/valid-bool";
 
 /**
  * Register user
@@ -127,6 +128,14 @@ export const createPassenger = async ( dao: PassengerDao,
 		error.push( rating.unwrapErr() )
 	}
 
+	const inTrip = newValidBoolean({
+		value: false
+	})
+
+	if (inTrip.isErr()){
+		error.push(inTrip.unwrapErr())
+	}
+
 	if ( error.length > 0 ) {
 		return Err( error )
 	}
@@ -137,6 +146,7 @@ export const createPassenger = async ( dao: PassengerDao,
 		email        : props.email,
 		lastName     : lastName.unwrap(),
 		name         : name.unwrap(),
+		inTrip: inTrip.unwrap(),
 		phone        : phone.unwrap(),
 		gender       : gender.unwrap(),
 		birthDay     : birthDay.unwrap(),

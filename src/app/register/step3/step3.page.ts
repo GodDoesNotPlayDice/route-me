@@ -144,7 +144,7 @@ export class Step3Page implements ViewDidEnter {
 
 	async buttonClick(): Promise<void> {
 		await this.submit()
-		this.reset()
+		//this.reset()
 	}
 
 	async leadClick(): Promise<void> {

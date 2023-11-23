@@ -168,8 +168,8 @@ export class PassengerDaoFirebase implements PassengerDao {
 	 * @throws {FirebaseOperationException} - if operation failed
 	 * @throws {UnknownException} - if unknown error
 	 */
-	async update( passenger: Passenger ): Promise<Result<boolean, Error[]>> {
-		const keySaved = await this.getKey( passenger.email )
+	async update( passengerEmail : Email, passenger: Passenger  ): Promise<Result<boolean, Error[]>> {
+		const keySaved = await this.getKey( passengerEmail )
 
 		if ( keySaved.isErr() ) {
 			return Err( [ keySaved.unwrapErr() ] )
