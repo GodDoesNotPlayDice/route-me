@@ -157,35 +157,39 @@
 			aceptar mas pasajeros
 		</div>
 		<ng-container *ngFor="let psn of trip.queuePassengers; index as i">
-			<div class="flex gap-3 items-center w-full">
-				<div
-					class="max-w-[50px] max-h-[50px] rounded-full shadow-md shadow-black/20">
-					<img class="object-fill aspect-square rounded-full"
-						[src]="psn.image.value"
-						[alt]="psn.name.value">
+				<div class="flex gap-3 items-center w-full">
+					<div
+						class="max-w-[50px] max-h-[50px] rounded-full shadow-md shadow-black/20">
+						<img class="object-fill aspect-square rounded-full"
+							[src]="psn.image.value"
+							[alt]="psn.name.value">
+					</div>
+					<div class="font-bold">
+						{{ psn.name.value }} {{ psn.lastName.value }}
+					</div>
+					<div *ngIf="psn.inTrip.value">
+						El pasajero ya esta en el viaje
+					</div>
+					<app-adaptative-button
+						(click)="onAcceptQueuePassenger(psn)"
+						*ngIf="!psn.inTrip.value"
+						[disabled]="isTripFull"
+						text="Aceptar"
+						color="bg-blue-500"
+						color_hover="bg-blue-700"
+						font_size="text-sm"
+						size="py-2.5 px-3"
+						text_color="text-white"></app-adaptative-button>
+					<app-adaptative-button
+						(click)="onDeniedQueuePassenger(psn)"
+						text="Rechazar"
+						color="bg-red-500"
+						color_hover="bg-red-300"
+						font_size="text-sm"
+						size="py-2.5 px-3"
+						text_color="text-white"></app-adaptative-button>
 				</div>
-				<div class="font-bold">
-					{{ psn.name.value }} {{ psn.lastName.value }}
-				</div>
-				<app-adaptative-button
-					(click)="onAcceptQueuePassenger(psn)"
-					[disabled]="isTripFull"
-					text="Aceptar"
-					color="bg-blue-500"
-					color_hover="bg-blue-700"
-					font_size="text-sm"
-					size="py-2.5 px-3"
-					text_color="text-white"></app-adaptative-button>
-				<app-adaptative-button
-					(click)="onDeniedQueuePassenger(psn)"
-					text="Rechazar"
-					color="bg-red-500"
-					color_hover="bg-red-300"
-					font_size="text-sm"
-					size="py-2.5 px-3"
-					text_color="text-white"></app-adaptative-button>
-			</div>
-			<app-divider *ngIf="trip.queuePassengers.length - 1 !== i"></app-divider>
+				<app-divider *ngIf="trip.queuePassengers.length - 1 !== i"></app-divider>
 		</ng-container>
 	</ng-container>
 </ng-template>

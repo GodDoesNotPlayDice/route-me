@@ -361,6 +361,11 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 		}
 
 		if( psn.inTrip.value ){
+			await this.toastService.presentToast( {
+				message : 'El pasajero ya esta en un viaje',
+				duration: 1500,
+				position: 'bottom'
+			} )
 			return
 		}
 
@@ -576,6 +581,15 @@ export class TripDetailsPage implements OnInit, ViewDidEnter, OnDestroy {
 
 				const passengerTripProgressDeleteErrors: Error[] = []
 				for ( let passenger of this.trip.passengers ) {
+
+					const psnUpdate = await this.authService.updatePassenger({
+						inTrip: false
+					},{
+						email: passenger.email,
+						passenger: passenger
+					})
+					console.log('psnUpdate',psnUpdate)
+
 					const passengerTripProgressDeleteResult = await this.passengerTripService.delete(
 						this.trip.id, passenger.email )
 					const historyResult                     = await this.tripHistoryService.create( {
