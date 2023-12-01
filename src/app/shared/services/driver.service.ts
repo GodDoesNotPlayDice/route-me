@@ -167,4 +167,8 @@ export class DriverService implements OnDestroy {
 		this.currentDriver = Some( result.unwrap() )
 		return true
 	}
+
+	logout() {
+		this.currentDriver = None
+	}
 }

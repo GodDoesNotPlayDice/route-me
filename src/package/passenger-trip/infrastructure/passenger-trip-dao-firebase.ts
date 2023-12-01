@@ -118,6 +118,8 @@ export class PassengerTripDaoFirebase implements PassengerTripDao {
 			                 let completed: string | null = null
 
 			                 snapshot.forEach( ( childSnapshot ) => {
+								 console.log('-----entry----')
+								 console.log(childSnapshot.val())
 				                 if ( childSnapshot.val()['user_email'] ===
 					                 email.value )
 				                 {

@@ -68,6 +68,7 @@ export class ProfilePage implements ViewDidEnter {
 
 	async onLogout(): Promise<void> {
 		const result = await this.authService.authLogout()
+		this.driverService.logout()
 		if ( result ) {
 			await this.router.navigate( [ '/login' ] )
 		}
